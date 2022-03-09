@@ -2,10 +2,10 @@ import styled from "styled-components";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 const Nav = styled.nav`
+  position: relative;
   display: flex;
   justify-content: space-between ;
   align-items: center;
-  position: fixed;
   width: 100%;
   top: 0;
   left:0;
@@ -14,7 +14,7 @@ const Nav = styled.nav`
   background-color:#3498db ;
   color: black;
 `;
-const Logo = styled.img`
+const Logo = styled.svg`
   margin-right: 50px;
   width: 95px;
   height: 25px;
@@ -38,7 +38,6 @@ const LiItem = styled.li`
 `;
 const Search = styled.div`
   margin-right: 20px;
-  position: relative;
   display: flex;
   justify-content: center;
   flex-direction: column;
@@ -65,7 +64,9 @@ function Header() {
       </Colum>
       <Colum>
         <Search>Search</Search>
-        <div>Login</div>
+        <span>
+          <Link to="/login">Login</Link>
+        </span>
       </Colum>
     </Nav>
   );
