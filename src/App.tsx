@@ -2,7 +2,6 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Header from "./Components/Header";
 import Clan from "./Router/Clan";
 import Comunity from "./Router/Comunity";
-import DuoSearch from "./Router/DuoSearch";
 import Login from "./Router/Login";
 import Main from "./Router/Main";
 import Register from "./Router/Register";
@@ -15,7 +14,6 @@ function App() {
   <BrowserRouter>
     <Header />
     <Routes>
-      <Route path="/matching" element={<DuoSearch />}/>
       <Route path="/clan" element={<Clan />}/>
       <Route path="/comunity" element={<Comunity />}/>
       <Route path="/login" element={<Login />}/>

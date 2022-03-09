@@ -3,9 +3,6 @@ import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 const Nav = styled.nav`
   position: relative;
-  display: flex;
-  justify-content: space-between ;
-  align-items: center;
   width: 100%;
   top: 0;
   left:0;
@@ -13,6 +10,14 @@ const Nav = styled.nav`
   font-size: 24px;
   background-color:#3498db ;
   color: black;
+`;
+const NavItems = styled.div`
+  display: flex ;
+  justify-content: space-between ;
+  align-items: center;
+  max-width: 70vw ;
+  min-width: 30vw ;
+  margin: 0 auto ;
 `;
 const Logo = styled.svg`
   margin-right: 50px;
@@ -22,7 +27,7 @@ const Logo = styled.svg`
 const Colum = styled.div`
   display: flex;
   align-items: center;
-  padding: 0 60px ;
+  padding: 0 80px ;
 `;
 const UlItems = styled.ul`
   display: flex;
@@ -46,28 +51,30 @@ const Search = styled.div`
 function Header() {
   return (
     <Nav>
-      <Colum>
-          <UlItems>
-            <LiItem>
-              <Link to="/">홈</Link>
-            </LiItem>
-            <LiItem>
-              <Link to="/matching">듀오서치</Link>
-            </LiItem>
-            <LiItem>
-              <Link to="/clan">클랜</Link>
-            </LiItem>
-            <LiItem>
-              <Link to="/comunity">커뮤니티</Link>
-            </LiItem>
-          </UlItems>
-      </Colum>
-      <Colum>
-        <Search>Search</Search>
-        <span>
-          <Link to="/login">Login</Link>
-        </span>
-      </Colum>
+      <NavItems>
+        <Colum>
+            <UlItems>
+              <LiItem>
+                <Link to="/">듀오서치</Link>
+              </LiItem>
+              <LiItem>
+                <Link to="/clan">클랜</Link>
+              </LiItem>
+              <LiItem>
+                <Link to="/comunity">커뮤니티</Link>
+              </LiItem>
+              <LiItem>
+                <Link to="/comunity">신고하기</Link>
+              </LiItem>
+            </UlItems>
+        </Colum>
+        <Colum>
+          <Search>Search</Search>
+          <span>
+            <Link to="/login">Login</Link>
+          </span>
+        </Colum>
+      </NavItems>
     </Nav>
   );
 }
