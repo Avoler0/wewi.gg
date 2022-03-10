@@ -59,9 +59,9 @@ table {
 body {
   font-weight: 300;
   font-family: 'Source Sans Pro', sans-serif;
-  color: black;
+  color: #dfe6e9;
   line-height: 1.2;
-  background-color: white;
+  background-color: #2c3e50;
 }
 a {
   text-decoration:none;

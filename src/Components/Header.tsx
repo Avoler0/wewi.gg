@@ -1,23 +1,24 @@
 import styled from "styled-components";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
-const Nav = styled.nav`
+
+const Head = styled.header`
+  max-width: 1903px;
   position: relative;
-  width: 100%;
-  top: 0;
-  left:0;
+`;
+const HeadLayout = styled.div`
+  display: flex;
+  justify-content: center;
   padding: 20px 0 ;
   font-size: 24px;
-  background-color:#3498db ;
-  color: black;
-`;
-const NavItems = styled.div`
-  display: flex ;
-  justify-content: space-between ;
-  align-items: center;
-  max-width: 70vw ;
-  min-width: 30vw ;
+  background-color:#34495e ;
+  color: #bdc3c7;
   margin: 0 auto ;
+`;
+const Nav = styled.nav`
+    display: flex ;
+    min-width: 1200px ;
+    justify-content: space-between;
 `;
 const Logo = styled.svg`
   margin-right: 50px;
@@ -25,15 +26,14 @@ const Logo = styled.svg`
   height: 25px;
 `;
 const Colum = styled.div`
+  position: relative;
+`;
+
+const NavItems = styled.ul`
   display: flex;
   align-items: center;
-  padding: 0 80px ;
 `;
-const UlItems = styled.ul`
-  display: flex;
-  align-items: center;
-`;
-const LiItem = styled.li`
+const NavItem = styled.li`
   margin-right: 52px ;
   list-style: none;
   position: relative;
@@ -41,41 +41,54 @@ const LiItem = styled.li`
   justify-content: center;
   cursor: pointer;
 `;
-const Search = styled.div`
-  margin-right: 20px;
+const SearchWrap = styled.form`
+  background-color: red;
   display: flex;
+  align-items: center;
   justify-content: center;
-  flex-direction: column;
 `;
+const SearchIco = styled.div`
 
+`;
+const SearchInput = styled.input`
+  border: 0px;
+  box-sizing: border-box;
+  color: rgb(114, 114, 114);
+`;
+const SearchButton = styled.button`
+`;
 function Header() {
   return (
-    <Nav>
-      <NavItems>
-        <Colum>
-            <UlItems>
-              <LiItem>
-                <Link to="/">듀오서치</Link>
-              </LiItem>
-              <LiItem>
-                <Link to="/clan">클랜</Link>
-              </LiItem>
-              <LiItem>
-                <Link to="/comunity">커뮤니티</Link>
-              </LiItem>
-              <LiItem>
-                <Link to="/comunity">신고하기</Link>
-              </LiItem>
-            </UlItems>
-        </Colum>
-        <Colum>
-          <Search>Search</Search>
-          <span>
-            <Link to="/login">Login</Link>
-          </span>
-        </Colum>
-      </NavItems>
-    </Nav>
+    <Head>
+      <HeadLayout>
+          <Nav>
+            <Colum>
+                <NavItems>
+                  <NavItem>
+                    <Link to="/">듀오서치</Link>
+                  </NavItem>
+                  <NavItem>
+                    <Link to="/clan">클랜</Link>
+                  </NavItem>
+                  <NavItem>
+                    <Link to="/comunity">커뮤니티</Link>
+                  </NavItem>
+                  <NavItem>
+                    <Link to="/comunity">신고하기</Link>
+                  </NavItem>
+                </NavItems>
+            </Colum>
+            <Colum>
+              <SearchWrap>
+                <SearchIco>검색</SearchIco>
+                <SearchInput type="text"/>
+                <SearchButton>검색</SearchButton>
+              </SearchWrap>
+            </Colum>
+          </Nav>
+      </HeadLayout>
+    </Head>
+    
   );
 }
 
