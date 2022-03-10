@@ -1,3 +1,5 @@
+import axios from "axios";
+import { useEffect } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 
@@ -127,6 +129,17 @@ const BoardSummoner = styled.div`
   cursor: pointer;
 `;
 function Main() {
+  async function getData() {
+  try {
+    const response = await axios.get('https://na1.api.riotgames.com/lol/summoner/v4/summoners/by-name/hideonbush');
+    console.log(response + "리스폰");
+  }catch(error){
+    console.error(error);
+  }
+}
+  useEffect(()=>{
+    getData();
+  },[])
   let report = 2;
   let hour = 0;
   let minutes = 1;
@@ -170,7 +183,7 @@ function Main() {
             </LineFilter>
           </Filter>
           <BoardLayOut>
-            {[1,2,3,4,5,6,7,8,9,1,2,3,4,5,1].map((board:number)=> <Board>
+            {[1,2,3,4,5,6,7,8,9].map((board:number)=> <Board key={board+""}>
               <BoardTop>
                 <BoardHigh>
                   <BoardIcon />

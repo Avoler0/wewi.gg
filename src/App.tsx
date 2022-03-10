@@ -4,6 +4,7 @@ import Clan from "./Router/Clan";
 import Comunity from "./Router/Comunity";
 import Login from "./Router/Login";
 import Main from "./Router/Main";
+import Record from "./Router/Record";
 import Register from "./Router/Register";
 
 
@@ -18,6 +19,7 @@ function App() {
       <Route path="/comunity" element={<Comunity />}/>
       <Route path="/login" element={<Login />}/>
       <Route path="/register" element={<Register />}/>
+      <Route path="/record" element={<Record />}/>
       <Route path="/" element={<Main />}/>
     </Routes>
   </BrowserRouter>);

@@ -65,6 +65,9 @@ function Header() {
             <Colum>
                 <NavItems>
                   <NavItem>
+                    <Link to="/">홈</Link>
+                  </NavItem>
+                  <NavItem>
                     <Link to="/">듀오서치</Link>
                   </NavItem>
                   <NavItem>
@@ -73,16 +76,17 @@ function Header() {
                   <NavItem>
                     <Link to="/comunity">커뮤니티</Link>
                   </NavItem>
-                  <NavItem>
-                    <Link to="/comunity">신고하기</Link>
-                  </NavItem>
+                  
                 </NavItems>
             </Colum>
             <Colum>
               <SearchWrap>
                 <SearchIco>검색</SearchIco>
                 <SearchInput type="text"/>
-                <SearchButton>검색</SearchButton>
+                <Link to="/record">
+                  <SearchButton>검색</SearchButton>
+                </Link>
+                
               </SearchWrap>
             </Colum>
           </Nav>
