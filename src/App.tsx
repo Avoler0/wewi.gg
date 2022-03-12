@@ -2,6 +2,7 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Header from "./Components/Header";
 import Clan from "./Router/Clan";
 import Comunity from "./Router/Comunity";
+import Home from "./Router/Home";
 import Login from "./Router/Login";
 import Main from "./Router/Main";
 import Record from "./Router/Record";
@@ -20,7 +21,8 @@ function App() {
       <Route path="/login" element={<Login />}/>
       <Route path="/register" element={<Register />}/>
       <Route path="/record" element={<Record />}/>
-      <Route path="/" element={<Main />}/>
+      <Route path="/duo" element={<Main />}/>
+      <Route path="/" element={<Home />}/>
     </Routes>
   </BrowserRouter>);
   

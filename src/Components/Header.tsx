@@ -68,7 +68,7 @@ function Header() {
                     <Link to="/">홈</Link>
                   </NavItem>
                   <NavItem>
-                    <Link to="/">듀오서치</Link>
+                    <Link to="/duo">듀오서치</Link>
                   </NavItem>
                   <NavItem>
                     <Link to="/clan">클랜</Link>
