@@ -1,6 +1,9 @@
 import React from "react";
+import { useQuery } from "react-query";
 import { useRoutes } from "react-router-dom";
+import { useRecoilState } from "recoil";
 import styled from "styled-components";
+import { getSummoner , summonerId } from "./Api/api";
 
 const Container = styled.div`
   max-width: 1903px;
@@ -76,12 +79,39 @@ const SearchButton = styled.button`
   cursor: pointer;
   background-color: transparent;
 `;
+const RecommenWrap = styled.div`
+  background-color: black;
+  width: 100%;
+`;
+const RecoName = styled.div`
+  display: flex;
+  justify-content: center;
+  margin: 0 auto;
+  margin-top: 50px;
+  span{
+    font-size: 48px;
+    font-weight: 700;
+    color: white;
+  }
+`;
+const Recommen = styled.div`
+  width: 100%;
+  height: 40vh;
+`;
 function Home() {
   const onSubmit= (event:React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
   }
   const onClick = () => {
     console.log("클릭됨");
+  }
+  const [name , setName] = useRecoilState(summonerId);
+  const {data , isLoading} = useQuery(["id","name","profileIconId"],getSummoner);
+  console.log(data,isLoading)
+  let hello = '';
+  const inputChange = () => {
+
+    console.log(hello);
     
   }
   return (
@@ -97,11 +127,19 @@ function Home() {
           
               <Form onSubmit={onSubmit}>
                 <SearchLabel htmlFor="SearchInput">검색</SearchLabel>
-                <SearchInput placeholder="소환사명" id="SearchInput"></SearchInput>
+                <SearchInput value={hello} onChange={inputChange} placeholder="소환사명" id="SearchInput"></SearchInput>
                 <SearchButton onClick={onClick}>검색</SearchButton>
               </Form>
           
         </Bottom>
+        <RecommenWrap>
+          <RecoName>
+            <span>오늘의 추천</span>
+          </RecoName>
+          <Recommen>
+
+          </Recommen>
+        </RecommenWrap>
       </Wrapper>
     </Container>
   );

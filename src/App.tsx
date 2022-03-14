@@ -1,4 +1,5 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { RecoilRoot } from "recoil";
 import Header from "./Components/Header";
 import Clan from "./Router/Clan";
 import Comunity from "./Router/Comunity";
@@ -13,18 +14,19 @@ import Register from "./Router/Register";
 
 function App() {
   return (
-  <BrowserRouter>
-    <Header />
-    <Routes>
-      <Route path="/clan" element={<Clan />}/>
-      <Route path="/comunity" element={<Comunity />}/>
-      <Route path="/login" element={<Login />}/>
-      <Route path="/register" element={<Register />}/>
-      <Route path="/record" element={<Record />}/>
-      <Route path="/duo" element={<Main />}/>
-      <Route path="/" element={<Home />}/>
-    </Routes>
-  </BrowserRouter>);
+      <BrowserRouter>
+        <Header />
+        <Routes>
+          <Route path="/clan" element={<Clan />}/>
+          <Route path="/comunity" element={<Comunity />}/>
+          <Route path="/login" element={<Login />}/>
+          <Route path="/register" element={<Register />}/>
+          <Route path="/record" element={<Record />}/>
+          <Route path="/duo" element={<Main />}/>
+          <Route path="/" element={<Home />}/>
+        </Routes>
+      </BrowserRouter>
+  );
   
 }
 

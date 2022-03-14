@@ -1,7 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { RecoilRoot } from 'recoil';
 import { createGlobalStyle } from 'styled-components';
 import App from './App';
+import {QueryClient , QueryClientProvider} from "react-query";
 import reportWebVitals from './reportWebVitals';
 
 const GlobalStyle = createGlobalStyle`
@@ -70,10 +72,16 @@ a {
 
 `;
 
+const client = new QueryClient();
+
 ReactDOM.render(
   <React.StrictMode>
-    <GlobalStyle />
-    <App />
+    <RecoilRoot>
+      <QueryClientProvider client={client}>
+        <GlobalStyle />
+        <App />
+      </QueryClientProvider>
+    </RecoilRoot>
   </React.StrictMode>,
   document.getElementById('root')
 );

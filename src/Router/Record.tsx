@@ -57,11 +57,24 @@ const Bottom = styled.div`
   background-color: blue;
 `;
 
-
 const SummonerIcon = styled.div`
   height: 100%;
   width: 11vw;
   background-color: blue;
+`;
+const SummonerWrap = styled.div`
+  display: flex;
+  align-self: flex-end;
+  padding-left: 20px;
+`;
+const SummonerInfo = styled.div`
+  margin: 0 auto;
+`;
+const SummonerName = styled.div`
+  font-size: 36px;
+`;
+const SummonerCheck = styled.div`
+  padding: 20px;
 `;
 function Record() {
   return (
@@ -71,8 +84,14 @@ function Record() {
         <Layout>
           <Left>
             <Top>
-              <SummonerIcon />
-              <span>아이콘 소환사명 신고하기 새로고침</span>
+              <SummonerIcon>아이콘</SummonerIcon>
+              <SummonerWrap>
+                <SummonerInfo>
+                  <SummonerName>소환사명</SummonerName> 
+                  <SummonerCheck>신고하기 새로고침</SummonerCheck>
+                </SummonerInfo>
+                
+              </SummonerWrap>
             </Top>
             
             <Middle>

@@ -1,7 +1,9 @@
 import axios from "axios";
 import { useEffect } from "react";
+import { useQuery } from "react-query";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
+import {getSummoner} from "./Api/api";
 
 const Container = styled.div`
   max-width: 1903px;
@@ -129,17 +131,7 @@ const BoardSummoner = styled.div`
   cursor: pointer;
 `;
 function Main() {
-  async function getData() {
-  try {
-    const response = await axios.get('https://na1.api.riotgames.com/lol/summoner/v4/summoners/by-name/hideonbush');
-    console.log(response + "리스폰");
-  }catch(error){
-    console.error(error);
-  }
-}
-  useEffect(()=>{
-    getData();
-  },[])
+  
   let report = 2;
   let hour = 0;
   let minutes = 1;
