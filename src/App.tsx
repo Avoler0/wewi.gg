@@ -1,5 +1,4 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import { RecoilRoot } from "recoil";
 import Header from "./Components/Header";
 import Clan from "./Router/Clan";
 import Comunity from "./Router/Comunity";

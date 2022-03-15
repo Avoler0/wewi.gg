@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Suspense } from 'react';
 import ReactDOM from 'react-dom';
 import { RecoilRoot } from 'recoil';
 import { createGlobalStyle } from 'styled-components';
@@ -77,10 +77,13 @@ const client = new QueryClient();
 ReactDOM.render(
   <React.StrictMode>
     <RecoilRoot>
-      <QueryClientProvider client={client}>
-        <GlobalStyle />
-        <App />
-      </QueryClientProvider>
+      <Suspense fallback={null}>
+        <QueryClientProvider client={client}>
+          <GlobalStyle />
+          <App />
+        </QueryClientProvider>
+      </Suspense>
+      
     </RecoilRoot>
   </React.StrictMode>,
   document.getElementById('root')

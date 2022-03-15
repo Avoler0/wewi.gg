@@ -1,9 +1,9 @@
-import React, { useState } from "react";
-import { useQuery } from "react-query";
+import React, { useEffect, useState } from "react";
+import { useQuery, useQueryClient } from "react-query";
 import { useRoutes } from "react-router-dom";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useSetRecoilState , useRecoilValue } from "recoil";
 import styled from "styled-components";
-import { getSummoner , summonerId } from "./Api/api";
+import {summonerGeto, summonerId } from "./Api/api";
 import {useForm} from "react-hook-form"
 
 const Container = styled.div`
@@ -100,17 +100,20 @@ const Recommen = styled.div`
   height: 40vh;
 `;
 function Home() {
-
+  // const {data , isLoading} = useQuery(["id","name","profileIconId"],getSummoner);
   const [name , setName] = useRecoilState(summonerId);
-  const {data , isLoading} = useQuery(["id","name","profileIconId"],getSummoner);
-  // console.log(data,isLoading)
-  const onValid = () => {
-    
+  const summonData = useRecoilValue(summonerGeto);
+  const onValid = (data:any) => {
+    setName(data.SummonerSearch)
+    data.SummonerSearch = "";
   }
-  const {register , watch , handleSubmit} = useForm();
-  // console.log(register("inData"));
-  console.log(watch());
-  
+   useEffect(() => {
+     console.log("입력한 소환사 이름 : " , name);
+     
+    console.log("받아온 데이터 :" , summonData);
+    
+   },[name,summonData])
+  const {register , handleSubmit,formState} = useForm();
   return (
     <Container>
       <Wrapper>
@@ -124,7 +127,10 @@ function Home() {
           
               <Form onSubmit={handleSubmit(onValid)}>
                 <SearchLabel htmlFor="SearchInput">검색</SearchLabel>
-                <SearchInput {...register("SummonerSearch")} placeholder="소환사명" id="SearchInput"></SearchInput>
+                <SearchInput {...register("SummonerSearch" , {required:true , minLength:{
+                  value:1,
+                  message: "두글자 이상의 소환사명을 입력하세요"
+                }})} placeholder="소환사명" id="SearchInput"></SearchInput>
                 <SearchButton>검색</SearchButton>
               </Form>
           
@@ -143,3 +149,4 @@ function Home() {
 }
 
 export default Home;
+
