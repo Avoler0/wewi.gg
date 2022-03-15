@@ -1,9 +1,10 @@
-import React from "react";
+import React, { useState } from "react";
 import { useQuery } from "react-query";
 import { useRoutes } from "react-router-dom";
 import { useRecoilState } from "recoil";
 import styled from "styled-components";
 import { getSummoner , summonerId } from "./Api/api";
+import {useForm} from "react-hook-form"
 
 const Container = styled.div`
   max-width: 1903px;
@@ -99,21 +100,17 @@ const Recommen = styled.div`
   height: 40vh;
 `;
 function Home() {
-  const onSubmit= (event:React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-  }
-  const onClick = () => {
-    console.log("클릭됨");
-  }
+
   const [name , setName] = useRecoilState(summonerId);
   const {data , isLoading} = useQuery(["id","name","profileIconId"],getSummoner);
-  console.log(data,isLoading)
-  let hello = '';
-  const inputChange = () => {
-
-    console.log(hello);
+  // console.log(data,isLoading)
+  const onValid = () => {
     
   }
+  const {register , watch , handleSubmit} = useForm();
+  // console.log(register("inData"));
+  console.log(watch());
+  
   return (
     <Container>
       <Wrapper>
@@ -125,10 +122,10 @@ function Home() {
         </Top>
         <Bottom>
           
-              <Form onSubmit={onSubmit}>
+              <Form onSubmit={handleSubmit(onValid)}>
                 <SearchLabel htmlFor="SearchInput">검색</SearchLabel>
-                <SearchInput value={hello} onChange={inputChange} placeholder="소환사명" id="SearchInput"></SearchInput>
-                <SearchButton onClick={onClick}>검색</SearchButton>
+                <SearchInput {...register("SummonerSearch")} placeholder="소환사명" id="SearchInput"></SearchInput>
+                <SearchButton>검색</SearchButton>
               </Form>
           
         </Bottom>
