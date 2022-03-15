@@ -56,8 +56,8 @@ function Clan() {
         <Filter>
         </Filter>
         <BoardWrapper>
-          {[1,2,3,4,5,6,7,8,9,1,2,3].map((board) => (
-            <ClanBoard>
+          {[1,2,3,4,5,6,7,8,9,10,11,12,13].map((board) => (
+            <ClanBoard key={board+""}>
             <BoardTop>
               <BoardBanner>Banner</BoardBanner>
             </BoardTop>

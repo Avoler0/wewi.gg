@@ -20,7 +20,7 @@ function App() {
           <Route path="/comunity" element={<Comunity />}/>
           <Route path="/login" element={<Login />}/>
           <Route path="/register" element={<Register />}/>
-          <Route path="/record" element={<Record />}/>
+          <Route path="/duo/:summonerId" element={<Record />}/>
           <Route path="/duo" element={<Main />}/>
           <Route path="/" element={<Home />}/>
         </Routes>

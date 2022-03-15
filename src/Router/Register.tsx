@@ -23,7 +23,7 @@ const Form = styled.form`
   margin: 0 auto ;
 `;
 function Register() {
-
+  
   return (
     <Container>
       <Form>

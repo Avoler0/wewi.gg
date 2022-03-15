@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import { motion } from "framer-motion";
-import { Link } from "react-router-dom";
+import { Link, useMatch } from "react-router-dom";
 
 const Head = styled.header`
   max-width: 1903px;
@@ -58,6 +58,7 @@ const SearchInput = styled.input`
 const SearchButton = styled.button`
 `;
 function Header() {
+  const homeMatch = useMatch("/");
   return (
     <Head>
       <HeadLayout>
@@ -80,14 +81,14 @@ function Header() {
                 </NavItems>
             </Colum>
             <Colum>
-              <SearchWrap>
+              {!homeMatch ? <SearchWrap>
                 <SearchIco>검색</SearchIco>
                 <SearchInput type="text"/>
-                <Link to="/record">
+                <Link to="/:summonerId">
                   <SearchButton>검색</SearchButton>
                 </Link>
                 
-              </SearchWrap>
+              </SearchWrap> : null}
             </Colum>
           </Nav>
       </HeadLayout>

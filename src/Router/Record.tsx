@@ -1,4 +1,8 @@
+import { useEffect } from "react";
+import { Route, Routes, useMatch, useParams } from "react-router-dom";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import styled from "styled-components";
+import { summoner, summonerIdGet } from "./Api/api";
 
 const Container = styled.div`
   max-width: 1903px;
@@ -77,6 +81,17 @@ const SummonerCheck = styled.div`
   padding: 20px;
 `;
 function Record() {
+  const { summonerId } = useParams<string>();
+  const setName = useSetRecoilState(summoner);
+  const summonData = useRecoilValue(summonerIdGet);
+  if(typeof summonerId === 'string'){
+    setName(summonerId);
+  }
+   useEffect(()=>{
+    console.log("데이터" , summonData);
+  },[summonData]);
+  //  http://ddragon.leagueoflegends.com/cdn/10.18.1/img/profileicon/[iconID]
+  // http://ddragon.leagueoflegends.com/cdn/10.18.1/data/en_US/profileicon.json
   return (
     <Container>
       <Wrapper>

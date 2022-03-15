@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { useQuery, useQueryClient } from "react-query";
-import { useRoutes } from "react-router-dom";
+import { Link, Route, useRoutes } from "react-router-dom";
 import { useRecoilState, useSetRecoilState , useRecoilValue } from "recoil";
 import styled from "styled-components";
-import {summonerGeto, summonerId } from "./Api/api";
+import {summoner,summonerIdGet} from "./Api/api";
 import {useForm} from "react-hook-form"
+import axios from "axios";
 
 const Container = styled.div`
   max-width: 1903px;
@@ -99,21 +100,14 @@ const Recommen = styled.div`
   width: 100%;
   height: 40vh;
 `;
+
 function Home() {
-  // const {data , isLoading} = useQuery(["id","name","profileIconId"],getSummoner);
-  const [name , setName] = useRecoilState(summonerId);
-  const summonData = useRecoilValue(summonerGeto);
+  const {register , handleSubmit,formState,watch} = useForm();
+  const summonWatch = watch("SummonerSearch");
+  
   const onValid = (data:any) => {
-    setName(data.SummonerSearch)
-    data.SummonerSearch = "";
+    // setName(data.SummonerSearch)
   }
-   useEffect(() => {
-     console.log("입력한 소환사 이름 : " , name);
-     
-    console.log("받아온 데이터 :" , summonData);
-    
-   },[name,summonData])
-  const {register , handleSubmit,formState} = useForm();
   return (
     <Container>
       <Wrapper>
@@ -130,10 +124,11 @@ function Home() {
                 <SearchInput {...register("SummonerSearch" , {required:true , minLength:{
                   value:1,
                   message: "두글자 이상의 소환사명을 입력하세요"
-                }})} placeholder="소환사명" id="SearchInput"></SearchInput>
-                <SearchButton>검색</SearchButton>
+                }})}  placeholder="소환사명" id="SearchInput"></SearchInput>
+                  <Link to={`/duo/${summonWatch}`}>
+                    <SearchButton>검색</SearchButton>
+                  </Link>
               </Form>
-          
         </Bottom>
         <RecommenWrap>
           <RecoName>
@@ -149,4 +144,3 @@ function Home() {
 }
 
 export default Home;
-
