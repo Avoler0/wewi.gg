@@ -30,5 +30,6 @@ const summonerIdGet = selector({
   },
   
 })
+
 // https://kr.api.riotgames.com/lol/league/v4/entries/by-summoner/rPFgYXdzYa-eXaxBbcE5V-XbxjoTm_klJeI2bEDvUP34eA?api_key=RGAPI-92b4d59d-ab59-4cd0-bf77-cc23a29d960f
 export {summoner,summonerIdGet}

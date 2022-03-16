@@ -1,3 +1,4 @@
+import axios from "axios";
 import { useEffect } from "react";
 import { Route, Routes, useMatch, useParams } from "react-router-dom";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
@@ -92,6 +93,22 @@ function Record() {
   },[summonData]);
   //  http://ddragon.leagueoflegends.com/cdn/10.18.1/img/profileicon/[iconID]
   // http://ddragon.leagueoflegends.com/cdn/10.18.1/data/en_US/profileicon.json
+  // https://kr.api.riotgames.com/lol/league/v4/entries/by-summoner/rPFgYXdzYa-eXaxBbcE5V-XbxjoTm_klJeI2bEDvUP34eA?api_key=RGAPI-92b4d59d-ab59-4cd0-bf77-cc23a29d960f
+
+  const BASE_PATH = 'https://kr.api.riotgames.com';
+  const INFO_PATH = 'lol/league/v4/entries/by-summoner'
+  const API_KEY = 'RGAPI-92b4d59d-ab59-4cd0-bf77-cc23a29d960f'
+  async function getSummonerInfo() {
+    try{
+      const response = await axios.get(`${BASE_PATH}/${INFO_PATH}/${summonData.id}?api_key=${API_KEY}`);
+      return response;
+    }catch(error){
+      console.log(error);
+    }
+  } 
+  const responseData = getSummonerInfo();
+  console.log("Info 데이터" , responseData);
+    
   return (
     <Container>
       <Wrapper>
@@ -102,8 +119,9 @@ function Record() {
               <SummonerIcon>아이콘</SummonerIcon>
               <SummonerWrap>
                 <SummonerInfo>
-                  <SummonerName>소환사명</SummonerName> 
+                  <SummonerName>{summonerId}</SummonerName> 
                   <SummonerCheck>신고하기 새로고침</SummonerCheck>
+                  솔로티어 : {}
                 </SummonerInfo>
                 
               </SummonerWrap>
@@ -133,5 +151,3 @@ function Record() {
 }
 
 export default Record;
-
-{/*  */}
