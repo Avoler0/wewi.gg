@@ -1,5 +1,5 @@
 import axios from "axios";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Route, Routes, useMatch, useParams } from "react-router-dom";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import styled from "styled-components";
@@ -81,33 +81,69 @@ const SummonerName = styled.div`
 const SummonerCheck = styled.div`
   padding: 20px;
 `;
+// interface HHHH {
+//   leagueId:string,
+//   queueType:string ,
+//   tier:string ,
+//   rank: string,
+//   summonerId:string ,
+//   summonerName:string ,
+//   leaguePoints:number,
+//   wins:number,
+//   losses:number,
+//   veteran:boolean,
+//   inactive:boolean,
+//   freshBlood:boolean,
+//   hotStreak:boolean,
+// }
 function Record() {
+  const [icons, setIcons] = useState<any[]>([]);
+  const [infos,setInfos] = useState<any[]>([]);
   const { summonerId } = useParams<string>();
   const setName = useSetRecoilState(summoner);
   const summonData = useRecoilValue(summonerIdGet);
+  const API_KEY = 'RGAPI-92b4d59d-ab59-4cd0-bf77-cc23a29d960f'
+  const PATH = {
+    RIOT: 'https://kr.api.riotgames.com',
+    INFO: 'lol/league/v4/entries/by-summoner',
+    ICON: 'http://ddragon.leagueoflegends.com/cdn/10.11.1/img/profileicon/',
+  }
   if(typeof summonerId === 'string'){
     setName(summonerId);
   }
-   useEffect(()=>{
-    console.log("데이터" , summonData);
-  },[summonData]);
+   
   //  http://ddragon.leagueoflegends.com/cdn/10.18.1/img/profileicon/[iconID]
   // http://ddragon.leagueoflegends.com/cdn/10.18.1/data/en_US/profileicon.json
   // https://kr.api.riotgames.com/lol/league/v4/entries/by-summoner/rPFgYXdzYa-eXaxBbcE5V-XbxjoTm_klJeI2bEDvUP34eA?api_key=RGAPI-92b4d59d-ab59-4cd0-bf77-cc23a29d960f
-
-  const BASE_PATH = 'https://kr.api.riotgames.com';
-  const INFO_PATH = 'lol/league/v4/entries/by-summoner'
-  const API_KEY = 'RGAPI-92b4d59d-ab59-4cd0-bf77-cc23a29d960f'
-  async function getSummonerInfo() {
+  async function getInfo() {
     try{
-      const response = await axios.get(`${BASE_PATH}/${INFO_PATH}/${summonData.id}?api_key=${API_KEY}`);
-      return response;
+      const response = await axios.get(`${PATH.RIOT}/${PATH.INFO}/${summonData.id}?api_key=${API_KEY}`);
+      setInfos(Object.values(response.data))
     }catch(error){
       console.log(error);
     }
   } 
-  const responseData = getSummonerInfo();
-  console.log("Info 데이터" , responseData);
+  async function getIcon(iconNum:number) {
+    console.log("PARAM",iconNum);
+    try{
+      const response = await axios.get(`${PATH.ICON}/${iconNum}.png`);
+      setIcons(response.data)
+    }catch(error){
+      console.log(error);
+    }
+  }
+  useEffect(()=>{
+    getInfo();
+  },[]);
+  useEffect(()=>{
+    getIcon(summonData?.profileIconId);
+  },[]);
+  useEffect(()=>{
+    console.log("데이터" , summonData);
+    console.log("Icon 데이터" , icons);
+    console.log("Info 데이터" , infos);
+  },[summonData,icons,infos]);
+  
     
   return (
     <Container>
@@ -116,12 +152,21 @@ function Record() {
         <Layout>
           <Left>
             <Top>
-              <SummonerIcon>아이콘</SummonerIcon>
+              {/* <div>
+                {
+                  icons.map((d, i) => {
+                    return <div key={i}>
+                      {d.image.full}
+                    </div>
+                  })
+                }
+              </div> */}
+              <SummonerIcon>아이콘{}</SummonerIcon>
               <SummonerWrap>
                 <SummonerInfo>
                   <SummonerName>{summonerId}</SummonerName> 
                   <SummonerCheck>신고하기 새로고침</SummonerCheck>
-                  솔로티어 : {}
+                  솔로티어 : {infos[0]?.tier}
                 </SummonerInfo>
                 
               </SummonerWrap>

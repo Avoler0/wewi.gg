@@ -10,7 +10,6 @@ import Register from "./Router/Register";
 
 
 
-
 function App() {
   return (
       <BrowserRouter>

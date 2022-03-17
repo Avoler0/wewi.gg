@@ -21,7 +21,6 @@ const summoner = atom({
 const summonerIdGet = selector({
   key: 'summonerGet',
   get: async ({get}) => {
-    const start = true;
     const getName = get(summoner);
     if(getName === "") return;
     const response = await axios.get(`${RIOT_PATH}/lol/summoner/v4/summoners/by-name/${getName}?api_key=${API_KEY}`);
