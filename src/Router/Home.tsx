@@ -3,7 +3,7 @@ import { useQuery, useQueryClient } from "react-query";
 import { Link, Route, useRoutes } from "react-router-dom";
 import { useRecoilState, useSetRecoilState , useRecoilValue } from "recoil";
 import styled from "styled-components";
-import {summoner,summonerIdGet} from "./Api/api";
+import {summonerName,getSummonerId} from "./Api/api";
 import {useForm} from "react-hook-form"
 import axios from "axios";
 
@@ -102,7 +102,7 @@ const Recommen = styled.div`
 `;
 
 function Home() {
-  const {register , handleSubmit,formState,watch} = useForm();
+  const {register,watch} = useForm();
   const summonWatch = watch("SummonerSearch");
   
   const onValid = (data:any) => {
@@ -118,15 +118,14 @@ function Home() {
           </Banner>
         </Top>
         <Bottom>
-          
-              <Form onSubmit={handleSubmit(onValid)}>
+              <Form >
                 <SearchLabel htmlFor="SearchInput">검색</SearchLabel>
                 <SearchInput {...register("SummonerSearch" , {required:true , minLength:{
                   value:1,
                   message: "두글자 이상의 소환사명을 입력하세요"
                 }})}  placeholder="소환사명" id="SearchInput"></SearchInput>
                   <Link to={`/duo/${summonWatch}`}>
-                    <SearchButton>검색</SearchButton>
+                    <SearchButton >검색</SearchButton>
                   </Link>
               </Form>
         </Bottom>

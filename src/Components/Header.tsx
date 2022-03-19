@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import { motion } from "framer-motion";
 import { Link, useMatch } from "react-router-dom";
+import { useForm } from "react-hook-form";
 
 const Head = styled.header`
   max-width: 1903px;
@@ -59,6 +60,9 @@ const SearchButton = styled.button`
 `;
 function Header() {
   const homeMatch = useMatch("/");
+  const {register , watch,handleSubmit,setValue} = useForm();
+  const summonWatch = watch("SummonerSearch");
+  const onValid = (data:any , e:any) => {}
   return (
     <Head>
       <HeadLayout>
@@ -81,11 +85,13 @@ function Header() {
                 </NavItems>
             </Colum>
             <Colum>
-              {!homeMatch ? <SearchWrap>
+              {!homeMatch ? <SearchWrap onSubmit={handleSubmit(onValid)}>
                 <SearchIco>검색</SearchIco>
-                <SearchInput type="text"/>
-                <Link to="/:summonerId">
-                  <SearchButton>검색</SearchButton>
+                <SearchInput   {...register("SummonerSearch")} />
+                <Link to={`/duo/${summonWatch}`}>
+                  <SearchButton onClick={() => setValue("SummonerSearch","")}>
+                      검색
+                    </SearchButton>
                 </Link>
                 
               </SearchWrap> : null}

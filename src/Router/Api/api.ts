@@ -14,21 +14,52 @@ export interface ISummoner{
   revisionDate: number;
   summonerLevel: number;
 }
-const summoner = atom({
+const summonerName = atom({
   key: 'summonName',
   default: "",
 })
-const summonerIdGet = selector({
-  key: 'summonerGet',
+const getSummonerId = selector({
+  key: 'summonerId',
   get: async ({get}) => {
-    const getName = get(summoner);
-    if(getName === "") return;
-    const response = await axios.get(`${RIOT_PATH}/lol/summoner/v4/summoners/by-name/${getName}?api_key=${API_KEY}`);
-    const recoilProjectInfo = response.data;
-    return recoilProjectInfo;
+    try{
+      const getName = get(summonerName);
+      if(getName === "") return;
+      const response = await axios.get(`${RIOT_PATH}/lol/summoner/v4/summoners/by-name/${getName}?api_key=${API_KEY}`);
+      const recoilProjectInfo = response.data;
+      return recoilProjectInfo;
+    }catch(error){
+      return error;
+    }
   },
-  
+})
+const PATH = {
+    RIOT: 'https://kr.api.riotgames.com',
+    INFO: 'lol/league/v4/entries/by-summoner',
+    ICON: 'http://ddragon.leagueoflegends.com/cdn/10.11.1/img/profileicon',
+  }
+
+const getSummonerInfo = selector({
+  key: 'summonerInfo',
+  get: async({get}) => {
+  try{
+      const summonData = get(getSummonerId);
+      const response = await axios.get(`${PATH.RIOT}/${PATH.INFO}/${summonData.id}?api_key=${API_KEY}`);
+      const recoilProjectInfo = response.data;
+      return recoilProjectInfo;
+  }catch(error){
+      console.log(error);
+      
+    }
+  },
 })
 
-// https://kr.api.riotgames.com/lol/league/v4/entries/by-summoner/rPFgYXdzYa-eXaxBbcE5V-XbxjoTm_klJeI2bEDvUP34eA?api_key=RGAPI-92b4d59d-ab59-4cd0-bf77-cc23a29d960f
-export {summoner,summonerIdGet}
+// async function getSummonerInfo() {
+//     try{
+//       const response = await axios.get(`${PATH.RIOT}/${PATH.INFO}/${summonData.id}?api_key=${API_KEY}`);
+
+//     }catch(error){
+//       console.log(error);
+      
+//     }
+//   } 
+export {summonerName,getSummonerId,getSummonerInfo}
