@@ -3,7 +3,7 @@ import { useQuery, useQueryClient } from "react-query";
 import { Link, Route, useRoutes } from "react-router-dom";
 import { useRecoilState, useSetRecoilState , useRecoilValue } from "recoil";
 import styled from "styled-components";
-import {summonerName,getSummonerId} from "./Api/api";
+import {summonerName,getSummonerId, getSummonerInfo} from "./Api/api";
 import {useForm} from "react-hook-form"
 import axios from "axios";
 
@@ -104,9 +104,10 @@ const Recommen = styled.div`
 function Home() {
   const {register,watch} = useForm();
   const summonWatch = watch("SummonerSearch");
-  
   const onValid = (data:any) => {
     // setName(data.SummonerSearch)
+    
+    
   }
   return (
     <Container>
