@@ -1,11 +1,6 @@
-import React, { useEffect, useState } from "react";
-import { useQuery, useQueryClient } from "react-query";
-import { Link, Route, useRoutes } from "react-router-dom";
-import { useRecoilState, useSetRecoilState , useRecoilValue } from "recoil";
+import { Link } from "react-router-dom";
 import styled from "styled-components";
-import {summonerName,getSummonerId, getSummonerInfo} from "./Api/api";
 import {useForm} from "react-hook-form"
-import axios from "axios";
 
 const Container = styled.div`
   max-width: 1903px;
@@ -43,9 +38,6 @@ const BannerMemo = styled.div`
 const Bottom = styled.div`
   display: flex;
   width: 100%;
-`;
-const SearchWrap = styled.div`
-  margin: 0 auto;
 `;
 const Form = styled.form`
   display: flex;

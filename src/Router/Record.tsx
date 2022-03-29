@@ -1,9 +1,9 @@
-import { Key, useEffect, useState } from "react";
+
 import { useParams } from "react-router-dom";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import styled from "styled-components";
-import { summonerName, getSummonerId ,getSummonerInfo, getRecentlyRecord, RecentlyRecord, getRecordMatch } from "./Api/api";
-
+import { AT_summonerName,getSummonerId,getSummonerInfo } from "./Api/RiotBasicDataApi";
+import RecordDisplay from "./RecordDisplay";
 const Container = styled.div`
   max-width: 1903px;
   min-width: 1200px ;
@@ -45,15 +45,50 @@ const ReBoardPost = styled.div`
   background-color: blue;
 `;
 const Profile = styled.div`
+  padding: 10px;
   width: 100%;
   display: flex;
-  height: 20vh;
+  height: 18vh;
   background-color: red;
 `;
 const Middle = styled.div`
   width: 100%;
   height: 100vh;
   background-color: green;
+`;
+const RecordBorad = styled.ul`
+  background-color: gray;
+`;
+const ScoreWrap = styled.li`
+  display: flex;
+  background-color: blue;
+  height: 125px;
+  border: 1px solid white;
+  margin-top: 10px;
+  margin-bottom: 10px;
+`;
+const ScoreInfo = styled.div`
+  height: 100%;
+  width: 10%;
+`;
+const ScoreResult = styled.div`
+
+`;
+const ScroeType = styled.div`
+
+`;
+const ScroeTimeStamp = styled.div`
+
+`;
+const ScoreTime = styled.div`
+
+`;
+const ScoreIcon = styled.div`
+  height: 100%;
+  width: 15%;
+`;
+const ScoreBoard = styled.div`
+  height: 100%;
 `;
 const Bottom = styled.div`
   width: 100%;
@@ -62,33 +97,31 @@ const Bottom = styled.div`
 `;
 const IconWrap = styled.div`
   margin: 0 20px;
+  white-space: nowrap;
+  
 `;
 const IconImg = styled.img`
-  max-width: 100%;
-  height: 80%;
+  width: 100%;
+  height: 100%;
+  border-radius: 30px;
 `;
-const RecordBorad = styled.ul`
-  background-color: gray;
-`;
-const Score = styled.li`
 
-`;
 
 
 const Info = styled.div`
   height: 100%;
-  margin: 0 5vh 0 5vh;
-  padding: 5px;
+
 `;
 const SClan = styled.div`
   font-size: 12px;
   display: inline;
 `;
 const Sname = styled.span`
-  font-size: 20px;
-  font-weight: bolder;
+  font-size: 28px;
+  font-weight: bold;
   margin: 5px 10px 15px 0px;
   margin-top: 10px;
+  color: black;
 `;
 const Slevel = styled.div`
   font-size: 16px;
@@ -120,44 +153,38 @@ const RankIntro = styled.div`
   text-align: center;
 `;
 function Record() {
+  // 변수 선언 
   const { summonerId } = useParams<string>();
-  const setName = useSetRecoilState(summonerName);
-  const summonId = useRecoilValue(getSummonerId);
+  const setName = useSetRecoilState(AT_summonerName);
+  const summonBasicData = useRecoilValue(getSummonerId);
   const summonInfo = useRecoilValue(getSummonerInfo);
-  const recentlyRecord = useRecoilValue(getRecentlyRecord);
-  const setRecord = useSetRecoilState(RecentlyRecord);
-  const Record = useRecoilValue(getRecordMatch);
-  const imgfile:string = `http://ddragon.leagueoflegends.com/cdn/10.11.1/img/profileicon/${summonId?.profileIconId}.png`;
-  // const setRecord = useSetRecoilState(getRecordMatch);
+  const imgfile:string = `http://ddragon.leagueoflegends.com/cdn/10.11.1/img/profileicon/${summonBasicData?.profileIconId}.png`;
+  let recentlyCount = 20;
+
+  // 변수 선언 끝
+
   if(typeof summonerId === 'string'){
     setName(summonerId);
   } 
+  
   // useEffect(()=>{
   //   console.log("데이터" , summonId);
   //   console.log("Icon 데이터" , imgfile);
   //   console.log("Info 데이터" , summonInfo);
   // },[summonId,imgfile,summonInfo]);
-  console.log(summonId);
-  // console.log(championPoint[0]);
-  console.log(recentlyRecord);
-  
-  setRecord(recentlyRecord[0]);
-  console.log(Record);
-  
-  
-  
+
   return (
     <Container>
       <Wrapper>
         <Head />
         <Layout>
           <Left>
-                <Profile id="main">
-                  <IconWrap>
-                    <IconImg src={imgfile} />
-                  </IconWrap>
+            <Profile id="main">
+              <IconWrap>
+                <IconImg src={imgfile} />
+              </IconWrap>
+
                   <Info id="info">
-                    
                     {/* <Slevel>{summonId?.summonerLevel} Level</Slevel> */}
                     <Sname>{summonerId}</Sname>
                       <SClan>TETRA</SClan>
@@ -181,15 +208,19 @@ function Record() {
                     </WithTierWrap>
                   </RankWrap>
                 </Profile>
-            
             <Middle>
-              <RecordBorad>
-              {recentlyRecord.map((record:any,index:number) =>
-                <Score key={record}>
-                  {index}
-                </Score>
-              )}
-              </RecordBorad>
+              <RecordDisplay name={summonerId === undefined? "" : summonerId} puuid={summonBasicData.puuid} count={recentlyCount}/>
+              <RecordDisplay name={summonerId === undefined? "" : summonerId} puuid={summonBasicData.puuid} count={recentlyCount}/>
+              <RecordDisplay name={summonerId === undefined? "" : summonerId} puuid={summonBasicData.puuid} count={recentlyCount}/>
+              <RecordDisplay name={summonerId === undefined? "" : summonerId} puuid={summonBasicData.puuid} count={recentlyCount}/>
+              <RecordDisplay name={summonerId === undefined? "" : summonerId} puuid={summonBasicData.puuid} count={recentlyCount}/>
+              <RecordDisplay name={summonerId === undefined? "" : summonerId} puuid={summonBasicData.puuid} count={recentlyCount}/>
+              <RecordDisplay name={summonerId === undefined? "" : summonerId} puuid={summonBasicData.puuid} count={recentlyCount}/>
+              <RecordDisplay name={summonerId === undefined? "" : summonerId} puuid={summonBasicData.puuid} count={recentlyCount}/>
+              <RecordDisplay name={summonerId === undefined? "" : summonerId} puuid={summonBasicData.puuid} count={recentlyCount}/>
+              <RecordDisplay name={summonerId === undefined? "" : summonerId} puuid={summonBasicData.puuid} count={recentlyCount}/>
+              <RecordDisplay name={summonerId === undefined? "" : summonerId} puuid={summonBasicData.puuid} count={recentlyCount}/>
+              <RecordDisplay name={summonerId === undefined? "" : summonerId} puuid={summonBasicData.puuid} count={recentlyCount}/>
             </Middle>
             <Bottom>
 
