@@ -1,11 +1,14 @@
+import React from "react";
+import { useEffect } from "react";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import styled from "styled-components";
 import { AT_puuid, AT_recordList, getRecord, getRecordData, getSpellData } from "./Api/RiotRecordApi";
 
 interface I_props {
   name:string,
-  puuid:string,
   count:number,
+  puuid:string,
+  record:string,
 }
 interface I_infoObj {
   timeStamp: number,
@@ -125,10 +128,10 @@ const MaxKill = styled.div`
   display: inline-block;
 `;
 const Stats = styled.div`
+  padding: 15px;
   width: 10%;
   height: 100%;
   text-align: center;
-  background-color: white;
 `;
 const Level = styled.div`
 
@@ -144,10 +147,10 @@ const Spell = styled.div`
   padding-bottom: 15px;
   width: 5%;
   height: 100%;
-  background-color: red;
 
   img{
     height: 50%;
+    border-radius: 20px;
   }
 `;
 const Rune = styled.div`
@@ -167,19 +170,27 @@ const Participants = styled.div`
 `;
 const RecordDisplay = (props:I_props) =>{
   //초기화
-  const setAT_puuid = useSetRecoilState(AT_puuid); // RecordApi의 puuid atom에 props로 받은 puuid를 넘겨주기 위한 Recoil
-  setAT_puuid(props.puuid); // RecordApi의 puuid atom에 props로 넘겨받은 puuid를 다시 넘겨줌
-  const getAP_record = useRecoilValue(getRecord); // puuid로 찾은 getRecord Api의 값 , 최근 전적 count를 갖고옴
+  // const setAT_puuid = useSetRecoilState(AT_puuid); // RecordApi의 puuid atom에 props로 받은 puuid를 넘겨주기 위한 Recoil
+  // setAT_puuid(props.puuid); // RecordApi의 puuid atom에 props로 넘겨받은 puuid를 다시 넘겨줌
+  /////
   const setAT_recordList = useSetRecoilState(AT_recordList); // 최근 전적의 상세한 내용을 json으로 받아오기 위해 recordList atom에 최근전적을 넘겨줌
-  const riotImgPATH = 'https://ddragon.leagueoflegends.com/cdn/img';
-  const getSpell = useRecoilValue(getSpellData);
-  setAT_recordList(getAP_record[0]);
+  setAT_recordList(props.record);
+  // setAT_recordList(getAP_record[0]);
   const getAP_recordData = useRecoilValue(getRecordData);
   let recordDataCount = 0;
   
-  
-  
+  function oneWay() {
+    for(let i = 0; i < getAP_recordData.info?.participants.length; i++ ){
+    if(getAP_recordData.info?.participants[i].puuid === props.puuid){
+      recordDataCount = i;
+      break;
+    }
+  }
+  }
   //중간 과정
+  useEffect(()=>{
+    oneWay()
+  },[]);
   if(props.name === ""){
     return <div>이름 없음</div>;
   }
@@ -210,17 +221,12 @@ const RecordDisplay = (props:I_props) =>{
     }
   }
 
-  for(let i = 0; i < getAP_recordData.info?.participants.length; i++ ){
-    if(getAP_recordData.info?.participants[i].puuid === props.puuid){
-      recordDataCount = i;
-      break;
-    }
-  }
+  
 
   //게임 데이터 보기
-  console.log(recordDataCount);
-  console.log(getAP_recordData);
+
   // 후처리들
+  
   const spellD = spellName(getAP_recordData.info?.participants[recordDataCount].summoner1Id) ;
   const spellF = spellName(getAP_recordData.info?.participants[recordDataCount].summoner2Id);
   infoObj.gameResult = getAP_recordData.info?.participants[recordDataCount].win;
@@ -248,10 +254,12 @@ const RecordDisplay = (props:I_props) =>{
         </IconWrap>
         <KdaWrap>
           <Kda>
-            <span>11 </span> / <span>10</span> / <span>12</span>
+            <span>{getAP_recordData.info?.participants[recordDataCount].kills}</span> / <span>{getAP_recordData.info?.participants[recordDataCount].deaths}</span> / <span>{getAP_recordData.info?.participants[recordDataCount].assists}</span>
           </Kda>
           <Ratio>
-            <span>2:30.1</span>평점
+            <span>
+             {(getAP_recordData.info?.participants[recordDataCount].kills + getAP_recordData.info?.participants[recordDataCount].assists) / getAP_recordData.info?.participants[recordDataCount].deaths}  
+            </span>평점
           </Ratio>
           <MaxKill>
             멀티킬
@@ -259,10 +267,10 @@ const RecordDisplay = (props:I_props) =>{
         </KdaWrap>
         <Stats>
           <Level>
-            레벨 15
+            레벨 <span>{getAP_recordData.info?.participants[recordDataCount].champLevel}</span>
           </Level>
           <Cs>
-            137 CS
+            CS <span>{getAP_recordData.info?.participants[recordDataCount].neutralMinionsKilled}</span>
           </Cs>
           <KillInvol>
             킬관여 77%
@@ -271,9 +279,6 @@ const RecordDisplay = (props:I_props) =>{
           <Spell>
             <img src={`https://ddragon.leagueoflegends.com/cdn/10.6.1/img/spell/${spellD}.png`}/>
             <img src={`https://ddragon.leagueoflegends.com/cdn/10.6.1/img/spell/${spellF}.png`}/>
-
-
-
           </Spell>
           <Rune>
             <span>주요룬</span>
@@ -290,37 +295,4 @@ const RecordDisplay = (props:I_props) =>{
   );
 }
 
-export default RecordDisplay;
-
- /* 
- <RecordBorad>
-              {apiRecentlyRecordArr.map((record:any,index:number) =>
-                <ScoreWrap key={record}>
-                  {
-                  <>
-                    <ScoreInfo>
-                      <ScroeTimeStamp>
-                        몇분전
-                      </ScroeTimeStamp>
-                      <ScroeType>
-                        승리
-                      </ScroeType>
-                      <ScroeType>
-                        솔로랭크
-                      </ScroeType>
-                      <ScoreTime>
-                        몇분
-                      </ScoreTime>
-                    </ScoreInfo>
-                    <ScoreIcon>
-                      <img src={chamImg[index]} />
-                    </ScoreIcon>
-                    
-                    <ScoreBoard>
-                      스펠과 룬 , 아이템 , 게임내 레벨 KDA CS 킬관여 , 같이 플레이한 사람들
-                    </ScoreBoard>
-                  </>
-                  }
-                </ScoreWrap>
-              )}
-              </RecordBorad> */
+export default React.memo(RecordDisplay);

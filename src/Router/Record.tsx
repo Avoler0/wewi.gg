@@ -1,8 +1,11 @@
 
+import React from "react";
+import { useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import styled from "styled-components";
 import { AT_summonerName,getSummonerId,getSummonerInfo } from "./Api/RiotBasicDataApi";
+import { AT_puuid, getRecord } from "./Api/RiotRecordApi";
 import RecordDisplay from "./RecordDisplay";
 const Container = styled.div`
   max-width: 1903px;
@@ -158,11 +161,12 @@ function Record() {
   const setName = useSetRecoilState(AT_summonerName);
   const summonBasicData = useRecoilValue(getSummonerId);
   const summonInfo = useRecoilValue(getSummonerInfo);
+
   const imgfile:string = `http://ddragon.leagueoflegends.com/cdn/10.11.1/img/profileicon/${summonBasicData?.profileIconId}.png`;
-  let recentlyCount = 20;
-
-  // 변수 선언 끝
-
+  const setAT_puuid = useSetRecoilState(AT_puuid); // RecordApi의 puuid atom에 props로 받은 puuid를 넘겨주기 위한 Recoil
+  const getAP_record = useRecoilValue(getRecord); // puuid로 찾은 getRecord Api의 값 , 최근 전적 count를 갖고옴
+  
+  
   if(typeof summonerId === 'string'){
     setName(summonerId);
   } 
@@ -172,7 +176,7 @@ function Record() {
   //   console.log("Icon 데이터" , imgfile);
   //   console.log("Info 데이터" , summonInfo);
   // },[summonId,imgfile,summonInfo]);
-
+  setAT_puuid(summonBasicData.puuid);
   return (
     <Container>
       <Wrapper>
@@ -209,18 +213,11 @@ function Record() {
                   </RankWrap>
                 </Profile>
             <Middle>
-              <RecordDisplay name={summonerId === undefined? "" : summonerId} puuid={summonBasicData.puuid} count={recentlyCount}/>
-              <RecordDisplay name={summonerId === undefined? "" : summonerId} puuid={summonBasicData.puuid} count={recentlyCount}/>
-              <RecordDisplay name={summonerId === undefined? "" : summonerId} puuid={summonBasicData.puuid} count={recentlyCount}/>
-              <RecordDisplay name={summonerId === undefined? "" : summonerId} puuid={summonBasicData.puuid} count={recentlyCount}/>
-              <RecordDisplay name={summonerId === undefined? "" : summonerId} puuid={summonBasicData.puuid} count={recentlyCount}/>
-              <RecordDisplay name={summonerId === undefined? "" : summonerId} puuid={summonBasicData.puuid} count={recentlyCount}/>
-              <RecordDisplay name={summonerId === undefined? "" : summonerId} puuid={summonBasicData.puuid} count={recentlyCount}/>
-              <RecordDisplay name={summonerId === undefined? "" : summonerId} puuid={summonBasicData.puuid} count={recentlyCount}/>
-              <RecordDisplay name={summonerId === undefined? "" : summonerId} puuid={summonBasicData.puuid} count={recentlyCount}/>
-              <RecordDisplay name={summonerId === undefined? "" : summonerId} puuid={summonBasicData.puuid} count={recentlyCount}/>
-              <RecordDisplay name={summonerId === undefined? "" : summonerId} puuid={summonBasicData.puuid} count={recentlyCount}/>
-              <RecordDisplay name={summonerId === undefined? "" : summonerId} puuid={summonBasicData.puuid} count={recentlyCount}/>
+              {getAP_record.map((record:any,index:number) => (<RecordDisplay key={index} name={summonerId === undefined? "" : summonerId} puuid={summonBasicData.puuid} record={record} count={20}/>))}
+              {/* {getAP_record.map((data:any,index:number) => ( <div key={index}>{index}{data}</div>
+              
+
+              ))} */}
             </Middle>
             <Bottom>
 
@@ -242,4 +239,4 @@ function Record() {
   );
 
   }
-export default Record;
+export default React.memo(Record);
