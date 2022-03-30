@@ -53,7 +53,7 @@ const Profile = styled.div`
 `;
 const Middle = styled.div`
   width: 100%;
-  height: 100vh;
+  min-height: 100vh;
   background-color: green;
 `;
 const RecordBorad = styled.ul`
@@ -93,7 +93,7 @@ const ScoreBoard = styled.div`
 const Bottom = styled.div`
   width: 100%;
   height: 20vh;
-  background-color: blue;
+  background-color: gray;
 `;
 const IconWrap = styled.div`
   margin: 0 20px;

@@ -61,5 +61,21 @@ const getRecordData = selector({
   }
 })
 
+export const getSpellData = selector({
+  key:'spellJSON',
+  get: async() => {
+    try{
+      const response = await axios({
+      method: "GET",
+      url: `https://ddragon.leagueoflegends.com/cdn/10.6.1/data/ko_KR/summoner.json`,
+    });
+      const recoilProjectInfo = response.data;
+      return recoilProjectInfo;
+    }catch(error){
+      console.log("스펠 에러남");
+    }
+  },
+})
+
 
 export {AT_puuid,getRecord,AT_recordList,getRecordData}

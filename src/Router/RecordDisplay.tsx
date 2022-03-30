@@ -1,7 +1,6 @@
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import styled from "styled-components";
-import { AT_puuid, AT_recordList, getRecord, getRecordData } from "./Api/RiotRecordApi";
-
+import { AT_puuid, AT_recordList, getRecord, getRecordData, getSpellData } from "./Api/RiotRecordApi";
 
 interface I_props {
   name:string,
@@ -15,6 +14,22 @@ interface I_infoObj {
   gameLength1:number,
   gameLength2:number,
 }
+interface I_spell {
+  21:string,
+  1:string,
+  14:string,
+  3:string,
+  4:string,
+  6:string,
+  7:string,
+  13:string,
+  30:string,
+  31:string,
+  11:string,
+  39:string,
+  32:string,
+  12:string,
+}
 
 const BoardWrap = styled.ul`
   background-color: gray;
@@ -27,11 +42,12 @@ const Board = styled.li`
   border: 1px solid white;
   margin-top: 5px;
   margin-bottom: 5px;
-  padding: 15px;
+
 `;
 const Info = styled.div`
   height: 100%;
   width: 10%;
+  padding: 15px;
 `;
 
 const TimeStamp = styled.div`
@@ -55,10 +71,12 @@ const GameLength = styled.div`
   text-align: center;
 `;
 const IconWrap = styled.div`
+  padding: 15px;
   width: 13%;
   height: 100%;
   overflow: hidden; // 박스 넘어가는 부분의 이미지를 잘라줌
   position: relative;
+  
   span{
     position: absolute;
     bottom: 0;
@@ -81,6 +99,7 @@ const KdaWrap = styled.div`
   height: 100%;
   text-align: center;
   justify-content: center;
+  padding: 15px;
 `;
 const Kda = styled.div`
   font-size: 15px;
@@ -108,12 +127,28 @@ const MaxKill = styled.div`
 const Stats = styled.div`
   width: 10%;
   height: 100%;
+  text-align: center;
   background-color: white;
 `;
+const Level = styled.div`
+
+`;
+const Cs = styled.div`
+
+`;
+const KillInvol = styled.div`
+
+`;
 const Spell = styled.div`
+  padding-top: 15px;
+  padding-bottom: 15px;
   width: 5%;
   height: 100%;
   background-color: red;
+
+  img{
+    height: 50%;
+  }
 `;
 const Rune = styled.div`
   width: 5%;
@@ -131,17 +166,23 @@ const Participants = styled.div`
   background-color: wheat;
 `;
 const RecordDisplay = (props:I_props) =>{
+  //초기화
   const setAT_puuid = useSetRecoilState(AT_puuid); // RecordApi의 puuid atom에 props로 받은 puuid를 넘겨주기 위한 Recoil
   setAT_puuid(props.puuid); // RecordApi의 puuid atom에 props로 넘겨받은 puuid를 다시 넘겨줌
   const getAP_record = useRecoilValue(getRecord); // puuid로 찾은 getRecord Api의 값 , 최근 전적 count를 갖고옴
   const setAT_recordList = useSetRecoilState(AT_recordList); // 최근 전적의 상세한 내용을 json으로 받아오기 위해 recordList atom에 최근전적을 넘겨줌
-  
-  
+  const riotImgPATH = 'https://ddragon.leagueoflegends.com/cdn/img';
+  const getSpell = useRecoilValue(getSpellData);
   setAT_recordList(getAP_record[0]);
   const getAP_recordData = useRecoilValue(getRecordData);
   let recordDataCount = 0;
-  console.log(getAP_record[0]);
-  console.log(getAP_recordData);
+  
+  
+  
+  //중간 과정
+  if(props.name === ""){
+    return <div>이름 없음</div>;
+  }
 
   const infoObj:I_infoObj = {
     timeStamp: 22,
@@ -150,15 +191,39 @@ const RecordDisplay = (props:I_props) =>{
     gameLength1:40,
     gameLength2:22,
   }
+  function spellName (spellKey:number) {
+    switch(spellKey) {
+      case 21: return "SummonerBarrier";
+      case 1: return "SummonerBoost";
+      case 14: return "SummonerDot";
+      case 3: return "SummonerExhaust";
+      case 4: return "SummonerFlash";
+      case 6: return "SummonerHaste";
+      case 7: return "SummonerHeal";
+      case 13: return "SummonerMana";
+      case 30: return "SummonerPoroRecall";
+      case 31: return "SummonerPoroThrow";
+      case 11: return "SummonerSmite";
+      case 39: return "SummonerSnowURFSnowball_Mark";
+      case 32: return "SummonerSnowball";
+      case 12: return "SummonerTeleport";
+    }
+  }
+
   for(let i = 0; i < getAP_recordData.info?.participants.length; i++ ){
     if(getAP_recordData.info?.participants[i].puuid === props.puuid){
       recordDataCount = i;
       break;
     }
   }
-  if(props.name === ""){
-    return <div>이름 없음</div>;
-  }
+
+  //게임 데이터 보기
+  console.log(recordDataCount);
+  console.log(getAP_recordData);
+  // 후처리들
+  const spellD = spellName(getAP_recordData.info?.participants[recordDataCount].summoner1Id) ;
+  const spellF = spellName(getAP_recordData.info?.participants[recordDataCount].summoner2Id);
+  infoObj.gameResult = getAP_recordData.info?.participants[recordDataCount].win;
   const chamImg:string = `https://ddragon.leagueoflegends.com/cdn/10.11.1/img/champion/${getAP_recordData.info?.participants[recordDataCount].championName}.png`;
   return (
     <BoardWrap>
@@ -193,11 +258,22 @@ const RecordDisplay = (props:I_props) =>{
           </MaxKill>
         </KdaWrap>
         <Stats>
-          스탯창
+          <Level>
+            레벨 15
+          </Level>
+          <Cs>
+            137 CS
+          </Cs>
+          <KillInvol>
+            킬관여 77%
+          </KillInvol>
         </Stats>
           <Spell>
-            <span>D</span>
-            <span>F</span>
+            <img src={`https://ddragon.leagueoflegends.com/cdn/10.6.1/img/spell/${spellD}.png`}/>
+            <img src={`https://ddragon.leagueoflegends.com/cdn/10.6.1/img/spell/${spellF}.png`}/>
+
+
+
           </Spell>
           <Rune>
             <span>주요룬</span>
