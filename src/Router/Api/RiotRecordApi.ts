@@ -14,16 +14,11 @@ const getRecord = selector({
       const puuid = get(AT_puuid);
       const start = 0;
       const count = 20;
-      const response = await axios({
-      method: "GET",
-      url: `https://asia.api.riotgames.com/lol/match/v5/matches/by-puuid/${puuid}/ids?start=${start}&count=${count}&api_key=${API_KEY}`,
-      headers:{
-        'APIKey': API_KEY,
-      }
-    });
+      const response = 
+      await axios.get(`https://asia.api.riotgames.com/lol/match/v5/matches/by-puuid/${puuid}/ids?start=${start}&count=${count}&api_key=${API_KEY}`)
       const recoilProjectInfo = response.data;
       return recoilProjectInfo;
-    }catch(error){
+      }catch(error){
       const puuid = get(AT_puuid);
       console.log("API GET Info Error [Error fetch name : getRecentlyRecord]",puuid);
       
@@ -76,6 +71,5 @@ export const getSpellData = selector({
     }
   },
 })
-
 
 export {AT_puuid,getRecord,AT_recordList,getRecordData}

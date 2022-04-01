@@ -63,7 +63,8 @@ body {
   font-family: 'Source Sans Pro', sans-serif;
   color: #dfe6e9;
   line-height: 1.2;
-  background-color: #2c3e50;
+  /* background-color: #2c3e50; */
+  background-image: url(https://images.contentstack.io/v3/assets/blt731acb42bb3d1659/blta994c96cd213519b/61e9b3c2c6172549a9716676/Zeri_Theme_Banner.jpg);
 }
 a {
   text-decoration:none;

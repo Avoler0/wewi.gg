@@ -1,8 +1,11 @@
-import React from "react";
+import axios from "axios";
+import React, { useState } from "react";
 import { useEffect } from "react";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import styled from "styled-components";
-import { AT_puuid, AT_recordList, getRecord, getRecordData, getSpellData } from "./Api/RiotRecordApi";
+import { API_KEY } from "../../commons/API_KEY";
+import { I_recordData, I_summonerInfo } from "../../commons/apiInterFace";
+import { AT_puuid, AT_recordList, getRecord, getRecordData, getSpellData } from "../../Router/Api/RiotRecordApi";
 
 interface I_props {
   name:string,
@@ -169,32 +172,45 @@ const Participants = styled.div`
   background-color: wheat;
 `;
 const RecordDisplay = (props:I_props) =>{
-  //초기화
-  // const setAT_puuid = useSetRecoilState(AT_puuid); // RecordApi의 puuid atom에 props로 받은 puuid를 넘겨주기 위한 Recoil
-  // setAT_puuid(props.puuid); // RecordApi의 puuid atom에 props로 넘겨받은 puuid를 다시 넘겨줌
-  /////
-  const setAT_recordList = useSetRecoilState(AT_recordList); // 최근 전적의 상세한 내용을 json으로 받아오기 위해 recordList atom에 최근전적을 넘겨줌
-  setAT_recordList(props.record);
-  // setAT_recordList(getAP_record[0]);
-  const getAP_recordData = useRecoilValue(getRecordData);
-  let recordDataCount = 0;
   
+  //초기화
+  // const setAT_recordList = useSetRecoilState(AT_recordList); // 최근 전적의 상세한 내용을 json으로 받아오기 위해 recordList atom에 최근전적을 넘겨줌
+  // const recordData = useRecoilValue(getRecordData);
+  const [recordData,setRecordData] = useState<I_recordData>();
+  const [recordDataCount,setRecordDataCount] = useState<number>(0);
+  const [chamImg,setChamImg] = useState("");
+  const [rdRender,setRdRender] = useState(false);
+  function getChamImg() {
+    
+    const  response = `https://ddragon.leagueoflegends.com/cdn/10.11.1/img/champion/${recordData?.info?.participants[recordDataCount].championName}.png`;
+    setChamImg(response);
+  }
   function oneWay() {
-    for(let i = 0; i < getAP_recordData.info?.participants.length; i++ ){
-    if(getAP_recordData.info?.participants[i].puuid === props.puuid){
-      recordDataCount = i;
+    for(let i = 0; i < recordData!.info.participants.length; i++ ){
+    if(recordData?.info.participants[i].puuid === props.puuid){
+      setRecordDataCount(i)
       break;
     }
   }
   }
-  //중간 과정
-  useEffect(()=>{
-    oneWay()
-  },[]);
-  if(props.name === ""){
-    return <div>이름 없음</div>;
+  async function getRecordData(recordList:string){
+    const response = await axios.get(`https://asia.api.riotgames.com/lol/match/v5/matches/${recordList}?api_key=${API_KEY}`);
+    setRecordData(response.data);
   }
-
+  
+  // 중간 과정
+  useEffect(()=>{
+    // if(recordData !== undefined) oneWay();
+    getChamImg();
+  },[]);
+  useEffect(()=>{
+    getRecordData(props.record);
+    
+  },[]);
+  console.log("prop",props.name);
+  console.log("prop",props.puuid);
+  console.log("prop",props.record);
+  
   const infoObj:I_infoObj = {
     timeStamp: 22,
     gameResult:true,
@@ -221,19 +237,18 @@ const RecordDisplay = (props:I_props) =>{
     }
   }
 
-  
-
   //게임 데이터 보기
 
   // 후처리들
+  // console.log(recordDataCount);
   
-  const spellD = spellName(getAP_recordData.info?.participants[recordDataCount].summoner1Id) ;
-  const spellF = spellName(getAP_recordData.info?.participants[recordDataCount].summoner2Id);
-  infoObj.gameResult = getAP_recordData.info?.participants[recordDataCount].win;
-  const chamImg:string = `https://ddragon.leagueoflegends.com/cdn/10.11.1/img/champion/${getAP_recordData.info?.participants[recordDataCount].championName}.png`;
+  const spellD = spellName(recordData?.info.participants[recordDataCount]?.summoner1Id!) ;
+  const spellF = spellName(recordData?.info.participants[recordDataCount].summoner2Id!);
+  infoObj.gameResult = recordData?.info?.participants[recordDataCount].win!;
+  // const chamImg = `https://ddragon.leagueoflegends.com/cdn/10.11.1/img/champion/${recordData?.info?.participants[recordDataCount].championName}.png`
   return (
     <BoardWrap>
-      <Board>
+      {rdRender ? <Board>
         <Info>
           <GameResult>
             {infoObj.gameResult ? "승리" : "패배"}
@@ -248,17 +263,17 @@ const RecordDisplay = (props:I_props) =>{
           </GameLength>
         </Info>
         <IconWrap>
-          {chamImg === undefined ? null : <Icon src={chamImg} />}
+          <Icon src={chamImg} />
           <span>샤코</span> 
           {/* 수정 필요함 */}
         </IconWrap>
         <KdaWrap>
           <Kda>
-            <span>{getAP_recordData.info?.participants[recordDataCount].kills}</span> / <span>{getAP_recordData.info?.participants[recordDataCount].deaths}</span> / <span>{getAP_recordData.info?.participants[recordDataCount].assists}</span>
+            <span>{recordData?.info?.participants[recordDataCount].kills}</span> / <span>{recordData?.info?.participants[recordDataCount].deaths}</span> / <span>{recordData?.info?.participants[recordDataCount].assists}</span>
           </Kda>
           <Ratio>
             <span>
-             {(getAP_recordData.info?.participants[recordDataCount].kills + getAP_recordData.info?.participants[recordDataCount].assists) / getAP_recordData.info?.participants[recordDataCount].deaths}  
+             {(recordData?.info?.participants[recordDataCount].kills! + recordData?.info?.participants[recordDataCount].assists!) / recordData?.info?.participants[recordDataCount].deaths!}  
             </span>평점
           </Ratio>
           <MaxKill>
@@ -267,10 +282,10 @@ const RecordDisplay = (props:I_props) =>{
         </KdaWrap>
         <Stats>
           <Level>
-            레벨 <span>{getAP_recordData.info?.participants[recordDataCount].champLevel}</span>
+            레벨 <span>{recordData?.info?.participants[recordDataCount].champLevel}</span>
           </Level>
           <Cs>
-            CS <span>{getAP_recordData.info?.participants[recordDataCount].neutralMinionsKilled}</span>
+            CS <span>{recordData?.info?.participants[recordDataCount].neutralMinionsKilled}</span>
           </Cs>
           <KillInvol>
             킬관여 77%
@@ -290,9 +305,10 @@ const RecordDisplay = (props:I_props) =>{
           <Participants>
 
           </Participants>
-      </Board>
+      </Board> : <div>기록없음</div>}
     </BoardWrap>
   );
+  // return null;
 }
 
-export default React.memo(RecordDisplay);
+export default RecordDisplay;

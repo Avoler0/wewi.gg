@@ -1,6 +1,9 @@
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import {useForm} from "react-hook-form"
+import { useEffect, useState } from "react";
+import axios from "axios";
+import {API_KEY} from "../../commons/API_KEY"
 
 const Container = styled.div`
   max-width: 1903px;
@@ -92,16 +95,49 @@ const Recommen = styled.div`
   width: 100%;
   height: 40vh;
 `;
-
+interface I_homeProps {
+  info:{
+    [0]:{
+    freshBlood: boolean,
+    hotStreak: boolean,
+    inactive: boolean,
+    leagueId: string,
+    leaguePoints: number,
+    losses: number,
+    queueType: string,
+    rank: string,
+    summonerId: string,
+    summonerName: string,
+    tier: string,
+    veteran: boolean,
+    wins: number,
+  }
+  [1]:{
+    freshBlood: boolean,
+    hotStreak: boolean,
+    inactive: boolean,
+    leagueId: string,
+    leaguePoints: number,
+    losses: number,
+    queueType: string,
+    rank: string,
+    summonerId: string,
+    summonerName: string,
+    tier: string,
+    veteran: boolean,
+    wins: number,
+  }
+  }
+}
 function Home() {
   const {register,watch} = useForm();
   const summonWatch = watch("SummonerSearch");
   const onValid = (data:any) => {
-    // setName(data.SummonerSearch)
-    
-    
+
   }
+
   return (
+    
     <Container>
       <Wrapper>
         <Head />
