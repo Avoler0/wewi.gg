@@ -2,7 +2,9 @@ import styled from "styled-components"
 
 const ProfileWrap = styled.div`
   display: flex;
-  margin: 10px;
+  width: 100%;
+  height: 100%;
+  padding: 10px;
 `;
 const IconBox = styled.div`
   width: 30%;
@@ -10,27 +12,28 @@ const IconBox = styled.div`
   overflow: hidden; // 박스 넘어가는 부분의 이미지를 잘라줌
   position: relative;
   img{
-    justify-content: center;
-    align-items: center;
+    position: absolute;
     width: 80%;
-    height: 90%;
+    left: 10%;
     border: 2px solid gray;
     border-radius: 150px;
   }
 `;
 const LevelBox = styled.div`
   position: absolute;
+  left: 30%;
   bottom: 0;
   z-index: 2;
-  font-weight: bold;
+  
   border: 1px solid white;
   border-radius: 150px;
-  font-size: 14px;
-  padding: 2px;
+  
+  
   background-color: gray;
 `;
 const Level = styled.div`
-
+  font-weight: bold;
+  font-size: 14px;
 `;
 const NameBox = styled.div`
   
@@ -61,7 +64,9 @@ function Profile(props:I_BasicData) {
     <ProfileWrap>
       <IconBox>
         <img src={`http://ddragon.leagueoflegends.com/cdn/10.11.1/img/profileicon/${props.basicData?.profileIconId}.png`}/>
-      <LevelBox>{props.basicData.summonerLevel}</LevelBox>
+      <LevelBox>
+        <Level>{props.basicData.summonerLevel}</Level>
+      </LevelBox>
       </IconBox>
       <NameBox>
         <Name>

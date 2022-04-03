@@ -19,9 +19,12 @@ function SummonerInfo ({summonerInfo}:any) {
   return (
     <RankWrap>
       <RankType>
-          <SoloRank />
-
+        <button>솔로랭크</button>
+        <button>자유랭크</button>
       </RankType>
+      <RankInfo>
+        <SoloRank soloRank={soloRank!}/>
+      </RankInfo>
     </RankWrap>
   );
 }
@@ -33,5 +36,8 @@ const RankWrap = styled.div`
 
 `;
 const RankType = styled.div`
+
+`;
+const RankInfo = styled.div`
 
 `;

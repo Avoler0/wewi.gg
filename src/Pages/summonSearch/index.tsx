@@ -1,11 +1,14 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import { useSetRecoilState } from "recoil";
 import styled from "styled-components";
 import { getSummonerBasicData, getSummonerInfo, getSummonerRecordList } from "../../api/api";
 import { I_summonerBasicData, I_summonerInfo } from "../../commons/apiInterFace";
 import { customAsync } from "../../commons/asyncUtils";
+import { AT_puuid } from "../../Router/Api/RiotRecordApi";
 import Profile from "./profile/summonerProfile";
 import SummonerInfo from "./rank/summonerInfo";
+import Recently from "./Record/Recently";
 
 const Container = styled.div`
   z-index: 2;
@@ -33,7 +36,7 @@ const ProfileView = styled.div`
 `;
 const RankView = styled.div`
   width: 25%;
-  height: 200px;
+  height: 180px;
   background-color: #2c3e50;
   margin: 6px 0;
   border-radius: 5px;
@@ -69,6 +72,7 @@ function SummonerRecord() {
   const [summonerBasicData,setSummonerBasicData] = useState<I_summonerBasicData>();
   const [summonerInfo, setSummonerInfo] = useState<I_summonerInfo>();
   const [summonerRecord,setSummonerRecord] = useState([]);
+  const setATPuuid = useSetRecoilState(AT_puuid);
   let start = 0
   let count = 20;
   useEffect(()=>{
@@ -83,12 +87,15 @@ function SummonerRecord() {
           await customAsync(getSummonerBasicData(summonerName!),300),
           await customAsync(getSummonerInfo(summonerId),300),
           await customAsync(getSummonerRecordList(summonerPuuid,start,count),300),
+          
         ]).then(([fetchSummonId,fetchSummonInfo,fetchSummonerRecordList]:any) => {
           setSummonerBasicData(fetchSummonId.data);
           setSummonerInfo(fetchSummonInfo.data)
           setSummonerRecord(fetchSummonerRecordList.data)
-          
+          setATPuuid(summonerPuuid)
           setIsLoading(false);
+          console.log("index",summonerInfo);
+          
         })
       }
     })
@@ -116,7 +123,7 @@ function SummonerRecord() {
 
         </ChampStatsView>
         <RecentlyView>
-
+          <Recently recordList={summonerRecord[0]!} puuid={summonerBasicData?.puuid!}/>
         </RecentlyView>
       </Wrap>
     </Container>
