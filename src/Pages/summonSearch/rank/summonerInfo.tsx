@@ -12,8 +12,8 @@ function SummonerInfo ({summonerInfo}:any) {
     })
   },[])
   
-  console.log("solo",soloRank);
-  console.log("team",teamRank);
+  // console.log("solo",soloRank);
+  // console.log("team",teamRank);
   
   
   return (

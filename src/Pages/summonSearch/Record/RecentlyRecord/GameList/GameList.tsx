@@ -1,22 +1,10 @@
-import { useEffect } from "react";
 import { useRecoilValue } from "recoil";
 import styled from "styled-components";
-import { AT_puuid } from "../../../../Router/Api/RiotRecordApi";
+import { AT_puuid } from "../../../../../Router/Api/RiotRecordApi";
 
-function RecordRecently({data}:any) {
+function GameList({gameInfo}:gameInfo) {
   const puuid = useRecoilValue<string>(AT_puuid)
-  const arr = [1,2,3,4,5,6,7]
-  const dataCount = data.metadata.participants.findIndex((data:any)=> data === puuid)
-  // console.log(data.metadata.participants);
-  // console.log(puuid);
-  
-  // useEffect(()=>{
-  //   console.log("Record",data);
-    
-  //   console.log(dataCount);
-  //   console.log(data.info.participants[dataCount].summonerName);
-  // },[])
-  
+  const dataCount = gameInfo?.metadata.participants.findIndex((data:any)=> data === puuid)
   const {
     win,
     assists,
@@ -25,50 +13,46 @@ function RecordRecently({data}:any) {
     totalMinionsKilled,
     neutralMinionsKilled,
     championName,
-  } = data.info.participants[dataCount];
-  
-  return (
-    <RecordUl>
+  } = gameInfo.info.participants[dataCount];
+ return (
       <RecordLi>
-        <RecordInfo>
-          <InfoTimeStamp>40분전</InfoTimeStamp>
-          <InfoResult>{win ? "승리" : "패배"}</InfoResult>
-          <InfoType>솔로랭크</InfoType>
-          <InfoLength>40:00</InfoLength>
-        </RecordInfo>
-        <RecordChamp>
-          <ChampImg />
-          <ChampName>{championName}</ChampName>
-        </RecordChamp>
-        <RecordKDA>
+      <RecordInfo>
+        <InfoTimeStamp>40분전</InfoTimeStamp>
+        <InfoResult>{win ? "승리" : "패배"}</InfoResult>
+        <InfoType>솔로랭크</InfoType>
+        <InfoLength>40:00</InfoLength>
+      </RecordInfo>
+      <RecordChamp>
+        <ChampImg />
+        <ChampName>{championName}</ChampName>
+      </RecordChamp>
+      <RecordKDA>
           <KDA>{kills} / {deaths}/ {assists}</KDA>
           <KDARatio>0.00</KDARatio>
           <KDAKillInvol>77%관여</KDAKillInvol>
-        </RecordKDA>
-        <RecordStats>
+      </RecordKDA>
+      <RecordStats>
           <StatsAllCs>{totalMinionsKilled + neutralMinionsKilled} CS</StatsAllCs>
           <StatsMinuteCs>1.0 CS/분</StatsMinuteCs>
-        </RecordStats>
-        <RecordSpell>
+      </RecordStats>
+      <RecordSpell>
 
-        </RecordSpell>
-        <RecordRune>
+      </RecordSpell>
+      <RecordRune>
 
-        </RecordRune>
-        <RecordItem>
+      </RecordRune>
+      <RecordItem>
 
-        </RecordItem>
+      </RecordItem>
       </RecordLi>
-    </RecordUl>
-
-  );
+ )
 }
 
-export default RecordRecently;
+export default GameList;
 
-const RecordUl = styled.ul`
-
-`;
+interface gameInfo{
+  gameInfo:any
+}
 const RecordLi = styled.li`
   margin: 5px;
   border: 1px solid white;
@@ -76,6 +60,7 @@ const RecordLi = styled.li`
   display: flex;
   padding: 10px;
 `;
+
 const RecordInfo = styled.div`
   width: 10%;
   align-items: center;

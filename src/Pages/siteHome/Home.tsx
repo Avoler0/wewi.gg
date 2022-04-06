@@ -21,22 +21,23 @@ const Head = styled.div`
 `;
 const Top = styled.div`
   display: flex;
-  background-color: red;
   width: 100%;
   height: 7vw;
   margin-bottom: 50px;
 `;
 const Banner = styled.div`
   display: flex;
-  background-color: blue;
   justify-content: center;
   align-items: center;
   width: 50%;
+ 
   margin: 0 auto;
 `;
 const BannerMemo = styled.div`
-  font-size: 48px;
-  font-weight: 700;
+  font-size: 72px;
+   color: white;
+  font-weight: bold;
+   -webkit-text-stroke: 1px #000;
 `;
 const Bottom = styled.div`
   display: flex;
@@ -67,6 +68,15 @@ const SearchInput = styled.input`
   :focus{
     outline: none;
   }
+  ::placeholder{
+   padding-left: 10px;
+   :hover{
+     padding: 0;
+   }
+  }
+  type:"text"{
+
+  }
   
 `;
 const SearchButton = styled.button`
@@ -74,6 +84,7 @@ const SearchButton = styled.button`
   height: 50px;
   border: none;
   cursor: pointer;
+  font-weight: bold;
   background-color: transparent;
 `;
 const RecommenWrap = styled.div`
@@ -95,47 +106,10 @@ const Recommen = styled.div`
   width: 100%;
   height: 40vh;
 `;
-interface I_homeProps {
-  info:{
-    [0]:{
-    freshBlood: boolean,
-    hotStreak: boolean,
-    inactive: boolean,
-    leagueId: string,
-    leaguePoints: number,
-    losses: number,
-    queueType: string,
-    rank: string,
-    summonerId: string,
-    summonerName: string,
-    tier: string,
-    veteran: boolean,
-    wins: number,
-  }
-  [1]:{
-    freshBlood: boolean,
-    hotStreak: boolean,
-    inactive: boolean,
-    leagueId: string,
-    leaguePoints: number,
-    losses: number,
-    queueType: string,
-    rank: string,
-    summonerId: string,
-    summonerName: string,
-    tier: string,
-    veteran: boolean,
-    wins: number,
-  }
-  }
-}
+
 function Home() {
   const {register,watch} = useForm();
   const summonWatch = watch("SummonerSearch");
-  const onValid = (data:any) => {
-
-  }
-
   return (
     
     <Container>
@@ -143,7 +117,7 @@ function Home() {
         <Head />
         <Top>
           <Banner>
-            <BannerMemo>우리 같이 할래 ?</BannerMemo>
+            <BannerMemo>Voler.gg</BannerMemo>
           </Banner>
         </Top>
         <Bottom>

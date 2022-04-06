@@ -1,60 +1,52 @@
+import React from "react";
 import { useEffect, useState } from "react";
 import styled from "styled-components";
 import { getSummonerRecordInfo } from "../../../api/api";
 import { customAsync } from "../../../commons/asyncUtils";
 import ChampRecently from "./RecentlyRecord/ChampRecently"
-import RecordRecently from "./RecentlyRecord/gameRecord"
-function Recently({recordList,puuid}:I_RecordList) {
+import RecordRecently from "./RecentlyRecord/RecordRecently"
+
+function Recently({recordList}:I_RecordList) {
+  const [gameList,setGameList] = useState<any[]>(recordList);
   const [isLoading,setIsLoading] = useState(true);
   const [recordInfo,setRecordInfo] = useState<any>();
-  const [recordCount,setRecordCount] = useState(0);
-  // for(let i=0; i<recordInfo.info?.participants.length; i++){
-  //   if(recordInfo.info.participants[i].puuid === puuid){
-  //     setRecordCount(i);
-  //     break;
-  //   }
-  // }
-  // console.log(recordCount);
   
   useEffect(() => {
     setIsLoading(true);
-      new Promise(async () => {
-      await customAsync(getSummonerRecordInfo(recordList),1000).then((res:any) => {
-        setRecordInfo(res.data)
-        setIsLoading(false)
-       })
+    
+    recordList.forEach((e:any) => {
+       new Promise(async ()=> {
+        await customAsync(getSummonerRecordInfo(e),2000).then((res:any) =>{
+          setRecordInfo(res.data)
+          setIsLoading(false)
+        })
+      }) 
     })
-
   },[])
+
+  // if(isLoading){
+  //   return <div>기록 없음dsdsd</div>
+  // }
+  // console.log("리스트",gameList);
   
-  if(isLoading){
-    return <div>기록 없음dsdsd</div>
-  }
   return (
   <>
   <ChampView>
     {/* <ChampRecently  /> */}
   </ChampView>
   <GameView>
-    <RecordRecently data={recordInfo}/> 
+    {/* {recordList.map((data:any,index:number)=><RecordRecently key={count++} data={data[index]}/> )} */}
+    {gameList?.map((res,index) => {
+      <div key={index}>{res}</div>
+    })}
+    {/* <RecordRecently list={recordList[0]}/>  */}
+    {/* {recordList} */}
   </GameView>
   </>
   );
-  // return (
-  //   <>
-  //   {/* {infoObj.gameType}
-  //           {infoObj.gameLength1}분 {infoObj.gameLength2 < 0 ? null : infoObj.gameLength2 + "초"} */}
-  //           <span>{recordInfo?.info?.participants[recordDataCount].kills}</span> /
-  //            <span>{recordData?.info?.participants[recordDataCount].deaths}</span> /
-  //             <span>{recordData?.info?.participants[recordDataCount].assists}</span>
-  //            {(recordData?.info?.participants[recordDataCount].kills! + recordData?.info?.participants[recordDataCount].assists!) / recordData?.info?.participants[recordDataCount].deaths!}  
-  //           <span>{recordData?.info?.participants[recordDataCount].champLevel}</span>
-  //           CS <span>{recordData?.info?.participants[recordDataCount].neutralMinionsKilled}</span>
-  //           </>
-  // );
 }
 
-export default Recently;
+export default React.memo(Recently);
 
 const ChampView = styled.div`
 
@@ -63,8 +55,7 @@ const GameView = styled.div`
 
 `;
 interface I_RecordList{
-  recordList:string,
-  puuid:string,
+  recordList:any,
 }
 interface I_recordData {
   metadata : {

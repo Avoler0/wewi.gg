@@ -4,7 +4,6 @@ import Comunity from "./Pages/community/Comunity";
 import Home from "./Pages/siteHome/Home";
 import Login from "./Pages/login/Login";
 import Main from "./Pages/duoMatching/Main";
-import Record from "./Pages/summonSearch/Record";
 import Register from "./Pages/login/Register";
 
 function Route() {

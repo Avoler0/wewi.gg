@@ -3,6 +3,7 @@ import { useEffect } from "react";
 import { useQuery } from "react-query";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
+import DuoRes from "./DuoRes/DuoRes";
 
 const Container = styled.div`
   max-width: 1903px;
@@ -46,11 +47,22 @@ const TierOption = styled.option`
 const LineFilter = styled.div`
 
 `;
-const LineTypes = styled.ul`
+const LineTypes = styled.div`
   display: flex ;
+  border: 1px solid wheat;
 `;
-const LineItems = styled.li`
+const LineItems = styled.button`
   padding: 0 10px ;
+  border: none;
+  background-color: white;
+  width: 50px;
+  
+  :hover{
+    cursor: pointer;
+  }
+  img{
+    width: 80%;
+  }
 `;
 const BoardLayOut = styled.div`
   display:grid ;
@@ -58,77 +70,7 @@ const BoardLayOut = styled.div`
   grid-gap: calc(20px);
   padding-top: 40px ;
 `;
-const Board = styled.div`
-  position: relative;
-  background-color: #1B1464 ;
-  width: 180px ;
-  height: 180px;
-  border-radius: 15px ;
 
-`;
-const BoardBottom = styled.div`
-  font-size: 16px;
-  margin: 5px;
-  height: 42%;
-`;
-const BoardFooter = styled.div`
-  position: absolute;
-  font-size: 12px;
-  display: flex;
-  justify-content: space-between;
-  right: 0;
-  bottom: 0px;
-  padding: 7px;
-  width: 100%;
-  color: rgba(255,255,255,0.7)
-`;
-const BoardTime = styled.div`
-  font-weight: 400;
-`;
-const BoardReport = styled.div`
-
-`;
-const BoardTop = styled.div`
-  
-`;
-const BoardHigh = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 5px;
-  width: 100%;
-`;
-const BoardLow = styled.div`
-  display: flex;
-  width: 100%;
-  padding-bottom: 5px;
-  border-bottom: solid 1px white;
-`;
-const BoardItems = styled.ul`
-  display:flex ;
-  width: 90% ;
-  height: 40% ;
-  margin: auto ;
-  padding-top: 8px;
-`;
-const BoardItem = styled.li`
-  margin-right: 5px;
-  
-`;
-
-const BoardIcon = styled.div`
-  border: solid 1px white;
-  border-radius: 20px;
-  width: 30px;
-  height: 30px;
-  cursor: pointer;
-`;
-const BoardSummoner = styled.div`
-  font-size: 16px;
-  font-weight: 800;
-  margin: 0 auto;
-  cursor: pointer;
-`;
 function Main() {
   
   let report = 2;
@@ -141,18 +83,19 @@ function Main() {
           <Filter>
             <GameFilter>
               <GameSelect>
-                <GameOption>일반게임</GameOption>
-                <GameOption>솔로랭크</GameOption>
-                <GameOption>자유랭크</GameOption>
-                <GameOption>칼 바 람</GameOption>
-                <GameOption>특별모드</GameOption>
+                <GameOption value="all">모두보기</GameOption>
+                <GameOption value="normal">일반게임</GameOption>
+                <GameOption value="soloRank" selected>솔로랭크</GameOption>
+                <GameOption value="teamRank">자유랭크</GameOption>
+                <GameOption value="windFall">칼 바 람</GameOption>
+                <GameOption value="special">특별모드</GameOption>
               </GameSelect>
             </GameFilter>
             <TierFilter>
               <TierSelect>
                 <TierOption>아이언</TierOption>
                 <TierOption>브론즈</TierOption>
-                <TierOption>실버</TierOption>
+                <TierOption selected>실버</TierOption>
                 <TierOption>골드</TierOption>
                 <TierOption>플래티넘</TierOption>
                 <TierOption>다이아</TierOption>
@@ -164,44 +107,25 @@ function Main() {
             <LineFilter>
               <LineTypes>
                 <LineItems>
-                  모두
+                  <img src={`../images/icon/line/Line-All-Ico.png`} />
                 </LineItems>
-                <LineItems>탑</LineItems>
-                <LineItems>미드</LineItems>
-                <LineItems>원딜</LineItems>
-                <LineItems>서폿</LineItems>
+                <LineItems>
+                  <img src={`../images/icon/line/Line-Top-Ico.png`} />
+                </LineItems>
+                <LineItems>
+                  <img src={`../images/icon/line/Line-Mid-Ico.png`} />
+                </LineItems>
+                <LineItems>
+                  <img src={`../images/icon/line/Line-Bottom-Ico.png`} />
+                </LineItems>
+                <LineItems>
+                  <img src={`../images/icon/line/Line-Support-Ico.png`} />
+                </LineItems>
               </LineTypes>
             </LineFilter>
           </Filter>
           <BoardLayOut>
-            {[1,2,3,4,5,6,7,8,9].map((board:number)=> <Board key={board+""}>
-              <BoardTop>
-                <BoardHigh>
-                  <BoardIcon />
-                  <BoardSummoner>소환사명</BoardSummoner>
-                </BoardHigh>
-                <BoardLow>
-                  <BoardItems>
-                    <BoardItem>라인</BoardItem>
-                    <BoardItem>승률</BoardItem>
-                    <BoardItem>최근챔</BoardItem>
-                  </BoardItems>
-                </BoardLow>
-                </BoardTop>
-              
-              <BoardBottom>
-                <span>같이 할 사람 구해요 ~</span>
-                <BoardFooter>
-                  <BoardReport>
-                    <Link to="/reportView">신고 누적 : {report}회</Link>
-                  </BoardReport>
-                  <BoardTime>
-                    <span>{minutes} 분전</span>
-                  </BoardTime>
-                </BoardFooter>
-              </BoardBottom>
-              
-            </Board>)}
+            {[1,2,3,4,5,6,7,8,9].map((board:number)=> <DuoRes />)}
           </BoardLayOut>
         </Wrapper>
     </Container>

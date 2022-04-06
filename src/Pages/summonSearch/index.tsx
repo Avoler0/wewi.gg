@@ -79,6 +79,8 @@ function SummonerRecord() {
     setIsLoading(true);
     const summonerName = summonerId;
     getSummonerBasicData(summonerName!).then(async res => {
+      console.log("실행");
+      
       if(res.data){
         
         const {id:summonerId , puuid:summonerPuuid} = res.data;
@@ -94,12 +96,11 @@ function SummonerRecord() {
           setSummonerRecord(fetchSummonerRecordList.data)
           setATPuuid(summonerPuuid)
           setIsLoading(false);
-          console.log("index",summonerInfo);
-          
         })
       }
     })
   },[])
+  console.log(summonerInfo);
   
   if(isLoading){
     return (
@@ -108,7 +109,6 @@ function SummonerRecord() {
       </div>
     )
   }
-  console.log(summonerInfo);
   
   return(
     <Container>
@@ -123,7 +123,7 @@ function SummonerRecord() {
 
         </ChampStatsView>
         <RecentlyView>
-          <Recently recordList={summonerRecord[0]!} puuid={summonerBasicData?.puuid!}/>
+          <Recently recordList={summonerRecord} />
         </RecentlyView>
       </Wrap>
     </Container>
