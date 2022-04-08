@@ -19,7 +19,6 @@ width: 40%;
     border: 2px solid gray;
     padding: 3px;
     position: absolute;
-    top: 30px;
     left: 10px;
     width: 90%;
     height: auto;
@@ -28,10 +27,11 @@ width: 40%;
   }
 `;
 const RankDetail = styled.div`
-  padding: 20px;
+  padding: 30px;
 `;
 const RankTier = styled.div`
-  
+  font-size: 16px;
+  font-weight: bold;
 `;
 const RankPoint = styled.div`
 
@@ -79,7 +79,7 @@ function SoloRank({soloRank}:I_summonerInfo) {
             {soloRank.leaguePoints} LP
           </RankPoint>
           <RankRate>
-            {soloRank.wins} 승 {soloRank.losses} 패
+            {soloRank.wins}승 {soloRank.losses}패 ({}%)
           </RankRate>
         </RankDetail>
       </RankInfo>

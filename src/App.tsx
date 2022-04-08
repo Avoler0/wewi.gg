@@ -1,10 +1,10 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Header from "./Components/Header";
-import Clan from "./Pages/clan/Clan";
+import Clan from "./Pages/clan/clanMain";
 import Comunity from "./Pages/community/Comunity";
 import Home from "./Pages/siteHome/Home";
 import Login from "./Pages/login/Login";
-import Main from "./Pages/duoMatching/Main";
+import Main from "./Pages/duoMatching/duoMain";
 import Register from "./Pages/login/Register";
 import SummonerRecord from "./Pages/summonSearch";
 

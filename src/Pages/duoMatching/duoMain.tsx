@@ -1,7 +1,6 @@
 import axios from "axios";
 import { useEffect } from "react";
 import { useQuery } from "react-query";
-import { Link } from "react-router-dom";
 import styled from "styled-components";
 import DuoRes from "./DuoRes/DuoRes";
 
@@ -21,6 +20,7 @@ const Head = styled.div`
 `;
 const Filter = styled.div`
   display: flex ;
+  position: relative;
 `;
 const MainLayout = styled.div`
   padding: 30px ;
@@ -30,9 +30,12 @@ const GameFilter = styled.div`
 const GameSelect = styled.select`
   margin-right: 20px ;
   font-size: 15px ;
+  border: 1px solid black;
+  background-color: #ecf0f1;
+  width: 100px;
 `;
 const GameOption = styled.option`
-  
+ 
 `;
 const TierFilter = styled.div`
 `;
@@ -70,12 +73,20 @@ const BoardLayOut = styled.div`
   grid-gap: calc(20px);
   padding-top: 40px ;
 `;
-
+const AddButton = styled.button`
+  margin-left: 20px;
+  font-size: 16px;
+  font-weight: bold;
+  background-color: red;
+  border: none;
+  cursor: pointer;
+`;
 function Main() {
-  
+  // const history:any = useHistory();
   let report = 2;
   let hour = 0;
   let minutes = 1;
+  // const addOverLay = () => history.push("/addDuo");
   return (
     <Container>
       <Wrapper>
@@ -123,6 +134,7 @@ function Main() {
                 </LineItems>
               </LineTypes>
             </LineFilter>
+            {/* <AddButton onClick={addOverLay}>등록</AddButton> */}
           </Filter>
           <BoardLayOut>
             {[1,2,3,4,5,6,7,8,9].map((board:number)=> <DuoRes />)}
@@ -133,3 +145,7 @@ function Main() {
 }
 
 export default Main;
+
+function useHistory() {
+  throw new Error("Function not implemented.");
+}

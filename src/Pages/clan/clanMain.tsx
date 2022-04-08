@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import ClanRes from "./ClanRes/ClanRes";
 
 const Container = styled.div`
   max-width: 1903px;
@@ -56,16 +57,7 @@ function Clan() {
         <Filter>
         </Filter>
         <BoardWrapper>
-          {[1,2,3,4,5,6,7,8,9,10,11,12,13].map((board) => (
-            <ClanBoard key={board+""}>
-            <BoardTop>
-              <BoardBanner>Banner</BoardBanner>
-            </BoardTop>
-            <BoardBottom>
-
-            </BoardBottom>
-          </ClanBoard>
-          ))}
+          {[1,2,3,4,5,6,7,8,9,10,11,12,13].map((board) => <ClanRes/>)}
         </BoardWrapper>
       </Wrapper>
     </Container>
