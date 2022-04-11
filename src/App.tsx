@@ -19,8 +19,10 @@ function App() {
           <Route path="/login" element={<Login />}/>
           <Route path="/register" element={<Register />}/>
           <Route path="/duo/:summonerId" element={<SummonerRecord />}/>
+          <Route path="/duo/addDuo" element={<Main />}/>
           <Route path="/duo" element={<Main />}/>
           <Route path="/" element={<Home/>}/>
+          
         </Routes>
       </BrowserRouter>
   );

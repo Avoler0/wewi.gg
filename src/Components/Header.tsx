@@ -43,26 +43,40 @@ const NavItem = styled.li`
   cursor: pointer;
 `;
 const SearchWrap = styled.form`
-  background-color: red;
+  /* background-color: red; */
   display: flex;
-  align-items: center;
-  justify-content: center;
+  position: relative;
+  background-color: white;
 `;
 const SearchIco = styled.div`
-
+  margin-right: 4px;
+  cursor: pointer;
+  color: #74b9ff;
+  background-color: #dfe6e9;
+  padding: 3px;
+  font-weight: bold;
 `;
 const SearchInput = styled.input`
   border: 0px;
   box-sizing: border-box;
-  color: rgb(114, 114, 114);
+  /* color: rgb(114, 114, 114); */
+  :focus{
+    outline: none;
+  }
 `;
 const SearchButton = styled.button`
+  border: none;
+  background-color: white;
+  /* font-size: ; */
 `;
 function Header() {
   const homeMatch = useMatch("/");
   const {register , watch,handleSubmit,setValue} = useForm();
   const summonWatch = watch("SummonerSearch");
   const onValid = (data:any , e:any) => {}
+  const ggClick = () => {
+
+  }
   return (
     <Head>
       <HeadLayout>
@@ -86,12 +100,12 @@ function Header() {
             </Colum>
             <Colum>
               {!homeMatch ? <SearchWrap onSubmit={handleSubmit(onValid)}>
-                <SearchIco>검색</SearchIco>
+                <SearchIco onClick={ggClick}>GG</SearchIco>
                 <SearchInput   {...register("SummonerSearch")} />
-                <Link to={`/duo/${summonWatch}`}>
+                <Link to={`/duo/${summonWatch}`} style={{cursor:"pointer"}}>
                   <SearchButton onClick={() => setValue("SummonerSearch","")}>
                       검색
-                    </SearchButton>
+                  </SearchButton>
                 </Link>
                 
               </SearchWrap> : null}

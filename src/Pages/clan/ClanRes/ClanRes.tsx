@@ -18,10 +18,10 @@ function ClanRes() {
         <ClanName>{clanName}</ClanName>
       </BoardTop>
       <BoardBottom>
-        <Disposition>
+        <Category>
           {clanContent.map((content:any,index:number) => <DptLi>{content}</DptLi>)}
 
-        </Disposition>
+        </Category>
         <PathIcoBox>
           <IconBt onClick={urlDiscord}><Icon src={`../images/path-icons/discord-logo.png`}/></IconBt>
           <IconBt onClick={urlKakao}><Icon src={`../images/path-icons/kakao-logo.png`}/></IconBt>
@@ -59,7 +59,7 @@ const BoardBottom = styled.div`
   display: flex;
   justify-content: space-between;
 `;
-const Disposition = styled.ul`
+const Category = styled.ul`
   display: flex;
   padding-left: 5px;
 `;

@@ -1,3 +1,4 @@
+import { useState } from "react";
 import styled from "styled-components";
 import ClanRes from "./ClanRes/ClanRes";
 
@@ -18,43 +19,46 @@ const Head = styled.div`
 const Filter = styled.div`
   display: flex ;
 `;
-const Select = styled.select`
-
+const CategoryBt = styled.button`
+  border-radius: 0;
+  font-size: 16px;
+  font-weight: bold;
+  background-color: white;
+  
+  border: 0;
 `;
-
-const Option = styled.option`
-
+const CategoryWrap = styled.div`
+  display: flex;
+  transition: 0.2s ease-in-out;
+`;
+const CategoryValue = styled.button`
+  margin-left: 5px;
 `;
 const BoardWrapper = styled.div`
+  padding-top: 40px ;
   display: grid;
   grid-template-columns: repeat(4,1fr) ;
   grid-gap: calc(15px);
 `;
-const ClanBoard = styled.div`
-  width : 15vw;
-  height: 7vw;
-  border-radius: 15px;
-  background-color: red;
-`;
-const BoardTop= styled.div`
-  background-color: blue;
-  padding: 5px;
-  height: 65%;
-`;
-const BoardBanner = styled.div`
-  
-`;
-const BoardBottom = styled.div`
-  background-color: green;
-  padding: 5px;
-  height: 35%;
-`;
 function Clan() {
+  const [cgSwitch,setCgSwitch] = useState(false);
+  const categorySwitch = () => {
+    setCgSwitch(prev => !prev)
+  }
   return (
     <Container>
       <Wrapper>
         <Head />
         <Filter>
+          <CategoryBt onClick={categorySwitch}>카테고리</CategoryBt>
+          {cgSwitch ? 
+          <CategoryWrap>
+            <CategoryValue>성인</CategoryValue>
+            <CategoryValue>친목</CategoryValue>
+            <CategoryValue>랭크</CategoryValue>
+            <CategoryValue>즐겜</CategoryValue>
+          </CategoryWrap>
+           : null}
         </Filter>
         <BoardWrapper>
           {[1,2,3,4,5,6,7,8,9,10,11,12,13].map((board) => <ClanRes/>)}

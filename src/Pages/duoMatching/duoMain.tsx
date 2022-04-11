@@ -1,8 +1,10 @@
 import axios from "axios";
 import { useEffect } from "react";
 import { useQuery } from "react-query";
+import { useMatch, useNavigate  } from "react-router-dom";
 import styled from "styled-components";
-import DuoRes from "./DuoRes/DuoRes";
+import DuoInput from "./DuoCommon/DuoInput";
+import DuoRes from "./DuoCommon/DuoRes";
 
 const Container = styled.div`
   max-width: 1903px;
@@ -21,9 +23,6 @@ const Head = styled.div`
 const Filter = styled.div`
   display: flex ;
   position: relative;
-`;
-const MainLayout = styled.div`
-  padding: 30px ;
 `;
 const GameFilter = styled.div`
 `;
@@ -81,71 +80,84 @@ const AddButton = styled.button`
   border: none;
   cursor: pointer;
 `;
+const OverLay = styled.div`
+  width: 800px;
+  height: 800px;
+  background-color: red;
+`;
 function Main() {
-  // const history:any = useHistory();
+  const history = useNavigate();
+  const overlayMatch = useMatch('/duo/addDuo');
   let report = 2;
   let hour = 0;
   let minutes = 1;
-  // const addOverLay = () => history.push("/addDuo");
+  const addDuoInput = () => {
+    history("/duo/addDuo")
+  };
+  useEffect(()=>{
+    console.log(overlayMatch);
+  },[overlayMatch])
+  
   return (
-    <Container>
-      <Wrapper>
-        <Head/>
-          <Filter>
-            <GameFilter>
-              <GameSelect>
-                <GameOption value="all">모두보기</GameOption>
-                <GameOption value="normal">일반게임</GameOption>
-                <GameOption value="soloRank" selected>솔로랭크</GameOption>
-                <GameOption value="teamRank">자유랭크</GameOption>
-                <GameOption value="windFall">칼 바 람</GameOption>
-                <GameOption value="special">특별모드</GameOption>
-              </GameSelect>
-            </GameFilter>
-            <TierFilter>
-              <TierSelect>
-                <TierOption>아이언</TierOption>
-                <TierOption>브론즈</TierOption>
-                <TierOption selected>실버</TierOption>
-                <TierOption>골드</TierOption>
-                <TierOption>플래티넘</TierOption>
-                <TierOption>다이아</TierOption>
-                <TierOption>마스터</TierOption>
-                <TierOption>그랜드마스터</TierOption>
-                <TierOption>챌린저</TierOption>
-              </TierSelect>
-            </TierFilter>
-            <LineFilter>
-              <LineTypes>
-                <LineItems>
-                  <img src={`../images/icon/line/Line-All-Ico.png`} />
-                </LineItems>
-                <LineItems>
-                  <img src={`../images/icon/line/Line-Top-Ico.png`} />
-                </LineItems>
-                <LineItems>
-                  <img src={`../images/icon/line/Line-Mid-Ico.png`} />
-                </LineItems>
-                <LineItems>
-                  <img src={`../images/icon/line/Line-Bottom-Ico.png`} />
-                </LineItems>
-                <LineItems>
-                  <img src={`../images/icon/line/Line-Support-Ico.png`} />
-                </LineItems>
-              </LineTypes>
-            </LineFilter>
-            {/* <AddButton onClick={addOverLay}>등록</AddButton> */}
-          </Filter>
-          <BoardLayOut>
-            {[1,2,3,4,5,6,7,8,9].map((board:number)=> <DuoRes />)}
-          </BoardLayOut>
-        </Wrapper>
-    </Container>
+    <>
+      <Container>
+        <Wrapper>
+          <Head/>
+            <Filter>
+              <GameFilter>
+                <GameSelect>
+                  <GameOption value="all">모두보기</GameOption>
+                  <GameOption value="normal">일반게임</GameOption>
+                  <GameOption value="soloRank" selected>솔로랭크</GameOption>
+                  <GameOption value="teamRank">자유랭크</GameOption>
+                  <GameOption value="windFall">칼 바 람</GameOption>
+                  <GameOption value="special">특별모드</GameOption>
+                </GameSelect>
+              </GameFilter>
+              <TierFilter>
+                <TierSelect>
+                  <TierOption>아이언</TierOption>
+                  <TierOption>브론즈</TierOption>
+                  <TierOption selected>실버</TierOption>
+                  <TierOption>골드</TierOption>
+                  <TierOption>플래티넘</TierOption>
+                  <TierOption>다이아</TierOption>
+                  <TierOption>마스터</TierOption>
+                  <TierOption>그랜드마스터</TierOption>
+                  <TierOption>챌린저</TierOption>
+                </TierSelect>
+              </TierFilter>
+              <LineFilter>
+                <LineTypes>
+                  <LineItems>
+                    <img src={`../images/icon/line/Line-All-Ico.png`} />
+                  </LineItems>
+                  <LineItems>
+                    <img src={`../images/icon/line/Line-Top-Ico.png`} />
+                  </LineItems>
+                  <LineItems>
+                    <img src={`../images/icon/line/Line-Mid-Ico.png`} />
+                  </LineItems>
+                  <LineItems>
+                    <img src={`../images/icon/line/Line-Bottom-Ico.png`} />
+                  </LineItems>
+                  <LineItems>
+                    <img src={`../images/icon/line/Line-Support-Ico.png`} />
+                  </LineItems>
+                </LineTypes>
+              </LineFilter>
+              <AddButton onClick={() => addDuoInput()}>등록</AddButton>
+            </Filter>
+            <BoardLayOut>
+              {[1,2,3,4,5,6,7,8,9].map((board:number)=> <DuoRes />)}
+            </BoardLayOut>
+          </Wrapper>
+      </Container>
+      {overlayMatch ? <DuoInput /> : null}
+    </>
   );
 }
 
 export default Main;
 
-function useHistory() {
-  throw new Error("Function not implemented.");
-}
+
