@@ -77,9 +77,7 @@ a {
 }
 
 `;
-
 const client = new QueryClient();
-
 ReactDOM.render(
   <React.StrictMode>
     <RecoilRoot>
@@ -89,7 +87,6 @@ ReactDOM.render(
           <App />
         </QueryClientProvider>
       </Suspense>
-      
     </RecoilRoot>
   </React.StrictMode>,
   document.getElementById('root')
