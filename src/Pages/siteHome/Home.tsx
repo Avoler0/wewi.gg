@@ -1,9 +1,6 @@
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import {useForm} from "react-hook-form"
-import { useEffect, useState } from "react";
-import axios from "axios";
-import {API_KEY} from "../../commons/API_KEY"
 
 const Container = styled.div`
   max-width: 1903px;
@@ -73,9 +70,6 @@ const SearchInput = styled.input`
    :hover{
      padding: 0;
    }
-  }
-  type:"text"{
-
   }
   
 `;

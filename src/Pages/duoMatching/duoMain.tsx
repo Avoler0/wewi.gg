@@ -136,6 +136,9 @@ function Main() {
                     <img src={`../images/icon/line/Line-Top-Ico.png`} />
                   </LineItems>
                   <LineItems>
+                    <img src={`../images/icon/line/Line-Jungle-Ico.png`} />
+                  </LineItems>
+                  <LineItems>
                     <img src={`../images/icon/line/Line-Mid-Ico.png`} />
                   </LineItems>
                   <LineItems>
