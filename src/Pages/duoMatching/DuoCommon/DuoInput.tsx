@@ -97,7 +97,7 @@ function DuoInput() {
         }})}/>
         </PassWord>
         <ExitWrap>
-          <CancelBt>취소</CancelBt>
+          <CancelBt onClick={cardOut}>취소</CancelBt>
           <OkBt onClick={onValid}>등록</OkBt>
         </ExitWrap>
         
@@ -233,7 +233,7 @@ const MicCircle = styled.span`
   top: 0;
   /* left: 0; */
   /* translate: 0; */
-  margin:0.1rem 0.1rem 0.1rem 0.1rem ;
+  margin:0.17rem 0.15rem 0.1rem 0.15rem ;
   width: 1.75rem;
   height: 1.75rem;
   display: inline-block

@@ -20,6 +20,7 @@ const Head = styled.div`
   height: 20vh ;
   padding-bottom: 48px;
 `;
+
 const Filter = styled.div`
   display: flex ;
   position: relative;
@@ -31,7 +32,9 @@ const GameSelect = styled.select`
   font-size: 15px ;
   border: 1px solid black;
   background-color: #ecf0f1;
-  width: 100px;
+  width: 6.5rem;
+  height: 2.2rem;
+  border-radius: 5px;
 `;
 const GameOption = styled.option`
  
@@ -41,29 +44,31 @@ const TierFilter = styled.div`
 const TierSelect = styled.select`
   margin-right: 20px ;
   font-size: 15px ;
+  width: 6.5rem;
+  height: 2.2rem;
+  border-radius: 5px;
 `;
 const TierOption = styled.option`
 
 `;
 
 const LineFilter = styled.div`
-
+  
 `;
-const LineTypes = styled.div`
+const LineTypes = styled.ul`
   display: flex ;
   border: 1px solid wheat;
 `;
-const LineItems = styled.button`
-  padding: 0 10px ;
+const LineItems = styled.li`
+  width: 2.2rem;
+  height: 2.2rem;
+  padding: 0.2rem;
   border: none;
   background-color: white;
-  width: 50px;
-  
-  :hover{
-    cursor: pointer;
-  }
+  border: 1px solid rgba(66,66,84,0.8);
+  cursor: pointer;
   img{
-    width: 80%;
+    width: 100%;
   }
 `;
 const BoardLayOut = styled.div`
@@ -73,17 +78,18 @@ const BoardLayOut = styled.div`
   padding-top: 40px ;
 `;
 const AddButton = styled.button`
+  position: absolute;
+  width: 5.2rem;
+  height: 2.2rem;
   margin-left: 20px;
   font-size: 16px;
   font-weight: bold;
+  right: 0;
+  margin-right: 3rem;
   background-color: red;
   border: none;
+  border-radius: 5px;
   cursor: pointer;
-`;
-const OverLay = styled.div`
-  width: 800px;
-  height: 800px;
-  background-color: red;
 `;
 function Main() {
   const history = useNavigate();
@@ -127,30 +133,29 @@ function Main() {
                   <TierOption>챌린저</TierOption>
                 </TierSelect>
               </TierFilter>
-              <LineFilter>
-                <LineTypes>
-                  <LineItems>
-                    <img src={`../images/icon/line/Line-All-Ico.png`} />
-                  </LineItems>
-                  <LineItems>
-                    <img src={`../images/icon/line/Line-Top-Ico.png`} />
-                  </LineItems>
-                  <LineItems>
-                    <img src={`../images/icon/line/Line-Jungle-Ico.png`} />
-                  </LineItems>
-                  <LineItems>
-                    <img src={`../images/icon/line/Line-Mid-Ico.png`} />
-                  </LineItems>
-                  <LineItems>
-                    <img src={`../images/icon/line/Line-Bottom-Ico.png`} />
-                  </LineItems>
-                  <LineItems>
-                    <img src={`../images/icon/line/Line-Support-Ico.png`} />
-                  </LineItems>
-                </LineTypes>
-              </LineFilter>
+              <LineTypes>
+                <LineItems>
+                  <img src={`../images/icon/line/Line-All-Ico.png`} />
+                </LineItems>
+                <LineItems>
+                  <img src={`../images/icon/line/Line-Top-Ico.png`} />
+                </LineItems>
+                <LineItems>
+                  <img src={`../images/icon/line/Line-Jungle-Ico.png`} />
+                </LineItems>
+                <LineItems>
+                  <img src={`../images/icon/line/Line-Mid-Ico.png`} />
+                </LineItems>
+                <LineItems>
+                  <img src={`../images/icon/line/Line-Bottom-Ico.png`} />
+                </LineItems>
+                <LineItems>
+                  <img src={`../images/icon/line/Line-Support-Ico.png`} />
+                </LineItems>
+              </LineTypes>
               <AddButton onClick={() => addDuoInput()}>등록</AddButton>
             </Filter>
+            
             <BoardLayOut>
               {[1,2,3,4,5,6,7,8,9].map((board:number)=> <DuoRes />)}
             </BoardLayOut>
