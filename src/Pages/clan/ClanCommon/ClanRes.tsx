@@ -20,7 +20,6 @@ function ClanRes() {
       <BoardBottom>
         <Category>
           {clanContent.map((content:any,index:number) => <DptLi>{content}</DptLi>)}
-
         </Category>
         <PathIcoBox>
           <IconBt onClick={urlDiscord}><Icon src={`../images/path-icons/discord-logo.png`}/></IconBt>
@@ -36,13 +35,12 @@ export default ClanRes;
 const ClanBoard = styled.div<{banner:string}>`
   background-image: url(${(props) => props.banner});
   background-size: contain;
-  width : 15vw;
-  height: 7vw;
+  width : 18.2rem;
+  height: 8.5rem;
   border-radius: 15px;
   background-color: #2c3e50;
 `;
 const BoardTop= styled.div`
-  /* background-color: blue; */
   position: relative;
   padding: 5px;
   height: 79%;
@@ -54,8 +52,7 @@ const ClanName = styled.div`
   opacity: 0.7;
 `;
 const BoardBottom = styled.div`
-  /* background-color: green; */
-  /* position: relative; */
+
   display: flex;
   justify-content: space-between;
 `;

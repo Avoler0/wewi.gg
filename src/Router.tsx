@@ -14,6 +14,7 @@ function Router() {
     <>
       <Routes>
         <Route path="/clan" element={<Clan  />}/>
+        <Route path="/clan/addClan" element={<Clan  />}/>
         <Route path="/comunity" element={<Comunity />}/>
         <Route path="/login" element={<Login />}/>
         <Route path="/register" element={<Register />}/>

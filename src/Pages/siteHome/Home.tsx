@@ -111,7 +111,7 @@ function Home() {
         <Head />
         <Top>
           <Banner>
-            <BannerMemo>Voler.gg</BannerMemo>
+            <BannerMemo>Wewi.gg</BannerMemo>
           </Banner>
         </Top>
         <Bottom>

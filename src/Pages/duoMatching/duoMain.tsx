@@ -30,11 +30,12 @@ const GameFilter = styled.div`
 const GameSelect = styled.select`
   margin-right: 20px ;
   font-size: 15px ;
-  border: 1px solid black;
-  background-color: #ecf0f1;
+  border: 1px solid (66,66,84,0.8);
+  background-color: #2c3e50;
   width: 6.5rem;
   height: 2.2rem;
   border-radius: 5px;
+  color: rgba(123,122,142,1);
 `;
 const GameOption = styled.option`
  
@@ -46,25 +47,26 @@ const TierSelect = styled.select`
   font-size: 15px ;
   width: 6.5rem;
   height: 2.2rem;
+  border: 1px solid (66,66,84,0.8);
   border-radius: 5px;
+  background-color: #2c3e50;
+  color: rgba(123,122,142,1);
 `;
 const TierOption = styled.option`
 
 `;
 
-const LineFilter = styled.div`
-  
-`;
 const LineTypes = styled.ul`
   display: flex ;
-  border: 1px solid wheat;
+
+  
 `;
 const LineItems = styled.li`
   width: 2.2rem;
   height: 2.2rem;
   padding: 0.2rem;
   border: none;
-  background-color: white;
+  background-color: #2c3e50;
   border: 1px solid rgba(66,66,84,0.8);
   cursor: pointer;
   img{
@@ -86,9 +88,10 @@ const AddButton = styled.button`
   font-weight: bold;
   right: 0;
   margin-right: 3rem;
-  background-color: red;
+  background-color: #2c3e50;
   border: none;
   border-radius: 5px;
+  color: rgba(123,122,142,1);
   cursor: pointer;
 `;
 function Main() {
