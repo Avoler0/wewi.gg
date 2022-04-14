@@ -36,10 +36,9 @@ const CategoryBt = styled.button`
   cursor: pointer;
 `;
 const CategoryWrap = styled.div`
-  display: flex;
-  transition: 0.2s ease-in-out;
+
 `;
-const CategoryValue = styled.button`
+const CategoryValue = styled.div`
   margin-left: 5px;
   width: 2.8rem;
   height: 2.2rem;
@@ -47,6 +46,9 @@ const CategoryValue = styled.button`
   font-size: 14px;
   border: none;
   color: white;
+  text-align: center;
+  line-height: 2rem;
+  display: inline-block;
 `;
 const BoardWrapper = styled.div`
   padding-top: 40px ;
@@ -88,10 +90,9 @@ function Clan() {
             <CategoryBt onClick={categorySwitch}>카테고리</CategoryBt>
             {cgSwitch ? 
             <CategoryWrap>
-              <CategoryValue>성인</CategoryValue>
-              <CategoryValue>친목</CategoryValue>
-              <CategoryValue>랭크</CategoryValue>
-              <CategoryValue>즐겜</CategoryValue>
+              <CategoryValue>나이</CategoryValue>
+              <CategoryValue>성향</CategoryValue>
+              <CategoryValue>게임</CategoryValue>
             </CategoryWrap>
             : null}
             <AddButton onClick={addClick}>등록</AddButton>

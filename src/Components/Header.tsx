@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import { motion } from "framer-motion";
-import { Link, useMatch } from "react-router-dom";
+import { Link, useMatch, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 
 const Head = styled.header`
@@ -12,7 +12,7 @@ const HeadLayout = styled.div`
   justify-content: center;
   padding: 20px 0 ;
   font-size: 24px;
-  background-color:#34495e ;
+  background-color:#1e2a35 ;
   color: #bdc3c7;
   margin: 0 auto ;
 `;
@@ -69,14 +69,31 @@ const SearchButton = styled.button`
   background-color: white;
   /* font-size: ; */
 `;
+const LoginWrap = styled.div`
+    display: flex;
+    gap: 10px;
+    font-size: 16px;
+    padding-top: 10px;
+`;
+const Login = styled.div`
+  cursor: pointer;
+`;
+const Register = styled.div`
+  cursor: pointer;
+`;
 function Header() {
+  const loginMatch = useMatch('/login');
+  const registerMatch = useMatch('/register');
+  const history = useNavigate();
   const homeMatch = useMatch("/");
   const {register , watch,handleSubmit,setValue} = useForm();
   const summonWatch = watch("SummonerSearch");
   const onValid = (data:any , e:any) => {}
   const ggClick = () => {
-
   }
+  const loginClick = () => history('/login')
+  const registerClick = () => history('/register')
+  if(loginMatch !== null || registerMatch !== null) return null;
   return (
     <Head>
       <HeadLayout>
@@ -95,7 +112,6 @@ function Header() {
                   <NavItem>
                     <Link to="/comunity">커뮤니티</Link>
                   </NavItem>
-                  
                 </NavItems>
             </Colum>
             <Colum>
@@ -108,7 +124,12 @@ function Header() {
                   </SearchButton>
                 </Link>
                 
-              </SearchWrap> : null}
+              </SearchWrap> : 
+              <LoginWrap>
+                <Login onClick={loginClick}>로그인</Login> 
+                <Register onClick={registerClick}>회원가입</Register>
+              </LoginWrap>
+              }
             </Colum>
           </Nav>
       </HeadLayout>

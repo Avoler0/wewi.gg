@@ -13,6 +13,52 @@ function ClanInput() {
           <Xbutton onClick={cardOut}>X</Xbutton>
         </Head>
         <Form>
+          <Label>클랜 이름</Label>
+          <Input/>
+          <Column>
+            <Left>
+              <InWrap>
+                <Label>배너 이미지</Label>
+                <Input />
+              </InWrap>
+              <InWrap>
+                <Label>클랜 소개글</Label>
+                <Input style={{
+                  height: '13rem'
+                }}/>
+              </InWrap>
+            </Left>
+            <Right>
+              <InWrap>
+                <Label>카테고리</Label>
+                <CategoryWrap>
+                  <Label>모집 나이</Label>
+                  <CategoryBt>All</CategoryBt>
+                  <CategoryBt>15+</CategoryBt>
+                  <CategoryBt>19+</CategoryBt>
+                  <Label>클랜 성향</Label>
+                    <CategoryBt>친목</CategoryBt>
+                    <CategoryBt>실력</CategoryBt>
+                  <Label>게임 모드</Label>
+                    <CategoryBt>모든게임</CategoryBt>
+                    <CategoryBt>일반게임</CategoryBt>
+                    <CategoryBt>랭크게임</CategoryBt>
+                </CategoryWrap>
+              </InWrap>
+              <PassWord>
+                  <Label>비밀번호</Label>
+                  <Input style={{
+                    width: '14.7rem'
+                  }} placeholder="4자리 이상 비밀번호를 입력해주세요" />
+                </PassWord>
+              <ExitWrap>
+                <CancelBt></CancelBt>
+                <OkBt></OkBt>
+              </ExitWrap>
+
+            </Right>
+            
+          </Column>
           
         </Form>
       </Wrap>
@@ -81,81 +127,35 @@ const Input = styled.input`
     outline: none;
   }
 `;
-const ColumnMiddle = styled.div`
+const Column = styled.div`
   display: flex;
   padding: 8px 0 8px 0;
 `;
-const LineWrap = styled.div`
-  padding: 0 15px 0 0;
+const InWrap = styled.div`
+  
+  padding: 8px 15px 0 0;
 `;
-const LineBox = styled.ul`
-  display: flex;
+const Left = styled.div`
+
 `;
-const LineItem = styled.li`
-  width: 2.2rem;
-  height: 2.2rem;
-  padding: 0.2rem;
-  border: 1px solid rgba(66,66,84,0.8);
-  color: white;
-  cursor: pointer;
-  :hover{
-    background-color: #57575f;
-  }
-  :active{
-    background-color: #7c7c83;
-  }
-  img{
-    width: 100%;
-  }
+const Right = styled.div`
+
 `;
-const QueueType = styled.div`
-  padding: 0 15px 0 15px;
+const CategoryWrap = styled.div`
+  width: 14.7rem;
+  height: 9.5rem;
+  background-color: #262641;
+  padding: 5px;
 `;
-const TypeSelect = styled.select`
-  width: 6.5rem;
-  height: 2.5rem;
-  background-color: #28283b;
-  border: 1px solid rgba(0,0,0,0.2);
-  color: white;
-  font-size: 14px;
+const CategoryBt = styled.button`
+
 `;
-const TypeOption = styled.option`
+const PassWord = styled.div`
   
 `;
-const MicCheck = styled.div`
-  padding: 0 15px 0 20px;
-`;
-const MicButton = styled.button`
-  width: 4rem;
-  height: 2rem;
-  border-radius: 9999px;
-  position: relative;
-  background-color: #28283b;
-  display: inline-flex;
-  cursor: pointer;
-  border: none;
-  :hover{
-    background-color: #7c7c83;
-  }
-`;
-const MicCircle = styled.span`
-  position: absolute;
-  background-color: red;
-  border-radius: 9999px;
-  top: 0;
-  /* left: 0; */
-  /* translate: 0; */
-  margin:0.17rem 0.15rem 0.1rem 0.15rem ;
-  width: 1.75rem;
-  height: 1.75rem;
-  display: inline-block
-`;
-
-const PassWord = styled.div`
-  padding: 12px 0 12px 0;
-`;
 const ExitWrap = styled.div`
-  width: 100%;
+  margin-top: 10px;
+  width: 14.7rem;
   display: flex;
   justify-content: space-between;
   
