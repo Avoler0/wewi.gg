@@ -75,6 +75,9 @@ a {
   text-decoration:none;
   color:inherit;
 }
+img,button,span{
+  vertical-align: middle;
+}
 
 `;
 const client = new QueryClient();

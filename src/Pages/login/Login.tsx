@@ -1,3 +1,4 @@
+import { useForm } from "react-hook-form";
 import styled from "styled-components";
 
 
@@ -121,6 +122,9 @@ const OkBt = styled.button`
   font-size: 22px;
 `;
 function Login({str , getHide}:any) {
+  const {register,watch} = useForm();
+  const loginId = watch("id");
+  const loginPw= watch("password");
   return (
   <>
     <Head>
@@ -134,16 +138,16 @@ function Login({str , getHide}:any) {
         <Form>
           <InWrap>
             <Label htmlFor="loginId">아이디</Label>
-            <Input id="loginId" type="text" />
+            <Input id="loginId" type="text" {...register("id")} />
           </InWrap>
           <InWrap>
             <Label htmlFor="loginPw">비밀번호</Label>
-            <Input id="loginPw" type="password" />
+            <Input id="loginPw" type="password" {...register("password")} />
           </InWrap>
           <InWrap style={{
             display:'flex'
           }}>
-            <CheckBox type="checkbox" id="keepLogin" />
+            <CheckBox type="checkbox" id="keepLogin"/>
             <Label>자동 로그인</Label>
             <IDPW>ID/PW 찾기</IDPW>
           </InWrap>

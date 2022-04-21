@@ -1,3 +1,5 @@
+import axios from "axios";
+import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
@@ -92,8 +94,38 @@ const OkBt = styled.button`
   font-size: 22px;
 `;
 function Register() {
+
   const history = useNavigate();
-  const cancelClick = () => history('/')
+  const cancelClick = () => history('/');
+  const {register,watch,handleSubmit} = useForm();
+  const reg = {
+    Id: watch("email"),
+    Pw: watch("password"),
+    // Nick:watch("nickname")
+  }
+
+  const onValid = (e:any) => {
+    
+    axios({
+      method: 'post',
+      url:'http://localhost:4000/api/login',
+      // headers:{
+      //   "Access-Control-Allow-Origin": "*",
+      //   "Access-Control-Allow-Methods": "GET,PUT,POST,DELETE,PATCH,OPTIONS"
+      // },
+      data: {
+        email:reg.Id,
+        password:reg.Pw
+      },
+    })
+      .then((response) => {
+        console.log("성공",response);
+      })
+      .catch((error) => {
+        console.log("에러",error);
+      })
+    console.log(reg.Id , reg.Pw);
+  }
   return (
     <>
     <Head />
@@ -104,21 +136,20 @@ function Register() {
         </LogoWrap>
         <SignTitle>기본 정보 입력</SignTitle>
         <SignExp>회원가입을 위해서 이메일 인증이 진행되며, 인증이 완료되기 전까지 회원가입이 완료가 되지 않습니다.</SignExp>
-        <Form>
+        <Form onSubmit={handleSubmit(onValid)}>
           <InWrap>
-            <Label htmlFor="id">이메일 주소</Label>
-            <Input id="id" type="email"/>
+            <Label htmlFor="regiId">이메일 주소</Label>
+            <Input id="id" type="email" {...register("email")} />
           </InWrap>
           <InWrap>
-            <Label htmlFor="pw">비밀번호</Label>
-            <Input id="pw" type="password"/>
+            <Label htmlFor="regiPw">비밀번호</Label>
+            <Input id="pw" type="password" {...register("password")} />
           </InWrap>
-          <InWrap>
-            <Label htmlFor="id">닉네임</Label>
-            <Input id="id" type="email"/>
-          </InWrap>
+          {/* <InWrap>
+            <Label htmlFor="regiNick">닉네임</Label>
+            <Input id="id" type="text" {...register("nickname")} />
+          </InWrap> */}
           <ExitWrap>
-            
             <CancelBt onClick={cancelClick}>취소</CancelBt>
             <OkBt>가입하기</OkBt>
           </ExitWrap>

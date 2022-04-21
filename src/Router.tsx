@@ -1,5 +1,4 @@
-import { Route, Routes, useMatch } from "react-router-dom";
-import Header from "./Components/Header";
+import { Route, Routes } from "react-router-dom";
 import Clan from "./Pages/clan/clanMain";
 import Comunity from "./Pages/community/Comunity";
 import Home from "./Pages/siteHome/Home";

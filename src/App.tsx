@@ -1,13 +1,17 @@
-import { useEffect, useState } from "react";
+import { ThemeProvider } from "styled-components";
 import { BrowserRouter} from "react-router-dom";
 import Header from "./Components/Header";
 import Router from "./Router";
+import theme from "./commons/theme";
 
 function App() {
     return (
       <BrowserRouter>
-        <Header />
-        <Router />
+        <ThemeProvider theme={theme}>
+          <Header />
+          <Router />
+        </ThemeProvider>
+        
       </BrowserRouter>
     );
   }

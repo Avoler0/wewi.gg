@@ -23,8 +23,9 @@ function ClanInput() {
               </InWrap>
               <InWrap>
                 <Label>클랜 소개글</Label>
-                <Input style={{
-                  height: '13rem'
+                <TextArea style={{
+                  height: '13rem',
+                  
                 }}/>
               </InWrap>
             </Left>
@@ -116,6 +117,7 @@ const Label = styled.label`
   margin-bottom: 8px;
 `;
 const Input = styled.input`
+  width: 12.5rem;
   height: 2.5rem;
   font-size: 0.875rem;
   background-color: #28283b;
@@ -123,6 +125,25 @@ const Input = styled.input`
   border: 1px solid rgba(0,0,0,0.2);
   border-radius: 5px;
   padding: 0.8rem;
+  word-wrap: break-word;
+  white-space:pre;
+  word-break:break-all;
+  :focus,:active{
+    outline: none;
+  }
+`;
+const TextArea = styled.textarea`
+  width: 12.5rem;
+  height: 2.5rem;
+  font-size: 0.875rem;
+  background-color: #28283b;
+  color: white;
+  border: 1px solid rgba(0,0,0,0.2);
+  border-radius: 5px;
+  padding: 0.8rem;
+  word-wrap: break-word;
+  word-break:break-all;
+  line-height: 20px;
   :focus,:active{
     outline: none;
   }
@@ -130,6 +151,7 @@ const Input = styled.input`
 const Column = styled.div`
   display: flex;
   padding: 8px 0 8px 0;
+  
 `;
 const InWrap = styled.div`
   
@@ -148,7 +170,11 @@ const CategoryWrap = styled.div`
   padding: 5px;
 `;
 const CategoryBt = styled.button`
-
+  background-color: #6f6fa1;
+  border: none;
+  border-radius: 5px;
+  margin-right: 5px;
+  cursor: pointer;
 `;
 const PassWord = styled.div`
   

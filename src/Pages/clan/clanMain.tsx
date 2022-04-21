@@ -15,7 +15,7 @@ const Wrapper = styled.div`
 `;
 const Head = styled.div`
   width:100% ;
-  height: 20vh ;
+  height: 13rem ;
   padding-bottom: 48px;
 `;
 const Filter = styled.div`

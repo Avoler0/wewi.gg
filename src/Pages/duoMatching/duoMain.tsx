@@ -1,5 +1,5 @@
 import axios from "axios";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useQuery } from "react-query";
 import { useMatch, useNavigate  } from "react-router-dom";
 import styled from "styled-components";
@@ -17,7 +17,7 @@ const Wrapper = styled.div`
 `;
 const Head = styled.div`
   width:100% ;
-  height: 20vh ;
+  height: 13rem ;
   padding-bottom: 48px;
 `;
 
@@ -61,12 +61,12 @@ const LineTypes = styled.ul`
 
   
 `;
-const LineItems = styled.li`
+const LineItems = styled.li<{bgColor:any}>`
   width: 2.2rem;
   height: 2.2rem;
   padding: 0.2rem;
   border: none;
-  background-color: #2c3e50;
+  background-color: ${(props) => props.bgColor};
   border: 1px solid rgba(66,66,84,0.8);
   cursor: pointer;
   img{
@@ -103,10 +103,14 @@ function Main() {
   const addDuoInput = () => {
     history("/duo/addDuo")
   };
-  useEffect(()=>{
-    console.log(overlayMatch);
-  },[overlayMatch])
-  
+  const clickLi = (lineValue:string) => {
+    setLineChoice(lineValue)
+  } 
+  const selectGame = (e:any) => {
+    console.log(e);
+    
+  }
+  const [lineChoice,setLineChoice] = useState('AllLine');
   return (
     <>
       <Container>
@@ -114,8 +118,8 @@ function Main() {
           <Head/>
             <Filter>
               <GameFilter>
-                <GameSelect>
-                  <GameOption value="all">모두보기</GameOption>
+                <GameSelect >
+                  <GameOption value="all" onChange={() => selectGame("All")}>모두보기</GameOption>
                   <GameOption value="normal">일반게임</GameOption>
                   <GameOption value="soloRank" selected>솔로랭크</GameOption>
                   <GameOption value="teamRank">자유랭크</GameOption>
@@ -137,22 +141,22 @@ function Main() {
                 </TierSelect>
               </TierFilter>
               <LineTypes>
-                <LineItems>
-                  <img src={`../images/icon/line/Line-All-Ico.png`} />
+                <LineItems onClick={() => clickLi("AllLine")} bgColor={lineChoice === "AllLine" ? "#7c7c83" : "#2c3e50"}>
+                  <img  src={`../images/icon/line/Line-All-Ico.png`} />
                 </LineItems>
-                <LineItems>
+                <LineItems onClick={() => clickLi("TopLine")} bgColor={lineChoice === "TopLine" ? "#7c7c83" : "#2c3e50"}>
                   <img src={`../images/icon/line/Line-Top-Ico.png`} />
                 </LineItems>
-                <LineItems>
+                <LineItems onClick={() => clickLi("JungleLine")} bgColor={lineChoice === "JungleLine" ? "#7c7c83" : "#2c3e50"}>
                   <img src={`../images/icon/line/Line-Jungle-Ico.png`} />
                 </LineItems>
-                <LineItems>
+                <LineItems onClick={() => clickLi("MidLine")} bgColor={lineChoice === "MidLine" ? "#7c7c83" : "#2c3e50"}>
                   <img src={`../images/icon/line/Line-Mid-Ico.png`} />
                 </LineItems>
-                <LineItems>
+                <LineItems onClick={() => clickLi("BottomLine")} bgColor={lineChoice === "BottomLine" ? "#7c7c83" : "#2c3e50"}>
                   <img src={`../images/icon/line/Line-Bottom-Ico.png`} />
                 </LineItems>
-                <LineItems>
+                <LineItems onClick={() => clickLi("SuppotLine")} bgColor={lineChoice === "SuppotLine" ? "#7c7c83" : "#2c3e50"}>
                   <img src={`../images/icon/line/Line-Support-Ico.png`} />
                 </LineItems>
               </LineTypes>
