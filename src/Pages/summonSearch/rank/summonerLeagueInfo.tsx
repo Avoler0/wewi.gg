@@ -3,15 +3,19 @@ import styled from "styled-components";
 import SoloRank from "./soloRank/soloRank";
 import TeamRank from "./teamRank/teamRank";
 
-function SummonerInfo ({summonerInfo}:any) {
+function SummonerInfo ({summonerLeagueInfo}:any) {
   const [soloRank,setSoloRank] = useState();
   const [teamRank,setTeamRank] = useState();
   const [rankType , setRankType] = useState(true);
+  const leagueInfo = summonerLeagueInfo.data
+  console.log(summonerLeagueInfo.data);
   useEffect(()=>{
-    summonerInfo.map((rank:any) => {
+    leagueInfo.map((rank:any) => {
       rank.queueType==="RANKED_SOLO_5x5" ? setSoloRank(rank) : setTeamRank(rank);
     })
   },[])
+  console.log("팀랭",teamRank);
+  
   const rankClick = (e:any) => {
     const {value} = e.target;
     if(value === "solo") {

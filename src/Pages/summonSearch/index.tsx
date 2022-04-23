@@ -2,12 +2,12 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { useSetRecoilState } from "recoil";
 import styled from "styled-components";
-import { getSummonerBasicData, getSummonerInfo, getSummonerRecordList } from "../../api/api";
+import { getSummonerBasicData, getSummonerGameList, getSummonerInfo, getSummonerLeagueInfo, getSummonerRecordList } from "../../api/api";
 import { I_summonerBasicData, I_summonerInfo } from "../../commons/apiInterFace";
 import { customAsync } from "../../commons/asyncUtils";
 import { AT_puuid } from "../../Router/Api/RiotRecordApi";
 import Profile from "./profile/summonerProfile";
-import SummonerInfo from "./rank/summonerInfo";
+import SummonerInfo from "./rank/summonerLeagueInfo";
 import Recently from "./Record/Recently";
 
 const Container = styled.div`
@@ -69,38 +69,40 @@ interface dsd {
 function SummonerRecord() {
   const { summonerId } = useParams<string>();
   const [isLoading,setIsLoading] = useState(true)
-  const [summonerBasicData,setSummonerBasicData] = useState<I_summonerBasicData>();
-  const [summonerInfo, setSummonerInfo] = useState<I_summonerInfo>();
-  const [summonerRecord,setSummonerRecord] = useState([]);
+  const [summonerInfo,setSummonerInfo] = useState<I_summonerBasicData>();
+  const [summonerLeagueInfo, setSummonerLeagueInfo] = useState<I_summonerInfo>();
+  const [gameList,setGameList] = useState([]);
   const setATPuuid = useSetRecoilState(AT_puuid);
   let start = 0
   let count = 20;
   useEffect(()=>{
     setIsLoading(true);
     const summonerName = summonerId;
-    getSummonerBasicData(summonerName!).then(async res => {
+    getSummonerInfo(summonerName!).then(async res => {
+      setSummonerInfo(res.data)
       console.log("실행");
-      
       if(res.data){
-        
-        const {id:summonerId , puuid:summonerPuuid} = res.data;
+        const {id:summonerId , puuid:summonerPuuid} = res.data.data;
+        console.log("아이디",summonerId);
         
         Promise.all([
-          await customAsync(getSummonerBasicData(summonerName!),300),
-          await customAsync(getSummonerInfo(summonerId),300),
-          await customAsync(getSummonerRecordList(summonerPuuid,start,count),300),
+          // await customAsync(getSummonerBasicData(summonerName!),300),
+          await customAsync(getSummonerLeagueInfo(summonerId),300),
+          await customAsync(getSummonerGameList(summonerPuuid,start,count),300),
           
-        ]).then(([fetchSummonId,fetchSummonInfo,fetchSummonerRecordList]:any) => {
-          setSummonerBasicData(fetchSummonId.data);
-          setSummonerInfo(fetchSummonInfo.data)
-          setSummonerRecord(fetchSummonerRecordList.data)
+        ]).then(([fetchSummonInfo,fetchSummonerRecordList]:any) => {
+          // setSummonerBasicData(fetchSummonId.data) fetchSummonId,;
+          setSummonerLeagueInfo(fetchSummonInfo.data)
+          setGameList(fetchSummonerRecordList.data)
           setATPuuid(summonerPuuid)
           setIsLoading(false);
         })
       }
     })
   },[])
-  console.log(summonerInfo);
+  // console.log(summonerInfo);
+  // console.log(summonerLeagueInfo);
+  // console.log(gameList);
   
   if(isLoading){
     return (
@@ -114,16 +116,16 @@ function SummonerRecord() {
     <Container>
       <Wrap>
         <ProfileView id="profileView">
-          <Profile basicData={summonerBasicData!}/>
+          <Profile summonerInfo={summonerInfo!}/>
         </ProfileView>
         <RankView>
-          <SummonerInfo summonerInfo={summonerInfo} />
+          <SummonerInfo summonerLeagueInfo={summonerLeagueInfo} />
         </RankView>
         <ChampStatsView>
 
         </ChampStatsView>
         <RecentlyView>
-          <Recently recordList={summonerRecord} />
+          <Recently recordList={gameList} />
         </RecentlyView>
       </Wrap>
     </Container>

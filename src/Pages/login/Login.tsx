@@ -1,7 +1,93 @@
+import axios from "axios";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import styled from "styled-components";
+import jwt_decode from "jwt-decode";
+import { useRecoilState } from "recoil";
+import { AT_loginCheck } from "../../commons/loginCheck";
+import { useNavigate } from "react-router-dom";
 
-
+function Login({str , getHide}:any) {
+  const history = useNavigate();
+  const {register,watch,handleSubmit} = useForm();
+  const [token,setToken] = useState("");
+  const [autoLogin , setAutoLogin] = useState(false);
+  const [refreshToken , setRefreshToken] = useState("");
+  const [loginSucces,setLoginSucces] = useRecoilState(AT_loginCheck);
+  const login = {
+    Id: watch("id"),
+    Pw: watch("password")
+  }
+  const onValid = () => {};
+  function getToken(data:any) {
+    setToken(jwt_decode(data.token , {header:true}))
+    setRefreshToken(jwt_decode(data.refreshToken , {header:true}))
+  }
+  console.log("토큰",token);
+  console.log("리프토큰" ,refreshToken);
+  
+  const onLogin = (e:any) => {
+  axios({
+    method:'post',
+    url:'http://localhost:4000/api/login',
+    data:{
+      email : login.Id,
+      password : login.Pw
+    }
+  }).then((response) => {
+        console.log("성공",response);
+        getToken(response.data);
+        setLoginSucces(true);
+        history("/");
+      })
+      .catch((error) => {
+        console.log("에러",error);
+        setLoginSucces(false);
+      })
+    console.log(JSON.stringify(login));
+  }
+  // axios.get('http://localhost:4000/api/login')
+  // .then((res) => console.log(res))
+  // .catch((error) => console.log(error))
+  return (
+  <>
+    <Head>
+    
+    </Head>
+    <Container>
+      <Layout>
+        <LogoWrap>
+          <Logo>wewi.gg</Logo>
+        </LogoWrap>
+        <Form onSubmit={handleSubmit(onLogin)}>
+          <InWrap>
+            <Label htmlFor="loginId">아이디</Label>
+            <Input id="loginId" type="text" {...register("id")} />
+          </InWrap>
+          <InWrap>
+            <Label htmlFor="loginPw">비밀번호</Label>
+            <Input id="loginPw" type="password" {...register("password")} />
+          </InWrap>
+          <InWrap style={{
+            display:'flex'
+          }}>
+            <CheckBox type="checkbox" id="keepLogin"/>
+            <Label>자동 로그인</Label>
+            <IDPW>ID/PW 찾기</IDPW>
+          </InWrap>
+          <OR>OR</OR>
+          <FastLogin>간편 로그인</FastLogin>
+          <NaverLogin>네이버 로그인</NaverLogin>
+          <FaceLogin>페이스북 로그인</FaceLogin>
+          <ExitWrap>
+            <OkBt onClick={onLogin}>로그인</OkBt>
+          </ExitWrap>
+        </Form>
+      </Layout>
+    </Container>
+  </>
+  );
+}
 const Container = styled.div`
   width: 450px ;
   min-height: 682px;
@@ -121,48 +207,4 @@ const OkBt = styled.button`
   cursor: pointer;
   font-size: 22px;
 `;
-function Login({str , getHide}:any) {
-  const {register,watch} = useForm();
-  const loginId = watch("id");
-  const loginPw= watch("password");
-  return (
-  <>
-    <Head>
-    
-    </Head>
-    <Container>
-      <Layout>
-        <LogoWrap>
-          <Logo>wewi.gg</Logo>
-        </LogoWrap>
-        <Form>
-          <InWrap>
-            <Label htmlFor="loginId">아이디</Label>
-            <Input id="loginId" type="text" {...register("id")} />
-          </InWrap>
-          <InWrap>
-            <Label htmlFor="loginPw">비밀번호</Label>
-            <Input id="loginPw" type="password" {...register("password")} />
-          </InWrap>
-          <InWrap style={{
-            display:'flex'
-          }}>
-            <CheckBox type="checkbox" id="keepLogin"/>
-            <Label>자동 로그인</Label>
-            <IDPW>ID/PW 찾기</IDPW>
-          </InWrap>
-          <OR>OR</OR>
-          <FastLogin>간편 로그인</FastLogin>
-          <NaverLogin>네이버 로그인</NaverLogin>
-          <FaceLogin>페이스북 로그인</FaceLogin>
-          <ExitWrap>
-            <OkBt>로그인</OkBt>
-          </ExitWrap>
-        </Form>
-      </Layout>
-    </Container>
-  </>
-  );
-}
-
 export default Login;

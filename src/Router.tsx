@@ -6,6 +6,7 @@ import Login from "./Pages/login/Login";
 import Main from "./Pages/duoMatching/duoMain";
 import Register from "./Pages/login/Register";
 import SummonerRecord from "./Pages/summonSearch";
+import Test from "./test";
 
 
 function Router() {
@@ -21,6 +22,7 @@ function Router() {
       <Route path="/duo/:summonerId" element={<SummonerRecord />}/>
       <Route path="/duo/addDuo" element={<Main />}/>
       <Route path="/duo" element={<Main />} />
+      <Route path="/test" element={<Test/>}/>
       <Route path="/" element={<Home/>}/>
     </Routes>
   </>

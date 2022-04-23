@@ -1,8 +1,11 @@
 import { ThemeProvider } from "styled-components";
-import { BrowserRouter} from "react-router-dom";
+import { BrowserRouter } from "react-router-dom";
 import Header from "./Components/Header";
 import Router from "./Router";
 import theme from "./commons/theme";
+
+import React from 'react'
+window.React = React
 
 function App() {
     return (
@@ -11,7 +14,6 @@ function App() {
           <Header />
           <Router />
         </ThemeProvider>
-        
       </BrowserRouter>
     );
   }

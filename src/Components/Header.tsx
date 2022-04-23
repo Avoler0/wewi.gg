@@ -2,6 +2,8 @@ import styled from "styled-components";
 import { motion } from "framer-motion";
 import { Link, useMatch, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
+import { useRecoilValue, useResetRecoilState } from "recoil";
+import { AT_loginCheck } from "../commons/loginCheck";
 
 const Head = styled.header`
   max-width: 1903px;
@@ -88,11 +90,14 @@ function Header() {
   const homeMatch = useMatch("/");
   const {register , watch,handleSubmit,setValue} = useForm();
   const summonWatch = watch("SummonerSearch");
+  const loginCheck = useRecoilValue(AT_loginCheck);
   const onValid = (data:any , e:any) => {}
   const ggClick = () => {
   }
   const loginClick = () => history('/login')
   const registerClick = () => history('/register')
+  console.log(loginCheck);
+  
   if(loginMatch !== null || registerMatch !== null) return null;
   return (
     <Head>
@@ -125,10 +130,14 @@ function Header() {
                 </Link>
                 
               </SearchWrap> : 
-              <LoginWrap>
+              !loginCheck ? 
+              (<LoginWrap>
                 <Login onClick={loginClick}>로그인</Login> 
                 <Register onClick={registerClick}>회원가입</Register>
-              </LoginWrap>
+              </LoginWrap>) : 
+              (
+                <div> 로그인 되었음 !</div>
+              )
               }
             </Colum>
           </Nav>

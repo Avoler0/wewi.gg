@@ -1,7 +1,9 @@
 import axios from "axios";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
+import { API_KEY, PATH } from "../../commons/API_KEY";
 
 
 const Container = styled.div`
@@ -93,26 +95,74 @@ const OkBt = styled.button`
   cursor: pointer;
   font-size: 22px;
 `;
+const NickSub = styled.span`
+  display: inline;
+  margin: 0 10px;
+  font-size: 12px;
+  line-height: 18px;
+  color: #cf9797cc;
+`;
+const NickColum = styled.div`
+  display: flex;
+`;
+const NickCheck = styled.div`
+  padding-top: 5px;
+`;
 function Register() {
 
   const history = useNavigate();
   const cancelClick = () => history('/');
   const {register,watch,handleSubmit} = useForm();
+  const [nickCheck,setNickCheck] = useState("none");
   const reg = {
     Id: watch("email"),
     Pw: watch("password"),
-    // Nick:watch("nickname")
+    Nick:watch("nickname")
   }
-
-  const onValid = (e:any) => {
-    
+  // function getName (name:string) {
+  //   try{
+  //     axios.get(`${PATH.KR_RIOT}/lol/summoner/v4/summoners/by-name/${name}?api_key=${API_KEY}`)
+  //     .then(() => {
+  //       setNickCheck(true);
+  //     })
+  //   }catch(error){
+  //     console.log(error);
+  //     setNickCheck(false);
+  //   }
+  // }
+  function postName(name:string) {
+    // axios({
+    //   method: 'post',
+    //   url:`http://localhost:4000/api/register/${name}`,
+    //   data: {
+    //     name:name,
+    //   },
+    // })
+    //   .then((response) => {
+    //     setNickCheck("success");
+    //     console.log("성공",response);
+    //   })
+    //   .catch((error) => {
+    //     setNickCheck("failed");
+    //     console.log("에러",error);
+    //   })
+    axios({
+      method: 'get',
+      url:`http://localhost:4000/api/register/${name}`,
+    })
+      .then((response) => {
+        setNickCheck("success");
+        console.log("성공",response);
+      })
+      .catch((error) => {
+        setNickCheck("failed");
+        console.log("에러",error);
+      })
+  }
+  function postReg(id:string,pw:string) {
     axios({
       method: 'post',
-      url:'http://localhost:4000/api/login',
-      // headers:{
-      //   "Access-Control-Allow-Origin": "*",
-      //   "Access-Control-Allow-Methods": "GET,PUT,POST,DELETE,PATCH,OPTIONS"
-      // },
+      url:'http://localhost:4000/api/register',
       data: {
         email:reg.Id,
         password:reg.Pw
@@ -124,7 +174,10 @@ function Register() {
       .catch((error) => {
         console.log("에러",error);
       })
-    console.log(reg.Id , reg.Pw);
+  }
+  const onValid = (e:any) => {
+    // postReg(reg.Id,reg.Pw);
+    postName(reg.Nick);
   }
   return (
     <>
@@ -145,10 +198,19 @@ function Register() {
             <Label htmlFor="regiPw">비밀번호</Label>
             <Input id="pw" type="password" {...register("password")} />
           </InWrap>
-          {/* <InWrap>
-            <Label htmlFor="regiNick">닉네임</Label>
-            <Input id="id" type="text" {...register("nickname")} />
-          </InWrap> */}
+          <InWrap>
+            <NickColum>
+              <Label htmlFor="regiNick">닉네임</Label>
+              <NickSub>자신의 롤 닉네임을 입력 해 주세요</NickSub>
+            </NickColum>
+            <NickColum>
+              <Input id="id" type="text" {...register("nickname")} />
+              {/* { !nickCheck ? <span>없는 닉네임 입니다.</span> : null } */}
+              
+            </NickColum>
+            {nickCheck === "success" && null || nickCheck === "failed" && <NickCheck>닉네임을 다시 확인 해 주세요.</NickCheck>}
+            
+          </InWrap>
           <ExitWrap>
             <CancelBt onClick={cancelClick}>취소</CancelBt>
             <OkBt>가입하기</OkBt>

@@ -1,4 +1,5 @@
 import styled from "styled-components"
+import { getProfileIcon } from "../../../api/api";
 
 const ProfileWrap = styled.div`
   display: flex;
@@ -48,29 +49,34 @@ const Update = styled.div`
   font-size: 12px;
     font-weight: none;
 `;
-interface I_BasicData {
-  basicData:{
-    accountId: string,
-    id: string,
-    name: string,
-    profileIconId: number,
-    puuid: string,
-    revisionDate: number,
-    summonerLevel: number,
-  }
+interface I_summonerInfo {
+    summonerInfo:{
+      data:{
+        accountId: string,
+        id: string,
+        name: string,
+        profileIconId: number,
+        puuid: string,
+        revisionDate: number,
+        summonerLevel: number,
+      }
+    }
 }
-function Profile(props:I_BasicData) {
+function Profile({summonerInfo}:any) {
+  const {
+    id , name , profileIconId , puuid , revisionDate , summonerLevel
+  } = summonerInfo.data;
   return(
     <ProfileWrap>
       <IconBox>
-        <img src={`http://ddragon.leagueoflegends.com/cdn/10.11.1/img/profileicon/${props.basicData?.profileIconId}.png`}/>
+        <img src={ getProfileIcon(profileIconId) }/>
       <LevelBox>
-        <Level>{props.basicData.summonerLevel}</Level>
+        <Level>{summonerLevel}</Level>
       </LevelBox>
       </IconBox>
       <NameBox>
         <Name>
-          {props.basicData.name}
+          {name}
         </Name>
         <Update>      
           최근 업데이트:하루전

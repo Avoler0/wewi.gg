@@ -10,19 +10,20 @@ function Recently({recordList}:I_RecordList) {
   const [gameList,setGameList] = useState<any[]>(recordList);
   const [isLoading,setIsLoading] = useState(true);
   const [recordInfo,setRecordInfo] = useState<any>();
+  console.log("겜리스트",recordList.data[0]);
   
-  useEffect(() => {
-    setIsLoading(true);
+  // useEffect(() => {
+  //   setIsLoading(true);
     
-    recordList.forEach((e:any) => {
-       new Promise(async ()=> {
-        await customAsync(getSummonerRecordInfo(e),2000).then((res:any) =>{
-          setRecordInfo(res.data)
-          setIsLoading(false)
-        })
-      }) 
-    })
-  },[])
+  //   recordList.forEach((e:any) => {
+  //      new Promise(async ()=> {
+  //       await customAsync(getSummonerRecordInfo(e),2000).then((res:any) =>{
+  //         setRecordInfo(res.data)
+  //         setIsLoading(false)
+  //       })
+  //     }) 
+  //   })
+  // },[])
 
   // if(isLoading){
   //   return <div>기록 없음dsdsd</div>
@@ -36,9 +37,9 @@ function Recently({recordList}:I_RecordList) {
   </ChampView>
   <GameView>
     {/* {recordList.map((data:any,index:number)=><RecordRecently key={count++} data={data[index]}/> )} */}
-    {gameList?.map((res,index) => {
+    {/* {gameList?.map((res,index) => {
       <div key={index}>{res}</div>
-    })}
+    })} */}
     {/* <RecordRecently list={recordList[0]}/>  */}
     {/* {recordList} */}
   </GameView>
