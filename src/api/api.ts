@@ -12,14 +12,6 @@ export const getSummonerRecordList = (puuid:string,start:number,count:number) =>
 export const getSummonerRecordInfo = (recordList:string) => {
    return api.get(`https://asia.api.riotgames.com/lol/match/v5/matches/${recordList}?api_key=${API_KEY}`);
 };
-
-
-export const getSummonerInfo = (summonerName:string) => {
-   return api.get(`${path}/api/summoner/summonerInfo/by-name=${summonerName}`);
-}
-export const getSummonerLeagueInfo = (summonerId:string) => {
-   return api.get(`${path}/api/summoner/summonerLeagueInfo/${summonerId}`);
-}
 export const getSummonerGameList = (puuid:string,start:number,count:number) => {
    const data = {
       puuid:puuid,
@@ -28,10 +20,14 @@ export const getSummonerGameList = (puuid:string,start:number,count:number) => {
    }
    return api.post(`${path}/api/summoner/gameList/`,data)
 };
-// export const getSummonerGameInfo = (gameList:string) => {
+// 사용하는 API 겟!
 
-//    return api.get(`${path}/api/summoner/gameList/${gameList}`)
-// };
+export const getSummonerInfo = (summonerName:string) => {
+   return api.get(`${path}/api/summoner/summonerInfo/by-name=${summonerName}`);
+}
+export const getSummonerLeagueInfo = (summonerId:string) => {
+   return api.get(`${path}/api/summoner/summonerLeagueInfo/${summonerId}`);
+}
 export const getSummonerGameInfo = (puuid:string,start:number,count:number) => {
    return api.get(`${path}/api/summoner/gameList/${puuid}/${start}/${count}`)
 };
@@ -40,9 +36,9 @@ export const getProfileIcon = (profileNumber:number) => {
 }
 
 
-export const getChampionInfo = () => {
-   return api.get(`http://ddragon.leagueoflegends.com/cdn/10.1.1/data/ko_KR/champion.json`);
-};
-export const getSpellInfo = () => {
-   return api.get(`https://ddragon.leagueoflegends.com/cdn/10.6.1/data/ko_KR/summoner.json`);
-}
+// export const getChampionInfo = () => {
+//    return api.get(`http://ddragon.leagueoflegends.com/cdn/10.1.1/data/ko_KR/champion.json`);
+// };
+// export const getSpellInfo = () => {
+//    return api.get(`https://ddragon.leagueoflegends.com/cdn/10.6.1/data/ko_KR/summoner.json`);
+// }
