@@ -8,7 +8,7 @@ function SummonerInfo ({summonerLeagueInfo}:any) {
   const [teamRank,setTeamRank] = useState();
   const [rankType , setRankType] = useState(true);
   const leagueInfo = summonerLeagueInfo.data
-  console.log(summonerLeagueInfo.data);
+  console.log("리그인포",summonerLeagueInfo.data);
   useEffect(()=>{
     leagueInfo.map((rank:any) => {
       rank.queueType==="RANKED_SOLO_5x5" ? setSoloRank(rank) : setTeamRank(rank);

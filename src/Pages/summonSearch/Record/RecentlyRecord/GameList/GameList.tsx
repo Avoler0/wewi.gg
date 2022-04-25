@@ -1,10 +1,13 @@
-import { useRecoilValue } from "recoil";
+import React from "react";
 import styled from "styled-components";
-import { AT_puuid } from "../../../../../Router/Api/RiotRecordApi";
+import { getChamiponInfo, getChampionIcon } from "../../../../../api/api";
 
-function GameList({gameInfo}:gameInfo) {
-  const puuid = useRecoilValue<string>(AT_puuid)
-  const dataCount = gameInfo?.metadata.participants.findIndex((data:any)=> data === puuid)
+function GameList({gameInfo}:any) {
+  // const puuid = useRecoilValue<string>(AT_puuid)
+  // const dataCount = gameInfo?.metadata.participants.findIndex((data:any)=> data === puuid)
+  console.log("게임 인포",gameInfo)
+  
+  const myScore = gameInfo.participantId
   const {
     win,
     assists,
@@ -13,7 +16,18 @@ function GameList({gameInfo}:gameInfo) {
     totalMinionsKilled,
     neutralMinionsKilled,
     championName,
-  } = gameInfo.info.participants[dataCount];
+  } = gameInfo.info.participants[myScore];
+  const getChamp = (championName:string) => {
+    Promise.all([getChampionIcon(championName)])
+    .then(([fetchChamp]) => {
+      return fetchChamp
+    })
+  }
+  const championInfo = getChamp(championName);
+  // const champName = champ
+  console.log(championInfo)
+  // const chamIcon = getChampionIcon(championName);
+  // return null;
  return (
       <RecordLi>
       <RecordInfo>
@@ -23,8 +37,8 @@ function GameList({gameInfo}:gameInfo) {
         <InfoLength>40:00</InfoLength>
       </RecordInfo>
       <RecordChamp>
-        <ChampImg />
-        <ChampName>{championName}</ChampName>
+        <ChampImg src={getChampionIcon(championName)}/>
+        <ChampName>{}</ChampName>
       </RecordChamp>
       <RecordKDA>
           <KDA>{kills} / {deaths}/ {assists}</KDA>
@@ -48,7 +62,7 @@ function GameList({gameInfo}:gameInfo) {
  )
 }
 
-export default GameList;
+export default React.memo(GameList);
 
 interface gameInfo{
   gameInfo:any
@@ -82,10 +96,11 @@ const InfoLength = styled.div`
   font-size: 14px;
 `;
 const RecordChamp = styled.div`
-
+  width: 4.5rem;
 `;
 const ChampImg = styled.img`
-
+  width: 3.5rem;
+  border: none;
 `;
 const ChampName = styled.span`
 

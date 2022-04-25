@@ -1,29 +1,35 @@
 import React from "react";
 import { useEffect, useState } from "react";
+import { useRecoilValue } from "recoil";
 import styled from "styled-components";
-import { getSummonerRecordInfo } from "../../../api/api";
+import { getSummonerGameInfo, getSummonerRecordInfo } from "../../../api/api";
 import { customAsync } from "../../../commons/asyncUtils";
+import { AT_puuid } from "../../../Router/Api/RiotRecordApi";
 import ChampRecently from "./RecentlyRecord/ChampRecently"
 import RecordRecently from "./RecentlyRecord/RecordRecently"
 
 function Recently({recordList}:I_RecordList) {
-  const [gameList,setGameList] = useState<any[]>(recordList);
+  const [gameInfo,setGameInfo] = useState<any[]>();
   const [isLoading,setIsLoading] = useState(true);
   const [recordInfo,setRecordInfo] = useState<any>();
+  const summonerPuuid = useRecoilValue(AT_puuid);
+  const start = 0;
+  const count = 20;
   console.log("겜리스트",recordList.data[0]);
   
-  // useEffect(() => {
-  //   setIsLoading(true);
-    
-  //   recordList.forEach((e:any) => {
-  //      new Promise(async ()=> {
-  //       await customAsync(getSummonerRecordInfo(e),2000).then((res:any) =>{
-  //         setRecordInfo(res.data)
-  //         setIsLoading(false)
-  //       })
-  //     }) 
-  //   })
-  // },[])
+  const getContent = (puuid:string , start:number , count:number) => {
+    Promise.all([customAsync(getSummonerGameInfo(puuid,start,count),1000)])
+    .then(([res]:any) => {
+      setGameInfo(res.data.matchDetails[0]);
+      console.log("실행")
+    })
+    .catch((error) => {
+      console.error("에러",error);
+    })
+  }
+  useEffect(() => {
+    getContent(summonerPuuid,start,count)
+  },[])
 
   // if(isLoading){
   //   return <div>기록 없음dsdsd</div>
@@ -35,12 +41,12 @@ function Recently({recordList}:I_RecordList) {
   <ChampView>
     {/* <ChampRecently  /> */}
   </ChampView>
-  <GameView>
+  <GameView >
     {/* {recordList.map((data:any,index:number)=><RecordRecently key={count++} data={data[index]}/> )} */}
     {/* {gameList?.map((res,index) => {
       <div key={index}>{res}</div>
     })} */}
-    {/* <RecordRecently list={recordList[0]}/>  */}
+    <RecordRecently gameInfo={gameInfo} />
     {/* {recordList} */}
   </GameView>
   </>

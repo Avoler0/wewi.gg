@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { useQuery } from "react-query";
 import { useMatch, useNavigate  } from "react-router-dom";
 import styled from "styled-components";
+import { getDuoMatching } from "../../api/api";
 import DuoInput from "./DuoCommon/DuoInput";
 import DuoRes from "./DuoCommon/DuoRes";
 
@@ -97,9 +98,6 @@ const AddButton = styled.button`
 function Main() {
   const history = useNavigate();
   const overlayMatch = useMatch('/duo/addDuo');
-  let report = 2;
-  let hour = 0;
-  let minutes = 1;
   const addDuoInput = () => {
     history("/duo/addDuo")
   };
@@ -111,6 +109,20 @@ function Main() {
     
   }
   const [lineChoice,setLineChoice] = useState('AllLine');
+  
+  const [duoRes,setDuoRes] = useState<any>();
+  const getDuoResData = () => {
+    Promise.all([getDuoMatching()])
+    .then(([fetchDuo]) => {
+      const res = fetchDuo.data
+      setDuoRes(res);
+    })
+  }
+  useEffect(()=>{
+    getDuoResData()
+  },[])
+  console.log(duoRes);
+  
   return (
     <>
       <Container>

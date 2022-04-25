@@ -1,34 +1,26 @@
 import { useEffect, useState } from "react";
-import { useRecoilValue } from "recoil";
 import styled from "styled-components";
-import { getSummonerRecordInfo } from "../../../../api/api";
-import { customAsync } from "../../../../commons/asyncUtils";
-import { AT_puuid } from "../../../../Router/Api/RiotRecordApi";
 import GameList from "./GameList/GameList";
 
-function RecordRecently({list}:any) {
+
+function RecordRecently({gameInfo}:any) {
   const [isLoading,setIsLoading] = useState<boolean>(true);
-  const [recordInfo,setRecordInfo] = useState<any>();
-  console.log(list);
+  let recordCount = 0;
+  // console.log("게임인포",gameInfo);
+
+
+  useEffect(()=>{
+    if(gameInfo) setIsLoading(false)
+  },[gameInfo])
   
-  // useEffect(() => {
-  //   setIsLoading(true);
-  //   new Promise(async ()=> {
-  //     await customAsync(getSummonerRecordInfo(list),1000).then((res:any) =>{
-  //       setRecordInfo(res.data)
-  //       setIsLoading(false)
-  //     })
-  //   })
-  // },[])
-  
+
    if(isLoading){
     return <div>기록 없음</div>
   }
-  // console.log(recordInfo);
-  
+
   return (
     <RecordUl>
-        {/* <GameList gameInfo={recordInfo}/> */}
+        {gameInfo.map((data:any) => <GameList key={recordCount++} gameInfo={data}/>)}
     </RecordUl>
   );
 }
