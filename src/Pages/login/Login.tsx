@@ -1,16 +1,18 @@
 import axios from "axios";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import styled from "styled-components";
 import jwt_decode from "jwt-decode";
 import { useRecoilState } from "recoil";
 import { AT_loginCheck } from "../../commons/loginCheck";
-import { useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+  const { naver } = window as any;
 
 function Login({str , getHide}:any) {
   const history = useNavigate();
   const {register,watch,handleSubmit} = useForm();
   const [token,setToken] = useState("");
+  const [loginType , setLoginType] = useState("basic");
   const [autoLogin , setAutoLogin] = useState(false);
   const [refreshToken , setRefreshToken] = useState("");
   const [loginSucces,setLoginSucces] = useRecoilState(AT_loginCheck);
@@ -18,7 +20,7 @@ function Login({str , getHide}:any) {
     Id: watch("id"),
     Pw: watch("password")
   }
-  const onValid = () => {};
+  const onValid = (e:any) => {e.preventDefault()};
   function getToken(data:any) {
     setToken(jwt_decode(data.token , {header:true}))
     setRefreshToken(jwt_decode(data.refreshToken , {header:true}))
@@ -27,28 +29,90 @@ function Login({str , getHide}:any) {
   console.log("리프토큰" ,refreshToken);
   
   const onLogin = (e:any) => {
-  axios({
-    method:'post',
-    url:'http://localhost:4000/api/login',
-    data:{
-      email : login.Id,
-      password : login.Pw
-    }
-  }).then((response) => {
+    if(login.Id === undefined  || login.Id === undefined) return;
+    
+    setLoginType("basic");
+    axios({
+      method:'post',
+      url:'http://localhost:4000/api/login',
+      data:{
+        email : login.Id,
+        password : login.Pw
+      }
+    }).then((response) => {
         console.log("성공",response);
         getToken(response.data);
         setLoginSucces(true);
         history("/");
+        })
+        .catch((error) => {
+          console.log("에러",error);
+          setLoginSucces(false);
       })
-      .catch((error) => {
-        console.log("에러",error);
-        setLoginSucces(false);
-      })
-    console.log(JSON.stringify(login));
   }
-  // axios.get('http://localhost:4000/api/login')
-  // .then((res) => console.log(res))
-  // .catch((error) => console.log(error))
+
+  const location = useLocation();
+
+  const naverInit = () =>{
+      const login = new naver.LoginWithNaverId({
+      clientId: 'NR61LLLoBLU2vcfbHvDY',
+      callbackUrl: 'http://localhost:3000/login', 
+      callbackHandle:true,
+      isPopup: false, // popup 형식으로 띄울것인지 설정
+      loginButton: { 
+        color: 'green', type: 3, height: '65' 
+      }, //버튼의 스타일, 타입, 크기를 지정
+    });
+    login.init();
+  };
+  
+ const postNaverToken = () => {
+   if(!location.hash && loginType !== "naver" ){
+     console.log("아이디 비밀번호 입력");
+     return;
+   }
+  const naverToken = location.hash.split('=')[1].split('&')[0];
+  // const naverState = location.hash?.split('=')[2].split('&')[0];
+  // const tokenType = location.hash?.split('=')[3].split('&')[0]+ "&" + location.hash.split('&')[3].split('&')[0];
+  console.log("포스트 보내기" , naverToken);
+  console.log(JSON.stringify(naverToken));
+  
+  axios.post('http://localhost:4000/api/login/naver' , {
+    token:naverToken
+  }).then((res) => {
+    console.log("RES",res.data);
+    //이메일 확인 후 가입 안되어 있으면 가입화면으로
+    history('/register',{state:res.data})
+  })
+ }
+ const googleLogin = () => {
+   setLoginType("google");
+   const clientID = '625687004788-gd57fikpm0v5854djf8emrm7bgmh4drg.apps.googleusercontent.com'
+   const path = 'http://localhost:3000/login'
+   const googleOauthURL =`https://accounts.google.com/o/oauth2/v2/auth?client_id=${clientID}`+
+    `&response_type=token&redirect_uri=${path}&scope=https://www.googleapis.com/auth/userinfo.email`;
+    window.location.assign(googleOauthURL);
+ }
+ const postGoogleToken = () => {
+   if(!window.location.hash && loginType !== "google") return;
+   console.log("실행");
+   
+  const accessToken = window.location.hash.split("=")[1].split("&")[0]
+  console.log(accessToken);
+  
+ }
+ console.log();
+ 
+  useEffect(() => {
+    naverInit();
+    
+    postGoogleToken();
+  }, []);
+  
+
+   
+   
+   
   return (
   <>
     <Head>
@@ -59,9 +123,9 @@ function Login({str , getHide}:any) {
         <LogoWrap>
           <Logo>wewi.gg</Logo>
         </LogoWrap>
-        <Form onSubmit={handleSubmit(onLogin)}>
+        <Form onSubmit={onValid}>
           <InWrap>
-            <Label htmlFor="loginId">아이디</Label>
+            <Label htmlFor="loginId">이메일</Label>
             <Input id="loginId" type="text" {...register("id")} />
           </InWrap>
           <InWrap>
@@ -77,12 +141,26 @@ function Login({str , getHide}:any) {
           </InWrap>
           <OR>OR</OR>
           <FastLogin>간편 로그인</FastLogin>
-          <NaverLogin>네이버 로그인</NaverLogin>
-          <FaceLogin>페이스북 로그인</FaceLogin>
+          <NaverLogin id='naverIdLogin' onClick={postNaverToken}>
+              네이버 로그인
+          </NaverLogin>
+          <GoogleLogin onClick={googleLogin}>
+            <img src="../images/path-icons/btn_google_signin_dark_normal_web@2x.png" style={{
+              width:"314px",
+              borderRadius:"20px",
+              cursor: "pointer",
+            }} />
+          </GoogleLogin>
           <ExitWrap>
             <OkBt onClick={onLogin}>로그인</OkBt>
+            
           </ExitWrap>
+          <Register>
+            <span>아이디가 없다면 ?</span>
+            <Link to="/register">회원가입</Link>
+          </Register>
         </Form>
+        
       </Layout>
     </Container>
   </>
@@ -172,39 +250,47 @@ const OR = styled.div`
 const FastLogin = styled.h2`
 
 `;
-const NaverLogin = styled.button`
-  width: 100%;
-  height: 3.2rem;
-  background-color: #00ba32;
-  color: #fff;
-  border: none;
-  border-radius: 5px;
-  margin: 8px 0;
-  font-size: 18px;
+const NaverLogin = styled.div`
+  text-align:center;
+  padding: 10px;
 `;
-const FaceLogin = styled.button`
-  width: 100%;
-  height: 3.2rem;
-  background-color: #3c5a99;
+const NaverLink = styled.div`
+  display: inline;
+`;
+const GoogleLogin = styled.div`
   color: #fff;
   border: none;
   border-radius: 5px;
   margin: 8px 0;
   font-size: 18px;
+  text-align: center;
 `;
 const ExitWrap = styled.div`
-  margin: 2.5rem 0;
+  margin-top: 30px;
   display: flex;
   justify-content: space-between;
+  text-align: center;
 `;
 const OkBt = styled.button`
-  width: 100%;
-  height: 3.2rem;
+  margin: 0 auto;
+  width: 303px;
+  height: 50px;
   border: 0.08rem solid rgba(123,122,142,0.8);
   border-radius: 5px;
   background-color: #b5b5c0;
   color: #fff;
   cursor: pointer;
   font-size: 22px;
+`;
+const Register = styled.div`
+  display: flex;
+  justify-content: space-between;
+  margin-top: 1rem;
+  padding: 0 2.5rem 0 2.5rem;
+  text-align: center;
+  a{
+    text-decoration: underline;
+    color:#1ea1f7;
+  }
 `;
 export default Login;

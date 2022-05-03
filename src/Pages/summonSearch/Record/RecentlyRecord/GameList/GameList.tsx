@@ -1,12 +1,10 @@
 import React from "react";
 import styled from "styled-components";
 import { getChamiponInfo, getChampionIcon } from "../../../../../api/api";
+import { getTime } from "../../../../../commons/functionCollection";
 
 function GameList({gameInfo}:any) {
-  // const puuid = useRecoilValue<string>(AT_puuid)
-  // const dataCount = gameInfo?.metadata.participants.findIndex((data:any)=> data === puuid)
   console.log("게임 인포",gameInfo)
-  
   const myScore = gameInfo.participantId
   const {
     win,
@@ -17,6 +15,20 @@ function GameList({gameInfo}:any) {
     neutralMinionsKilled,
     championName,
   } = gameInfo.info.participants[myScore];
+  const {
+    gameCreation,
+    gameDuration,
+    gameEndTimestamp,
+    gameId,
+    gameMode,
+    gameName,
+    gameStartTimestamp,
+    gameType,
+    gameVersion,
+    mapId,
+  } = gameInfo.info
+  const nowDate = getTime(new Date())
+  const gameDate = getTime(new Date(gameCreation))
   const getChamp = (championName:string) => {
     Promise.all([getChampionIcon(championName)])
     .then(([fetchChamp]) => {

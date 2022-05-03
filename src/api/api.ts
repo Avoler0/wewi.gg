@@ -1,25 +1,6 @@
 import api from '../commons/apiUtil';
-import { API_KEY, PATH } from '../commons/API_KEY';
 const path = 'http://localhost:4000'
 
-export const getSummonerBasicData = (summonerName:string) => {
-   return api.get(`${PATH.KR_RIOT}/lol/summoner/v4/summoners/by-name/${summonerName}?api_key=${API_KEY}`)
-}
-export const getSummonerRecordList = (puuid:string,start:number,count:number) => {
-   return api.get(`https://asia.api.riotgames.com/lol/match/v5/matches/by-puuid/${puuid}/ids?start=${start}&count=${count}&api_key=${API_KEY}`);
-};
-
-export const getSummonerRecordInfo = (recordList:string) => {
-   return api.get(`https://asia.api.riotgames.com/lol/match/v5/matches/${recordList}?api_key=${API_KEY}`);
-};
-export const getSummonerGameList = (puuid:string,start:number,count:number) => {
-   const data = {
-      puuid:puuid,
-      start:start,
-      count:count,
-   }
-   return api.post(`${path}/api/summoner/gameList/`,data)
-};
 // 사용하는 API 겟!
 
 export const getSummonerInfo = (summonerName:string) => {
@@ -40,9 +21,36 @@ export const getChampionIcon = (champion:string) => {
 export const getChamiponInfo = (champion:string) => {
    return api.get(`http://ddragon.leagueoflegends.com/cdn/10.11.1/data/ko_KR/champion/${champion}.json`)
 }
-
 export const getDuoMatching = () => {
    return api.get(`${path}/api/duo/rescue`)
+}
+export const postDuoMatching = (data:any) => {
+   return api({
+      method:'post',
+      url:`${path}/api/duo/reg`,
+      data: {
+         SeekerName:data.Name,
+         ApplicantName:data.Name,
+         Content:data.Content,
+         Tier:0,
+         DuoType:data.GameType,
+         Line:data.LineType,
+         Win:0,
+         Lose:0,
+         Password:data.Password,
+         IsMic:false
+      }
+   })
+   // .then((res) => {
+   //    return res
+   // }).catch((error) => {
+   //    return error
+   // })
+}
+export const getClanBoard = () => {
+   return api.get(`${path}/api/clan/rescue`).then((res)=> {console.log("성공");
+    return res}).catch((error) => {console.log("에러!!",error.response);
+   })
 }
 // export const getChampionInfo = () => {
 //    return api.get(`http://ddragon.leagueoflegends.com/cdn/10.1.1/data/ko_KR/champion.json`);

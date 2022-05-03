@@ -41,10 +41,21 @@ function CommunityMenu({select}:any){
   );
 }
 const Wrap = styled.div`
+  display: block;
+  position: absolute;
+
+
+  left: 0;
+  right: 0;
   width: 250px;
   height: fit-content;
+  background-color: transparent;
+  box-sizing: border-box;
   background-color: #2c3e50;
 
+  @media (max-width:1024px) {
+    display: none;
+  }
 `;
 const Account = styled.div`
   height: 8rem;

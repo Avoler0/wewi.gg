@@ -61,7 +61,9 @@ table {
 }
 * {
   box-sizing: border-box;
-}
+  /* @media(width:700px) {
+    font-size: 50%;
+} */
 body {
   font-weight: 300;
   /* font-family: 'Source Sans Pro', sans-serif; */

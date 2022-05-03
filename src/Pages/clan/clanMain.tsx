@@ -1,23 +1,11 @@
+
 import { useState } from "react";
 import { useMatch, useNavigate } from "react-router-dom";
 import styled from "styled-components";
+import { Container, Wrapper } from "../../commons/sharingCss";
 import ClanInput from "./ClanCommon/ClanInput";
 import ClanRes from "./ClanCommon/ClanRes";
 
-const Container = styled.div`
-  max-width: 1903px;
-  min-width: 1200px ;
-  margin: 0 auto ;
-`;
-const Wrapper = styled.div`
-  max-width: 1200px;
-  margin: 0 auto;
-`;
-const Head = styled.div`
-  width:100% ;
-  height: 13rem ;
-  padding-bottom: 48px;
-`;
 const Filter = styled.div`
   position: relative;
   display: flex ;
@@ -55,6 +43,18 @@ const BoardWrapper = styled.div`
   display: grid;
   grid-template-columns: repeat(4,1fr) ;
   grid-gap: calc(15px);
+  @media (max-width: 1199px) {
+    grid-template-columns: repeat(3,1fr) ;
+    grid-gap: calc(20px);
+  }
+  @media (max-width: 995px) {
+    grid-template-columns: repeat(2,1fr) ;
+    grid-gap: calc(15px);
+  }
+  @media (max-width: 572px){
+    grid-template-columns: repeat(2,1fr) ;
+    grid-gap: calc(5px);
+  }
 `;
 const AddButton = styled.button`
   position: absolute;
@@ -81,12 +81,11 @@ function Clan() {
   const addClick = () => {
     history('/clan/addClan')
   }
+
   return (
-    <>
       <Container>
         <Wrapper>
-          <Head />
-          <Filter id="filter">
+          {/* <Filter id="filter">
             <CategoryBt onClick={categorySwitch}>카테고리</CategoryBt>
             {cgSwitch ? 
             <CategoryWrap>
@@ -96,14 +95,13 @@ function Clan() {
             </CategoryWrap>
             : null}
             <AddButton onClick={addClick}>등록</AddButton>
-          </Filter>
+          </Filter> */}
           <BoardWrapper>
             {[1,2,3,4,5,6,7,8,9,10,11,12,13].map((board) => <ClanRes/>)}
           </BoardWrapper>
         </Wrapper>     
+        {overlayMatch ? <ClanInput /> : null}
       </Container>
-      {overlayMatch ? <ClanInput /> : null}
-    </>
   );
 }
 

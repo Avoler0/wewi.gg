@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { API_KEY, PATH } from "../../commons/API_KEY";
 
@@ -67,10 +67,18 @@ const Input = styled.input`
   border: none;
   border-bottom: 1px solid #f3ebeb33;
   border-radius: 5px;
-  padding: 0.8rem;
   :focus,:active{
     outline: none;
   }
+`;
+const Email = styled.div`
+  width: 100%;
+  height: 2.5rem;
+  font-size: 20px;
+  font-weight: bold;
+  border-bottom: 1px solid #f3ebeb33;
+  color: green;
+  line-height: 30px;
 `;
 const ExitWrap = styled.div`
   margin: 2.5rem 0;
@@ -107,48 +115,40 @@ const NickColum = styled.div`
 `;
 const NickCheck = styled.div`
   padding-top: 5px;
+  font-size: 14px;
 `;
+interface I_navState {
+  hash: string,
+  key: string,
+  pathname: string,
+  search: string,
+  state: string,
+}
 function Register() {
-
   const history = useNavigate();
+  const navState:any = useLocation();
   const cancelClick = () => history('/');
   const {register,watch,handleSubmit} = useForm();
   const [nickCheck,setNickCheck] = useState("none");
+  const [oauthEmail , setOauthEmail] = useState("");
+  // let oauthEmail;
   const reg = {
-    Id: watch("email"),
+    Id: !navState.state ? watch("email") : navState.state.split(',')[3].split(':')[1].split('}')[0].split('"')[1],
     Pw: watch("password"),
     Nick:watch("nickname")
   }
-  // function getName (name:string) {
-  //   try{
-  //     axios.get(`${PATH.KR_RIOT}/lol/summoner/v4/summoners/by-name/${name}?api_key=${API_KEY}`)
-  //     .then(() => {
-  //       setNickCheck(true);
-  //     })
-  //   }catch(error){
-  //     console.log(error);
-  //     setNickCheck(false);
-  //   }
-  // }
-  function postName(name:string) {
-    // axios({
-    //   method: 'post',
-    //   url:`http://localhost:4000/api/register/${name}`,
-    //   data: {
-    //     name:name,
-    //   },
-    // })
-    //   .then((response) => {
-    //     setNickCheck("success");
-    //     console.log("성공",response);
-    //   })
-    //   .catch((error) => {
-    //     setNickCheck("failed");
-    //     console.log("에러",error);
-    //   })
+  const navEmail = () =>{
+    if(!navState.state) return;
+    const naverEmail = navState.state.split(',')[3].split(':')[1].split('}')[0].split('"')[1]
+    setOauthEmail(naverEmail);
+  }
+  useEffect(()=>{
+    navEmail()
+  },[])
+  function postName() {
     axios({
       method: 'get',
-      url:`http://localhost:4000/api/register/${name}`,
+      url:`http://localhost:4000/api/register/${reg.Nick}`,
     })
       .then((response) => {
         setNickCheck("success");
@@ -159,14 +159,15 @@ function Register() {
         console.log("에러",error);
       })
   }
-  function postReg(id:string,pw:string) {
+  function postReg() {
+    if(nickCheck === "failed") return;
     axios({
       method: 'post',
       url:'http://localhost:4000/api/register',
       data: {
         email:reg.Id,
         password:reg.Pw
-      },
+      }, 
     })
       .then((response) => {
         console.log("성공",response);
@@ -176,8 +177,8 @@ function Register() {
       })
   }
   const onValid = (e:any) => {
-    // postReg(reg.Id,reg.Pw);
-    postName(reg.Nick);
+    postReg();
+    // postName();
   }
   return (
     <>
@@ -192,7 +193,7 @@ function Register() {
         <Form onSubmit={handleSubmit(onValid)}>
           <InWrap>
             <Label htmlFor="regiId">이메일 주소</Label>
-            <Input id="id" type="email" {...register("email")} />
+            {oauthEmail.length > 8 ? <Email>{oauthEmail}</Email> : <Input id="id" type="email" {...register("email")} />}
           </InWrap>
           <InWrap>
             <Label htmlFor="regiPw">비밀번호</Label>
@@ -205,10 +206,9 @@ function Register() {
             </NickColum>
             <NickColum>
               <Input id="id" type="text" {...register("nickname")} />
-              {/* { !nickCheck ? <span>없는 닉네임 입니다.</span> : null } */}
-              
             </NickColum>
-            {nickCheck === "success" && null || nickCheck === "failed" && <NickCheck>닉네임을 다시 확인 해 주세요.</NickCheck>}
+            {nickCheck === "success" && <NickCheck>닉네임이 확인 되었습니다.</NickCheck>}
+            {nickCheck === "failed" && <NickCheck>존재하지 않은 닉네임입니다.</NickCheck> }
             
           </InWrap>
           <ExitWrap>

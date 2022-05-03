@@ -1,3 +1,4 @@
+import React from "react";
 import { useEffect, useState } from "react";
 import styled from "styled-components";
 import GameList from "./GameList/GameList";
@@ -20,12 +21,12 @@ function RecordRecently({gameInfo}:any) {
 
   return (
     <RecordUl>
-        {gameInfo.map((data:any) => <GameList key={recordCount++} gameInfo={data}/>)}
+        {gameInfo.map((data:any)=> <GameList key={recordCount++} gameInfo={data}/>)}
     </RecordUl>
   );
 }
 
-export default RecordRecently;
+export default React.memo(RecordRecently);
 
 const RecordUl = styled.ul`
 

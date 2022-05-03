@@ -1,37 +1,45 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
+import { timeDiffFunc } from "../../../commons/functionCollection";
 
 
-function DuoRes(){
-  const minute = useState(1);
+function DuoRes({duoRes}:any){
   const report = useState(0);
+  const {Content ,CreatedAt,DuoType ,Id , Line ,Lose ,SeekerName ,UpdatedAt ,Win} = duoRes
+  const winningRate = Math.round(Win / (Win + Lose) * 100)
+  const nowDate = new Date();
+  // 소환사 아이콘은 프론트에서 제공해 넘겨주기. getSummonerInfo("스쿵씨")
+  // 윈 로즈 프론트에서 사용 가능 getSummonerLeagueInfo(id)
+  
+  const timeDiff:any = timeDiffFunc(nowDate,CreatedAt)
+  
   return (
     <Board >
       <BoardTop>
         <BoardHigh>
           <BoardProfileIcon />
-          <BoardSummoner>소환사명</BoardSummoner>
+          <BoardSummoner>{SeekerName}</BoardSummoner>
         </BoardHigh>
         <BoardLow>
           <BoardItems>
             <BoardLine>
               <BoardLineIcon src={`../images/icon/line/Line-All-Ico.png`} />
             </BoardLine>
-            <BoardWinRate>승률 77%</BoardWinRate>
+            <BoardWinRate>{winningRate}</BoardWinRate>
             <BoardChamp>최근챔 3개</BoardChamp>
           </BoardItems>
         </BoardLow>
         </BoardTop>
       
       <BoardBottom>
-        <span>같이 할 사람 구해요 ~</span>
+        <span>{Content}</span>
         <BoardFooter>
           <BoardReport>
             <Link to="/reportView">신고 누적 : {report}회</Link>
           </BoardReport>
           <BoardTime>
-            <span>{minute} 분전</span>
+            {<span>{timeDiff[0]}{timeDiff[1]} 전</span>  }
           </BoardTime>
         </BoardFooter>
       </BoardBottom>
@@ -39,7 +47,6 @@ function DuoRes(){
     </Board>
   )
 }
-//2c3e50
 export default DuoRes;
 
 const Board = styled.div`
@@ -66,7 +73,7 @@ const BoardFooter = styled.div`
   padding: 7px;
   width: 100%;
   color: rgba(255,255,255,0.7)
-  color: white;
+  /* color: white; */
 `;
 const BoardTime = styled.div`
   font-weight: 400;

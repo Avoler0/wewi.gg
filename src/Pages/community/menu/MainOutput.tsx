@@ -35,23 +35,22 @@ function MainOutput({menu}:any) {
 }
 const Wrap = styled.div`
   float: right;
-  width: 812px;
-  height: 100%;
-  background-color: transparent;
-  box-sizing: border-box;
-  margin-left: 1.8rem;
-  background-color: #4e6e8f;
+  width: 768px;
+  @media (max-width: 1024px){
+	  width: 100%;
+  }
 `;
 const SubHeader = styled.div`
   width: 100%;
-  height: 6.5rem;
+  height: 128px;
   background-color: #2c3e50;
-  padding: 15px;
-  margin-bottom: 1.5rem;
+  margin-bottom: 30px;
 `;
+
 const HeaderTitle = styled.div`
   font-size: 22px;
   font-weight: bold;
+  padding: 10px;
 `;
 const HeaderButton = styled.button`
 

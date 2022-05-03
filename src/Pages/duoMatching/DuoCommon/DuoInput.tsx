@@ -2,31 +2,85 @@ import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
+import { postDuoMatching } from "../../../api/api";
+import OverlayMessage from "../../../Components/OverlayMessage";
 
 function DuoInput() {
   const history = useNavigate();
-  const cardOut = () => history("/duo");
+  const cardOut = () => {history("/duo"); window.location.reload()};
   const [onOff,setOnOff] = useState(true);
-  const [okBt,setOkBt] = useState(false);
-  const {register ,watch ,handleSubmit} = useForm();
-  const inputData = {
-    name:watch("name"),
-    memo:watch("memo"),
-    password:watch("password"),
+  const [inputName , setInputName] = useState("");
+  const [inputContent , setInputContent] = useState("같이할 사람 구합니다 !");
+  const [inputPassword , setInputPassword] = useState("");
+  const [lineChoice,setLineChoice] = useState(0);
+  const [gameChoice,setGameChoice] = useState(0);
+  const [postState,setPostState] = useState("exit");
+  const state = {
+    type:null,
+    message:""
   }
-  const onValid = () => {
-      console.log(inputData.name.length);
-  }
-  const dataCheck = () => {
-    if(inputData.name.length > 2 && inputData.memo.length > 5 && inputData.password.length === 4)
-    {
-      setOkBt(!okBt);
+  const setState = (props:any) => {
+    if(props.isAxiosError) return ;
+    if(props === "exit"){
+      setPostState("exit");
+      return;
+    }else{
+        state.type = props.response.status;
+        state.message = props.response.message;
+        if(props.response.status === 200){
+          setPostState("clear")
+        }
+        if(props.response.status === 400){
+          setPostState("error")
+      }
     }
   }
-  
+  const inputData = {
+    Name:inputName,
+    Content:inputContent,
+    Password:inputPassword,
+    // Tier:,
+    GameType:gameChoice,
+    LineType:lineChoice,
+    // Win:,
+    // Lose:,
+  }
+  const lineSelect = (lineNum:number) => {
+    setLineChoice(lineNum)
+  }
+  const gameSelect = (event:any) => {
+    const gameType = Number(event.target.value)
+    setGameChoice(gameType)
+  }
+  const onValid = (event:any) => { event.preventDefault();}
+  const postData = () => {
+    if(dataCheck() === true){
+      const data = inputData
+
+      postDuoMatching(data).then((res)=>{
+        console.log("성공",res);
+        setState(res)
+    }).catch((error)=>{
+      console.log("에러",error);
+      setState(error)
+    })
+
+      
+    }else if(dataCheck() === "nameValueError"){
+      alert("소환사 명을 입력 해 주세요")
+    }else if(dataCheck() === "passwordValueError"){
+      alert("비밀번호를 4자리 입력 해 주세요")
+    }
+  }
+  const dataCheck = () => {
+    if(inputName.length > 2 && inputPassword.length === 4) return true
+    else if(inputName.length < 2) return "nameValueError"
+    else if(inputPassword.length !== 4) return "passwordValueError"
+  }
   const MicClick = () => {
     setOnOff(!onOff)
   }
+  
   return (
     <>
     <Overlay onClick={cardOut} />
@@ -35,44 +89,42 @@ function DuoInput() {
         <CardName>소환사 등록하기</CardName>
         <Xbutton onClick={cardOut}>X</Xbutton>
       </Head>
-      <Form onSubmit={handleSubmit(onValid)}>
+      <Form onSubmit={(e) => onValid(e)}>
         <Label htmlFor="name" >소환사 명</Label>
-        <Input id="name" {...register("name" , {required:true , minLength:{
-                  value:1,
-                  message: "두글자 이상의 소환사명을 입력하세요",
-        }})}/>
+          <Input onChange={(e:any) => setInputName(e.target.value)}/>
         <ColumnMiddle>
           <LineWrap>
             <Label>주 포지션</Label>
             <LineBox>
-              <LineItem>
+              <LineItem onClick={() => lineSelect(0)} bgColor={lineChoice === 0 ? "#7c7c83" : "#2c3e50"}>
                 <img src={`../images/icon/line/Line-All-Ico.png`} />
               </LineItem>
-              <LineItem>
+              <LineItem onClick={() => lineSelect(1)} bgColor={lineChoice === 1 ? "#7c7c83" : "#2c3e50"}> 
                 <img src={`../images/icon/line/Line-Top-Ico.png`} />
               </LineItem>
-              <LineItem>
+              <LineItem onClick={() => lineSelect(2)} bgColor={lineChoice === 2 ? "#7c7c83" : "#2c3e50"}>
                 <img src={`../images/icon/line/Line-Jungle-Ico.png`} />
               </LineItem>
-              <LineItem>
+              <LineItem onClick={() => lineSelect(3)} bgColor={lineChoice === 3 ? "#7c7c83" : "#2c3e50"}>
                 <img src={`../images/icon/line/Line-Mid-Ico.png`} />
               </LineItem>
-              <LineItem>
+              <LineItem onClick={() => lineSelect(4)} bgColor={lineChoice === 4 ? "#7c7c83" : "#2c3e50"}>
                 <img src={`../images/icon/line/Line-Bottom-Ico.png`} />
               </LineItem>
-              <LineItem>
+              <LineItem onClick={() => lineSelect(5)} bgColor={lineChoice === 5 ? "#7c7c83" : "#2c3e50"}>
                 <img src={`../images/icon/line/Line-Support-Ico.png`} />
               </LineItem>
             </LineBox>
           </LineWrap>
           <QueueType>
             <Label>큐 타입</Label>
-            <TypeSelect>
-              <TypeOption>일반게임</TypeOption>
-              <TypeOption selected>솔로랭크</TypeOption>
-              <TypeOption>자유랭크</TypeOption>
-              <TypeOption>칼바람나락</TypeOption>
-              <TypeOption>특별모드</TypeOption>
+            <TypeSelect defaultValue="0" onChange={gameSelect}>
+              <TypeOption value={0}>모든게임</TypeOption>
+              <TypeOption value={1}>일반게임</TypeOption>
+              <TypeOption value={2}>솔로랭크</TypeOption>
+              <TypeOption value={3}>자유랭크</TypeOption>
+              <TypeOption value={4}>칼바람나락</TypeOption>
+              <TypeOption value={5}>특별모드</TypeOption>
             </TypeSelect>
           </QueueType>
           <MicCheck>
@@ -84,26 +136,18 @@ function DuoInput() {
           </MicCheck>
         </ColumnMiddle>
         <Label>메모</Label>
-        <Input placeholder="같이할 사람 구합니다 !" {...register("memo" , {required:true , minLength:{
-                  value:5,
-                  message: "5글자 이상의 메모를 작성 해 주세요",
-        }})}/>
+        <Input placeholder="같이할 사람 구합니다 !" onChange={(e:any) => setInputContent(e.target.value)} />
         <PassWord>
           <Label >삭제 비밀번호</Label>
-          <Input placeholder="4자리 숫자로 입력 해 주세요" 
-          {...register("password" , {required:true , minLength:{
-                  value:4,
-                  message: "4자리 숫자를 입력 해 주세요",
-        }})}/>
+          <Input placeholder="4자리 숫자로 입력 해 주세요" onChange={(e:any) => setInputPassword(e.target.value)}/>
         </PassWord>
         <ExitWrap>
           <CancelBt onClick={cardOut}>취소</CancelBt>
-          <OkBt onClick={onValid}>등록</OkBt>
+          <OkBt onClick={postData}>등록</OkBt>
         </ExitWrap>
-        
       </Form>
-      
     </Wrap>
+    {postState === "clear" || postState === "error" ? <OverlayMessage setState={setState} state={state}/> : null}
     </>
   );
 }
@@ -179,19 +223,14 @@ const LineWrap = styled.div`
 const LineBox = styled.ul`
   display: flex;
 `;
-const LineItem = styled.li`
+const LineItem = styled.li<{bgColor:any}>`
   width: 2.2rem;
   height: 2.2rem;
   padding: 0.2rem;
   border: 1px solid rgba(66,66,84,0.8);
   color: white;
   cursor: pointer;
-  :hover{
-    background-color: #57575f;
-  }
-  :active{
-    background-color: #7c7c83;
-  }
+  background-color: ${(props) => props.bgColor};
   img{
     width: 100%;
   }

@@ -2,20 +2,17 @@ import React from "react";
 import { useEffect, useState } from "react";
 import { useRecoilValue } from "recoil";
 import styled from "styled-components";
-import { getSummonerGameInfo, getSummonerRecordInfo } from "../../../api/api";
+import { getSummonerGameInfo } from "../../../api/api";
 import { customAsync } from "../../../commons/asyncUtils";
 import { AT_puuid } from "../../../Router/Api/RiotRecordApi";
 import ChampRecently from "./RecentlyRecord/ChampRecently"
 import RecordRecently from "./RecentlyRecord/RecordRecently"
 
-function Recently({recordList}:I_RecordList) {
+function Recently() {
   const [gameInfo,setGameInfo] = useState<any[]>();
-  const [isLoading,setIsLoading] = useState(true);
-  const [recordInfo,setRecordInfo] = useState<any>();
   const summonerPuuid = useRecoilValue(AT_puuid);
   const start = 0;
-  const count = 20;
-  console.log("겜리스트",recordList.data[0]);
+  const count = 10;
   
   const getContent = (puuid:string , start:number , count:number) => {
     Promise.all([customAsync(getSummonerGameInfo(puuid,start,count),1000)])
@@ -42,10 +39,6 @@ function Recently({recordList}:I_RecordList) {
     {/* <ChampRecently  /> */}
   </ChampView>
   <GameView >
-    {/* {recordList.map((data:any,index:number)=><RecordRecently key={count++} data={data[index]}/> )} */}
-    {/* {gameList?.map((res,index) => {
-      <div key={index}>{res}</div>
-    })} */}
     <RecordRecently gameInfo={gameInfo} />
     {/* {recordList} */}
   </GameView>

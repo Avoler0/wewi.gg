@@ -26,10 +26,19 @@ function PostingList() {
             <RecoCount>{post.Recommend}</RecoCount>
           </Recommend>
           <Content>
-            <Title>{post.Title}</Title>
-            <TimeStamp>{post.TimeStamp}<span>분 전</span></TimeStamp>
-            <Views><img src={`../images/icon/icons/view-svgrepo-com.svg`}/>{post.Views}</Views>
-            <NickName>{post.NickName}</NickName>
+            <Column>
+              <Title>{post.Title}</Title>
+            </Column>
+            <Column style={{
+              display:"flex",
+              marginTop:"10px"
+            }}>
+              <MenuType>유머</MenuType>
+              <TimeStamp>{post.TimeStamp} 분 전</TimeStamp>
+              <Views><img src={`../images/icon/icons/view-svgrepo-com.svg`}/>{post.Views}</Views>
+              <NickName>
+                <img src={`../images/icon/icons/user-svgrepo-com.svg `} />{post.NickName}</NickName>
+            </Column>
           </Content>
         </PostingItems>
       )}
@@ -38,23 +47,32 @@ function PostingList() {
   );
 }
 const Recommend = styled.div`
+  display: flex;
+  flex-direction: column;
   height: 100%; 
   padding: 5px;
   padding-left: 1.5rem;
   padding-right: 2rem;
-  display: flex;
   font-size: 14px;
 `;
 const RecoImg = styled.img`
-  margin-right: 4px;
+  width: 22px;
+  
+  margin: 0 auto;
 `;
 const RecoCount = styled.div`
-  
+  margin-top: 5px;
+  text-align: center;
 `;
 const Content = styled.div`
   padding: 5px;
-  display: flex;
   max-width: 100%;
+  display: flex;
+  flex-direction: column;
+`;
+const Column = styled.div`
+  font-size: 14px;
+  text-align: right;
 `;
 const Title = styled.div`
   display: flex;
@@ -62,27 +80,36 @@ const Title = styled.div`
   vertical-align: top;
   line-height: 15px;
   font-size: 14px;
-  word-break: break-all;
   width: 30rem;
+  color: whitesmoke;
   cursor: pointer;
 `;
+const MenuType = styled.div`
+  
+  
+`;
 const TimeStamp = styled.div`
-
-  span{
-    
-    padding: 0 3px 0 3px;
-  }
-  padding: 0 10px 0 10px;
+  padding-left: 8px;
+  width: 68px;
+  height: 16px;
 `;
 const Views = styled.div`
   display: flex;
+  padding-left: 12px;
+  width: 68px;
   img{
-    padding: 0 5px 0 4px;
-    height: 100%;
-    
+    width: 18px;
+    height: 80%;
+    margin-right: 5px;
   }
 `;
 const NickName = styled.div`
-  padding-left: 25px;
+  padding-left: 15px;
+
+  img{
+    margin-right: 5px;
+    width: 22px;
+    height: 80%;
+  }
 `;
 export default PostingList;

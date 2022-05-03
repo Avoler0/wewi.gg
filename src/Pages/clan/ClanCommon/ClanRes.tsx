@@ -18,9 +18,10 @@ function ClanRes() {
         <ClanName>{clanName}</ClanName>
       </BoardTop>
       <BoardBottom>
-        <Category>
-          {clanContent.map((content:any,index:number) => <DptLi>{content}</DptLi>)}
-        </Category>
+        <Content>
+          친목지향 , 재미있는 클랜입니다.
+          많이 찾아와 주세요 gggggggggg
+        </Content>
         <PathIcoBox>
           <IconBt onClick={urlDiscord}><Icon src={`../images/path-icons/discord-logo.png`}/></IconBt>
           <IconBt onClick={urlKakao}><Icon src={`../images/path-icons/kakao-logo.png`}/></IconBt>
@@ -35,16 +36,20 @@ export default ClanRes;
 const ClanBoard = styled.div<{banner:string}>`
   background-image: url(${(props) => props.banner});
   background-size: contain;
-  width : 18.2rem;
-  height: 8.5rem;
+  width : 290px;
+  height: 136px;
   border-radius: 15px;
   background-color: #2c3e50;
+  @media (max-width: 572px){
+    width : 200px;
+    font-size: 14px;
+  }
 `;
 const BoardTop= styled.div`
   position: relative;
   padding: 5px;
-  height: 79%;
-  
+  height: unset;
+  height: 86px;
 `;
 const ClanName = styled.div`
   display: inline-block;
@@ -52,17 +57,27 @@ const ClanName = styled.div`
   opacity: 0.7;
 `;
 const BoardBottom = styled.div`
-
-  display: flex;
-  justify-content: space-between;
+  position: relative;
+  width: 100%;
+  height: 50px;
 `;
-const Category = styled.ul`
-  display: flex;
-  padding-left: 5px;
+const Content = styled.div`
+  padding: 5px;
+  width: 100%;
+  height: 100%;
+  overflow: auto ;
+  -ms-overflow-style: none;
+  ::-webkit-scrollbar { display: none; }
+
+
+
 `;
 const PathIcoBox = styled.div`
   display: flex;
-  position: relative;
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  padding: 0 3px 5px 0;
 `;
 const IconBt = styled.button`
   position: relative;

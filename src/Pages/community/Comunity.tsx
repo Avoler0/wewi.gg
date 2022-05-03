@@ -6,17 +6,18 @@ import MainOutput from "./menu/MainOutput";
 import CommunityMenu from "./menu/menu";
 
 const Container = styled.div`
-  max-width: 1903px;
-  min-width: 1200px ;
-
+  width: 100%;
+  height: 100%;
 `;
-const Layout = styled.div`
+
+const Wrapper = styled.div`
   padding-top: 13rem ;
   width: 1044px;
   height: 1900px;
   position: relative;
-  display: flex;
+  display: block;
   margin: 0 auto;
+
 `;
 function Comunity() {
   const [menu,setMenu] = useState("All");
@@ -29,10 +30,10 @@ function Comunity() {
   
   return (
     <Container>
-      <Layout id="lay">
+      <Wrapper id="lay">
         <CommunityMenu select={setMenu}/>
         <MainOutput menu={menu}/>
-      </Layout>
+      </Wrapper>
     </Container>
   );
 }

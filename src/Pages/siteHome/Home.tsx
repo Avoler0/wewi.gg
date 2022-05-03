@@ -1,21 +1,8 @@
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import {useForm} from "react-hook-form"
+import { Container , Wrapper } from "../../commons/sharingCss";
 
-const Container = styled.div`
-  max-width: 1903px;
-  min-width: 1200px ;
-  margin: 0 auto ;
-`;
-const Wrapper = styled.div`
-  max-width: 1200px;
-  margin: 0 auto;
-`;
-const Head = styled.div`
-  width:100% ;
-  height: 10vh ;
-  padding-bottom: 48px;
-`;
 const Top = styled.div`
   display: flex;
   width: 100%;
@@ -27,7 +14,6 @@ const Banner = styled.div`
   justify-content: center;
   align-items: center;
   width: 50%;
- 
   margin: 0 auto;
 `;
 const BannerMemo = styled.div`
@@ -35,6 +21,15 @@ const BannerMemo = styled.div`
    color: white;
   font-weight: bold;
    -webkit-text-stroke: 1px #000;
+  @media (min-width: 992px) and (max-width: 1199px) {
+    font-size: 72px;
+  }
+  @media (min-width: 768px) and (max-width: 991px) {
+    font-size: 62px;
+  }
+  @media (max-width: 767px){
+	  font-size: 52px;
+  }
 `;
 const Bottom = styled.div`
   display: flex;
@@ -71,7 +66,15 @@ const SearchInput = styled.input`
      padding: 0;
    }
   }
-  
+  @media (min-width: 992px) and (max-width: 1199px) {
+    width: 500px;
+  }
+  @media (min-width: 768px) and (max-width: 991px) {
+    width: 400px;
+  }
+  @media (max-width: 767px){
+	  width: 300px;
+  }
 `;
 const SearchButton = styled.button`
   width: 50px;
@@ -80,10 +83,16 @@ const SearchButton = styled.button`
   cursor: pointer;
   font-weight: bold;
   background-color: transparent;
+  
 `;
 const RecommenWrap = styled.div`
   background-color: black;
   width: 100%;
+  margin: 0 auto;
+  @media (min-width: 767px) and (max-width: 1199px) {
+    width: 80%;
+  }
+
 `;
 const RecoName = styled.div`
   display: flex;
@@ -108,7 +117,6 @@ function Home() {
     
     <Container>
       <Wrapper>
-        <Head />
         <Top>
           <Banner>
             <BannerMemo>Wewi.gg</BannerMemo>
