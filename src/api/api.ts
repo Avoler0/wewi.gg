@@ -16,13 +16,21 @@ export const getProfileIcon = (profileNumber:number) => {
    return `http://ddragon.leagueoflegends.com/cdn/10.11.1/img/profileicon/${profileNumber}.png`
 }
 export const getChampionIcon = (champion:string) => {
-   return `https://ddragon.leagueoflegends.com/cdn/10.11.1/img/champion/${champion}.png`
+   return `http://ddragon.leagueoflegends.com/cdn/12.9.1/img/champion/${champion}.png`
 }
-export const getChamiponInfo = (champion:string) => {
-   return api.get(`http://ddragon.leagueoflegends.com/cdn/10.11.1/data/ko_KR/champion/${champion}.json`)
+export const getChamiponName = async(champion:string) => {
+   return await api.get(`http://ddragon.leagueoflegends.com/cdn/12.9.1/data/en_US/champion/${champion}.json`).then((res)=>{
+      return res.data.data[champion].name
+   })
 }
 export const getDuoMatching = () => {
    return api.get(`${path}/api/duo/rescue`)
+}
+export const deleteDuoMate = (mateId:string) => {
+ return api.get(`${path}/api/duo/delete?mateId=${mateId}`)
+ .then(()=>console.log("삭제성공")
+ ).catch((error) =>{console.log("삭제실패",error);
+ })
 }
 export const postDuoMatching = (data:any) => {
    return api({
@@ -38,14 +46,9 @@ export const postDuoMatching = (data:any) => {
          Win:0,
          Lose:0,
          Password:data.Password,
-         IsMic:false
+         IsMic:data.IsMic
       }
    })
-   // .then((res) => {
-   //    return res
-   // }).catch((error) => {
-   //    return error
-   // })
 }
 export const getClanBoard = () => {
    return api.get(`${path}/api/clan/rescue`).then((res)=> {console.log("성공");
@@ -55,6 +58,18 @@ export const getClanBoard = () => {
 // export const getChampionInfo = () => {
 //    return api.get(`http://ddragon.leagueoflegends.com/cdn/10.1.1/data/ko_KR/champion.json`);
 // };
-// export const getSpellInfo = () => {
-//    return api.get(`https://ddragon.leagueoflegends.com/cdn/10.6.1/data/ko_KR/summoner.json`);
-// }
+export const getSpellInfo = () => {
+   return api.get(`https://ddragon.leagueoflegends.com/cdn/12.9.1/data/ko_KR/summoner.json`);
+}
+export const getSpellIcon = (spellName:string) => {
+   return `http://ddragon.leagueoflegends.com/cdn/12.9.1/img/spell/${spellName}.png`;
+}
+export const getRunesInfo = () => {
+   return api.get(`https://ddragon.leagueoflegends.com/cdn/12.9.1/data/en_US/runesReforged.json`);
+}
+export const getRuneIcon = (iconPath:string) => {
+   return `https://ddragon.leagueoflegends.com/cdn/img/${iconPath}`
+}
+export const getItemIcon = (itemId:number) => {
+   return `http://ddragon.leagueoflegends.com/cdn/12.9.1/img/item/${itemId}.png`
+}

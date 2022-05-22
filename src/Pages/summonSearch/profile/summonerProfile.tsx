@@ -49,6 +49,15 @@ const Update = styled.div`
   font-size: 12px;
     font-weight: none;
 `;
+const Good = styled.div`
+  display: inline-block;
+  font-size: 14px;
+  width: 40%;
+`;
+const Bad = styled.div`
+  display: inline-block;
+  font-size: 14px;
+`;
 interface I_summonerInfo {
     summonerInfo:{
       data:{
@@ -81,8 +90,10 @@ function Profile({summonerInfo}:any) {
         <Update>      
           최근 업데이트:하루전
         </Update>
-
+      <Good>Good</Good>
+      <Bad>Bad</Bad>
       </NameBox>
+      
     </ProfileWrap>
   )
 }

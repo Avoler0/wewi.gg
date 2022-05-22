@@ -1,25 +1,37 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
-import { timeDiffFunc } from "../../../commons/functionCollection";
+import { getTime, timeDiff, } from "../../../commons/functionCollection";
+import { ReactComponent as Trash } from "../../../images/icons/trash-svgrepo-com.svg"
+import OverlayMessage from "../../../Components/OverlayMessage";
 
-
-function DuoRes({duoRes}:any){
+function DuoRes({duoRes,setDeleteState,setDeletePw,setDeleteId}:any){
   const report = useState(0);
   const {Content ,CreatedAt,DuoType ,Id , Line ,Lose ,SeekerName ,UpdatedAt ,Win} = duoRes
+  const [password , setPassword] = useState("0000");
   const winningRate = Math.round(Win / (Win + Lose) * 100)
-  const nowDate = new Date();
+  const nowDate = getTime(new Date());
   // 소환사 아이콘은 프론트에서 제공해 넘겨주기. getSummonerInfo("스쿵씨")
   // 윈 로즈 프론트에서 사용 가능 getSummonerLeagueInfo(id)
+  console.log(duoRes);
   
-  const timeDiff:any = timeDiffFunc(nowDate,CreatedAt)
-  
+  const resTimeDiff:any = timeDiff(nowDate,getTime(new Date(CreatedAt)))
+  // setDeleteState(true,duoRes.Password,duoRes.Id)
+  const deleteBoard = () => {
+    setDeleteState(true);
+    setDeletePw(duoRes.Password);
+    setDeleteId(duoRes.Id);
+  }
   return (
     <Board >
       <BoardTop>
         <BoardHigh>
           <BoardProfileIcon />
           <BoardSummoner>{SeekerName}</BoardSummoner>
+          <BoardDelete>
+            <Trash onClick={deleteBoard} xmlns={`${Trash}`} style={{ width:"13px",
+            fill:"#fff", marginRight:"5px" , marginBottom:"2px" , cursor:"pointer"}}/> 
+          </BoardDelete>
         </BoardHigh>
         <BoardLow>
           <BoardItems>
@@ -39,11 +51,10 @@ function DuoRes({duoRes}:any){
             <Link to="/reportView">신고 누적 : {report}회</Link>
           </BoardReport>
           <BoardTime>
-            {<span>{timeDiff[0]}{timeDiff[1]} 전</span>  }
+            {<span>{resTimeDiff[0]}{resTimeDiff[1]} 전</span>  }
           </BoardTime>
         </BoardFooter>
       </BoardBottom>
-      
     </Board>
   )
 }
@@ -97,6 +108,9 @@ const BoardLow = styled.div`
   padding-bottom: 5px;
   border-bottom: solid 1px white;
 `;
+const BoardDelete = styled.div``
+
+;
 const BoardItems = styled.div`
   display:flex ;
   width: 90% ;

@@ -6,4 +6,4 @@ const AT_puuid = atom({
 
 
 
-export {AT_puuid,}
+export {AT_puuid}

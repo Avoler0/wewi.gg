@@ -2,10 +2,17 @@ import { useMatch, useNavigate } from "react-router-dom";
 import { useRecoilState, useSetRecoilState } from "recoil";
 import styled from "styled-components";
 
-function OverlayMessage({setState , state} :any) {
+function OverlayMessage({setPostState , postState , setData} :any) {
   const overLayOut = () => {
-    setState("exit");
+    setPostState({
+      window:false
+    });
+    if(setData){
+      
+    }
   }
+  console.log(postState);
+  
   return (
     <>
       <Overlay onClick={overLayOut}></Overlay>
@@ -13,10 +20,10 @@ function OverlayMessage({setState , state} :any) {
         <OkBt onClick={overLayOut}>X</OkBt>
         <Content>
           <MessageTitle>
-            {state.type}
+            {postState.type === '200' ? "등록 성공" : "등록 실패"}
           </MessageTitle>
           <MessageContent>
-            {state.message}
+            {postState.message}
           </MessageContent>
           
         </Content>

@@ -1,45 +1,50 @@
+import React from "react";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { useSetRecoilState } from "recoil";
 import styled from "styled-components";
-import { getSummonerGameInfo, getSummonerInfo, getSummonerLeagueInfo } from "../../api/api";
+import { getSummonerInfo, getSummonerLeagueInfo } from "../../api/api";
 import { I_summonerBasicData, I_summonerInfo } from "../../commons/apiInterFace";
 import { customAsync } from "../../commons/asyncUtils";
+import { AT_puuid } from "../../commons/Atom";
 import { Container, Wrapper } from "../../commons/sharingCss";
-import { AT_puuid } from "../../Router/Api/RiotRecordApi";
 import Profile from "./profile/summonerProfile";
 import SummonerInfo from "./rank/summonerLeagueInfo";
 import Recently from "./Record/Recently";
 
 
 const ProfileView = styled.div`
-  width: 25%;
+  width: 300px;
   height: 100px;
   background-color: #2c3e50;
   margin-bottom: 6px;
   border-radius: 5px;
+  display: block;
 `;
 const RankView = styled.div`
-  width: 25%;
+  width: 300px;
   height: 180px;
   background-color: #2c3e50;
   margin: 6px 0;
   border-radius: 5px;
+  display: block;
 `;
 const ChampStatsView = styled.div`
-  width: 25%;
+  width: 300px;
   min-height: 300px;
   background-color: #2c3e50;
   margin: 6px 0;
   border-radius: 5px;
+  display: block;
 `;
 const RecentlyView = styled.div`
-  position: absolute;
-  right: 0;
-  width: 73%;
+  width: 900px;
+  /* width: 90vw; */
   min-height: 1200px;
   background-color: #2c3e50;
   border-radius: 5px;
+`;
+const Column = styled.div`
 `;
 
 interface dsd {
@@ -100,31 +105,6 @@ function SummonerRecord() {
     console.log("서몬인포",summonerInfo);
   }
   
-  // console.log(summonerInfo);
-  // console.log(summonerLeagueInfo);
-  // console.log(gameList);
-  // getSummonerBasicData(summonerName!).then(async res => {
-  //     setSummonerInfo(res.data)
-  //     console.log("실행");
-  //     if(res.data){
-  //       const {id:summonerId , puuid:summonerPuuid} = res.data.data;
-  //       console.log("아이디",summonerId);
-        
-  //       Promise.all([
-  //         await customAsync(getSummonerLeagueInfo(summonerId),300),
-  //         await customAsync(getSummonerGameInfo(summonerPuuid,start,count),300),
-          
-  //       ]).then(([fetchSummonInfo,fetchSummonerRecordList]:any) => {
-  //         console.log(fetchSummonInfo);
-  //         console.log(fetchSummonerRecordList);
-  //         // setSummonerInfo(fetchSummonId.data);
-  //         // setSummonerLeagueInfo(fetchSummonInfo.data)
-  //         // setGameList(fetchSummonerRecordList.data)
-  //         // setATPuuid(summonerPuuid)
-  //         // setIsLoading(false);
-  //       })
-  //     }
-  //   })
   if(isLoading){
     return (
       <div>
@@ -135,22 +115,27 @@ function SummonerRecord() {
   
   return(
     <Container>
-      <Wrapper>
-        <ProfileView id="profileView">
-          <Profile summonerInfo={summonerInfo!}/>
-        </ProfileView>
-        <RankView>
-          <SummonerInfo summonerLeagueInfo={summonerLeagueInfo} />
-        </RankView>
-        <ChampStatsView>
+      <Wrapper style={{display:"flex"}} id="wrap">
+        <Column style={{marginRight:"10px"}}>
+          <ProfileView id="profileView">
+            <Profile summonerInfo={summonerInfo!}/>
+          </ProfileView>
+          <RankView>
+            <SummonerInfo summonerLeagueInfo={summonerLeagueInfo} />
+          </RankView>
+          <ChampStatsView>
 
-        </ChampStatsView>
-        <RecentlyView>
-          <Recently/>
-        </RecentlyView>
+          </ChampStatsView>
+        </Column>
+        <Column>
+          <RecentlyView>
+            <Recently/>
+          </RecentlyView>
+        </Column>
+        
       </Wrapper>
     </Container>
   )
 }
 
-export default SummonerRecord;
+export default React.memo(SummonerRecord);

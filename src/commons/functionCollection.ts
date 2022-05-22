@@ -5,7 +5,8 @@ export function getTime(time:any) {
     Month: Number(time.getMonth()+1),
     Date: Number(time.getDate()),
     Hours: Number(time.getHours()),
-    Minutes : Number(time.getMinutes())
+    Minutes : Number(time.getMinutes()),
+    Seconds: Number(time.getSeconds())
   } 
   return date
 }
@@ -16,45 +17,38 @@ interface timeObject {
   hour:number,
   minute:number,
 }
-export const timeDiffFunc = (nowTime:any,createTime:string) => {
-    const now = {
-    year : Number(nowTime.getFullYear()),
-    month: Number(nowTime.getMonth()),
-    date: Number(nowTime.getDate()),
-    hour : Number(nowTime.getHours()),
-    minute : Number(nowTime.getMinutes())
-  }
-  const create = {
-    year : Number(createTime.split("T")[0].split("-")[0]),
-    month: Number(createTime.split("T")[0].split("-")[1]),
-    date: Number(createTime.split("T")[0].split("-")[2]),
-    hour : Number(createTime.split(":")[1]),
-    minute : Number(createTime.split(":")[2].split(".")[0])
-  }
+
+export const timeDiff = (nowTime:any,createTime:any) => { // 시간 비교
   const timeDiffArr:any[] = []
-    if(now.year !== create.year){
-      timeDiffArr.push(now.year - create.year)
+    if(nowTime.Year !== createTime.Year){
+      timeDiffArr.push(Math.abs(nowTime.Year - createTime.Year))
       timeDiffArr.push("년")
-      return timeDiffArr;
     }
-    if(now.month !== create.month){
-      timeDiffArr.push(now.month - create.month)
+    if(nowTime.Month !== (createTime.Month)){
+      timeDiffArr.push(Math.abs(nowTime.Month - (createTime.Month)))
       timeDiffArr.push("달")
-      return timeDiffArr;
     }
-    if(now.date !== create.date){
-      timeDiffArr.push(now.date - create.date)
+    if(nowTime.Date !== createTime.Date){
+      timeDiffArr.push(Math.abs(nowTime.Date - createTime.Date))
       timeDiffArr.push("일")
-      return timeDiffArr;
     }
-    if (now.hour !== create.hour){
-      timeDiffArr.push(now.hour - create.hour)
+    if (nowTime.Hours !== createTime.Hours){
+      timeDiffArr.push(Math.abs(nowTime.Hours - createTime.Hours))
       timeDiffArr.push("시간")
-      return timeDiffArr;
     }
-    if(now.minute !== create.minute){
-      timeDiffArr.push(now.minute - create.minute)
+    if(nowTime.Minutes !== createTime.Minutes){
+      timeDiffArr.push(Math.abs(nowTime.Minutes - createTime.Minutes))
       timeDiffArr.push("분")
-      return timeDiffArr;
     }
+    if(nowTime.Seconds !== createTime.Seconds){
+      timeDiffArr.push(Math.abs(nowTime.Seconds - createTime.Seconds))
+      timeDiffArr.push("초")
+    }
+    return timeDiffArr;
+  }
+
+  export const timeLimit = (data:any,minute:number) =>{
+    setTimeout(()=>{
+      return data;
+    },minute)
   }

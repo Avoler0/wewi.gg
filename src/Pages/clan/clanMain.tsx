@@ -85,17 +85,17 @@ function Clan() {
   return (
       <Container>
         <Wrapper>
-          {/* <Filter id="filter">
-            <CategoryBt onClick={categorySwitch}>카테고리</CategoryBt>
+          <Filter id="filter">
+            {/* <CategoryBt onClick={categorySwitch}>카테고리</CategoryBt>
             {cgSwitch ? 
             <CategoryWrap>
               <CategoryValue>나이</CategoryValue>
               <CategoryValue>성향</CategoryValue>
               <CategoryValue>게임</CategoryValue>
             </CategoryWrap>
-            : null}
+            : null} */}
             <AddButton onClick={addClick}>등록</AddButton>
-          </Filter> */}
+          </Filter>
           <BoardWrapper>
             {[1,2,3,4,5,6,7,8,9,10,11,12,13].map((board) => <ClanRes/>)}
           </BoardWrapper>

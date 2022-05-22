@@ -116,7 +116,7 @@ function Home() {
   return (
     
     <Container>
-      <Wrapper>
+      <Wrapper style={{paddingTop:"50px"}}>
         <Top>
           <Banner>
             <BannerMemo>Wewi.gg</BannerMemo>

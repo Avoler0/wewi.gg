@@ -1,10 +1,9 @@
-import axios from "axios";
 import { useEffect, useState } from "react";
-import { useQuery } from "react-query";
 import { useMatch, useNavigate  } from "react-router-dom";
 import styled from "styled-components";
-import { getDuoMatching } from "../../api/api";
+import { deleteDuoMate, getDuoMatching } from "../../api/api";
 import { Container, Wrapper } from "../../commons/sharingCss";
+import DuoDelete from "./DuoCommon/DuoDelete";
 import DuoInput from "./DuoCommon/DuoInput";
 import DuoRes from "./DuoCommon/DuoRes";
 import {ReactComponent as Plus} from "/MyApp/wewi.gg/src/images/icons/plus-svgrepo-com.svg"
@@ -123,7 +122,13 @@ function Main(this: any) {
   const [tierOption,setTierOption] = useState(0);
   const [duoOption,setGameOption] = useState(0);
   const [lineOption,setLineOption] = useState(0);
-  
+  const [deleteState,setDeleteState] = useState(false)
+  const [deletePw,setDeletePw] = useState("0");
+  const [matchPw,setMatchPw] = useState("1");
+  const [deleteId,setDeleteId] = useState("0");
+
+
+
   const addDuoInput = () => {
     history("/duo/addDuo")
   };
@@ -156,12 +161,19 @@ function Main(this: any) {
   
   useEffect(()=>{
     console.log("듀오레스",duoRes);
+    console.log(deleteState);
+    
   },[duoRes])
-  
+    useEffect(()=>{
+      console.log("매치비번",typeof matchPw , matchPw);
+      console.log("삭제비번",typeof deletePw , deletePw);
+    if(deletePw === matchPw){
+      deleteDuoMate(deleteId)
+    }
+  },[deletePw,matchPw])
   const optionSelect = (data:any) => {
     const {Tier , DuoType , Line} = data;
     let tierB , duoB , lineB = false;
-    console.log("데이터",data);
     if(Tier === tierOption || Tier === 0 ||tierOption === 0) tierB = true;
     else tierB = false;
     if(DuoType === duoOption || DuoType === 0 ||duoOption === 0) duoB = true;
@@ -229,11 +241,12 @@ function Main(this: any) {
               </Column>
             </Filter>
             <BoardLayOut>
-              {duoRes && duoRes.map((res:any,index:number)=> optionSelect(res) ? <DuoRes key={index} duoRes={res}/> : null )}
+              {duoRes && duoRes.map((res:any,index:number)=> optionSelect(res) ? <DuoRes key={index} duoRes={res} setDeleteState={setDeleteState} setDeletePw={setDeletePw} setDeleteId={setDeleteId} />  : null )}
             </BoardLayOut>
           </Wrapper>
       </Container>
       {overlayMatch ? <DuoInput /> : null}
+      {deleteState ? <DuoDelete setDeleteState={setDeleteState} setMatchPw={setMatchPw} deletePw={deletePw}/> : null}
     </>
   );
 }

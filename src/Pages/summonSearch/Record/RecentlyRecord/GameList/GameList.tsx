@@ -1,75 +1,113 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import { getChamiponInfo, getChampionIcon } from "../../../../../api/api";
-import { getTime } from "../../../../../commons/functionCollection";
+import { getChampionIcon, getItemIcon, getRuneIcon, getRunesInfo, getSpellIcon, getSpellInfo } from "../../../../../api/api";
+import { getTime, timeDiff } from "../../../../../commons/functionCollection";
+import { getQueueType, getSpellName } from "../../../../../commons/utils";
 
 function GameList({gameInfo}:any) {
-  console.log("게임 인포",gameInfo)
-  const myScore = gameInfo.participantId
+  // 문법 구조 분해 할당
   const {
+    gameCreation,
+    gameDuration,
+    queueId,
+    gameEndTimestamp,
+    gameMode,
     win,
     assists,
     deaths,
     kills,
+    lane,
+    summoner1Id,
+    summoner2Id,
     totalMinionsKilled,
     neutralMinionsKilled,
     championName,
-  } = gameInfo.info.participants[myScore];
-  const {
-    gameCreation,
-    gameDuration,
-    gameEndTimestamp,
-    gameId,
-    gameMode,
-    gameName,
-    gameStartTimestamp,
-    gameType,
-    gameVersion,
-    mapId,
-  } = gameInfo.info
-  const nowDate = getTime(new Date())
-  const gameDate = getTime(new Date(gameCreation))
-  const getChamp = (championName:string) => {
-    Promise.all([getChampionIcon(championName)])
-    .then(([fetchChamp]) => {
-      return fetchChamp
+    perks,
+    item,
+    team1Kills,
+    team2Kills,
+    teamId
+  } = gameInfo;
+  const [isLoading,setIsLoading] = useState(true); // params가 잘 넘어왔는지 확인하는 State
+  const [runeIcoPath,setRuneIcoPath] = useState<any>([]);
+  const teamKills = teamId === 100 ? team1Kills : team2Kills
+  const minionKills = totalMinionsKilled + neutralMinionsKilled;
+  console.log("팀킬 수 ",team1Kills , team2Kills);
+  
+  // 룬 정보 , 아이콘 PATH 저장하는 함수
+  
+  useEffect( ()=>{
+    getRunesInfo().then(async(res)=>{
+    const perksJson = res.data;
+    const perkIndex:any = [];
+    const mainRuneId = perksJson.findIndex((perk:any)=> perk.id == perks.styles[0].style)
+    const subRuneId = perksJson.findIndex((perk:any)=> perk.id == perks.styles[1].style)
+    perksJson[mainRuneId].slots.findIndex((slot:any,slotIndex:number)=> {
+      slot.runes.findIndex((rune:any,runeIndex:number)=> {
+        if(rune.id === perks.styles[0].selections[0].perk){
+          return perkIndex.push(slotIndex,runeIndex)
+          
+        }
+      }
+      )
     })
+    setRuneIcoPath([perksJson[mainRuneId].slots[perkIndex[0]].runes[perkIndex[1]].icon,perksJson[subRuneId].icon]);
+  })
+  },[])
+  
+  useEffect(()=>{
+    if(gameInfo){
+      setIsLoading(false);
+    }
+  },[])
+  const spellD = getSpellIcon(getSpellName(summoner1Id));
+  const spellF = getSpellIcon(getSpellName(summoner2Id));
+  const gameEndTime:any = timeDiff(getTime(new Date()),getTime(new Date(gameEndTimestamp)));
+  // const gameLengthTime:any = timeDiff(getTime(new Date(gameCreation)),getTime(new Date(gameEndTimestamp)))
+  const gameLegth:any = String(Math.round(gameDuration/60 *100)/100).split('.');
+  if(isLoading){
+    return <div>기록 없음</div>
   }
-  const championInfo = getChamp(championName);
-  // const champName = champ
-  console.log(championInfo)
-  // const chamIcon = getChampionIcon(championName);
-  // return null;
+  
+  console.log("킬관여 계산하기" ,teamKills/(kills+assists)*100 , teamKills , (kills+assists));
+  
+  // 넘겨 받을것 
+  // 게임타입 , 게임끝난시간 , 게임 지속 시간 , 승리 패배 , 플레이한 챔피언 
+  // 전체 킬뎃 , KDA , CS , 와드
  return (
       <RecordLi>
       <RecordInfo>
-        <InfoTimeStamp>40분전</InfoTimeStamp>
+        <InfoType>{getQueueType(queueId)}</InfoType>
+        <InfoTimeStamp>{gameEndTime[0].toString()}{gameEndTime[1]} 전</InfoTimeStamp>
         <InfoResult>{win ? "승리" : "패배"}</InfoResult>
-        <InfoType>솔로랭크</InfoType>
-        <InfoLength>40:00</InfoLength>
+        {/* <InfoLength>{gameLengthTime}</InfoLength> */}
+        <InfoLength>{gameLegth[0]}분 {gameLegth[1]}초</InfoLength>
       </RecordInfo>
       <RecordChamp>
-        <ChampImg src={getChampionIcon(championName)}/>
-        <ChampName>{}</ChampName>
+        <ChampImg src={gameInfo && getChampionIcon(championName)}/>
       </RecordChamp>
+     
+      <RecordSpell>
+        <img src={spellD}  />
+        <img src={spellF} />
+      </RecordSpell>
+      <RecordRune>
+        <img src={getRuneIcon(runeIcoPath[0])} />
+        <img src={getRuneIcon(runeIcoPath[1])} />
+      </RecordRune>
+      <RecordItem>
+        {item.map((id:any , index:number)=> id === 0 ? <img /> : index !== item.length-1  ? <img key={id} src={ getItemIcon(id) }/> : null)}
+      </RecordItem>
       <RecordKDA>
-          <KDA>{kills} / {deaths}/ {assists}</KDA>
-          <KDARatio>0.00</KDARatio>
-          <KDAKillInvol>77%관여</KDAKillInvol>
+          <KDA>{kills} / {deaths} / {assists}</KDA>
+          <KDARatio>{((kills+assists) / deaths).toFixed(2)}:1 평점</KDARatio>
+          <KDAKillInvol>킬관여 {((kills+assists)/teamKills*100).toFixed(0)}%</KDAKillInvol>
       </RecordKDA>
       <RecordStats>
           <StatsAllCs>{totalMinionsKilled + neutralMinionsKilled} CS</StatsAllCs>
-          <StatsMinuteCs>1.0 CS/분</StatsMinuteCs>
+          <StatsMinuteCs>{((totalMinionsKilled + neutralMinionsKilled) /gameLegth[0]).toFixed(1)} CS/분</StatsMinuteCs>
+          제어와드
       </RecordStats>
-      <RecordSpell>
-
-      </RecordSpell>
-      <RecordRune>
-
-      </RecordRune>
-      <RecordItem>
-
-      </RecordItem>
       </RecordLi>
  )
 }
@@ -88,7 +126,7 @@ const RecordLi = styled.li`
 `;
 
 const RecordInfo = styled.div`
-  width: 10%;
+  width: 12%;
   align-items: center;
 `;
 const InfoTimeStamp = styled.div`
@@ -97,28 +135,29 @@ const InfoTimeStamp = styled.div`
   margin: 0 auto;
 `;
 const InfoResult =styled.div`
-  font-size: 16px;
+  font-size: 14px;
   font-weight: 700;
 `;
 const InfoType = styled.div`
-  font-size: 14px;
+  font-size: 12px;
   font-weight: bold;
 `;
 const InfoLength = styled.div`
   font-size: 14px;
 `;
 const RecordChamp = styled.div`
-  width: 4.5rem;
+  display: flex;
+  flex-direction: row;
+  text-align: center;
 `;
 const ChampImg = styled.img`
-  width: 3.5rem;
+  height: 95%;
   border: none;
+  border-radius: 15px;
 `;
-const ChampName = styled.span`
 
-`;
 const RecordKDA = styled.div`
-
+  margin-left: 25px;
 `;
 const KDA = styled.div`
 
@@ -130,7 +169,7 @@ const KDAKillInvol = styled.div`
 
 `;
 const RecordStats = styled.div`
-
+  margin-left: 15px;
 `;
 const StatsAllCs = styled.div`
 
@@ -139,11 +178,39 @@ const StatsMinuteCs = styled.div`
 
 `;
 const RecordSpell = styled.div`
-
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  margin-left: 10px;
+  img{
+    width: 30px;
+    height: 30px;
+    border-radius: 5px;
+    background-color: #271f1f;
+  }
 `;
 const RecordRune = styled.div`
-
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  margin-left: 3px;
+  img{
+    width: 30px;
+    height: 30px;
+    border-radius: 5px;
+    background-color: #271f1f;
+  }
 `;
 const RecordItem = styled.div`
+  display: grid;
+  grid-template-columns: repeat(3,1fr);
+  grid-gap: calc(3px);
+  margin-left: 25px;
   
+  img{
+    width: 30px;
+    height: 30px;
+    border-radius: 5px;
+    background-color: #271f1f;
+  }
 `;

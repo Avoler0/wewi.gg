@@ -80,7 +80,7 @@ a {
 img,button,span{
   vertical-align: middle;
 }
-
+}
 `;
 const client = new QueryClient();
 ReactDOM.render(

@@ -3,19 +3,29 @@ import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import styled from "styled-components";
 import jwt_decode from "jwt-decode";
-import { useRecoilState } from "recoil";
-import { AT_loginCheck } from "../../commons/loginCheck";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-  const { naver } = window as any;
+import { connect } from "react-redux";
+import { getLoginState, isLoggedIn } from "../../commons/loginState";
+import OverlayMessage from "../../Components/OverlayMessage";
+const { naver } = window as any;
 
-function Login({str , getHide}:any) {
+function Login({user,isLoggedIn}:any) {
+  
   const history = useNavigate();
   const {register,watch,handleSubmit} = useForm();
   const [token,setToken] = useState("");
   const [loginType , setLoginType] = useState("basic");
   const [autoLogin , setAutoLogin] = useState(false);
   const [refreshToken , setRefreshToken] = useState("");
-  const [loginSucces,setLoginSucces] = useRecoilState(AT_loginCheck);
+  const [loginError,setLoginError] = useState(0);
+  const loginState = getLoginState();
+
+  // if(loginState[0] === "login"){
+  //   () => {
+  //     history("/")
+  //   }
+  // }
+
   const login = {
     Id: watch("id"),
     Pw: watch("password")
@@ -24,13 +34,12 @@ function Login({str , getHide}:any) {
   function getToken(data:any) {
     setToken(jwt_decode(data.token , {header:true}))
     setRefreshToken(jwt_decode(data.refreshToken , {header:true}))
+
   }
-  console.log("토큰",token);
-  console.log("리프토큰" ,refreshToken);
+
   
   const onLogin = (e:any) => {
     if(login.Id === undefined  || login.Id === undefined) return;
-    
     setLoginType("basic");
     axios({
       method:'post',
@@ -40,14 +49,17 @@ function Login({str , getHide}:any) {
         password : login.Pw
       }
     }).then((response) => {
-        console.log("성공",response);
-        getToken(response.data);
-        setLoginSucces(true);
+        const token = response.data
+        console.log("로그인 성공",response);
+        // getToken(token)
+        isLoggedIn({login:"login",token:token})
         history("/");
         })
         .catch((error) => {
           console.log("에러",error);
-          setLoginSucces(false);
+          setLoginError(error.request.status);
+          
+        // isLoggedIn({login:"false",token:error})
       })
   }
 
@@ -68,14 +80,11 @@ function Login({str , getHide}:any) {
   
  const postNaverToken = () => {
    if(!location.hash && loginType !== "naver" ){
-     console.log("아이디 비밀번호 입력");
      return;
    }
   const naverToken = location.hash.split('=')[1].split('&')[0];
-  // const naverState = location.hash?.split('=')[2].split('&')[0];
-  // const tokenType = location.hash?.split('=')[3].split('&')[0]+ "&" + location.hash.split('&')[3].split('&')[0];
-  console.log("포스트 보내기" , naverToken);
-  console.log(JSON.stringify(naverToken));
+  // console.log("포스트 보내기" , naverToken);
+  // console.log(JSON.stringify(naverToken));
   
   axios.post('http://localhost:4000/api/login/naver' , {
     token:naverToken
@@ -95,22 +104,22 @@ function Login({str , getHide}:any) {
  }
  const postGoogleToken = () => {
    if(!window.location.hash && loginType !== "google") return;
-   console.log("실행");
-   
   const accessToken = window.location.hash.split("=")[1].split("&")[0]
-  console.log(accessToken);
-  
  }
- console.log();
+//  console.log(user.login);
  
   useEffect(() => {
     naverInit();
-    
     postGoogleToken();
+    
   }, []);
   
-
-   
+  console.log(user.login);
+  
+   if(user.login === "login"){
+     console.log(user.login);
+      history("/")
+    }
    
    
   return (
@@ -139,6 +148,12 @@ function Login({str , getHide}:any) {
             <Label>자동 로그인</Label>
             <IDPW>ID/PW 찾기</IDPW>
           </InWrap>
+            {loginError === 400 && 
+            <>
+            <ErrorMsg>아이디 또는 비밀번호를 잘못 입력했습니다.</ErrorMsg>
+            <ErrorMsg>입력하신 내용을 다시 확인해주세요.</ErrorMsg>
+            </>
+            }
           <OR>OR</OR>
           <FastLogin>간편 로그인</FastLogin>
           <NaverLogin id='naverIdLogin' onClick={postNaverToken}>
@@ -293,4 +308,17 @@ const Register = styled.div`
     color:#1ea1f7;
   }
 `;
-export default Login;
+const ErrorMsg = styled.div`
+  padding-left: 5px;
+  font-size: 12px;
+  color: #ff0000c5;
+`;
+function userState(state:any){
+  return {user:state}
+}
+function userLoginState(dispatch:any){
+  return {
+    isLoggedIn: (login:boolean) => dispatch(isLoggedIn(login))
+  }
+}
+export default connect(userState,userLoginState) (Login);

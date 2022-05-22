@@ -1,49 +1,47 @@
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
-import styled from "styled-components";
-import { postDuoMatching } from "../../../api/api";
+import styled , {css} from "styled-components";
+import { getSummonerGameInfo, getSummonerInfo, getSummonerLeagueInfo, postDuoMatching } from "../../../api/api";
+import { customAsync } from "../../../commons/asyncUtils";
+import { timeLimit } from "../../../commons/functionCollection";
 import OverlayMessage from "../../../Components/OverlayMessage";
 
 function DuoInput() {
   const history = useNavigate();
   const cardOut = () => {history("/duo"); window.location.reload()};
-  const [onOff,setOnOff] = useState(true);
+  const champion:string[] = []
+  const [micToggle,setMicToggle] = useState(false);
   const [inputName , setInputName] = useState("");
+  const [nameCheck, setNameCheck] = useState(false);
   const [inputContent , setInputContent] = useState("같이할 사람 구합니다 !");
   const [inputPassword , setInputPassword] = useState("");
   const [lineChoice,setLineChoice] = useState(0);
   const [gameChoice,setGameChoice] = useState(0);
-  const [postState,setPostState] = useState("exit");
-  const state = {
-    type:null,
-    message:""
-  }
-  const setState = (props:any) => {
-    if(props.isAxiosError) return ;
-    if(props === "exit"){
-      setPostState("exit");
-      return;
-    }else{
-        state.type = props.response.status;
-        state.message = props.response.message;
-        if(props.response.status === 200){
-          setPostState("clear")
-        }
-        if(props.response.status === 400){
-          setPostState("error")
-      }
-    }
+  const [postState,setPostState] = useState({
+    window: false,
+    type: '',
+    message: ''
+  })
+  const setState = (props:any) => { // Input post 성공 & 에러나면 메세지 띄우기 위한 함수
+    setPostState({
+        window:true,
+        type:props.response.status,
+        message:props.response.data.message
+      })
   }
   const inputData = {
     Name:inputName,
     Content:inputContent,
     Password:inputPassword,
-    // Tier:,
     GameType:gameChoice,
     LineType:lineChoice,
-    // Win:,
-    // Lose:,
+    IsMic:micToggle,
+    Tier: 0,
+    Win: 0,
+    Lose: 0,
+    Champion:champion,
+    Icon: 0,
   }
   const lineSelect = (lineNum:number) => {
     setLineChoice(lineNum)
@@ -54,31 +52,73 @@ function DuoInput() {
   }
   const onValid = (event:any) => { event.preventDefault();}
   const postData = () => {
+    let postCheck = false
     if(dataCheck() === true){
-      const data = inputData
+      getSummonerInfo(inputData.Name).then(async (res)=>{
+        if(res){
+          console.log("성공");
+          setNameCheck(true);
+          const { id , puuid , name , profileIconId} = res.data.data;
+          console.log(res.data.data);
+          inputData.Icon = profileIconId;
+          Promise.all([
+            await customAsync(getSummonerLeagueInfo(id),1000),
+            await customAsync(getSummonerGameInfo(puuid,0,3),1000),
 
-      postDuoMatching(data).then((res)=>{
-        console.log("성공",res);
-        setState(res)
-    }).catch((error)=>{
-      console.log("에러",error);
-      setState(error)
-    })
-
-      
+          ]).then(async ([fetchLegue , fetchGame]:any)=>{
+            const leagueInfo = fetchLegue.data.data
+            const gameInfo = [fetchGame.data.matchDetails[0][0].info.participants[fetchGame.data.matchDetails[0][0].participantId].championName,
+                              fetchGame.data.matchDetails[0][1].info.participants[fetchGame.data.matchDetails[0][1].participantId].championName,
+                              fetchGame.data.matchDetails[0][2].info.participants[fetchGame.data.matchDetails[0][2].participantId].championName]
+            if(inputData.GameType === 3){
+              inputData.Win = leagueInfo[1].wins;
+              inputData.Lose = leagueInfo[1].losses;
+              inputData.Tier = leagueInfo[1].tier;
+            }else{
+              inputData.Win = leagueInfo[0].wins;
+              inputData.Lose = leagueInfo[0].losses;
+              inputData.Tier = leagueInfo[0].tier;
+            }
+            timeLimit(champion.push(gameInfo[0]),100)
+            timeLimit(champion.push(gameInfo[1]),150)
+            timeLimit(champion.push(gameInfo[2]),200)
+            
+            await postDuoMatching(inputData).then((res)=>{
+                console.log("APi성공",res);
+                setState(res)
+            }).catch((error)=>{
+              console.log("API 에러",error);
+              console.log(error.response.status);
+              
+              setState(error)
+            })   
+            console.log(inputData);
+            console.log();
+            console.log(fetchGame.data.matchDetails[0][0].participantId);
+            
+            postCheck = true;
+          })
+        }
+      }).catch(()=>{
+        console.log("실패");
+        setNameCheck(false)
+        postCheck = false
+      })
     }else if(dataCheck() === "nameValueError"){
       alert("소환사 명을 입력 해 주세요")
     }else if(dataCheck() === "passwordValueError"){
       alert("비밀번호를 4자리 입력 해 주세요")
     }
+    
+    
   }
   const dataCheck = () => {
     if(inputName.length > 2 && inputPassword.length === 4) return true
     else if(inputName.length < 2) return "nameValueError"
     else if(inputPassword.length !== 4) return "passwordValueError"
   }
-  const MicClick = () => {
-    setOnOff(!onOff)
+  const MicOnOff = () => {
+    setMicToggle((prev) => !prev)
   }
   
   return (
@@ -128,11 +168,11 @@ function DuoInput() {
             </TypeSelect>
           </QueueType>
           <MicCheck>
-            <Label>마이크</Label>
-            <MicButton onClick={MicClick}>
-              {onOff ? <MicCircle style={{left:0}} /> : <MicCircle style={{right:0}}/>}
-              {/* <MicCircle/> */}
-            </MicButton>
+             <Label>마이크</Label>
+            <MicButton  micToggle={micToggle} onClick={MicOnOff}>
+              {/* {onOff ? <MicCircle style={{left:"5px"}} /> : <MicCircle style={{right:"5px"}}/>} */}
+              <MicCircle micToggle={micToggle} />
+            </MicButton> 
           </MicCheck>
         </ColumnMiddle>
         <Label>메모</Label>
@@ -147,7 +187,7 @@ function DuoInput() {
         </ExitWrap>
       </Form>
     </Wrap>
-    {postState === "clear" || postState === "error" ? <OverlayMessage setState={setState} state={state}/> : null}
+    {postState.window && <OverlayMessage setPostState={setPostState} postState={postState}/> }
     </>
   );
 }
@@ -250,32 +290,36 @@ const TypeOption = styled.option`
   
 `;
 const MicCheck = styled.div`
-  padding: 0 15px 0 20px;
+  margin-left: 15px;
 `;
-const MicButton = styled.button`
-  width: 4rem;
-  height: 2rem;
-  border-radius: 9999px;
+const MicButton = styled.button<{micToggle:boolean}>`
   position: relative;
-  background-color: #28283b;
-  display: inline-flex;
+  width: 64px;
+  height: 32px;
+  border-radius: 9999px;
+  padding: 0;
+  background-color: ${(props) => props.micToggle ? "#7c7c83": "#28283b"};
   cursor: pointer;
   border: none;
   :hover{
     background-color: #7c7c83;
   }
 `;
-const MicCircle = styled.span`
+const MicCircle = styled.span<{micToggle:boolean}>`
   position: absolute;
-  background-color: red;
-  border-radius: 9999px;
-  top: 0;
-  /* left: 0; */
-  /* translate: 0; */
-  margin:0.17rem 0.15rem 0.1rem 0.15rem ;
-  width: 1.75rem;
-  height: 1.75rem;
-  display: inline-block
+  background-color: white;
+  width: 28px;
+  height: 28px;
+  top: 2px;
+  left: 2px;
+  border-radius: 50px;
+  transition: all 0.2s ease-in;
+  ${(props) => 
+    props.micToggle &&
+    css`
+      transform: translateX(32px);
+    `}
+
 `;
 
 const PassWord = styled.div`

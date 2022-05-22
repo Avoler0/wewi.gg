@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import styled from "styled-components";
-import { getMenuName } from "../../commons/menuUtil";
+import { getMenuName } from "../../commons/utils";
 import MainOutput from "./menu/MainOutput";
 
 import CommunityMenu from "./menu/menu";
@@ -11,7 +11,7 @@ const Container = styled.div`
 `;
 
 const Wrapper = styled.div`
-  padding-top: 13rem ;
+  padding-top: 100px;  
   width: 1044px;
   height: 1900px;
   position: relative;

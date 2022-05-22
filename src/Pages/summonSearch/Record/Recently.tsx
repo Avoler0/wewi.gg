@@ -4,8 +4,7 @@ import { useRecoilValue } from "recoil";
 import styled from "styled-components";
 import { getSummonerGameInfo } from "../../../api/api";
 import { customAsync } from "../../../commons/asyncUtils";
-import { AT_puuid } from "../../../Router/Api/RiotRecordApi";
-import ChampRecently from "./RecentlyRecord/ChampRecently"
+import { AT_puuid } from "../../../commons/Atom";
 import RecordRecently from "./RecentlyRecord/RecordRecently"
 
 function Recently() {
@@ -27,7 +26,7 @@ function Recently() {
   useEffect(() => {
     getContent(summonerPuuid,start,count)
   },[])
-
+  console.log("겜겜인포",gameInfo)
   // if(isLoading){
   //   return <div>기록 없음dsdsd</div>
   // }
