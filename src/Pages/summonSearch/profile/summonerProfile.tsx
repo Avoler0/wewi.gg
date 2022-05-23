@@ -1,6 +1,7 @@
 import styled from "styled-components"
 import { getProfileIcon } from "../../../api/api";
-
+import {ReactComponent as Up} from "/MyApp/wewi.gg/src/images/icons/thumbs-up-svgrepo-com.svg"
+import {ReactComponent as Down} from "/MyApp/wewi.gg/src/images/icons/thumbs-down-svgrepo-com.svg"
 const ProfileWrap = styled.div`
   display: flex;
   width: 100%;
@@ -52,11 +53,12 @@ const Update = styled.div`
 const Good = styled.div`
   display: inline-block;
   font-size: 14px;
-  width: 40%;
+  margin-top: 10px;
 `;
 const Bad = styled.div`
   display: inline-block;
   font-size: 14px;
+  margin-top: 10px;
 `;
 interface I_summonerInfo {
     summonerInfo:{
@@ -90,8 +92,8 @@ function Profile({summonerInfo}:any) {
         <Update>      
           최근 업데이트:하루전
         </Update>
-      <Good>Good</Good>
-      <Bad>Bad</Bad>
+      <Good><Up style={{width:"20px",height:"20px"   ,boxSizing:"content-box"}} /> : 0</Good>
+      <Bad><Down style={{width:"20px",height:"20px"   ,boxSizing:"content-box"}} /> : 0</Bad>
       </NameBox>
       
     </ProfileWrap>

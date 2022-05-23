@@ -26,7 +26,8 @@ function GameList({gameInfo}:any) {
     item,
     team1Kills,
     team2Kills,
-    teamId
+    teamId,
+    visionScore
   } = gameInfo;
   const [isLoading,setIsLoading] = useState(true); // params가 잘 넘어왔는지 확인하는 State
   const [runeIcoPath,setRuneIcoPath] = useState<any>([]);
@@ -106,7 +107,7 @@ function GameList({gameInfo}:any) {
       <RecordStats>
           <StatsAllCs>{totalMinionsKilled + neutralMinionsKilled} CS</StatsAllCs>
           <StatsMinuteCs>{((totalMinionsKilled + neutralMinionsKilled) /gameLegth[0]).toFixed(1)} CS/분</StatsMinuteCs>
-          제어와드
+          <StatsVision><span style={{fontSize:"12px"}}>시야점수</span> {visionScore}</StatsVision>
       </RecordStats>
       </RecordLi>
  )
@@ -126,24 +127,24 @@ const RecordLi = styled.li`
 `;
 
 const RecordInfo = styled.div`
-  width: 12%;
-  align-items: center;
+  width: 10%;
+  margin-left: 5px;
+  align-items: left;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  font-size: 12px;
 `;
 const InfoTimeStamp = styled.div`
-  font-size: 12px;
   font-weight: lighter;
-  margin: 0 auto;
 `;
 const InfoResult =styled.div`
-  font-size: 14px;
   font-weight: 700;
 `;
 const InfoType = styled.div`
-  font-size: 12px;
   font-weight: bold;
 `;
 const InfoLength = styled.div`
-  font-size: 14px;
 `;
 const RecordChamp = styled.div`
   display: flex;
@@ -158,24 +159,29 @@ const ChampImg = styled.img`
 
 const RecordKDA = styled.div`
   margin-left: 25px;
+  font-size: 14px;
 `;
 const KDA = styled.div`
-
+  margin-top: 3px;
 `;
 const KDARatio = styled.div`
-
+  margin-top: 3px;
 `;
 const KDAKillInvol = styled.div`
-
+  margin-top: 3px;
 `;
 const RecordStats = styled.div`
   margin-left: 15px;
+  font-size: 14px;
 `;
 const StatsAllCs = styled.div`
-
+  margin-top: 3px;
 `;
 const StatsMinuteCs = styled.div`
-
+  margin-top: 3px;
+`;
+const StatsVision = styled.div`
+  margin-top: 3px;
 `;
 const RecordSpell = styled.div`
   display: flex;

@@ -44,6 +44,7 @@ function RecordRecently({gameInfo}:any) {
           team1Kills:leagueInfo.teams[0].objectives.champion.kills,
           team2Kills:leagueInfo.teams[1].objectives.champion.kills,
           teamId: detailInfo.teamId,
+          visionScore:detailInfo.visionScore,
           item: [detailInfo.item0,detailInfo.item1,detailInfo.item2,detailInfo.item3,detailInfo.item4,detailInfo.item5,detailInfo.item6]
         };
           setGameRecord((gameRecord:any)=> [...gameRecord , gameDetailData] )
