@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { useSetRecoilState } from "recoil";
 import styled from "styled-components";
-import { getSummonerInfo, getSummonerLeagueInfo } from "../../api/api";
+import { getSummonerGameInfo, getSummonerInfo, getSummonerLeagueInfo } from "../../api/api";
 import { I_summonerBasicData, I_summonerInfo } from "../../commons/apiInterFace";
 import { customAsync } from "../../commons/asyncUtils";
 import { AT_puuid } from "../../commons/Atom";
@@ -11,6 +11,7 @@ import { Container, Wrapper } from "../../commons/sharingCss";
 import Profile from "./profile/summonerProfile";
 import SummonerInfo from "./rank/summonerLeagueInfo";
 import Recently from "./Record/Recently";
+import ChampRecently from "./Record/RecentlyRecord/ChampRecently";
 
 
 const ProfileView = styled.div`
@@ -62,19 +63,18 @@ function SummonerRecord() {
   const [summonerInfo,setSummonerInfo] = useState<I_summonerBasicData>();
   const [summonerLeagueInfo, setSummonerLeagueInfo] = useState<I_summonerInfo>();
   const [gameList,setGameList] = useState([]);
-  const setATPuuid = useSetRecoilState(AT_puuid);
-  let start = 0
-  let count = 20;
+  const [stPuuId,setStPuuId] = useState("");
+  const [gameInfo,setGameInfo] = useState<any[]>();
+  const start = 0;
+  const count = 20;
   const getApiData = async () => {
 
     
   }
   useEffect(()=>{
     setIsLoading(true);
-    console.log("유주이펙트");
     const summonerName = summonerId as string;
     getSummonerInfo(summonerId!).then(async (res:any)=>{
-      console.log("실행");
       if(res.data){
         const {id , puuid} = res.data.data
         console.log(id);
@@ -82,13 +82,10 @@ function SummonerRecord() {
         setSummonerInfo(res.data)
         Promise.all([
           await customAsync(getSummonerLeagueInfo(id),1000),
-          setATPuuid(puuid)
+          getContent(puuid,start,count)
         ])
         .then(([fetchLeague]:any)=>{
           setSummonerLeagueInfo(fetchLeague.data)
-          console.log("프람스 실행");
-          console.log("패치데이터",fetchLeague.data);
-          
           setIsLoading(false)
         })
       }
@@ -105,6 +102,19 @@ function SummonerRecord() {
     console.log("서몬인포",summonerInfo);
   }
   
+  
+  const getContent = (puuid:string , start:number , count:number) => {
+    Promise.all([customAsync(getSummonerGameInfo(puuid,start,count),1000)])
+    .then(([res]:any) => {
+      setGameInfo(res.data.matchDetails[0]);
+    })
+    .catch((error) => {
+      console.error("에러",error);
+    })
+  }
+  // useEffect(() => {
+  //   getContent(stPuuId,start,count)
+  // },[])
   if(isLoading){
     return (
       <div>
@@ -124,12 +134,12 @@ function SummonerRecord() {
             <SummonerInfo summonerLeagueInfo={summonerLeagueInfo} />
           </RankView>
           <ChampStatsView>
-
+            <ChampRecently gameInfo={gameInfo} />
           </ChampStatsView>
         </Column>
         <Column>
           <RecentlyView>
-            <Recently/>
+            <Recently gameInfo={gameInfo}/>
           </RecentlyView>
         </Column>
         

@@ -6,6 +6,7 @@ import { getQueueType, getSpellName } from "../../../../../commons/utils";
 
 function GameList({gameInfo}:any) {
   // 문법 구조 분해 할당
+  
   const {
     gameCreation,
     gameDuration,
@@ -33,7 +34,7 @@ function GameList({gameInfo}:any) {
   const [runeIcoPath,setRuneIcoPath] = useState<any>([]);
   const teamKills = teamId === 100 ? team1Kills : team2Kills
   const minionKills = totalMinionsKilled + neutralMinionsKilled;
-  console.log("팀킬 수 ",team1Kills , team2Kills);
+  // console.log("팀킬 수 ",team1Kills , team2Kills);
   
   // 룬 정보 , 아이콘 PATH 저장하는 함수
   
@@ -65,12 +66,13 @@ function GameList({gameInfo}:any) {
   const spellF = getSpellIcon(getSpellName(summoner2Id));
   const gameEndTime:any = timeDiff(getTime(new Date()),getTime(new Date(gameEndTimestamp)));
   // const gameLengthTime:any = timeDiff(getTime(new Date(gameCreation)),getTime(new Date(gameEndTimestamp)))
+  
   const gameLegth:any = String(Math.round(gameDuration/60 *100)/100).split('.');
   if(isLoading){
     return <div>기록 없음</div>
   }
   
-  console.log("킬관여 계산하기" ,teamKills/(kills+assists)*100 , teamKills , (kills+assists));
+  // console.log("킬관여 계산하기" ,teamKills/(kills+assists)*100 , teamKills , (kills+assists));
   
   // 넘겨 받을것 
   // 게임타입 , 게임끝난시간 , 게임 지속 시간 , 승리 패배 , 플레이한 챔피언 

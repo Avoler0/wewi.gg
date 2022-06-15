@@ -3,6 +3,8 @@ import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { getTime, timeDiff, } from "../../../commons/functionCollection";
 import { ReactComponent as Trash } from "../../../images/icons/trash-svgrepo-com.svg"
+import {ReactComponent as MicOn} from "/MyApp/wewi.gg/src/images/icons/mic-fill-svgrepo-com.svg"
+import {ReactComponent as MicOff} from "/MyApp/wewi.gg/src/images/icons/mic-mute-fill-svgrepo-com.svg"
 import OverlayMessage from "../../../Components/OverlayMessage";
 
 function DuoRes({duoRes,setDeleteState,setDeletePw,setDeleteId}:any){
@@ -40,6 +42,7 @@ function DuoRes({duoRes,setDeleteState,setDeletePw,setDeleteId}:any){
             </BoardLine>
             <BoardWinRate>{winningRate}</BoardWinRate>
             <BoardChamp>최근챔 3개</BoardChamp>
+            <BoardMic>{duoRes.IsMic ? <MicOn style={{fill:"red"}}/>:<MicOff style={{fill:"red"}}/>}</BoardMic>
           </BoardItems>
         </BoardLow>
         </BoardTop>
@@ -113,6 +116,7 @@ const BoardDelete = styled.div``
 ;
 const BoardItems = styled.div`
   display:flex ;
+  position: relative;
   width: 90% ;
   height: 40% ;
   margin: auto ;
@@ -130,6 +134,11 @@ const BoardWinRate = styled.div`
 const BoardChamp = styled.div`
   padding-top: 10px;
   font-size: 13px;
+`;
+const BoardMic = styled.div`
+  padding-top: 10px;
+  position: absolute;
+  right: 0;
 `;
 const BoardLineIcon = styled.img`
   width: 100%;

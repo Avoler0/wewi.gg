@@ -2,7 +2,7 @@ import { AnyMap } from "@reduxjs/toolkit/node_modules/immer/dist/internal";
 import React from "react";
 import { useEffect, useState } from "react";
 import styled from "styled-components";
-import GameList from "./GameList/GameList";
+import GameList from "./RecentList/GameList";
 
 
 function RecordRecently({gameInfo}:any) {
@@ -10,10 +10,19 @@ function RecordRecently({gameInfo}:any) {
   const [champRecord , setChampRecord] = useState([]);
   const [gameRecord, setGameRecord] = useState<any>([]);
   let recordCount = 0;
-  console.log("게임인포",gameInfo);
   
+  // console.log("소트인포",result);
   useEffect(()=>{
+    let sortLoading = true;
     if(gameInfo) {
+      gameInfo.map((data:any)=>{
+      })
+      gameInfo.sort((prevData:any,nextData:any)=>{
+          const prevRes = Number(prevData.metadata.matchId.split('KR_')[1])
+          const nextRes = Number(nextData.metadata.matchId.split('KR_')[1])
+          return nextRes - prevRes
+      })
+      
       setIsLoading(false)
       // const detailGameInfo = gameInfo.reduce(
       //   (obj:any,val:any) => {
@@ -21,7 +30,8 @@ function RecordRecently({gameInfo}:any) {
       //     return obj
       // })
       // console.log("디테일게임",detailGameInfo);
-      gameInfo.map((data:any , index:number)=>{
+      if(sortLoading){
+         gameInfo.map((data:any , index:number)=>{
         const leagueInfo = data.info
         const detailInfo = data.info.participants[data.participantId]
         const gameDetailData = {
@@ -50,23 +60,17 @@ function RecordRecently({gameInfo}:any) {
           setGameRecord((gameRecord:any)=> [...gameRecord , gameDetailData] )
           
       })
+      }
+     
     }
   },[gameInfo])
   
   if(isLoading){
     return <div>기록 없음</div>
   }
-  
-  
-
-
-  
-  
-
-   
 
   return (
-    <RecordUl>
+    <RecordUl id="record">
         {gameRecord.map((data:any,index:number)=> <GameList key={index} gameInfo={data}/>)}
     </RecordUl>
   );
