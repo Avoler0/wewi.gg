@@ -12,12 +12,14 @@ https://github.com/ApostleB/lol-matching-express-restAPI
 
 ## 메인 페이지
 <img src="https://user-images.githubusercontent.com/91608021/183596761-5919c148-d372-4379-8f38-8a4d843baeb4.png" />
+
 ### 추가 기능
 - [x] 검색 input에 소환사 이름 검색을 할 시 소환사 페이지로 넘아감
 - [ ] 어제 하루동안 칭찬을 많이 받은 유저를 목록에 표시해줌
 
 ## 소환사 페이지
 <img src="https://user-images.githubusercontent.com/91608021/183597487-eb15f7c1-3ad2-4710-9b8f-e873f49566c0.png" />
+
 ### 추가 기능
 - [x] riot api로 소환사의 프로필 icon과 level을 받아와 렌더링
 - [x] riot api로 소환사의 솔로랭크 자유랭크 , 전적을 렌더링
