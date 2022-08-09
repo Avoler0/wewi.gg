@@ -7,7 +7,8 @@
 https://github.com/ApostleB/lol-matching-express-restAPI
 실행 명령어 npm run dev
 
-백엔드와 협업 도중 백엔드와의 일정이 맞지 않아 중단하여 json-server API를 이용하여 코드를 다 엎고 재개발 할 계획입니다. (08.09)
+백엔드와 협업 도중 백엔드와의 일정이 맞지 않아 중단하여 json-server API를 이용하여 
+코드를 리팩토링하여 재개발 할 계획입니다. (08.09)
 
 ## 로그인
 <img src="https://user-images.githubusercontent.com/91608021/183600425-14a3825e-5a9a-4c9c-af5d-634ff5a03eab.png" />
