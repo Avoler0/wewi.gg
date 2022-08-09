@@ -9,6 +9,14 @@ https://github.com/ApostleB/lol-matching-express-restAPI
 
 백엔드와 협업 도중 백엔드와의 일정이 맞지 않아 중단하여 json-server API를 이용하여 코드를 다 엎고 재개발 할 계획입니다. (08.09)
 
+## 로그인
+<img src="https://user-images.githubusercontent.com/91608021/183600425-14a3825e-5a9a-4c9c-af5d-634ff5a03eab.png" />
+
+### 추가 기능
+- [x] 네이버 , 구글 OAuth을 이용하여 토큰을 받아서 로그인 가능
+- [ ] 기본적인 로그인 시 아이디가 없을 시 modal 출력
+- [ ] ID / PW 찾기
+
 
 ## 메인 페이지
 <img src="https://user-images.githubusercontent.com/91608021/183596761-5919c148-d372-4379-8f38-8a4d843baeb4.png" />
