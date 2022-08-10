@@ -41,7 +41,7 @@ https://github.com/ApostleB/lol-matching-express-restAPI
 <img src="https://user-images.githubusercontent.com/91608021/183599311-bbf6c12b-3b4d-4663-a743-3d5c382f0aa2.png" />
 
 ### 추가 기능
-- [x] 듀오 구인 reg 등록 post , 작성창과 input value 검사하여 부족한부분이 있으면 alert창 렌더링
+- [x] 듀오 구인 reg 등록 post , 작성창과 Validation 후 alert 경고창 
 - [x] 백엔드에 듀오 구인 글 목록을 받아와 렌더링
 - [x] 사용자가 원하는 듀오의 티어 , 포지션 , 게임타입을 지정하여 sort하여 볼 수 있게 렌더링
 
