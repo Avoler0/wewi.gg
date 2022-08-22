@@ -92,15 +92,15 @@ function SummonerRecord() {
     })
     
   },[])
-  useEffect(()=>{
-    console.log("리그인포",summonerLeagueInfo);
-    console.log("서몬인포",summonerInfo);
-  },[summonerInfo,summonerLeagueInfo])
-  const click = () => {
-    getApiData()
-    console.log("리그인포",summonerLeagueInfo);
-    console.log("서몬인포",summonerInfo);
-  }
+  // useEffect(()=>{
+  //   console.log("리그인포",summonerLeagueInfo);
+  //   console.log("서몬인포",summonerInfo);
+  // },[summonerInfo,summonerLeagueInfo])
+  // const click = () => {
+  //   getApiData()
+  //   console.log("리그인포",summonerLeagueInfo);
+  //   console.log("서몬인포",summonerInfo);
+  // }
   
   
   const getContent = (puuid:string , start:number , count:number) => {
