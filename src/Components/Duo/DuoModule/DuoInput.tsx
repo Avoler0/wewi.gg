@@ -5,7 +5,7 @@ import styled , {css} from "styled-components";
 import { getSummonerGameInfo, getSummonerInfo, getSummonerLeagueInfo, postDuoMatching } from "../../../api/api";
 import { customAsync } from "../../../commons/asyncUtils";
 import { timeLimit } from "../../../commons/functionCollection";
-import OverlayMessage from "../../../Components/OverlayMessage";
+import OverlayMessage from "../../OverlayMessage";
 
 function DuoInput() {
   const history = useNavigate();

@@ -8,7 +8,7 @@ import {  getSummonerGameInfo, getSummonerInfo, getSummonerLeagueInfo } from "./
 import { API_KEY } from "./commons/API_KEY";
 import { customAsync } from "./commons/asyncUtils";
 import { getTime } from "./commons/functionCollection";
-import DuoInput from "./Pages/duoMatching/DuoCommon/DuoInput";
+import DuoInput from "./Components/Duo/DuoModule/DuoInput";
 
 function Test() {
   const [data,setData] = useState<any>();

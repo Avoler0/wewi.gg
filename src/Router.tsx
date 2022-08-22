@@ -1,11 +1,11 @@
 import { Route, Routes } from "react-router-dom";
-import Clan from "./Pages/clan/clanMain";
+import Clan from "./Pages/ClanPage";
 import Comunity from "./Pages/community/Comunity";
-import Home from "./Pages/siteHome/Home";
+import MainPage from "./Pages/MainPage";
 import Login from "./Pages/login/Login";
-import Main from "./Pages/duoMatching/duoMain";
+import Duo from "./Pages/DuoPage";
 import Register from "./Pages/login/Register";
-import SummonerRecord from "./Pages/summonSearch";
+import SummonerRecord from "./Components/SummonerInfo";
 import Test from "./test";
 
 
@@ -20,10 +20,11 @@ function Router() {
       <Route path="/login" element={<Login />}/>
       <Route path="/register" element={<Register />}/>
       <Route path="/duo/:summonerId" element={<SummonerRecord />}/>
-      <Route path="/duo/addDuo" element={<Main />}/>
-      <Route path="/duo" element={<Main />} />
+      <Route path="/duo" element={<Duo />}>
+        <Route path="/duo/addDuo" element={<Duo />}/>
+      </Route>
       <Route path="/test" element={<Test/>}/>
-      <Route path="/" element={<Home/>}/>
+      <Route path="/" element={<MainPage/>}/>
     </Routes>
   </>
   )

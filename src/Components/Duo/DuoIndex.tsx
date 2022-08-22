@@ -3,9 +3,9 @@ import { useMatch, useNavigate  } from "react-router-dom";
 import styled from "styled-components";
 import { deleteDuoMate, getDuoMatching } from "../../api/api";
 import { Container, Wrapper } from "../../commons/sharingCss";
-import DuoDelete from "./DuoCommon/DuoDelete";
-import DuoInput from "./DuoCommon/DuoInput";
-import DuoRes from "./DuoCommon/DuoRes";
+import DuoDelete from "./DuoModule/DuoDelete";
+import DuoInput from "./DuoModule/DuoInput";
+import DuoRes from "./DuoModule/DuoRes";
 import {ReactComponent as Plus} from "/MyApp/wewi.gg/src/images/icons/plus-svgrepo-com.svg"
 
 const Filter = styled.div`
@@ -116,7 +116,7 @@ const AddButton = styled.button`
 
   }
 `;
-function Main(this: any) {
+export default function DuoIndex(this: any) {
   const history = useNavigate();
   const overlayMatch = useMatch('/duo/addDuo');
   const [tierOption,setTierOption] = useState(0);
@@ -260,6 +260,5 @@ const Board = styled.div`
 
 `;
 
-export default Main;
 
 

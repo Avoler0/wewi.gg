@@ -5,7 +5,7 @@ import { getTime, timeDiff, } from "../../../commons/functionCollection";
 import { ReactComponent as Trash } from "../../../images/icons/trash-svgrepo-com.svg"
 import {ReactComponent as MicOn} from "/MyApp/wewi.gg/src/images/icons/mic-fill-svgrepo-com.svg"
 import {ReactComponent as MicOff} from "/MyApp/wewi.gg/src/images/icons/mic-mute-fill-svgrepo-com.svg"
-import OverlayMessage from "../../../Components/OverlayMessage";
+import OverlayMessage from "../../OverlayMessage";
 
 function DuoRes({duoRes,setDeleteState,setDeletePw,setDeleteId}:any){
   const report = useState(0);
