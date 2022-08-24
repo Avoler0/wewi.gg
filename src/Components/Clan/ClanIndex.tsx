@@ -3,8 +3,8 @@ import { useState } from "react";
 import { useMatch, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { Container, Wrapper } from "../../commons/sharingCss";
-import ClanInput from "./ClanCommon/ClanInput";
-import ClanRes from "./ClanCommon/ClanRes";
+import ClanInput from "./ClanModule/ClanInput";
+import ClanRes from "./ClanModule/ClanRes";
 
 const Filter = styled.div`
   position: relative;

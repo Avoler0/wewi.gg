@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useLocation, useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import { API_KEY, PATH } from "../../commons/API_KEY";
+import { API_KEY, PATH } from "../../../Const/API_KEY";
 
 
 const Container = styled.div`

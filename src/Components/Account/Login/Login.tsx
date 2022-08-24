@@ -5,8 +5,8 @@ import styled from "styled-components";
 import jwt_decode from "jwt-decode";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { connect } from "react-redux";
-import { getLoginState, isLoggedIn } from "../../commons/loginState";
-import OverlayMessage from "../../Components/OverlayMessage";
+import { getLoginState, isLoggedIn } from "../../../commons/loginState";
+import OverlayMessage from "../../OverlayMessage";
 const { naver } = window as any;
 
 function Login({user,isLoggedIn}:any) {

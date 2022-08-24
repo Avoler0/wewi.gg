@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import { getChampionIcon, getItemIcon, getRuneIcon, getRunesInfo, getSpellIcon, getSpellInfo } from "../../../../../api/api";
+import { getChampionIcon, getItemIcon, getRuneIcon, getRunesInfo, getSpellIcon, getSpellInfo } from "../../../../../Api/riotApi";
 import { getTime, timeDiff } from "../../../../../commons/functionCollection";
-import { getQueueType, getSpellName } from "../../../../../commons/utils";
+import { getQueueType, getSpellName } from "../../../../../Const/utils";
 
 function GameList({gameInfo}:any) {
   // 문법 구조 분해 할당

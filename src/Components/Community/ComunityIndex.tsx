@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import styled from "styled-components";
-import { getMenuName } from "../../commons/utils";
+import { getMenuName } from "../../Const/utils";
 import MainOutput from "./menu/MainOutput";
 
 import CommunityMenu from "./menu/menu";

@@ -4,7 +4,6 @@ import { RecoilRoot } from 'recoil';
 import { createGlobalStyle } from 'styled-components';
 import App from './App';
 import {QueryClient , QueryClientProvider} from "react-query";
-import reportWebVitals from './reportWebVitals';
 
 const GlobalStyle = createGlobalStyle`
   @import url('https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@300;400&display=swap');
@@ -97,4 +96,3 @@ ReactDOM.render(
   document.getElementById('root')
 );
 
-reportWebVitals();

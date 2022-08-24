@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useMatch, useNavigate  } from "react-router-dom";
 import styled from "styled-components";
-import { deleteDuoMate, getDuoMatching } from "../../api/api";
+import { deleteDuoMate, getDuoMatching } from "../../Api/riotApi";
 import { Container, Wrapper } from "../../commons/sharingCss";
 import DuoDelete from "./DuoModule/DuoDelete";
 import DuoInput from "./DuoModule/DuoInput";
