@@ -6,12 +6,15 @@ import Login from "./Components/Account/Login/Login";
 import Duo from "./Pages/DuoPage";
 import Register from "./Components/Account/Register/Register";
 import SummonerRecord from "./Components/SummonerInfo";
+import Header from './Components/Header/HeaderIndex';
+import Test from "./test";
 
 
 function Router() {
 
   return (
   <>
+    <Header />
     <Routes>
       <Route path="/clan" element={<Clan  />}/>
       <Route path="/clan/addClan" element={<Clan  />}/>
@@ -23,6 +26,7 @@ function Router() {
         <Route path="/duo/addDuo" element={<Duo />}/>
       </Route>
       <Route path="/" element={<MainPage/>}/>
+      <Route path="/test" element={<Test/>} />
     </Routes>
   </>
   )

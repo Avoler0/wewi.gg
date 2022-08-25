@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import styled from "styled-components";
 import {useForm} from "react-hook-form"
 import { Container , Wrapper } from "../../commons/sharingCss";
+import { useSelector } from "react-redux";
 
 const Top = styled.div`
   display: flex;
@@ -113,7 +114,7 @@ const Recommen = styled.div`
 function Home() {
   const {register,watch} = useForm();
   const summonWatch = watch("SummonerSearch");
-
+  const count = useSelector((state:any) => state.counter.value)
   return (
     
     <Container>
@@ -137,7 +138,7 @@ function Home() {
         </Bottom>
         <RecommenWrap>
           <RecoName>
-            <span>오늘의 추천</span>
+            <span>오늘의 추천{count}</span>
           </RecoName>
           <Recommen>
 

@@ -2,18 +2,25 @@
   "duo": [
     {
       "id": 1,
-      "title": "json-server",
-      "author": "typicode"
+      "summonerName": "스쿵씨",
+      "tier": "gold",
+      "line" : "jungle",
+      "3champ" : "shaco,ppopi,jin"
     }
   ],
   "clan": [
     {
       "id": 1,
-      "body": "some comment",
-      "postId": 1
+      "clanName": "name",
+      "clanIntro" : "클랜입니다.",
+      "banner" : "image.png"
     }
   ],
-  "community": {
-    "name": "typicode"
-  }
+  "community": [
+    {
+      "id": 1,
+      "title" : "제목",
+      "content" : "내용"
+    }
+  ]
 }

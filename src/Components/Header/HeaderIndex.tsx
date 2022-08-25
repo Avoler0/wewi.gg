@@ -1,7 +1,7 @@
 import { useMatch } from "react-router-dom";
 import styled from "styled-components";
-import Header from "./Header";
-import Navigation from "./Navigation";
+import Header from "./HeaderStyle/Header/Header";
+import Navigation from "./HeaderStyle/Navigation/Navigation";
 
 
 export default function HeaderIndex(){

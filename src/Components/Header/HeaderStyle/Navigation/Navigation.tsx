@@ -1,7 +1,7 @@
 import React from "react";
 import { Link, useNavigate } from "react-router-dom"
-import { PAGE } from "../../Const/PagePath";
-import * as N from "./HeaderStyle/NavigationStyle"
+import { PAGE } from "../../../../Const/PagePath";
+import * as N from "../NavigationStyle"
 
 export default function Navigation() {
   const urlPath = window.location.pathname;

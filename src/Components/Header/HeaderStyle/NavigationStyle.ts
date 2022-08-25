@@ -36,7 +36,6 @@ export const NavItems = styled.ul`
 export const NavItem = styled.li`
   margin-right: 52px ;
   list-style: none;
-  position: relative;
   display: flex;
   width: fit-content;
   justify-content: center;

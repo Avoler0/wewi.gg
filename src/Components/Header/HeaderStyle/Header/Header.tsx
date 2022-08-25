@@ -2,8 +2,8 @@ import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { connect } from "react-redux";
-import { getLoginState,  getUserData,  isLoggedIn,  isLoggedOut, isLoginState  } from "../../commons/loginState";
-import { ReactComponent as UserMenu } from "../../images/icons/menu-svgrepo-com.svg"
+import { getLoginState,  getUserData,  isLoggedIn,  isLoggedOut, isLoginState  } from "../../../../commons/loginState";
+import { ReactComponent as UserMenu } from "../../../../images/icons/menu-svgrepo-com.svg"
 import React from "react";
 
 function Header({user,isLoggedIn,isLoggedOut,isLoginState}:any) {
