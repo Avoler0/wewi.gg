@@ -22,5 +22,14 @@
       "title" : "제목",
       "content" : "내용"
     }
+  ],
+  "account":[
+    {
+      "id":1,
+      "type":"general",
+      "email":"test123",
+      "password":"1234",
+      "nickName":"스쿵씨"
+    }
   ]
 }

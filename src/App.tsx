@@ -11,6 +11,8 @@ import { Provider } from "react-redux";
 window.React = React
 
 function App() {
+  console.log("로그인");
+  
     return (
       <BrowserRouter>
         <ThemeProvider theme={theme}>

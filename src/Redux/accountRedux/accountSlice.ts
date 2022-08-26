@@ -1,17 +1,29 @@
 import { createSlice } from '@reduxjs/toolkit';
+import { getLoginState } from '../../commons/loginState';
 import { setLogin, setLogout } from './accountModule';
 
 export const accountSlice = createSlice({
   name: 'account',
   initialState:{
-    value:0,
+    login:false,
+    email:"",
   },
   reducers:{
-    accountLogin: () => {
-      setLogin("empty")
+    accountState: (state) => {
+      const loginState = getLoginState;
+      // state = loginState;
     },
-    accountLogout: () => {
+    accountLogin: (state) => {
+      state.login = true;
+      setLogin(state.login)
+    },
+    accountLogout: (state) => {
+      state.login = false;
       setLogout()
     }
   }
 })
+
+export const { accountState, accountLogin, accountLogout } = accountSlice.actions
+
+export default accountSlice.reducer

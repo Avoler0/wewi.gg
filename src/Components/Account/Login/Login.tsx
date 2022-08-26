@@ -2,45 +2,27 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import styled from "styled-components";
-import jwt_decode from "jwt-decode";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { connect } from "react-redux";
-import { getLoginState, isLoggedIn } from "../../../commons/loginState";
-import OverlayMessage from "../../OverlayMessage";
+import { connect, useDispatch } from "react-redux";
+import { accountLogin } from "../../../Redux/accountRedux/accountSlice";
 const { naver } = window as any;
 
-function Login({user,isLoggedIn}:any) {
-  
+function Login() {
+  const dispatch = useDispatch()
   const history = useNavigate();
   const {register,watch,handleSubmit} = useForm();
-  const [token,setToken] = useState("");
   const [loginType , setLoginType] = useState("basic");
   const [autoLogin , setAutoLogin] = useState(false);
-  const [refreshToken , setRefreshToken] = useState("");
-  const [loginError,setLoginError] = useState(0);
-  const loginState = getLoginState();
-
-  // if(loginState[0] === "login"){
-  //   () => {
-  //     history("/")
-  //   }
-  // }
+  const [loginError,setLoginError] = useState(false);
 
   const login = {
     Id: watch("id"),
     Pw: watch("password")
   }
-  const onValid = (e:any) => {e.preventDefault()};
-  function getToken(data:any) {
-    setToken(jwt_decode(data.token , {header:true}))
-    setRefreshToken(jwt_decode(data.refreshToken , {header:true}))
 
-  }
-
-  
   const onLogin = (e:any) => {
     if(login.Id === undefined  || login.Id === undefined) return;
-    setLoginType("basic");
+    setLoginType("general");
     axios({
       method:'post',
       url:'http://localhost:4000/api/login',
@@ -49,17 +31,13 @@ function Login({user,isLoggedIn}:any) {
         password : login.Pw
       }
     }).then((response) => {
-        const token = response.data
         console.log("로그인 성공",response);
-        // getToken(token)
-        isLoggedIn({login:"login",token:token})
+        dispatch(accountLogin())
         history("/");
         })
         .catch((error) => {
           console.log("에러",error);
-          setLoginError(error.request.status);
-          
-        // isLoggedIn({login:"false",token:error})
+          setLoginError(true);
       })
   }
 
@@ -77,14 +55,11 @@ function Login({user,isLoggedIn}:any) {
     });
     login.init();
   };
-  
- const postNaverToken = () => {
+  const naverToken = location.hash.split('=')[1].split('&')[0];  
+  const postNaverToken = () => {
    if(!location.hash && loginType !== "naver" ){
      return;
    }
-  const naverToken = location.hash.split('=')[1].split('&')[0];
-  // console.log("포스트 보내기" , naverToken);
-  // console.log(JSON.stringify(naverToken));
   
   axios.post('http://localhost:4000/api/login/naver' , {
     token:naverToken
@@ -106,22 +81,13 @@ function Login({user,isLoggedIn}:any) {
    if(!window.location.hash && loginType !== "google") return;
   const accessToken = window.location.hash.split("=")[1].split("&")[0]
  }
-//  console.log(user.login);
  
   useEffect(() => {
     naverInit();
     postGoogleToken();
     
   }, []);
-  
-  console.log(user.login);
-  
-   if(user.login === "login"){
-     console.log(user.login);
-      history("/")
-    }
-   
-   
+
   return (
   <>
     <Head>
@@ -132,7 +98,7 @@ function Login({user,isLoggedIn}:any) {
         <LogoWrap>
           <Logo>wewi.gg</Logo>
         </LogoWrap>
-        <Form onSubmit={onValid}>
+        <Form onSubmit={(e) => e.preventDefault()}>
           <InWrap>
             <Label htmlFor="loginId">이메일</Label>
             <Input id="loginId" type="text" {...register("id")} />
