@@ -5,40 +5,50 @@ import styled from "styled-components";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { connect, useDispatch } from "react-redux";
 import { accountLogin } from "../../../Redux/accountRedux/accountSlice";
+import React from "react";
+import requestApi from "../../../api/requestApi";
 const { naver } = window as any;
 
-function Login() {
+export default function Login() {
   const dispatch = useDispatch()
   const history = useNavigate();
+  const emailRef = React.useRef<HTMLInputElement>(null);
+  const pwRef = React.useRef<HTMLInputElement>(null);
   const {register,watch,handleSubmit} = useForm();
   const [loginType , setLoginType] = useState("basic");
   const [autoLogin , setAutoLogin] = useState(false);
   const [loginError,setLoginError] = useState(false);
-
+  const {loginPost,loginState} = requestApi()
   const login = {
     Id: watch("id"),
     Pw: watch("password")
   }
 
-  const onLogin = (e:any) => {
-    if(login.Id === undefined  || login.Id === undefined) return;
-    setLoginType("general");
-    axios({
-      method:'post',
-      url:'http://localhost:4000/api/login',
-      data:{
-        email : login.Id,
-        password : login.Pw
-      }
-    }).then((response) => {
-        console.log("로그인 성공",response);
-        dispatch(accountLogin())
-        history("/");
-        })
-        .catch((error) => {
-          console.log("에러",error);
-          setLoginError(true);
-      })
+  const onLogin = async () => {
+    if(emailRef.current && pwRef.current){
+      loginPost(emailRef.current.value,pwRef.current.value)
+      console.log("스탰",loginState);
+      
+    }
+    
+    // if(login.Id === undefined  || login.Id === undefined) return;
+    // setLoginType("general");
+    // axios({
+    //   method:'post',
+    //   url:'http://localhost:4000/api/login',
+    //   data:{
+    //     email : login.Id,
+    //     password : login.Pw
+    //   }
+    // }).then((response) => {
+    //     console.log("로그인 성공",response);
+    //     dispatch(accountLogin())
+    //     history("/");
+    //     })
+    //     .catch((error) => {
+    //       console.log("에러",error);
+    //       setLoginError(true);
+    //   })
   }
 
   const location = useLocation();
@@ -55,20 +65,20 @@ function Login() {
     });
     login.init();
   };
-  const naverToken = location.hash.split('=')[1].split('&')[0];  
+  // const naverToken = location.hash.split('=')[1].split('&')[0];  
   const postNaverToken = () => {
    if(!location.hash && loginType !== "naver" ){
      return;
    }
   
-  axios.post('http://localhost:4000/api/login/naver' , {
-    token:naverToken
-  }).then((res) => {
-    console.log("RES",res.data);
-    //이메일 확인 후 가입 안되어 있으면 가입화면으로
-    history('/register',{state:res.data})
-  })
- }
+  // axios.post('http://localhost:4000/api/login/naver' , {
+  //   token:naverToken
+  // }).then((res) => {
+  //   console.log("RES",res.data);
+  //   //이메일 확인 후 가입 안되어 있으면 가입화면으로
+  //   history('/register',{state:res.data})
+  // })
+}
  const googleLogin = () => {
    setLoginType("google");
    const clientID = '625687004788-gd57fikpm0v5854djf8emrm7bgmh4drg.apps.googleusercontent.com'
@@ -79,7 +89,7 @@ function Login() {
  }
  const postGoogleToken = () => {
    if(!window.location.hash && loginType !== "google") return;
-  const accessToken = window.location.hash.split("=")[1].split("&")[0]
+  // const accessToken = window.location.hash.split("=")[1].split("&")[0]
  }
  
   useEffect(() => {
@@ -101,11 +111,11 @@ function Login() {
         <Form onSubmit={(e) => e.preventDefault()}>
           <InWrap>
             <Label htmlFor="loginId">이메일</Label>
-            <Input id="loginId" type="text" {...register("id")} />
+            <Input id="loginId" type="text" ref={emailRef} />
           </InWrap>
           <InWrap>
             <Label htmlFor="loginPw">비밀번호</Label>
-            <Input id="loginPw" type="password" {...register("password")} />
+            <Input id="loginPw" type="password" ref={pwRef} />
           </InWrap>
           <InWrap style={{
             display:'flex'
@@ -114,12 +124,12 @@ function Login() {
             <Label>자동 로그인</Label>
             <IDPW>ID/PW 찾기</IDPW>
           </InWrap>
-            {loginError === 400 && 
+            {/* {loginError === 400 &&  */}
             <>
             <ErrorMsg>아이디 또는 비밀번호를 잘못 입력했습니다.</ErrorMsg>
             <ErrorMsg>입력하신 내용을 다시 확인해주세요.</ErrorMsg>
             </>
-            }
+            {/* } */}
           <OR>OR</OR>
           <FastLogin>간편 로그인</FastLogin>
           <NaverLogin id='naverIdLogin' onClick={postNaverToken}>
@@ -147,6 +157,7 @@ function Login() {
   </>
   );
 }
+
 const Container = styled.div`
   width: 450px ;
   min-height: 682px;
@@ -279,12 +290,3 @@ const ErrorMsg = styled.div`
   font-size: 12px;
   color: #ff0000c5;
 `;
-function userState(state:any){
-  return {user:state}
-}
-function userLoginState(dispatch:any){
-  return {
-    isLoggedIn: (login:boolean) => dispatch(isLoggedIn(login))
-  }
-}
-export default connect(userState,userLoginState) (Login);

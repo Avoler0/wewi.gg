@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { getTierName } from "../../../../Const/utils";
+import { getTierName } from "../../../../const/utils";
 
 const RankInfo = styled.div`
   width: 100%;

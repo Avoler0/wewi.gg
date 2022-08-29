@@ -2,7 +2,9 @@
 
 
 export function getAccount(){
-  return localStorage.getItem("wewi")
+  const loginState = localStorage.getItem("wewi");
+  
+  return 
 }
 export function setLogin (state:any) {
   localStorage.setItem("wewi",state);

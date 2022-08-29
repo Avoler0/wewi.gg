@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import styled , {css} from "styled-components";
-import { getSummonerGameInfo, getSummonerInfo, getSummonerLeagueInfo, postDuoMatching } from "../../../Api/riotApi";
+import { getSummonerGameInfo, getSummonerInfo, getSummonerLeagueInfo, postDuoMatching } from "../../../api/riotApi";
 import { customAsync } from "../../../commons/asyncUtils";
 import { timeLimit } from "../../../commons/functionCollection";
 import OverlayMessage from "../../OverlayMessage";

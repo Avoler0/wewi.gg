@@ -114,7 +114,6 @@ const Recommen = styled.div`
 function Home() {
   const {register,watch} = useForm();
   const summonWatch = watch("SummonerSearch");
-  const count = useSelector((state:any) => state.counter.value)
   return (
     
     <Container>
@@ -138,7 +137,7 @@ function Home() {
         </Bottom>
         <RecommenWrap>
           <RecoName>
-            <span>오늘의 추천{count}</span>
+            <span>오늘의 추천</span>
           </RecoName>
           <Recommen>
 

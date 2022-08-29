@@ -5,6 +5,7 @@ import Router from "./Router";
 import theme from "./commons/theme";
 import store from "./Redux/store"
 import { Provider } from "react-redux";
+import Layout from './Pages/Layout/Layout';
 // import user, { getLoginState } from "./commons/loginState";
 
 
@@ -17,7 +18,7 @@ function App() {
       <BrowserRouter>
         <ThemeProvider theme={theme}>
           <Provider store={store} >
-            <Router />
+            <Layout />
           </Provider>
         </ThemeProvider>
       </BrowserRouter>

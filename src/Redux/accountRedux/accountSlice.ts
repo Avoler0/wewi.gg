@@ -10,8 +10,8 @@ export const accountSlice = createSlice({
   },
   reducers:{
     accountState: (state) => {
-      const loginState = getLoginState;
-      // state = loginState;
+      const loginState = true;
+      state.login = loginState
     },
     accountLogin: (state) => {
       state.login = true;

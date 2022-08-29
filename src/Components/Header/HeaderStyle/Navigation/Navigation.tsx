@@ -1,6 +1,6 @@
 import React from "react";
 import { Link, useNavigate } from "react-router-dom"
-import { PAGE } from "../../../../Const/PagePath";
+import { PAGE } from "../../../../const/PagePath";
 import * as N from "../NavigationStyle"
 
 export default function Navigation() {

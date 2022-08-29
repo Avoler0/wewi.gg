@@ -2,7 +2,7 @@ import React from "react";
 import { useEffect, useState } from "react";
 import { useRecoilValue } from "recoil";
 import styled from "styled-components";
-import { getSummonerGameInfo } from "../../../Api/riotApi";
+import { getSummonerGameInfo } from "../../../api/riotApi";
 import { customAsync } from "../../../commons/asyncUtils";
 import { AT_puuid } from "../../../commons/Atom";
 import ChampRecently from "./RecentlyRecord/ChampRecently";

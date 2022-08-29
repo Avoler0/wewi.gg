@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import styled from "styled-components";
-import { getMenuName } from "../../../Const/utils";
+import { getMenuName } from "../../../const/utils";
 import PostingList from "../Boards/PostingList";
 import All from "../Boards/PostingList";
 
