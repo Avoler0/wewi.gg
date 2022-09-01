@@ -3,22 +3,19 @@ import { db } from "../hook/axiosInstance";
 
 
 
-
+// useState넘기는거 말고 그냥 넘기는 방법 찾기
 export default function RequestApi(){
-  const [loginState,setLoginState] = useState<any>(false);
 
   async function loginPost(email:string,password:string){
-     await new Promise ( (resolve) => {
+     return await new Promise ( (resolve) => {
        db.get(`account?email_like=${email}&password_like=${password}`, (response:any) => {
           setTimeout(()=>{
             resolve(response)
           },1000)
         }
       )
-    }).then((result)=>{
-      setLoginState(result)
     })
   }
 
-  return {loginPost,loginState}
+  return {loginPost}
 }

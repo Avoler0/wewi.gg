@@ -9,3 +9,9 @@ export interface accountT{
   password:string,
   nickName:string
 }
+export interface accountReduxT{
+  login:boolean,
+  type:loginType,
+  email:string,
+  nickName:string
+}

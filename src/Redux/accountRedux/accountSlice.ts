@@ -1,25 +1,35 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { getLoginState } from '../../commons/loginState';
-import { setLogin, setLogout } from './accountModule';
+import { getAccount, setLogin, setLogout } from './accountModule';
 
 export const accountSlice = createSlice({
   name: 'account',
   initialState:{
     login:false,
     email:"",
+    nickName:"",
+    type:"",
   },
   reducers:{
     accountState: (state) => {
-      const loginState = true;
-      state.login = loginState
+      const data = getAccount();
+      state.login = data.login;
+      state.email = data.email;
+      state.nickName = data.nickName;
+      state.type = data.type;
     },
-    accountLogin: (state) => {
+    accountLogin: (state,action) => {
       state.login = true;
-      setLogin(state.login)
+      state.email = action.payload.email;
+      state.nickName = action.payload.nickName;
+      state.type = action.payload.type;
+      setLogin(action.payload)
     },
     accountLogout: (state) => {
       state.login = false;
-      setLogout()
+      state.email = "";
+      state.nickName = "";
+      state.type = "";
+      setLogout();
     }
   }
 })

@@ -11,48 +11,32 @@ const { naver } = window as any;
 
 export default function Login() {
   const dispatch = useDispatch()
-  const history = useNavigate();
+  const navigate = useNavigate();
   const emailRef = React.useRef<HTMLInputElement>(null);
   const pwRef = React.useRef<HTMLInputElement>(null);
-  const {register,watch,handleSubmit} = useForm();
   const [loginType , setLoginType] = useState("basic");
-  const [autoLogin , setAutoLogin] = useState(false);
-  const [loginError,setLoginError] = useState(false);
-  const {loginPost,loginState} = requestApi()
-  const login = {
-    Id: watch("id"),
-    Pw: watch("password")
-  }
+  const location = useLocation();
+  const {loginPost} = requestApi()
 
   const onLogin = async () => {
     if(emailRef.current && pwRef.current){
-      loginPost(emailRef.current.value,pwRef.current.value)
-      console.log("스탰",loginState);
-      
+      const email = emailRef.current.value;
+      const password = pwRef.current.value;
+      loginPost(email,password)
+      .then((_response:any)=>{
+        if(_response.data.length){
+          dispatch(accountLogin(_response.data[0]))
+          console.log(location)
+          navigate("/")
+        }else{
+          console.log("회원 데이터 없음")
+        }
+      })
+      .catch((error)=>{
+        console.log("에러",error)
+      })
     }
-    
-    // if(login.Id === undefined  || login.Id === undefined) return;
-    // setLoginType("general");
-    // axios({
-    //   method:'post',
-    //   url:'http://localhost:4000/api/login',
-    //   data:{
-    //     email : login.Id,
-    //     password : login.Pw
-    //   }
-    // }).then((response) => {
-    //     console.log("로그인 성공",response);
-    //     dispatch(accountLogin())
-    //     history("/");
-    //     })
-    //     .catch((error) => {
-    //       console.log("에러",error);
-    //       setLoginError(true);
-    //   })
   }
-
-  const location = useLocation();
-
   const naverInit = () =>{
       const login = new naver.LoginWithNaverId({
       clientId: 'NR61LLLoBLU2vcfbHvDY',

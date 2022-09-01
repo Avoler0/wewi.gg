@@ -1,17 +1,27 @@
-import { useDispatch, useSelector } from "react-redux"
-import { increment, incrementByAmount } from "./Redux/counterSlice"
 
 
 
 export default function Test(){
-
-
+  function fun1(){
+    console.log("fun1");
+    
+  }
+  function fun2(){
+    console.log("fun2");
+    
+  }
+  function fun3(event:any){
+    console.log("fun3");
+  }
   return (
     <>
-    <button
-    onClick={()=> console.log("123")
-    }
-    >올리기</button>
+    <div onClick={fun1}>1
+      <p onClick={fun2}>2
+        <div onClick={fun3}>3
+
+        </div>
+      </p>
+    </div>
     </>
   )
 
