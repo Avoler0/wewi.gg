@@ -1,12 +1,11 @@
-import axios from "axios";
+
 import { useEffect, useState } from "react";
-import { useForm } from "react-hook-form";
 import styled from "styled-components";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { connect, useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
 import { accountLogin } from "../../../Redux/accountRedux/accountSlice";
 import React from "react";
-import requestApi from "../../../api/requestApi";
+import {tryLogin}  from "../../../api/requestApi";
 const { naver } = window as any;
 
 export default function Login() {
@@ -14,21 +13,22 @@ export default function Login() {
   const navigate = useNavigate();
   const emailRef = React.useRef<HTMLInputElement>(null);
   const pwRef = React.useRef<HTMLInputElement>(null);
+  const [loginError , setLoginError] = useState(false);
   const [loginType , setLoginType] = useState("basic");
   const location = useLocation();
-  const {loginPost} = requestApi()
 
   const onLogin = async () => {
     if(emailRef.current && pwRef.current){
       const email = emailRef.current.value;
       const password = pwRef.current.value;
-      loginPost(email,password)
+      tryLogin(email,password)
       .then((_response:any)=>{
         if(_response.data.length){
           dispatch(accountLogin(_response.data[0]))
           console.log(location)
           navigate("/")
         }else{
+          setLoginError(true);
           console.log("회원 데이터 없음")
         }
       })
@@ -79,7 +79,6 @@ export default function Login() {
   useEffect(() => {
     naverInit();
     postGoogleToken();
-    
   }, []);
 
   return (
@@ -108,12 +107,12 @@ export default function Login() {
             <Label>자동 로그인</Label>
             <IDPW>ID/PW 찾기</IDPW>
           </InWrap>
-            {/* {loginError === 400 &&  */}
-            <>
-            <ErrorMsg>아이디 또는 비밀번호를 잘못 입력했습니다.</ErrorMsg>
-            <ErrorMsg>입력하신 내용을 다시 확인해주세요.</ErrorMsg>
-            </>
-            {/* } */}
+            {loginError &&  
+              <>
+                <ErrorMsg>아이디 또는 비밀번호를 잘못 입력했습니다.</ErrorMsg>
+                <ErrorMsg>입력하신 내용을 다시 확인해주세요.</ErrorMsg>
+              </>
+            }
           <OR>OR</OR>
           <FastLogin>간편 로그인</FastLogin>
           <NaverLogin id='naverIdLogin' onClick={postNaverToken}>

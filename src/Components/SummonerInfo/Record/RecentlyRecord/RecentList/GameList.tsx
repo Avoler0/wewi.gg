@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import { getChampionIcon, getItemIcon, getRuneIcon, getRunesInfo, getSpellIcon, getSpellInfo } from "../../../../../api/riotApi";
+import { getChampionIcon, getItemIcon, getRuneIcon, getRunesInfo, getSpellIcon, getSpellInfo } from "../../../../../api/riotApi2";
 import { getTime, timeDiff } from "../../../../../commons/functionCollection";
 import { getQueueType, getSpellName } from "../../../../../const/utils";
 

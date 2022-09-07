@@ -1,5 +1,5 @@
 import styled from "styled-components"
-import { getProfileIcon } from "../../../api/riotApi";
+import { getProfileIcon } from "../../../api/riotApi2";
 import {ReactComponent as Up} from "/MyApp/wewi.gg/src/images/icons/thumbs-up-svgrepo-com.svg"
 import {ReactComponent as Down} from "/MyApp/wewi.gg/src/images/icons/thumbs-down-svgrepo-com.svg"
 

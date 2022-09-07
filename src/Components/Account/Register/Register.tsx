@@ -1,9 +1,8 @@
-import axios from "axios";
-import { useEffect, useState } from "react";
-import { useForm } from "react-hook-form";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useRef, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import { API_KEY, PATH } from "../../../const/API_KEY";
+import { checkNickName, saveRegister } from "../../../api/requestApi";
+import { getSummoner } from "../../../api/riotApi";
 
 
 const Container = styled.div`
@@ -117,69 +116,48 @@ const NickCheck = styled.div`
   padding-top: 5px;
   font-size: 14px;
 `;
-interface I_navState {
-  hash: string,
-  key: string,
-  pathname: string,
-  search: string,
-  state: string,
-}
+type nickCheck = "success" | "failed" | "none";
 function Register() {
   const history = useNavigate();
-  const navState:any = useLocation();
-  const cancelClick = () => history('/');
-  const {register,watch,handleSubmit} = useForm();
-  const [nickCheck,setNickCheck] = useState("none");
-  const [oauthEmail , setOauthEmail] = useState("");
-  // let oauthEmail;
-  const reg = {
-    Id: !navState.state ? watch("email") : navState.state.split(',')[3].split(':')[1].split('}')[0].split('"')[1],
-    Pw: watch("password"),
-    Nick:watch("nickname")
+  const emailRef = useRef<HTMLInputElement|null>(null);
+  const pwRef = useRef<HTMLInputElement|null>(null);
+  const nickRef = useRef<HTMLInputElement|null>(null);
+  const [nickCheck,setNickCheck] = useState<nickCheck>("none");
+
+  function vaildationName(event:any) {
+    // console.log(event.target.value)
+    // getSummoner(event.target.value)
+    getSummoner(event)
+    // checkNickName(nickName)
+    // .then((_response:any)=>{
+    //   if(_response.data.length === 0){
+    //     setNickCheck("success")
+    //   }else{
+    //     setNickCheck("failed")
+    //   }
+    // })
   }
-  const navEmail = () =>{
-    if(!navState.state) return;
-    const naverEmail = navState.state.split(',')[3].split(':')[1].split('}')[0].split('"')[1]
-    setOauthEmail(naverEmail);
+  function validation(){
+    return (
+      emailRef.current?.value.includes("@") &&
+      emailRef.current?.value.includes(".") &&
+      pwRef.current && pwRef.current?.value?.length >= 8 ?
+      true : false
+    )
   }
-  useEffect(()=>{
-    navEmail()
-  },[])
-  function postName() {
-    axios({
-      method: 'get',
-      url:`http://localhost:4000/api/register/${reg.Nick}`,
-    })
-      .then((response) => {
-        setNickCheck("success");
-        console.log("성공",response);
+  function postRegister() {
+    if(validation()){
+      vaildationName(nickRef.current!.value)
+      console.log("포스트");
+      saveRegister({
+        type:"general",
+        email: emailRef.current!.value,
+        password: pwRef.current!.value,
+        nickName: nickRef.current!.value,
       })
-      .catch((error) => {
-        setNickCheck("failed");
-        console.log("에러",error);
-      })
+    }
   }
-  function postReg() {
-    if(nickCheck === "failed") return;
-    axios({
-      method: 'post',
-      url:'http://localhost:4000/api/register',
-      data: {
-        email:reg.Id,
-        password:reg.Pw
-      }, 
-    })
-      .then((response) => {
-        console.log("성공",response);
-      })
-      .catch((error) => {
-        console.log("에러",error);
-      })
-  }
-  const onValid = (e:any) => {
-    postReg();
-    // postName();
-  }
+
   return (
     <>
     <Head />
@@ -190,30 +168,31 @@ function Register() {
         </LogoWrap>
         <SignTitle>기본 정보 입력</SignTitle>
         <SignExp>회원가입을 위해서 이메일 인증이 진행되며, 인증이 완료되기 전까지 회원가입이 완료가 되지 않습니다.</SignExp>
-        <Form onSubmit={handleSubmit(onValid)}>
+        <Form onSubmit={(e) => e.preventDefault()}>
           <InWrap>
             <Label htmlFor="regiId">이메일 주소</Label>
-            {oauthEmail.length > 8 ? <Email>{oauthEmail}</Email> : <Input id="id" type="email" {...register("email")} />}
+            {/* {oauthEmail.length > 8 ? <Email>{oauthEmail}</Email> : <Input id="id" type="email" {...register("email")} />} */}
+            <Input type="email" ref={emailRef} />
           </InWrap>
           <InWrap>
-            <Label htmlFor="regiPw">비밀번호</Label>
-            <Input id="pw" type="password" {...register("password")} />
+            <Label>비밀번호</Label>
+            <Input type="password" ref={pwRef} />
           </InWrap>
           <InWrap>
             <NickColum>
-              <Label htmlFor="regiNick">닉네임</Label>
-              <NickSub>자신의 롤 닉네임을 입력 해 주세요</NickSub>
+              <Label>닉네임</Label>
+              <NickSub >자신의 롤 닉네임을 입력 해 주세요</NickSub>
             </NickColum>
             <NickColum>
-              <Input id="id" type="text" {...register("nickname")} />
+              <Input type="text"  ref={nickRef}  />
+              {/* onChange={(event) => vaildationName(event)} */}
             </NickColum>
             {nickCheck === "success" && <NickCheck>닉네임이 확인 되었습니다.</NickCheck>}
             {nickCheck === "failed" && <NickCheck>존재하지 않은 닉네임입니다.</NickCheck> }
-            
           </InWrap>
           <ExitWrap>
-            <CancelBt onClick={cancelClick}>취소</CancelBt>
-            <OkBt>가입하기</OkBt>
+            <CancelBt onClick={() => history('/')}>취소</CancelBt>
+            <OkBt onClick={postRegister}>가입하기</OkBt>
           </ExitWrap>
         </Form>
       </Layout>

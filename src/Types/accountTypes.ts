@@ -15,3 +15,10 @@ export interface accountReduxT{
   email:string,
   nickName:string
 }
+
+export interface registerQueryT{
+  type:loginType,
+  email:string,
+  password:string,
+  nickName:string
+}

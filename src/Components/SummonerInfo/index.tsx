@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { useSetRecoilState } from "recoil";
 import styled from "styled-components";
-import { getSummonerGameInfo, getSummonerInfo, getSummonerLeagueInfo } from "../../api/riotApi";
+import { getSummonerGameInfo, getSummonerInfo, getSummonerLeagueInfo } from "../../api/riotApi2";
 import { I_summonerBasicData, I_summonerInfo } from "../../Types/apiInterFace";
 import { customAsync } from "../../commons/asyncUtils";
 import { AT_puuid } from "../../commons/Atom";

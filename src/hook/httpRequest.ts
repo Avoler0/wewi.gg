@@ -5,31 +5,27 @@ export class HttpRequest<T> {
     this.service = service;
   }
 
-  async get(url:string, callback:any) {
-    await this.service.get(url).then((_response:any) => {
-      if (callback) callback(_response);
-      return _response;
-    })
-    .catch((error)=>{
+  get(url:string,callback:any) {
+    this.service.get(url)
+    .then((_response)=>{
+      callback(_response);
+    }).catch((error)=>{
       this.error(error)
     })
   }
-  post(url:string, data:any) {
+  post(url:string, data:any,callback:any) {
     return this.service.post(url, data)
+    .then((_response)=>{
+      callback(_response);
+    }).catch((error)=>{
+      this.error(error)
+    })
   }
   patch(url:string, data:any) {
-    this.service.patch(url, data);
+    return this.service.patch(url, data)
   } 
-  delete(url:string , callback:any) {
-    this.service.delete(url).then((_response)=>{
-      if (callback) callback(_response);
-      return _response;
-    })
-    .catch((error)=>{
-      if (callback) callback(error.response);
-      return error.response;
-    }
-    );
+  delete(url:string) {
+    return this.service.delete(url)
   }
   error(error:any,msg?:string) {
     throw new Error(`Service Error Status Code : < ${error.response.status} > `, error);
