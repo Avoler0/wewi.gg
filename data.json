@@ -646,6 +646,20 @@
       "password": "1234512354",
       "nickName": "스쿵씨",
       "id": 90
+    },
+    {
+      "type": "general",
+      "email": "",
+      "password": "",
+      "nickName": "",
+      "id": 91
+    },
+    {
+      "type": "general",
+      "email": "",
+      "password": "",
+      "nickName": "",
+      "id": 92
     }
   ]
 }
