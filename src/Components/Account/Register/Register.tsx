@@ -1,7 +1,7 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import { checkNickName, saveRegister } from "../../../api/requestApi";
+import { checkNickName, readEmail, saveRegister } from "../../../api/requestApi";
 import { getSummoner } from "../../../api/riotApi";
 
 
@@ -45,11 +45,8 @@ const Form = styled.form`
   
   padding-top: 0;
 `;
-const InWrap = styled.div`
+const InputDiv = styled.div`
   margin-top: 1rem;
-`;
-const LabelWrap = styled.div`
-  position: relative;
 `;
 const Label = styled.label`
   font-size: 15px;
@@ -113,10 +110,8 @@ const NickCheck = styled.div`
   font-size: 14px;
 `;
 const Tooltip = styled.div`
-  margin-left: 0.7rem;
-  position: absolute;
+  margin-top: 0.7rem;
   right:0;
-  display: inline-block;
   span{
     font-size: 12px;
     color: #ca9090;
@@ -125,20 +120,16 @@ const Tooltip = styled.div`
 type nickCheck = "success" | "failed" | "none";
 interface toolTip {
   isBoolean: boolean,
-  content: string
+  content: object
 }
 function Register() {
   const history = useNavigate();
   const emailRef = useRef<HTMLInputElement|null>(null);
   const pwRef = useRef<HTMLInputElement|null>(null);
   const nickRef = useRef<HTMLInputElement|null>(null);
-  const [emailToolTip,setEmailToolTip] = useState<toolTip>({
+  const [toolTip,setToolTip] = useState<toolTip>({
     isBoolean:false,
-    content:""
-  });
-  const [pwToolTip,setPwToolTip] = useState<toolTip>({
-    isBoolean:false,
-    content:""
+    content:[]
   });
   const [nickCheck,setNickCheck] = useState<nickCheck>("none");
 
@@ -146,10 +137,18 @@ function Register() {
     getSummoner(event)
   }
 
-  function CustomToolTip({content}:any){
+  function ValidationToolTip({content}:any){
+    console.log("커스텀",content)
       return (
         <Tooltip>
-          <span>{content}</span>
+          {content.map((data:string)=>{
+            return (
+              <>
+                <span>{data}</span>
+                <br/>
+              </> 
+            )
+          })}
         </Tooltip>
       )
   }
@@ -159,24 +158,23 @@ function Register() {
     if(atCheck && dotCheck){
       return true;
     }else{
-      console.log("이메일 틀렸다")
-      setEmailToolTip({
+      setToolTip({
         isBoolean:true,
-        content: "이메일 형식이 올바르지 않습니다."
+        content: ["올바른 이메일 형식이 아닙니다." , "이메일을 다시 한번 입력 해 주세요."]
       })
     }
     return atCheck && dotCheck ? true : false;
   }
   function passwordValidation(password:string){
+    // 패턴 적용 안됨 수정 필요
     const pwPattern = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[~!@#$%^&*()+|=])[A-Za-z\d~!@#$%^&*()+|=]{8,20}$/;
-
     if(pwPattern.test(password)){
+      console.log("비밀번호 맞음!")
       return true;
     }else{
-      console.log("비밀번호 틀렸다")
-      setPwToolTip({
+      setToolTip({
         isBoolean:true,
-        content:"8~20자 영문 대소문자, 숫자, 특수문자를 이용하여 완성해주세요."
+        content:["비밀번호가 올바르지 않습니다." , "8~20자 영문 대소문자, 숫자, 특수문자를 이용하여 완성해주세요."] 
       });
       return false;
     }
@@ -195,29 +193,21 @@ function Register() {
   function onSubmit(event:any){
     const email = event.target[0].value;
     const password = event.target[1].value
-    if(emailValidation(email) && passwordValidation(password)){
-      postRegister()
+    if(emailValidation(email) && passwordValidation(password) ){
+      readEmail(email).then((_response:any)=>{
+        if(_response.data.length === 0){
+          postRegister()
+        }else{
+          setToolTip({
+            isBoolean:true,
+            content: ["이미 등록된 이메일입니다."]
+          })
+        }
+      })
+      
     }
     event.preventDefault();
   }
-  function emailOnChange(event:any){
-    
-    if(event.target.value.length === 1){
-      console.log(event.target.value.length)
-      setEmailToolTip({
-        isBoolean:false,
-        content:""
-      })
-    }
-  }
-  function pwOnChange(event:any){
-    if(event.target.value.length === 1){
-      setPwToolTip({
-        isBoolean:false,
-        content:""
-      })
-    }
-  } 
   return (
     <>
     <Head />
@@ -229,32 +219,26 @@ function Register() {
         <SignTitle>기본 정보 입력</SignTitle>
         <SignExp>회원가입을 위해서 이메일 인증이 진행되며, 인증이 완료되기 전까지 회원가입이 완료가 되지 않습니다.</SignExp>
         <Form onSubmit={(e) => onSubmit(e)}>
-          <InWrap>
-            <LabelWrap>
-              <Label htmlFor="regiId">이메일 주소</Label>
-              <CustomToolTip {...emailToolTip} />
-            </LabelWrap>
-            <Input type="text" ref={emailRef} onChange={emailOnChange}/>
-          </InWrap>
-          <InWrap>
-            <LabelWrap>
-              <Label>비밀번호</Label>
-              <CustomToolTip {...pwToolTip} />
-            </LabelWrap>
-            <Input type="password" ref={pwRef} onChange={pwOnChange} />
-          </InWrap>
-          <InWrap>
+          <InputDiv>
+            <Label htmlFor="regiId">이메일 주소</Label>
+            <Input type="text" ref={emailRef}/>
+          </InputDiv>
+          <InputDiv>
+            <Label>비밀번호</Label>
+            <Input type="password" ref={pwRef} />
+          </InputDiv>
+          <InputDiv>
             <NickColum>
               <Label>닉네임</Label>
               <NickSub >자신의 롤 닉네임을 입력 해 주세요</NickSub>
             </NickColum>
             <NickColum>
               <Input type="text"  ref={nickRef}   />
-              {/* onChange={(event) => vaildationName(event)} */}
             </NickColum>
             {nickCheck === "success" && <NickCheck>닉네임이 확인 되었습니다.</NickCheck>}
             {nickCheck === "failed" && <NickCheck>존재하지 않은 닉네임입니다.</NickCheck> }
-          </InWrap>
+          </InputDiv>
+          <ValidationToolTip {...toolTip} />
           <ExitWrap>
             <CancelBt onClick={() => history('/')}>취소</CancelBt>
             <OkBt>가입하기</OkBt>

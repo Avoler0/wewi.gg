@@ -1,10 +1,18 @@
 import { db } from "../hook/axiosInstance";
-import { customTimeout } from '../hook/customAsync';
 import { registerQueryT } from '../Types/accountTypes';
 
 
 
 // useState넘기는거 말고 그냥 넘기는 방법 찾기
+  export async function readEmail(email:string) {
+    return await new Promise((resolve)=>{
+      db.get(`account?email_like=${email}`,(_response:any)=>{
+        setTimeout(()=>{
+          resolve(_response)
+        },200)
+      })
+    })
+  }
   export async function saveRegister(query:registerQueryT){
     return await new Promise((resolve)=>{
       db.post('account',{
