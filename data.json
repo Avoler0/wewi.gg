@@ -86,6 +86,27 @@
       "password": "a12345",
       "nickName": "1234@",
       "id": 9
+    },
+    {
+      "type": "general",
+      "email": "1234@132.1234",
+      "password": "142315123Aa!",
+      "nickName": "스쿵씨",
+      "id": 10
+    },
+    {
+      "type": "general",
+      "email": "1234@132.1234",
+      "password": "142315123Aa!",
+      "nickName": "스쿵씨",
+      "id": 11
+    },
+    {
+      "type": "general",
+      "email": "1234@123.123",
+      "password": "1235Asd1!",
+      "nickName": "스쿵씨",
+      "id": 12
     }
   ]
 }

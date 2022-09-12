@@ -1,8 +1,9 @@
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { checkNickName, readEmail, saveRegister } from "../../../api/requestApi";
 import { getSummoner } from "../../../api/riotApi";
+import { postRegistT } from "../../../Types/accountTypes";
 
 
 const Container = styled.div`
@@ -46,6 +47,7 @@ const Form = styled.form`
   padding-top: 0;
 `;
 const InputDiv = styled.div`
+  position: relative;
   margin-top: 1rem;
 `;
 const Label = styled.label`
@@ -102,13 +104,6 @@ const NickSub = styled.span`
   line-height: 18px;
   color: #cf9797cc;
 `;
-const NickColum = styled.div`
-  position: relative;
-`;
-const NickCheck = styled.div`
-  padding-top: 5px;
-  font-size: 14px;
-`;
 const Tooltip = styled.div`
   margin-top: 0.7rem;
   right:0;
@@ -124,19 +119,10 @@ interface toolTip {
 }
 function Register() {
   const history = useNavigate();
-  const emailRef = useRef<HTMLInputElement|null>(null);
-  const pwRef = useRef<HTMLInputElement|null>(null);
-  const nickRef = useRef<HTMLInputElement|null>(null);
   const [toolTip,setToolTip] = useState<toolTip>({
     isBoolean:false,
     content:[]
   });
-  const [nickCheck,setNickCheck] = useState<nickCheck>("none");
-
-  function vaildationName(event:any) {
-    getSummoner(event)
-  }
-
 
   function emailValidation(email:string){
     const atCheck = email.includes("@");
@@ -164,47 +150,39 @@ function Register() {
       return false;
     }
   }
+  function nickNameCheck(nickName:string){
 
-  function postRegister() {
-      vaildationName(nickRef.current!.value)
-      console.log("포스트");
-      saveRegister({
-        type:"general",
-        email: emailRef.current!.value,
-        password: pwRef.current!.value,
-        nickName: nickRef.current!.value,
-      })
+  }
+  function postRegister(value:postRegistT) {
+    const {email,password,nickName} = value;
+    saveRegister({type:"general",email,password,nickName})
   }
   function onSubmit(event:any){
     const email = event.target[0].value;
-    const password = event.target[1].value
-    // if(emailValidation(email) && passwordValidation(password) ){
-    //   readEmail(email).then((_response:any)=>{
-    //     if(_response.data.length === 0){
-    //       postRegister()
-    //     }else{
-    //       setToolTip({
-    //         isBoolean:true,
-    //         content: ["이미 등록된 이메일입니다."]
-    //       })
-    //     }
-    //   })
-      
-    // }
-      getSummoner(nickRef.current!.value)
-      .then((res)=>{
-        console.log("성공했음",res)
+    const password = event.target[1].value;
+    const nickName = event.target[2].value;
+    const validation = emailValidation(email) && passwordValidation(password);
+    if(validation){
+      readEmail(email)
+      .then((_response:any)=>{
+        getSummoner(nickName)
+          .then(function (){
+            postRegister({email,password,nickName})
+          })
+          .catch(function (){
+            setToolTip({
+              isBoolean:true,
+              content:["존재하지 않는 닉네임입니다." , "다시 한번 확인해주세요."] 
+            });
+          })
+          })
+      .catch(()=>{
+        setToolTip({
+          isBoolean:true,
+          content: ["이미 등록된 이메일입니다."]
+        })
       })
-      .catch((event)=>{
-        console.log("에러났음",event)
-      })
-      
-    //   .then((_response:any)=>{
-    //     console.log("성공했음",_response)
-    //   })
-    // } 
-    
-
+    }
 
     event.preventDefault();
   }
@@ -221,22 +199,16 @@ function Register() {
         <Form onSubmit={(e) => onSubmit(e)}>
           <InputDiv>
             <Label htmlFor="regiId">이메일 주소</Label>
-            <Input type="text" ref={emailRef}/>
+            <Input type="text" name="email" />
           </InputDiv>
           <InputDiv>
             <Label>비밀번호</Label>
-            <Input type="password" ref={pwRef} />
+            <Input type="password" name="password" />
           </InputDiv>
           <InputDiv>
-            <NickColum>
               <Label>닉네임</Label>
               <NickSub >자신의 롤 닉네임을 입력 해 주세요</NickSub>
-            </NickColum>
-            <NickColum>
-              <Input type="text"  ref={nickRef}   />
-            </NickColum>
-            {nickCheck === "success" && <NickCheck>닉네임이 확인 되었습니다.</NickCheck>}
-            {nickCheck === "failed" && <NickCheck>존재하지 않은 닉네임입니다.</NickCheck> }
+              <Input type="text" name="nickName" />
           </InputDiv>
           <ValidationToolTip {...toolTip} />
           <ExitWrap>

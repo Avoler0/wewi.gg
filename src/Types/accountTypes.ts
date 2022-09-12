@@ -22,3 +22,9 @@ export interface registerQueryT{
   password:string,
   nickName:string
 }
+
+export interface postRegistT{
+  readonly email:string,
+  readonly password:string,
+  readonly nickName:string
+}
