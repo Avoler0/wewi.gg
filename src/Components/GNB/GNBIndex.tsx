@@ -1,7 +1,7 @@
 import { useSelector } from "react-redux";
 import { useMatch } from "react-router-dom";
 import styled from "styled-components";
-import Header from "./Head/Header";
+import Header from "./Header/Header";
 import Navigation from "./Navigation/Navigation";
 
 

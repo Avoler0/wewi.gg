@@ -3,9 +3,9 @@ import { useEffect, useState } from "react";
 import styled from "styled-components";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { accountLogin } from "../../../Redux/accountRedux/accountSlice";
+import { accountLogin } from "../../../../Redux/accountRedux/accountSlice";
 import React from "react";
-import {tryLogin}  from "../../../api/requestApi";
+import {tryLogin}  from "../../../../api/requestApi";
 const { naver } = window as any;
 
 export default function Login() {

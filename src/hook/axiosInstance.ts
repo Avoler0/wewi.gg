@@ -20,6 +20,5 @@ export const axiosRiotSummoner = axios.create({
     api_key : API_KEY
   }
 });
-
 export const db = new HttpRequest(axiosCreate);
 export const riotSummoner = new HttpRequest(axiosRiotSummoner);

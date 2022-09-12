@@ -137,21 +137,7 @@ function Register() {
     getSummoner(event)
   }
 
-  function ValidationToolTip({content}:any){
-    console.log("커스텀",content)
-      return (
-        <Tooltip>
-          {content.map((data:string)=>{
-            return (
-              <>
-                <span>{data}</span>
-                <br/>
-              </> 
-            )
-          })}
-        </Tooltip>
-      )
-  }
+
   function emailValidation(email:string){
     const atCheck = email.includes("@");
     const dotCheck = email.includes(".");
@@ -166,7 +152,6 @@ function Register() {
     return atCheck && dotCheck ? true : false;
   }
   function passwordValidation(password:string){
-    // 패턴 적용 안됨 수정 필요
     const pwPattern = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[~!@#$%^&*()+|=])[A-Za-z\d~!@#$%^&*()+|=]{8,20}$/;
     if(pwPattern.test(password)){
       console.log("비밀번호 맞음!")
@@ -193,19 +178,34 @@ function Register() {
   function onSubmit(event:any){
     const email = event.target[0].value;
     const password = event.target[1].value
-    if(emailValidation(email) && passwordValidation(password) ){
-      readEmail(email).then((_response:any)=>{
-        if(_response.data.length === 0){
-          postRegister()
-        }else{
-          setToolTip({
-            isBoolean:true,
-            content: ["이미 등록된 이메일입니다."]
-          })
-        }
+    // if(emailValidation(email) && passwordValidation(password) ){
+    //   readEmail(email).then((_response:any)=>{
+    //     if(_response.data.length === 0){
+    //       postRegister()
+    //     }else{
+    //       setToolTip({
+    //         isBoolean:true,
+    //         content: ["이미 등록된 이메일입니다."]
+    //       })
+    //     }
+    //   })
+      
+    // }
+      getSummoner(nickRef.current!.value)
+      .then((res)=>{
+        console.log("성공했음",res)
+      })
+      .catch((event)=>{
+        console.log("에러났음",event)
       })
       
-    }
+    //   .then((_response:any)=>{
+    //     console.log("성공했음",_response)
+    //   })
+    // } 
+    
+
+
     event.preventDefault();
   }
   return (
@@ -250,5 +250,18 @@ function Register() {
     </>
   )
 }
-
+  function ValidationToolTip({content}:any){
+      return (
+        <Tooltip>
+          {content.map((data:string)=>{
+            return (
+              <>
+                <span>{data}</span>
+                <br/>
+              </> 
+            )
+          })}
+        </Tooltip>
+      )
+  }
 export default Register;

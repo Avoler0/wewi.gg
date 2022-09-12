@@ -2,7 +2,7 @@ import { Route, Routes } from "react-router-dom";
 import Clan from "./Pages/ClanPage";
 import Comunity from "./Pages/CommunityPage";
 import MainPage from "./Pages/MainPage";
-import Login from "./Components/Account/Login/Login";
+import Login from "./Components/Account/Login/Login/Login";
 import Duo from "./Pages/DuoPage";
 import Register from "./Components/Account/Register/Register";
 import SummonerRecord from "./Components/SummonerInfo";
