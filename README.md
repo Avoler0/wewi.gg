@@ -20,7 +20,8 @@ https://github.com/ApostleB/lol-matching-express-restAPI
 
 
 ## 메인 페이지
-<img src="https://user-images.githubusercontent.com/91608021/183596761-5919c148-d372-4379-8f38-8a4d843baeb4.png" />
+
+![Screenshot 2022-09-24 at 09 54 32](https://user-images.githubusercontent.com/91608021/192073235-839855da-5b90-4943-aa54-76a5046739cf.png)
 
 ### 추가 기능
 - [x] 검색 input에 소환사 이름 검색을 할 시 소환사 페이지로 넘아감
