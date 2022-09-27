@@ -135,14 +135,14 @@ function Home() {
                   </Link>
               </Form>
         </Bottom>
-        <RecommenWrap>
+        {/* <RecommenWrap>
           <RecoName>
             <span>오늘의 추천</span>
           </RecoName>
           <Recommen>
 
           </Recommen>
-        </RecommenWrap>
+        </RecommenWrap> */}
       </Wrapper>
     </Container>
   );

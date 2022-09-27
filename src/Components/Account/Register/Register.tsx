@@ -1,7 +1,7 @@
-import { useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import { checkNickName, readEmail, saveRegister } from "../../../api/requestApi";
+import { requestApi } from "../../../api/requestApi";
 import { getSummoner } from "../../../api/riotApi";
 import { postRegistT } from "../../../Types/accountTypes";
 
@@ -112,79 +112,95 @@ const Tooltip = styled.div`
     color: #ca9090;
   }
 `;
-type nickCheck = "success" | "failed" | "none";
-interface toolTip {
-  isBoolean: boolean,
-  content: object
-}
+
 function Register() {
+  const pwPattern = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[~!@#$%^&*()+|=])[A-Za-z\d~!@#$%^&*()+|=]{8,20}$/;
+  const [validation,setValidation] = useState(
+    {email:false,
+    password:false,
+    nickName:false,
+    readEmail:false}
+  )
+  const [value,setValue] = useState(
+    {email:"",
+    password:"",
+    nickName:"",
+    readEmail:""}
+  )
   const history = useNavigate();
-  const [toolTip,setToolTip] = useState<toolTip>({
-    isBoolean:false,
-    content:[]
-  });
-
-  function emailValidation(email:string){
-    const atCheck = email.includes("@");
-    const dotCheck = email.includes(".");
-    if(atCheck && dotCheck){
-      return true;
-    }else{
-      setToolTip({
-        isBoolean:true,
-        content: ["올바른 이메일 형식이 아닙니다." , "이메일을 다시 한번 입력 해 주세요."]
-      })
-    }
-    return atCheck && dotCheck ? true : false;
+  const toolTip:any = {
+    email:["올바른 이메일 형식이 아닙니다." , "이메일을 다시 한번 입력 해 주세요."],
+    password:["비밀번호가 올바르지 않습니다." , "8~20자 영문 대소문자, 숫자, 특수문자를 이용하여 완성해주세요."],
+    nickName:["존재하지 않는 닉네임입니다." , "다시 한번 확인해주세요."],
+    readEmail:["이미 등록된 이메일입니다."]
   }
-  function passwordValidation(password:string){
-    const pwPattern = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[~!@#$%^&*()+|=])[A-Za-z\d~!@#$%^&*()+|=]{8,20}$/;
-    if(pwPattern.test(password)){
-      console.log("비밀번호 맞음!")
-      return true;
-    }else{
-      setToolTip({
-        isBoolean:true,
-        content:["비밀번호가 올바르지 않습니다." , "8~20자 영문 대소문자, 숫자, 특수문자를 이용하여 완성해주세요."] 
-      });
-      return false;
-    }
+  async function checkValidation(){
+    let valid = validation;
+    valid.email = value.email.includes("@") && value.email.includes(".")
+    valid.password = pwPattern.test(value.password)
+    valid.readEmail = await overlapEmail()
+    valid.nickName = await checkNickname()
+    
+    setValidation({...valid})
   }
-  function nickNameCheck(nickName:string){
-
-  }
-  function postRegister(value:postRegistT) {
-    const {email,password,nickName} = value;
-    saveRegister({type:"general",email,password,nickName})
-  }
-  function onSubmit(event:any){
-    const email = event.target[0].value;
-    const password = event.target[1].value;
-    const nickName = event.target[2].value;
-    const validation = emailValidation(email) && passwordValidation(password);
-    if(validation){
-      readEmail(email)
+  function overlapEmail(){
+    const result = requestApi.readEmail(value.email)
       .then((_response:any)=>{
-        getSummoner(nickName)
-          .then(function (){
-            postRegister({email,password,nickName})
-          })
-          .catch(function (){
-            setToolTip({
-              isBoolean:true,
-              content:["존재하지 않는 닉네임입니다." , "다시 한번 확인해주세요."] 
-            });
-          })
-          })
-      .catch(()=>{
-        setToolTip({
-          isBoolean:true,
-          content: ["이미 등록된 이메일입니다."]
-        })
+        if(_response.data.length === 0){
+          return true
+        }else{
+          return false;
+        }
       })
-    }
+      return result;
+  }
+  function checkNickname(){
+    const result = getSummoner(value.nickName)
+      .then((_response)=>{
+        return true
+      })
+      .catch(()=>{
+        return false
+      })
+      return result;
+  }
+  function postRegister() {
+    requestApi.saveRegister({type:"general", ...value})
+  }
 
+  function onSubmit(event:any){
+    let valueData = value;
+    valueData.email = event.target[0].value;
+    valueData.password = event.target[1].value;
+    valueData.nickName = event.target[2].value;
+    setValue({...valueData})
+
+    checkValidation()
+    
+    
     event.preventDefault();
+  }
+  useEffect(()=>{
+    const falseValid = Object.entries(validation).find((data:any) => {
+      if(data[1] === false) return true
+    })
+    if(!falseValid) postRegister();
+  },[validation])
+  function ValidationToolTip(){
+      const falseValid = Object.entries(validation).find((data:any) => {
+        if(data[1].valid === false) return true
+      })
+      return (
+        <Tooltip>
+              {
+              falseValid &&
+              <>
+                <span>{toolTip[falseValid[0]]}</span>
+                <br/>
+              </> 
+              }
+        </Tooltip>
+      )
   }
   return (
     <>
@@ -210,7 +226,7 @@ function Register() {
               <NickSub >자신의 롤 닉네임을 입력 해 주세요</NickSub>
               <Input type="text" name="nickName" />
           </InputDiv>
-          <ValidationToolTip {...toolTip} />
+          <ValidationToolTip />
           <ExitWrap>
             <CancelBt onClick={() => history('/')}>취소</CancelBt>
             <OkBt>가입하기</OkBt>
@@ -222,18 +238,5 @@ function Register() {
     </>
   )
 }
-  function ValidationToolTip({content}:any){
-      return (
-        <Tooltip>
-          {content.map((data:string)=>{
-            return (
-              <>
-                <span>{data}</span>
-                <br/>
-              </> 
-            )
-          })}
-        </Tooltip>
-      )
-  }
+
 export default Register;

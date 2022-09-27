@@ -5,7 +5,7 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { accountLogin } from "../../../../Redux/accountRedux/accountSlice";
 import React from "react";
-import {tryLogin}  from "../../../../api/requestApi";
+import { requestApi }  from "../../../../api/requestApi";
 const { naver } = window as any;
 
 export default function Login() {
@@ -21,7 +21,7 @@ export default function Login() {
     if(emailRef.current && pwRef.current){
       const email = emailRef.current.value;
       const password = pwRef.current.value;
-      tryLogin(email,password)
+      requestApi.tryLogin(email,password)
       .then((_response:any)=>{
         if(_response.data.length){
           dispatch(accountLogin(_response.data[0]))

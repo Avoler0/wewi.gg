@@ -107,6 +107,69 @@
       "password": "1235Asd1!",
       "nickName": "스쿵씨",
       "id": 12
+    },
+    {
+      "type": "general",
+      "email": "test@1234.1234",
+      "password": "a12345678!",
+      "nickName": "1234",
+      "id": 13
+    },
+    {
+      "type": "general",
+      "email": "test@1234.1234",
+      "password": "a12345678!",
+      "nickName": "1234",
+      "id": 14
+    },
+    {
+      "type": "general",
+      "email": "test@1234.1234",
+      "password": "a12345678!",
+      "nickName": "1234",
+      "id": 15
+    },
+    {
+      "type": "general",
+      "email": "test@1234.1234",
+      "password": "a12345678!",
+      "nickName": "1234",
+      "id": 16
+    },
+    {
+      "type": "general",
+      "email": "test@1234.1234",
+      "password": "a12345678!",
+      "nickName": "1234",
+      "id": 17
+    },
+    {
+      "type": "general",
+      "email": "test@1234.1234",
+      "password": "a12345678!",
+      "nickName": "1234",
+      "id": 18
+    },
+    {
+      "type": "general",
+      "email": "test@1234.1234",
+      "password": "a12345678!",
+      "nickName": "1234",
+      "id": 19
+    },
+    {
+      "type": "general",
+      "email": "test1234@1234.1234",
+      "password": "123411234!a",
+      "nickName": "1234",
+      "id": 20
+    },
+    {
+      "type": "general",
+      "email": "test1234@1234.1234",
+      "password": "123411234!a",
+      "nickName": "1234",
+      "id": 21
     }
   ]
 }
