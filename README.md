@@ -6,13 +6,13 @@ terminal -> npm i -> npm run dev
 
 ## 디렉터리 구조
 📦pages
- ┣ 📂api
- ┃ ┗ 📂search
- ┃ ┃ ┣ 📂champion
- ┃ ┃ ┃ ┗ 📜[value].ts
- ┃ ┃ ┗ 📂summoner
- ┃ ┃ ┃ ┗ 📜[value].ts
- ┣ 📂duo
+┣ 📂api
+┃ ┗ 📂search
+┃ ┃ ┣ 📂champion
+┃ ┃ ┃ ┗ 📜[value].ts
+┃ ┃ ┗ 📂summoner
+┃ ┃ ┃ ┗ 📜[value].ts
+┣ 📂duo
  ┃ ┗ 📜index.tsx
  ┣ 📂summoner
  ┃ ┗ 📜[summoner].tsx
