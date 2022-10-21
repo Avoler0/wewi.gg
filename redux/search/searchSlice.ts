@@ -1,9 +1,9 @@
 import { createSlice,PayloadAction  } from '@reduxjs/toolkit';
-import { Summoner } from '../../types/riotType';
+import { SummonerType } from '../../types/riotType';
 
 type search = {
   type:string | null
-  value:Summoner | string | null
+  value:SummonerType | string | null
 }
 
 const searchSlice = createSlice({

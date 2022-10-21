@@ -10,10 +10,5 @@ export default function handler(
   req: NextApiRequest,
   res: NextApiResponse<Data>
 ) {
-  // const dispatch = useDispatch();
-  // console.log("바디",req);
-  // store.dispatch(searchSet());
-  console.log("챔피언",req.query);
-  
-  
+  res.status(404)
 }

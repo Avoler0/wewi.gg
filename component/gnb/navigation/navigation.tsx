@@ -54,7 +54,7 @@ export default function Navigation() {
 const Nav = styled.nav`
   background-color:#1e2a35 ;
   color: #bdc3c7;
-  padding: 2rem 0 0.3rem 0;
+  padding: 1rem 0 0.3rem 0;
   @media (min-width: 992px) and (max-width: 1199px) {
   }
   @media (min-width: 768px) and (max-width: 991px) {
