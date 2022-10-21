@@ -11,12 +11,12 @@ terminal -> npm i -> npm run dev
  ┃ ┃ ┣ 📂champion  
  ┃ ┃ ┃ ┗ 📜[value].ts  
  ┃ ┃ ┗ 📂summoner  
- ┃ ┃ ┃ ┗ 📜[value].ts
- ┣ 📂duo
- ┃ ┗ 📜index.tsx
- ┣ 📂summoner
- ┃ ┗ 📜[summoner].tsx
- ┣ 📜globals.css
- ┣ 📜index.tsx
- ┣ 📜_app.tsx
- ┗ 📜_document.tsx
+ ┃ ┃ ┃ ┗ 📜[value].ts  
+ ┣ 📂duo  
+ ┃ ┗ 📜index.tsx  
+ ┣ 📂summoner  
+ ┃ ┗ 📜[summoner].tsx  
+ ┣ 📜globals.css  
+ ┣ 📜index.tsx  
+ ┣ 📜_app.tsx  
+ ┗ 📜_document.tsx  
