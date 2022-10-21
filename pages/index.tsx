@@ -1,20 +1,12 @@
 import type { NextPage } from 'next'
-import Link from 'next/link'
+import { useRouter } from 'next/router';
 import styled from "styled-components";
-import { searchHook } from '../hooks/search';
 
 const Home: NextPage = () => {
-  const type = "summoner"
-  function searchSubmit(event:any){
-    console.log("서브밋");
-    const summoner = event.target.summoner.value;
-    console.log("서모너",summoner);
-    searchHook(type,summoner)
+  const router = useRouter();
+  function useSearchSubmit(event:any){
+    router.push(`/summoner/${event.target.summoner.value}`)
     event.preventDefault()
-  }
-  function onChange(){
-    console.log("체인지");
-    
   }
   return (
     <Container>
@@ -25,10 +17,10 @@ const Home: NextPage = () => {
           </Banner>
         </Top>
         <Bottom>
-              <Form onSubmit={searchSubmit}>
+              <Form onSubmit={useSearchSubmit}>
                 <SearchLabel htmlFor="SearchInput" />
-                <SearchInput name="summoner" placeholder="소환사명" onChange={onChange}></SearchInput>
-                <SearchButton >검ㄱ색</SearchButton>
+                <SearchInput name="summoner" placeholder="소환사명" ></SearchInput>
+                <SearchButton >검색</SearchButton>
               </Form>
         </Bottom>
         {/* <RecommenWrap>
