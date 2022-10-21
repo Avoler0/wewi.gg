@@ -1,16 +1,14 @@
 html,
 body {
+  font-family: 'Nanum Gothic', sans-serif;
   padding: 0;
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
-    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+  background-image: url(https://images.contentstack.io/v3/assets/blt731acb42bb3d1659/blta994c96cd213519b/61e9b3c2c6172549a9716676/Zeri_Theme_Banner.jpg);
 }
-
 a {
   color: inherit;
   text-decoration: none;
 }
-
 * {
   box-sizing: border-box;
 }
