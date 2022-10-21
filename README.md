@@ -6,7 +6,7 @@ terminal -> npm i -> npm run dev
 
 ## 디렉터리 구조
 ```
-### 
+### pages
  📦pages </br>
  ┣ 📂api  
  ┃ ┗ 📂search  
