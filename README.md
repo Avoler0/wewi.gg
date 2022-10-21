@@ -5,7 +5,8 @@ terminal -> npm i -> npm run dev
 
 
 ## 디렉터리 구조
-> 📦pages </br>
+```
+ 📦pages </br>
  ┣ 📂api  
  ┃ ┗ 📂search  
  ┃ ┃ ┣ 📂champion  
@@ -20,5 +21,5 @@ terminal -> npm i -> npm run dev
  ┣ 📜index.tsx  
  ┣ 📜_app.tsx  
  ┗ 📜_document.tsx  
-
+```
 
