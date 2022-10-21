@@ -3,3 +3,20 @@
 실행방법
 terminal -> npm i -> npm run dev
 
+
+## 디렉터리 구조
+## 📦pages
+ ┣ 📂api
+ ┃ ┗ 📂search
+ ┃ ┃ ┣ 📂champion
+ ┃ ┃ ┃ ┗ 📜[value].ts
+ ┃ ┃ ┗ 📂summoner
+ ┃ ┃ ┃ ┗ 📜[value].ts
+ ┣ 📂duo
+ ┃ ┗ 📜index.tsx
+ ┣ 📂summoner
+ ┃ ┗ 📜[summoner].tsx
+ ┣ 📜globals.css
+ ┣ 📜index.tsx
+ ┣ 📜_app.tsx
+ ┗ 📜_document.tsx
