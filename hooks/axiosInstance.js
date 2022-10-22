@@ -25,8 +25,10 @@ const riotApi = axios.create({
     "Accept-Language": "ko-KR,ko;q=0.9,en-US;q=0.8,en;q=0.7",
     "Accept-Charset": "application/x-www-form-urlencoded; charset=UTF-8",
     "Origin": "https://developer.riotgames.com",
-    "X-Riot-Token": "RGAPI-92b4d59d-ab59-4cd0-bf77-cc23a29d960f"
-  }
+    "X-Riot-Token": "RGAPI-92b4d59d-ab59-4cd0-bf77-cc23a29d960f",
+    // "X-RateLimit-Limit": 100
+  },
+  timeout:1000
 })
 
 export {apiInstance,dbInstance , riotApi};

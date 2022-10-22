@@ -1,3 +1,4 @@
+import { useRouter } from "next/router";
 import React from "react";
 import { useEffect, useState } from "react";
 import styled from "styled-components";
@@ -6,19 +7,14 @@ import { riot } from "../../../hooks/riotApiHook";
 
 
 export default function RecordCard({match}:any) {
-  const [isLoading,setIsLoading] = useState<boolean>(true);
-  const [champRecord , setChampRecord] = useState([]);
-  const [gameRecord, setGameRecord] = useState<any>([]);
-  let recordCount = 0;
+  const router = useRouter();
+  const nickName = router.query.summoner;
+  console.log("매치",match);
+  
   useEffect(()=>{
-    riot.record(match)
-    .then((_res)=>{
-      console.log("기록",_res);
-    })
-    .catch((_error)=>{
-      console.log("기록에러",_error);
-    })
+    
   },[])
+  
   // useEffect(()=>{
   //   let sortLoading = true;
   //   if(match) {

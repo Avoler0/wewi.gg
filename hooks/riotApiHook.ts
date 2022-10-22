@@ -5,6 +5,8 @@ type valueType = string | string[]
 
 export const riot = {
   summoner:async function(type:searchType,value:valueType){
+    console.log("서모너 실행");
+    
     return await apiInstance({
       url:`/search/summoner/name/`,
       params:{
@@ -22,6 +24,7 @@ export const riot = {
     })
   },
   matchList:async function (puuid:string,start:number,end:number) {
+    console.log("매치리스트 실행");
     return await apiInstance({
       url:'/search/summoner/match/',
       params:{
@@ -36,6 +39,7 @@ export const riot = {
     })
   },
   league:async function(id:string) {
+    console.log("리그 실행");
     return await apiInstance({
       url:'/search/summoner/league/',
       params:{
@@ -48,16 +52,18 @@ export const riot = {
     })
     
   },
-  record:async function (match:string) {
-    return await apiInstance({
-      url:'/record/',
-      params:{
-        match:match
-      }
-    }).then((_res)=>{
-      return _res.data;
-    }).catch((_error)=>{
-      return _error
+  record: function (match:string) {
+    return new Promise((resolve,rejects)=>{
+      apiInstance({
+          url:'/record/',
+          params:{
+            match:match
+          }
+          }).then((_res)=>{
+            resolve(_res)
+          }).catch((_error)=>{
+            rejects(_error)
+      })
     })
   }
 }
