@@ -1,5 +1,4 @@
 import { apiInstance } from "./axiosInstance";
-import qs from "qs";
 type searchType = "summoner" | "champion"
 type valueType = string | string[]
 
@@ -21,10 +20,8 @@ export const riot = {
       }
       return _error
     })
-
-    return searchData;
   },
-  matchList:async function (puuid:string) {
+  matchList:async function (puuid:string,start:number,end:number) {
     return await apiInstance({
       url:'/search/summoner/match/',
       params:{

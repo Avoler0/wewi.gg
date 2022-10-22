@@ -8,48 +8,19 @@ import { searchSet } from "../../redux/search/searchSlice";
 import { SearchReduxType } from "../../redux/store";
 
 export default function SummonerPage(){
-  const dispatch = useDispatch()
   const router = useRouter();
-  const query = router.query.summoner;
-  const searchType = "summoner"
-  const [find,setFind] = useState(false);
+  const searchString = router.query.summoner;
 
   const summoner = useSelector((state:SearchReduxType) =>{
     return state.search
   })
-  
-  useEffect(()=>{
-    if(query !== undefined){
-      riot.summoner(searchType,query).then(async (_res:any)=>{
-        console.log(_res);
-        
-        if(_res === "not find"){
-          setFind(false);
-          dispatch(searchSet({type:"failed",value:_res}))
-          return;
-        }else{
-          setFind(true);
-          dispatch(searchSet({type:"success",value:_res}))
-          const { id,name,profileIconId,puuid,revisionDate,summonerLevel} = _res;
-          Promise.all([
-            await riot.matchList(puuid),
-            await riot.league(id)
-          ]).then(([fetchMatchList,fetchLeague])=>{
-            console.log("맻취리스트",fetchMatchList);
-            console.log("리그정보",fetchLeague);
-            
-          })
-        }
-        
-        
-      })
-    }
-  },[dispatch, query])
 
-  if(summoner.type === null) return;
   return (
     <>
-    {find ? <Summoner /> : <NotFindSummoner />
+    {searchString === undefined ?
+      <NotFindSummoner /> 
+      : 
+      <Summoner searchString={searchString} /> 
     }
     </>
   )

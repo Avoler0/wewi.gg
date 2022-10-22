@@ -1,42 +1,59 @@
-import { useEffect } from "react";
+import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import styled from "styled-components";
 import { riot } from "../../hooks/riotApiHook";
-import { SummonerType } from "../../types/riotType";
 import SummonerProfile from "./profile/profile";
+import Rankinfo from "./league";
+import LeagueInfo from "./league";
 
 export type props = {
-  props : SummonerType
+  searchString : string | string[]
 }
 
-export default function Summoner(){
+export default function Summoner({searchString}:props){
+  const [isLoading,setIsLoading] = useState(true);
+  const [profile,setProfile] = useState("not find");
+  const [league,setLeague] = useState({});
+  const [matchList,setMatchList] = useState({});
+  const searchType = "summoner"
   const summoner = useSelector((state:any) =>{
     return state.search.value
   })
-  const { id,name,profileIconId,puuid,revisionDate,summonerLevel} = summoner
-  // console.log("써모너",summoner);
-  // useEffect(()=>{
-  //   console.log("이펙트 실행");
-  //   Promise.all([
-  //     riot.matchList(puuid)
-  //   ])
-    
-  //   .then((_res:any)=>{
-  //     console.log("매치 성공",_res);
-  //   })
-  //   .catch((_error:any)=>{
-  //     console.log("매치 실패",_error);
-  //   })
-  // },[summoner])
+    useEffect(()=>{
+      setIsLoading(true)
+    if(searchString !== undefined){
+      riot.summoner(searchType,searchString).then(async (_res:any)=>{
+        if(_res === "not find"){
+          
+          return;
+        }else{
+          const { id,name,profileIconId,puuid,revisionDate,summonerLevel} = _res;
+          Promise.all([
+            await riot.matchList(puuid,0,20),
+            await riot.league(id)
+          ]).then(([fetchMatchList,fetchLeague])=>{
+            setProfile(_res)
+            setMatchList(fetchMatchList)
+            setLeague(fetchLeague)
+            setIsLoading(false);
+          })
+        }
+      })
+    }
+  },[searchString])
+
+  if(isLoading) return(<div>없음</div>);
+  
   return (
     <Container>
       <Wrapper style={{display:"flex"}} id="wrap">
         <Column style={{marginRight:"10px"}}>
           <ProfileView id="profileView">
-            <SummonerProfile {...summoner!}/>
+            <SummonerProfile profile={profile} />
           </ProfileView>
           <RankView>
-            {/* <SummonerInfo summonerLeagueInfo={summonerLeagueInfo} /> */}
+            <LeagueInfo league={league} />
           </RankView>
           <ChampStatsView>
             {/* <ChampRecently gameInfo={gameInfo} /> */}
@@ -73,7 +90,6 @@ const Wrapper = styled.div`
 `;
 const ProfileView = styled.div`
   width: 19rem;
-  height: 8rem;
   background-color: #2c3e50;
   margin-bottom: 6px;
   border-radius: 5px;
@@ -81,8 +97,6 @@ const ProfileView = styled.div`
 `;
 const RankView = styled.div`
   width: 19rem;
-  height: 180px;
-  background-color: #2c3e50;
   margin: 6px 0;
   border-radius: 5px;
   display: block;

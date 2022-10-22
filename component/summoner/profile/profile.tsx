@@ -3,11 +3,12 @@ import { getProfileIcon } from "../../../const/riotApiPath";
 import { SummonerType } from "../../../types/riotType";
 import Image from "next/image";
 
-export default function SummonerProfile(props:SummonerType) {
+export default function SummonerProfile({profile}:any) {
   const {
     id , name , profileIconId , puuid , revisionDate , summonerLevel
-  } = props;
+  } = profile;
   const profileIcon = getProfileIcon(Number(profileIconId))
+  console.log("아이콘",profile);
   
   return(
     <ProfileWrap>
@@ -27,8 +28,8 @@ export default function SummonerProfile(props:SummonerType) {
         <Vote>
           {/* <Good><Up style={{width:"20px",height:"20px"   ,boxSizing:"content-box" , fill:"yellow"}} /><span>0</span></Good> */}
           {/* <Bad><Down style={{width:"20px",height:"20px"   ,boxSizing:"content-box" , fill:"yellow"}} /><span>0</span></Bad> */}
-        </Vote>
-      </NameBox>
+        </Vote> 
+       </NameBox>
     </ProfileWrap>
   )
 }
@@ -42,6 +43,7 @@ const ProfileWrap = styled.div`
 const IconBox = styled.div`
   display: inline-block;
   width: 30%;
+  height: 6.7rem;
   margin: 0 10px;
   overflow: hidden; // 박스 넘어가는 부분의 이미지를 잘라줌
   position: relative;
@@ -59,7 +61,7 @@ const LevelBox = styled.div`
   margin: 0 auto;
   bottom: 0.7rem;
   border: 1px solid white;
-  border-radius: 30px;
+  border-radius: 10px;
   background-color: #cccccc;
 `;
 const Level = styled.span`
