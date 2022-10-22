@@ -6,6 +6,7 @@ import { riot } from "../../hooks/riotApiHook";
 import SummonerProfile from "./profile/profile";
 import Rankinfo from "./league";
 import LeagueInfo from "./league";
+import Record from "./record";
 
 export type props = {
   searchString : string | string[]
@@ -61,7 +62,7 @@ export default function Summoner({searchString}:props){
         </Column>
         <Column>
           <RecentlyView>
-            {/* <Recently gameInfo={gameInfo}/> */}
+            <Record matchList={matchList}/>
           </RecentlyView>
         </Column>
         

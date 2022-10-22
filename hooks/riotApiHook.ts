@@ -47,6 +47,18 @@ export const riot = {
       return _error
     })
     
+  },
+  record:async function (match:string) {
+    return await apiInstance({
+      url:'/record/',
+      params:{
+        match:match
+      }
+    }).then((_res)=>{
+      return _res.data;
+    }).catch((_error)=>{
+      return _error
+    })
   }
 }
 

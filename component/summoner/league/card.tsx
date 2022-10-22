@@ -2,12 +2,11 @@ import styled from "styled-components";
 import Image from "next/image";
 
 export default function LeagueCard({info,margin}:any){
-  console.log("리그 정보",info,margin);
-  const {freshBlood,hotStreakinactive,leagueId,leaguePoints,losses,queueType,rank,summonerId,summonerName,tier,veteran,wins} = info
+
+  const { leaguePoints,losses,queueType,rank,tier,wins } = info
   const rankType = queueType === "RANKED_SOLO_5x5" ? "솔로 랭크" : "자유 랭크"
-  console.log(queueType);
-  
   const rate = (wins/(wins+losses))*100
+  
   return(
     <Card margin={margin} >
       <RankTitle>{rankType}</RankTitle>

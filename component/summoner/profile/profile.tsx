@@ -8,7 +8,6 @@ export default function SummonerProfile({profile}:any) {
     id , name , profileIconId , puuid , revisionDate , summonerLevel
   } = profile;
   const profileIcon = getProfileIcon(Number(profileIconId))
-  console.log("아이콘",profile);
   
   return(
     <ProfileWrap>
