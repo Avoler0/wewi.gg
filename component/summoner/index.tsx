@@ -24,7 +24,6 @@ export default function Summoner(){
     })
     .catch((_error:any)=>{
       console.log("매치 실패",_error);
-      
     })
   },[summoner])
   return (
