@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { useDispatch,useSelector } from "react-redux";
 import Summoner from "../../component/summoner";
 import NotFindSummoner from "../../component/summoner/404";
-import { riotSummoner } from "../../hooks/riotApiHook";
+import { riot } from "../../hooks/riotApiHook";
 import { searchSet } from "../../redux/search/searchSlice";
 import { SearchReduxType } from "../../redux/store";
 
@@ -20,7 +20,7 @@ export default function SummonerPage(){
   
   useEffect(()=>{
     if(query !== undefined){
-      riotSummoner(searchType,query).then((_res:any)=>{
+      riot.summoner(searchType,query).then((_res:any)=>{
         if(_res === "not find"){
           setFind(false);
           dispatch(searchSet({type:"failed",value:_res}))

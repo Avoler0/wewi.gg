@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { useSelector } from "react-redux";
 import styled from "styled-components";
-import { matchList } from "../../hooks/riotApiHook";
+import { riot } from "../../hooks/riotApiHook";
 import { SummonerType } from "../../types/riotType";
 import SummonerProfile from "./profile/profile";
 
@@ -18,7 +18,7 @@ export default function Summoner(){
   useEffect(()=>{
     console.log("이펙트 실행");
     
-    matchList(puuid)
+    riot.matchList(puuid)
     .then((_res:any)=>{
       console.log("매치 성공",_res);
     })
