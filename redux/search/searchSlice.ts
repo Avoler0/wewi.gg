@@ -14,7 +14,6 @@ const searchSlice = createSlice({
   },
   reducers:{
     searchSet:(state:search,action:PayloadAction<any>) => {
-      console.log("성공",action);
       state.type = action.payload.type;
       state.value = action.payload.value;
     }

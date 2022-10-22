@@ -1,13 +1,17 @@
 import axios from 'axios'
+import qs from 'qs';
 
 const serverURL = 'http://localhost:3000/api'
 const dbURL = 'http://localhost:8000'
 const API_KEY = 'RGAPI-92b4d59d-ab59-4cd0-bf77-cc23a29d960f'
-
+import { parse, stringify } from 'qs'
 
 const apiInstance = axios.create({
   baseURL: serverURL,
-  headers: {'X-Custom-Header': 'foobar'}
+  headers: {'X-Custom-Header': 'foobar'},
+  paramsSerializer(params) {
+    return qs.stringify(params, {arrayFormat: 'brackets'})
+  },
 });
 
 const dbInstance = axios.create({
@@ -22,6 +26,8 @@ const riotApi = axios.create({
     "Accept-Charset": "application/x-www-form-urlencoded; charset=UTF-8",
     "Origin": "https://developer.riotgames.com",
     "X-Riot-Token": "RGAPI-92b4d59d-ab59-4cd0-bf77-cc23a29d960f"
-  }
+  },
+
 })
+
 export {apiInstance,dbInstance , riotApi};

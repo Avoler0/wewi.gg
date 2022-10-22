@@ -1,13 +1,11 @@
 import type { NextPage } from 'next'
 import { useRouter } from 'next/router';
 import styled from "styled-components";
+import { searchMovePath } from '../hooks/searchMovePath';
 
 const Home: NextPage = () => {
   const router = useRouter();
-  function useSearchSubmit(event:any){
-    router.push(`/summoner/${event.target.summoner.value}`)
-    event.preventDefault()
-  }
+
   return (
     <Container>
       <Wrapper style={{paddingTop:"50px"}}>
@@ -17,9 +15,9 @@ const Home: NextPage = () => {
           </Banner>
         </Top>
         <Bottom>
-              <Form onSubmit={useSearchSubmit}>
+              <Form onSubmit={searchMovePath}>
                 <SearchLabel htmlFor="SearchInput" />
-                <SearchInput name="summoner" placeholder="소환사명" ></SearchInput>
+                <SearchInput name="search" placeholder="소환사명" ></SearchInput>
                 <SearchButton >검색</SearchButton>
               </Form>
         </Bottom>

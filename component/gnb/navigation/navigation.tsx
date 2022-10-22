@@ -1,23 +1,17 @@
 import React from "react";
 import styled from "styled-components";
 import Link from "next/link";
+import { searchMovePath } from "../../../hooks/searchMovePath";
 
 export default function Navigation() {
-  const [searchString,setSearchString] = React.useState<string>();
   const PAGE = {
     DUO: "duo",
     CLAN: "clan",
     COMMUNITY: "community",
   }
-  const urlPath = "hi"
-  // const navigater = useNavigate();
-  const goSearch = (event:any) => {
-    event.preventDefault();
-    // navigater(`${PAGE.INFO}/${searchString}`);
-  }
-  const onSearchChange = (event:any) => {
-    setSearchString(event.target.value);
-  }
+  const urlPath = "/"
+
+
   return (
     <Nav>
       <Content>
@@ -39,9 +33,10 @@ export default function Navigation() {
         </div>
         <div>
           <Colum>
-            <SearchWrap onSubmit={goSearch}>
+            <SearchWrap onSubmit={searchMovePath}>
               <SearchIco>GG</SearchIco>
-              <SearchInput onChange={onSearchChange} value={searchString} type="text" name="search" />
+              <SearchInput type="text" name="search" />
+              {/* <SearchTest /> */}
               <SearchButton>검색</SearchButton>
             </SearchWrap>
           </Colum>

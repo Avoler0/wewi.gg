@@ -8,8 +8,3 @@ export const getProfileIcon = (profileNumber:number) => {
 export const getChampionIcon = (champion:string) => {
    return `http://ddragon.leagueoflegends.com/cdn/12.9.1/img/champion/${champion}.png`
 }
-export const getChamiponName = async(champion:string) => {
-   return await api.get(`http://ddragon.leagueoflegends.com/cdn/12.9.1/data/en_US/champion/${champion}.json`).then((res)=>{
-      return res.data.data[champion].name
-   })
-}

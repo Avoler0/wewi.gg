@@ -1,7 +1,9 @@
+import { useEffect } from "react";
 import { useSelector } from "react-redux";
 import styled from "styled-components";
+import { matchList } from "../../hooks/riotApiHook";
 import { SummonerType } from "../../types/riotType";
-import SummonerProfile from "./debs/profile";
+import SummonerProfile from "./profile/profile";
 
 export type props = {
   props : SummonerType
@@ -13,7 +15,11 @@ export default function Summoner(){
   })
   const { id,name,profileIconId,puuid,revisionDate,summonerLevel} = summoner
   console.log("써모너",summoner);
-  
+  useEffect(()=>{
+    console.log("이펙트 실행");
+    
+    matchList(puuid)
+  },[summoner])
   return (
     <Container>
       <Wrapper style={{display:"flex"}} id="wrap">
