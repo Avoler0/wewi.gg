@@ -19,6 +19,13 @@ export default function Summoner(){
     console.log("이펙트 실행");
     
     matchList(puuid)
+    .then((_res:any)=>{
+      console.log("매치 성공",_res);
+    })
+    .catch((_error:any)=>{
+      console.log("매치 실패",_error);
+      
+    })
   },[summoner])
   return (
     <Container>
