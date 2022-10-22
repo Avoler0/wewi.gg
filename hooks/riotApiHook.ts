@@ -6,7 +6,7 @@ type valueType = string | string[]
 
 export const riot = {
   summoner:async function(type:searchType,value:valueType){
-    const searchData = await apiInstance({
+    return await apiInstance({
       url:`/search/summoner/name/`,
       params:{
         type:type,
@@ -25,7 +25,7 @@ export const riot = {
     return searchData;
   },
   matchList:async function (puuid:string) {
-    const result = await apiInstance({
+    return await apiInstance({
       url:'/search/summoner/match/',
       params:{
           puuid:puuid,
@@ -35,13 +35,21 @@ export const riot = {
     }).then((_res)=>{
       return _res.data;
     }).catch((_error)=>{
-      const status = _error.response.status
-      if(status === 404){
-        return "not find"
-      }
       return _error
     })
-    return result;
+  },
+  league:async function(id:string) {
+    return await apiInstance({
+      url:'/search/summoner/league/',
+      params:{
+        id:id
+      }
+    }).then((_res)=>{
+      return _res.data;
+    }).catch((_error)=>{
+      return _error
+    })
+    
   }
 }
 

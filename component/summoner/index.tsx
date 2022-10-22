@@ -14,18 +14,20 @@ export default function Summoner(){
     return state.search.value
   })
   const { id,name,profileIconId,puuid,revisionDate,summonerLevel} = summoner
-  console.log("써모너",summoner);
-  useEffect(()=>{
-    console.log("이펙트 실행");
+  // console.log("써모너",summoner);
+  // useEffect(()=>{
+  //   console.log("이펙트 실행");
+  //   Promise.all([
+  //     riot.matchList(puuid)
+  //   ])
     
-    riot.matchList(puuid)
-    .then((_res:any)=>{
-      console.log("매치 성공",_res);
-    })
-    .catch((_error:any)=>{
-      console.log("매치 실패",_error);
-    })
-  },[summoner])
+  //   .then((_res:any)=>{
+  //     console.log("매치 성공",_res);
+  //   })
+  //   .catch((_error:any)=>{
+  //     console.log("매치 실패",_error);
+  //   })
+  // },[summoner])
   return (
     <Container>
       <Wrapper style={{display:"flex"}} id="wrap">
