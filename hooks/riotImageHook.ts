@@ -16,8 +16,6 @@ export const riotImg = {
 
   },
   rune:async function(primary:any,sub:any){
-    console.log("룬 함수",primary, sub);
-    
     const result = await axios.get('https://ddragon.leagueoflegends.com/cdn/12.9.1/data/en_US/runesReforged.json')
     .then((_res)=>{
       const primaryIndex = _res.data.findIndex((data) => data.id === primary?.style);
@@ -27,7 +25,6 @@ export const riotImg = {
 
       return [`${this.ddragon}/${primaryIcon}`,`${this.ddragon}/${subIcon}`]
     })
-    console.log(result);
     return result;
   },
   spell:function(spellName){

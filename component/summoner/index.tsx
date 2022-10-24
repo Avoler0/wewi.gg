@@ -22,33 +22,28 @@ export default function Summoner({searchString}:props){
     return state.search.value
   })
     useEffect(()=>{
-      console.log("이펙트!!");
       setIsLoading(true)
     if(searchString !== undefined){
       riot.summoner(searchType,searchString).then(async (_res:any)=>{
-        console.log("덴 실행됨!");
         const { id,name,profileIconId,puuid,revisionDate,summonerLevel} = _res;
         Promise.all([
           await riot.matchList(puuid,1,5),
           await riot.league(id)
         ]).then(([fetchMatchList,fetchLeague])=>{
-          console.log("덴2 실행됨!");
           setProfile(_res)
           setMatchList(fetchMatchList)
           setLeague(fetchLeague)
           setIsLoading(false);
         })
-        .catch((_error)=>{
-          console.log("처음 에러",_error);
+        .catch(([matchError,leagueError])=>{
+          console.log("처음 에러",matchError,leagueError);
           
         })
       }).catch((_error)=>{
         console.log("기본정보부분 에러",_error);
-        
       })
     }
   },[searchString])
-  // console.log("서몬 인덱스",isLoading,matchList);
   
   if(isLoading){
     return(<div>없음</div>);

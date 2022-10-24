@@ -6,54 +6,56 @@ import { riot } from "../../../hooks/riotApiHook";
 import Image from "next/image";
 import { riotImg } from "../../../hooks/riotImageHook";
 
+// type detialType = {
+//   gameCreation,
+//     gameDuration,
+//     queueId,
+//     gameEndTimestamp,
+//     gameMode,
+//     win,
+//     assists,
+//     deaths,
+//     kills,
+//     lane,
+//     summoner1Id,
+//     summoner2Id,
+//     totalMinionsKilled,
+//     neutralMinionsKilled,
+//     championName,
+//     perks,
+//     item,
+//     team1Kills,
+//     team2Kills,
+//     teamId,
+//     visionScore
+// }
 
 export default function RecordCard({detail,puuid}:any) {
   const [isLoading,setIsLoading] = useState(true);
   const [myDetail,setMyDetal] = useState({});
-  const [runeImg,setRuneImg] = useState();
-  const runeIcon = new Array();
-  const router = useRouter();
-  let imgPath = {
-    rune:[],
-  }
-  const nickName = router.query.summoner;
-  // console.log("매치",detail.info);
+  const [runeImg,setRuneImg] = useState<string[]>([]);
+  const result = detail.metadata.participants.findIndex((id:string) => id === puuid )
+  const {gameCreation,gameDuration,queueId,gameEndTimestamp,gameMode,win,assists,deaths,kills,lane,summoner1Id,summoner2Id,totalMinionsKilled
+        ,neutralMinionsKilled,championName,perks,item,team1Kills,team2Kills,teamId,visionScore  } = detail;
+  
   useEffect(()=>{
-    
-    if(isLoading){
-      const result = detail.metadata.participants.findIndex((id:string) => id === puuid )
-      setMyDetal(detail.info.participants[result])
-      
-      
-      // const reduc = detail.info?.reduce((prev,current)=>{
-      //   console.log("푸렛부",prev);
-      //   return prev
-      // })
-      console.log("아이디",result);
-    }
-    
-  },[isLoading])
-  useEffect(()=>{
-    if(myDetail !== undefined){
-      
-      (()=>{
-      riotImg.rune(myDetail.perks?.styles[0],myDetail.perks?.styles[1])
-      .then((_res)=>{
-        setRuneImg(()=> _res);
-        setIsLoading(false);
-      })
-    })()
-    }
-  },[myDetail])
-  useEffect(()=>{
-  console.log("이미지 패스",runeImg);
+    if(detail){
+      (async ()=>{
+        setMyDetal(detail.info.participants[result]);
+        const my = detail.info.participants[result];
+        const runeImage:string[] = await riotImg.rune(my.perks?.styles[0],my.perks?.styles[1])
+        setRuneImg(runeImage);
+        
 
-  },[runeImg])
+        setIsLoading(false);
+      })()
+    }
+  },[detail])
+
   
   if(isLoading){
     return <div>기록 없음</div>
   }
-  console.log(myDetail);
   
   return (
     <RecordLi>
@@ -68,27 +70,35 @@ export default function RecordCard({detail,puuid}:any) {
         {/* <ChampImg src={myDetail.gameInfo && getChampionIcon(championName)}/> */}
       </RecordChamp>
      
-      <RecordSpell>
+      <SpellWrap>
         {/* <Image src={spellD}  alt="icon" width="100" height="100" objectFit="cover" />
         <Image src={spellF}  alt="icon" width="100" height="100" objectFit="cover" /> */}
-      </RecordSpell>
-      <RecordRune>
-        <div className="rune-icon"><Image className="icon" src={runeImg[0]}  alt="icon" layout="fill" /></div>
-        <span className="rune-icon"><Image className="icon" src={runeImg[1]}  alt="icon" width="30" height="30" />  </span>
-      </RecordRune>
-      <RecordItem>
+      </SpellWrap>
+      <RuneWrap>
+        <Rune margin={true} >
+          <div className="rune-icon"  >
+            <Image className="icon" src={runeImg[0]}  alt="icon" layout="fill" />
+          </div>
+        </Rune>
+        <Rune margin={false} >
+          <div className="rune-icon">
+            <Image className="icon" src={runeImg[1]}  alt="icon" layout="fill" />
+          </div>
+        </Rune>
+      </RuneWrap>
+      <ItemWrap>
         {/* {item.map((id:any , index:number)=> id === 0 ? <Image /> : index !== item.length-1  ? <Image key={id} src={ getItemIcon(id) }/> : null)} */}
-      </RecordItem>
-      <RecordKDA>
-          <KDA>{myDetail.kills} / {myDetail.deaths} / {myDetail.assists}</KDA>
-          <KDARatio>{((myDetail.kills+myDetail.assists) / myDetail.deaths).toFixed(2)}:1 평점</KDARatio>
-          <KDAKillInvol>킬관여 {((myDetail.kills+myDetail.assists)/myDetail.teamKills*100).toFixed(0)}%</KDAKillInvol>
-      </RecordKDA>
-      <RecordStats>
-          <StatsAllCs>{myDetail.totalMinionsKilled + myDetail.neutralMinionsKilled} CS</StatsAllCs>
-          {/* <StatsMinuteCs>{((myDetail.totalMinionsKilled + myDetail.neutralMinionsKilled) /myDetail.gameLegth[0]).toFixed(1)} CS/분</StatsMinuteCs> */}
-          <StatsVision><span style={{fontSize:"12px"}}>시야점수</span> {myDetail.visionScore}</StatsVision>
-      </RecordStats>
+      </ItemWrap>
+      <KdaWrap>
+          <div className="kda">{myDetail.kills} / {myDetail.deaths} / {myDetail.assists}</div>
+          <div className="kda">{((myDetail.kills+myDetail.assists) / myDetail.deaths).toFixed(2)}:1 평점</div>
+          <div className="kda">킬관여 {((myDetail.kills+myDetail.assists)/myDetail.teamKills*100).toFixed(0)}%</div>
+      </KdaWrap>
+      <StatsWrap>
+          <div className="stats">{myDetail.totalMinionsKilled + myDetail.neutralMinionsKilled} CS</div>
+          {/* <div className="stats">{((myDetail.totalMinionsKilled + myDetail.neutralMinionsKilled) /myDetail.gameLegth[0]).toFixed(1)} CS/분</div> */}
+          <div className="stats"><span>시야점수</span> {myDetail.visionScore}</div>
+      </StatsWrap>
       </RecordLi>
   );
 }
@@ -135,33 +145,27 @@ const ChampImg = styled.img`
   border-radius: 15px;
 `;
 
-const RecordKDA = styled.div`
+const KdaWrap = styled.div`
   margin-left: 25px;
   font-size: 14px;
+
+  .kda{
+    margin-top: 3px;
+  }
 `;
-const KDA = styled.div`
-  margin-top: 3px;
-`;
-const KDARatio = styled.div`
-  margin-top: 3px;
-`;
-const KDAKillInvol = styled.div`
-  margin-top: 3px;
-`;
-const RecordStats = styled.div`
+
+const StatsWrap = styled.div`
   margin-left: 15px;
   font-size: 14px;
+  .stats{
+    margin-top: 3px;
+  }
+  span{
+    font-size: 12px;
+  }
 `;
-const StatsAllCs = styled.div`
-  margin-top: 3px;
-`;
-const StatsMinuteCs = styled.div`
-  margin-top: 3px;
-`;
-const StatsVision = styled.div`
-  margin-top: 3px;
-`;
-const RecordSpell = styled.div`
+
+const SpellWrap = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -173,27 +177,23 @@ const RecordSpell = styled.div`
     background-color: #271f1f;
   }
 `;
-const RecordRune = styled.div`
+const RuneWrap = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   margin-left: 3px;
   .rune-icon{
     position: relative;
-    width: 30px;
-    height: 30px;
-    border-radius: 5px;
-    background-color: #271f1f;
-    img{
-      width: 90%;
-    }
-    .icon{
-      width: 10px;
-    }
+    width: 1.7rem;
+    height: 1.7rem;
   }
-
 `;
-const RecordItem = styled.div`
+const Rune = styled.div`
+  padding: 0.2rem;
+  border-radius: 5px;
+  background-color: #271f1f;
+`;
+const ItemWrap = styled.div`
   display: grid;
   grid-template-columns: repeat(3,1fr);
   grid-gap: calc(3px);
