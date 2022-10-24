@@ -14,7 +14,7 @@ export type props = {
 
 export default function Summoner({searchString}:props){
   const [isLoading,setIsLoading] = useState(true);
-  const [profile,setProfile] = useState("not find");
+  const [profile,setProfile] = useState();
   const [league,setLeague] = useState({});
   const [matchList,setMatchList] = useState({});
   const searchType = "summoner"
@@ -71,7 +71,7 @@ export default function Summoner({searchString}:props){
         </Column>
         <Column>
           <RecentlyView>
-            <Record matchList={matchList}/>
+            <Record matchList={matchList} puuid={profile.puuid}/>
           </RecentlyView>
         </Column>
       </Wrapper>

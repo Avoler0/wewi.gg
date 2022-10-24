@@ -6,19 +6,17 @@ import RecordCard from "./card";
 type props = {
   matchList:string[]
 }
-export default function Record({matchList}:any) {
+export default function Record({matchList,puuid}:any) {
   // console.log("매치리스트124",matchList);
   const matchLi = ['KR_6171170875', 'KR_6171056283', 'KR_6170148681']
   const [isLoading,setIsLoading] = useState(true);
   const [matchDetail,setMatchDetail] = useState([]);
-  var pron = new Array();
 
   async function readMatchDetail() {
     return await Promise.all(matchLi.map((match)=>{
         return riot.record(match)
         .then((_res:any)=>{
           const response = _res.data
-          pron.push(response)
           return response
         })
         .catch((_error:any)=>{
@@ -38,7 +36,7 @@ export default function Record({matchList}:any) {
     if(!isLoading){
       (async()=>{
         const result = await Promise.all(
-          matchList.map((match)=>{
+          matchLi.map((match:string)=>{
             return riot.record(match)
             .then((_res:any)=>{
               const response = _res.data
@@ -57,12 +55,9 @@ export default function Record({matchList}:any) {
   
   useEffect(()=>{
     console.log("디테일",matchDetail);
-    console.log("디테일2",pron);
     
-  },[matchDetail,pron])
-  console.log(pron);
-  
-  console.log("레코드 인덱스 실행");
+  },[matchDetail])
+
   
   if(isLoading) return (<div>없음</div>)
   return (
@@ -71,11 +66,9 @@ export default function Record({matchList}:any) {
     {/* <ChampRecently  /> */}
   </ChampView>
   <GameView >
-    {/* {matchList.map((match:string)=>{
-      setTimeout(()=>{
-        return (<RecordCard key={match} match={match} />)
-      },100)
-    })} */}
+    {matchDetail.map((detail:string)=>{
+      return (<RecordCard key={detail} detail={detail} puuid={puuid} />)
+    })}
   </GameView>
   </>
   );
