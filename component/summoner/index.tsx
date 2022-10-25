@@ -21,6 +21,8 @@ export default function Summoner({searchString}:props){
   const summoner = useSelector((state:any) =>{
     return state.search.value
   })
+  console.log("지금 검색하는것은",searchString);
+  
     useEffect(()=>{
       setIsLoading(true)
     if(searchString !== undefined){
@@ -48,7 +50,8 @@ export default function Summoner({searchString}:props){
   if(isLoading){
     return(<div>없음</div>);
   }
- 
+  
+  
   
   return (
     <Container>

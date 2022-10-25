@@ -5,8 +5,6 @@ type valueType = string | string[]
 
 export const riot = {
   summoner:async function(type:searchType,value:valueType){
-    console.log("서모너 실행");
-    
     return await apiInstance({
       url:`/search/summoner/name/`,
       params:{

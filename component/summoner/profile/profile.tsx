@@ -1,13 +1,13 @@
 import styled from "styled-components";
-import { getProfileIcon } from "../../../const/riotApiPath";
 import { SummonerType } from "../../../types/riotType";
 import Image from "next/image";
+import { riotImg } from "../../../hooks/riotImageHook";
 
 export default function SummonerProfile({profile}:any) {
   const {
     id , name , profileIconId , puuid , revisionDate , summonerLevel
   } = profile;
-  const profileIcon = getProfileIcon(Number(profileIconId))
+  const profileIcon = riotImg.profile(profileIconId)
   
   return(
     <ProfileWrap>

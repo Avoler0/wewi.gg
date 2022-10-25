@@ -1,10 +1,9 @@
-import { useRouter } from "next/router";
 import React from "react";
 import { useEffect, useState } from "react";
 import styled from "styled-components";
-import { riot } from "../../../hooks/riotApiHook";
 import Image from "next/image";
 import { riotImg } from "../../../hooks/riotImageHook";
+import { queueUtils } from "../../../const/utils";
 
 // type detialType = {
 //   gameCreation,
@@ -33,42 +32,64 @@ import { riotImg } from "../../../hooks/riotImageHook";
 export default function RecordCard({detail,puuid}:any) {
   const [isLoading,setIsLoading] = useState(true);
   const [myDetail,setMyDetal] = useState({});
-  const [runeImg,setRuneImg] = useState<string[]>([]);
+  const [runeImg,setRuneImg] = useState({
+    rune:["null","null"],
+  });
+  console.log(detail);
+  
+  const [queueType,setQueueType] = useState({});
   const result = detail.metadata.participants.findIndex((id:string) => id === puuid )
-  const {gameCreation,gameDuration,queueId,gameEndTimestamp,gameMode,win,assists,deaths,kills,lane,summoner1Id,summoner2Id,totalMinionsKilled
-        ,neutralMinionsKilled,championName,perks,item,team1Kills,team2Kills,teamId,visionScore  } = detail;
+  const { queueId,gameLengthTime  } = detail.info;
   
   useEffect(()=>{
+    
     if(detail){
       (async ()=>{
-        setMyDetal(detail.info.participants[result]);
+        
         const my = detail.info.participants[result];
-        const runeImage:string[] = await riotImg.rune(my.perks?.styles[0],my.perks?.styles[1])
-        setRuneImg(runeImage);
+        setMyDetal(my);
+        Promise.all([
+          await riotImg.rune(my.perks?.styles[0],my.perks?.styles[1])
+        ]).then(([rune])=>{
+          const image = {
+            rune: rune,
+          }
+          setRuneImg(image)
+        })
         
 
         setIsLoading(false);
       })()
     }
+  
+    console.log(myDetail);
+    
   },[detail])
+  
+    useEffect(()=>{
 
+    console.log(gameLengthTime);
+    
+  },[myDetail])
   
   if(isLoading){
     return <div>기록 없음</div>
   }
   
   return (
-    <RecordLi>
-      <RecordInfo>
-        {/* <InfoType>{getQueueType(queueId)}</InfoType> */}
+    <WarpLi>
+      <InfoWrap>
+        <InfoType>{queueUtils.type[queueId]}</InfoType>
         {/* <InfoTimeStamp>{myDetail.gameEndTime[0].toString()}{myDetail.gameEndTime[1]} 전</InfoTimeStamp> */}
         <InfoResult>{myDetail.win ? "승리" : "패배"}</InfoResult>
-        {/* <InfoLength>{gameLengthTime}</InfoLength> */}
+        <InfoLength>{gameLengthTime}</InfoLength>
         {/* <InfoLength>{myDetail.gameLegth[0]}분 {gameLegth[1]}초</InfoLength> */}
-      </RecordInfo>
-      <RecordChamp>
-        {/* <ChampImg src={myDetail.gameInfo && getChampionIcon(championName)}/> */}
-      </RecordChamp>
+      </InfoWrap>
+      <ChampWrap>
+        <div className="champ-image">
+          <Image src={riotImg.champion(myDetail?.championName)} alt="icon" layout="fill"/>
+        </div>
+      </ChampWrap>
      
       <SpellWrap>
         {/* <Image src={spellD}  alt="icon" width="100" height="100" objectFit="cover" />
@@ -77,12 +98,12 @@ export default function RecordCard({detail,puuid}:any) {
       <RuneWrap>
         <Rune margin={true} >
           <div className="rune-icon"  >
-            <Image className="icon" src={runeImg[0]}  alt="icon" layout="fill" />
+            <Image className="icon" src={runeImg.rune[0]}  alt="icon" layout="fill" />
           </div>
         </Rune>
         <Rune margin={false} >
           <div className="rune-icon">
-            <Image className="icon" src={runeImg[1]}  alt="icon" layout="fill" />
+            <Image className="icon" src={runeImg.rune[1]}  alt="icon" layout="fill" />
           </div>
         </Rune>
       </RuneWrap>
@@ -99,14 +120,14 @@ export default function RecordCard({detail,puuid}:any) {
           {/* <div className="stats">{((myDetail.totalMinionsKilled + myDetail.neutralMinionsKilled) /myDetail.gameLegth[0]).toFixed(1)} CS/분</div> */}
           <div className="stats"><span>시야점수</span> {myDetail.visionScore}</div>
       </StatsWrap>
-      </RecordLi>
+      </WarpLi>
   );
 }
 
 const RecordUl = styled.ul`
 
 `;
-const RecordLi = styled.li`
+const WarpLi = styled.li`
   margin: 5px;
   border: 1px solid white;
   height: 90px;
@@ -114,7 +135,7 @@ const RecordLi = styled.li`
   padding: 10px;
 `;
 
-const RecordInfo = styled.div`
+const InfoWrap = styled.div`
   width: 10%;
   margin-left: 5px;
   align-items: left;
@@ -122,6 +143,7 @@ const RecordInfo = styled.div`
   flex-direction: column;
   justify-content: space-around;
   font-size: 12px;
+  flex: 0 0 10%;
 `;
 const InfoTimeStamp = styled.div`
   font-weight: lighter;
@@ -134,21 +156,25 @@ const InfoType = styled.div`
 `;
 const InfoLength = styled.div`
 `;
-const RecordChamp = styled.div`
+const ChampWrap = styled.div`
   display: flex;
-  flex-direction: row;
   text-align: center;
+  flex: 0 0 10%;
+  .champ-image{
+    position: relative;
+    width: 100%;
+    height: 100%;
+  }
+  .champ-image img{
+    border-radius: 6rem;
+  }
 `;
-const ChampImg = styled.img`
-  height: 95%;
-  border: none;
-  border-radius: 15px;
-`;
+
 
 const KdaWrap = styled.div`
   margin-left: 25px;
   font-size: 14px;
-
+  flex: 0 0 10%;
   .kda{
     margin-top: 3px;
   }
@@ -157,6 +183,7 @@ const KdaWrap = styled.div`
 const StatsWrap = styled.div`
   margin-left: 15px;
   font-size: 14px;
+  flex: 1;
   .stats{
     margin-top: 3px;
   }
@@ -170,6 +197,7 @@ const SpellWrap = styled.div`
   flex-direction: column;
   justify-content: space-between;
   margin-left: 10px;
+  flex: 0 0 10%;
   img{
     width: 30px;
     height: 30px;
@@ -181,12 +209,12 @@ const RuneWrap = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  margin-left: 3px;
   .rune-icon{
     position: relative;
     width: 1.7rem;
     height: 1.7rem;
   }
+
 `;
 const Rune = styled.div`
   padding: 0.2rem;
@@ -198,7 +226,7 @@ const ItemWrap = styled.div`
   grid-template-columns: repeat(3,1fr);
   grid-gap: calc(3px);
   margin-left: 25px;
-  
+  flex: 0 0 30%;
   img{
     width: 30px;
     height: 30px;

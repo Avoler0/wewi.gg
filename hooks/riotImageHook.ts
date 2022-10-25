@@ -3,8 +3,8 @@ import axios from "axios";
 
 export const riotImg = {
   ddragon:"https://ddragon.canisback.com/img",
-  champion:function(id){
-
+  champion:function(champion:string){
+    return `http://ddragon.leagueoflegends.com/cdn/12.9.1/img/champion/${champion}.png`
   },
   item:function(id){
 
@@ -12,9 +12,10 @@ export const riotImg = {
   perk:function(id){
 
   },
-  profile:function(id){
-
+  profile:function(iconNumber:string){
+    return `http://ddragon.leagueoflegends.com/cdn/10.11.1/img/profileicon/${iconNumber}.png`
   },
+  
   rune:async function(primary:any,sub:any){
     const result = await axios.get('https://ddragon.leagueoflegends.com/cdn/12.9.1/data/en_US/runesReforged.json')
     .then((_res)=>{
@@ -30,6 +31,7 @@ export const riotImg = {
   spell:function(spellName){
     return `http://ddragon.leagueoflegends.com/cdn/12.9.1/img/spell/${spellName}.png`;
   },
+
   
   
   

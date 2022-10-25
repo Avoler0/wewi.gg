@@ -8,7 +8,7 @@ type props = {
 }
 
 export default function Record({matchList,puuid}:any) {
-  const matchLi = ['KR_6171170875', 'KR_6171056283', 'KR_6170148681']
+  const matchLi = matchList.slice(0,3);
   const [isLoading,setIsLoading] = useState<boolean>(true);
   const [matchDetail,setMatchDetail] = useState([]);
 
