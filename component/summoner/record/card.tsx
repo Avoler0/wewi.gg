@@ -35,12 +35,14 @@ export default function RecordCard({detail,puuid}:any) {
   const [runeImg,setRuneImg] = useState({
     rune:["null","null"],
   });
-  console.log(detail);
+  console.log("디테일",detail);
   
   const [queueType,setQueueType] = useState({});
   const result = detail.metadata.participants.findIndex((id:string) => id === puuid )
   const { queueId,gameLengthTime  } = detail.info;
   
+  
+
   useEffect(()=>{
     
     if(detail){
@@ -67,15 +69,26 @@ export default function RecordCard({detail,puuid}:any) {
   },[detail])
   
     useEffect(()=>{
-
     console.log(gameLengthTime);
     
   },[myDetail])
+  console.log("나의 디에틸",myDetail);
   
   if(isLoading){
     return <div>기록 없음</div>
   }
-  
+
+  function teamKills(){
+    const myTeamKills = [];
+    detail.info.teams.map((data)=>{
+      if(data.teamId === myDetail.teamId){
+        myTeamKills.push(data.objectives.champion.kills)
+      }
+    } )
+    console.log("나의팀은",myTeamKills[0]);
+    return myTeamKills[0];
+  }
+  // detail.info.teams.filter((data)=> data.teamId === myDetail.teamId)
   return (
     <WarpLi>
       <InfoWrap>
@@ -113,7 +126,7 @@ export default function RecordCard({detail,puuid}:any) {
       <KdaWrap>
           <div className="kda">{myDetail.kills} / {myDetail.deaths} / {myDetail.assists}</div>
           <div className="kda">{((myDetail.kills+myDetail.assists) / myDetail.deaths).toFixed(2)}:1 평점</div>
-          <div className="kda">킬관여 {((myDetail.kills+myDetail.assists)/myDetail.teamKills*100).toFixed(0)}%</div>
+          <div className="kda">킬관여 {((myDetail.kills+myDetail.assists)/teamKills()*100).toFixed(0)}%</div>
       </KdaWrap>
       <StatsWrap>
           <div className="stats">{myDetail.totalMinionsKilled + myDetail.neutralMinionsKilled} CS</div>
