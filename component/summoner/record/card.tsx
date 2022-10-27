@@ -4,6 +4,7 @@ import styled from "styled-components";
 import Image from "next/image";
 import { riotImg } from "../../../hooks/riotImageHook";
 import { queueUtils } from "../../../const/utils";
+import { time } from "../../../hooks/timeHook";
 
 // type detialType = {
 //   gameCreation,
@@ -35,7 +36,10 @@ export default function RecordCard({detail,puuid}:any) {
   const [runeImg,setRuneImg] = useState({
     rune:["null","null"],
   });
+  const nowDate = new Date();
+
   console.log("디테일",detail);
+  
   
   const [queueType,setQueueType] = useState({});
   const result = detail.metadata.participants.findIndex((id:string) => id === puuid )
@@ -46,6 +50,7 @@ export default function RecordCard({detail,puuid}:any) {
   useEffect(()=>{
     
     if(detail){
+      // time.diff(detail.info.gameCreation,detail.info.gameEndTimestamp)
       (async ()=>{
         
         const my = detail.info.participants[result];
@@ -72,7 +77,7 @@ export default function RecordCard({detail,puuid}:any) {
     console.log(gameLengthTime);
     
   },[myDetail])
-  console.log("나의 디에틸",myDetail);
+  // console.log("나의 디테일",myDetail);
   
   if(isLoading){
     return <div>기록 없음</div>
@@ -85,7 +90,6 @@ export default function RecordCard({detail,puuid}:any) {
         myTeamKills.push(data.objectives.champion.kills)
       }
     } )
-    console.log("나의팀은",myTeamKills[0]);
     return myTeamKills[0];
   }
   // detail.info.teams.filter((data)=> data.teamId === myDetail.teamId)
@@ -93,10 +97,10 @@ export default function RecordCard({detail,puuid}:any) {
     <WarpLi>
       <InfoWrap>
         <InfoType>{queueUtils.type[queueId]}</InfoType>
-        {/* <InfoTimeStamp>{myDetail.gameEndTime[0].toString()}{myDetail.gameEndTime[1]} 전</InfoTimeStamp> */}
+        <InfoTimeStamp>{time.otherDay(detail.info.gameEndTimestamp)}</InfoTimeStamp>
         <InfoResult>{myDetail.win ? "승리" : "패배"}</InfoResult>
         <InfoLength>{gameLengthTime}</InfoLength>
-        {/* <InfoLength>{myDetail.gameLegth[0]}분 {gameLegth[1]}초</InfoLength> */}
+        <InfoLength>{time.pass(detail.info.gameCreation,detail.info.gameEndTimestamp)}</InfoLength>
       </InfoWrap>
       <ChampWrap>
         <div className="champ-image">
