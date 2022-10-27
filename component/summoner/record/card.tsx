@@ -104,7 +104,7 @@ export default function RecordCard({detail,puuid}:any) {
       </InfoWrap>
       <ChampWrap>
         <div className="champ-image">
-          <Image src={riotImg.champion(myDetail?.championName)} alt="icon" layout="fill"/>
+          <Image src={riotImg.champion(myDetail?.championName)} alt="icon" layout="fill" objectFit="fill"/>
         </div>
       </ChampWrap>
      
@@ -178,13 +178,15 @@ const ChampWrap = styled.div`
   display: flex;
   text-align: center;
   flex: 0 0 10%;
+  border-radius: 8rem;
   .champ-image{
     position: relative;
     width: 100%;
     height: 100%;
+    border-radius: 8rem;
   }
   .champ-image img{
-    border-radius: 6rem;
+
   }
 `;
 
