@@ -150,6 +150,7 @@ const WarpLi = styled.li`
   height: 90px;
   display: flex;
   padding: 10px;
+  color: white;
 `;
 
 const InfoWrap = styled.div`
