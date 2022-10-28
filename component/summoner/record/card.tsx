@@ -51,6 +51,7 @@ export default function RecordCard({detail,puuid}:any) {
     
     if(detail){
       // time.diff(detail.info.gameCreation,detail.info.gameEndTimestamp)
+      
       (async ()=>{
         
         const my = detail.info.participants[result];
@@ -75,9 +76,9 @@ export default function RecordCard({detail,puuid}:any) {
   
     useEffect(()=>{
     console.log(gameLengthTime);
-    
+    console.log("게임길이", );
   },[myDetail])
-  // console.log("나의 디테일",myDetail);
+  console.log("나의 디테일",myDetail);
   
   if(isLoading){
     return <div>기록 없음</div>
@@ -92,6 +93,8 @@ export default function RecordCard({detail,puuid}:any) {
     } )
     return myTeamKills[0];
   }
+  
+  // Math.floor((myDetail.totalMinionsKilled + myDetail.neutralMinionsKilled) / detail.info.gameDuration / 60)
   // detail.info.teams.filter((data)=> data.teamId === myDetail.teamId)
   return (
     <WarpLi>
@@ -134,7 +137,7 @@ export default function RecordCard({detail,puuid}:any) {
       </KdaWrap>
       <StatsWrap>
           <div className="stats">{myDetail.totalMinionsKilled + myDetail.neutralMinionsKilled} CS</div>
-          {/* <div className="stats">{((myDetail.totalMinionsKilled + myDetail.neutralMinionsKilled) /myDetail.gameLegth[0]).toFixed(1)} CS/분</div> */}
+          <div className="stats">{((myDetail.totalMinionsKilled + myDetail.neutralMinionsKilled) / Math.floor(detail.info.gameDuration / 60)).toFixed(1)} CS/분</div>
           <div className="stats"><span>시야점수</span> {myDetail.visionScore}</div>
       </StatsWrap>
       </WarpLi>
