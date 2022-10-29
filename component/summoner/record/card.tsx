@@ -93,7 +93,22 @@ export default function RecordCard({detail,puuid}:any) {
     } )
     return myTeamKills[0];
   }
-  
+  function ItemRender(){
+    let ItemArr = ["item0","item1","item2","item3","item4","item5","item6"];
+    console.log("아이템");
+    
+    const Item = ItemArr.map((item)=>{
+      
+      return (
+        <div className="item-image">
+          {myDetail[item] ? <Image key={item} src={ riotImg.item(myDetail[item])} alt="icon" layout="fill" objectFit="fill"/> : <Image />}
+        </div>
+        
+      )
+    })
+
+    return Item
+  }
   // Math.floor((myDetail.totalMinionsKilled + myDetail.neutralMinionsKilled) / detail.info.gameDuration / 60)
   // detail.info.teams.filter((data)=> data.teamId === myDetail.teamId)
   return (
@@ -128,7 +143,8 @@ export default function RecordCard({detail,puuid}:any) {
         </Rune>
       </RuneWrap>
       <ItemWrap>
-        {/* {item.map((id:any , index:number)=> id === 0 ? <Image /> : index !== item.length-1  ? <Image key={id} src={ getItemIcon(id) }/> : null)} */}
+        {/* {item.map((id:any , index:number)=> id === 0 ? <Image /> : index !== item.length-1  ? <Image key={id} src={ riotImage.item(id) }/> : null)} */}
+        {ItemRender()}
       </ItemWrap>
       <KdaWrap>
           <div className="kda">{myDetail.kills} / {myDetail.deaths} / {myDetail.assists}</div>
@@ -246,14 +262,19 @@ const Rune = styled.div`
 `;
 const ItemWrap = styled.div`
   display: grid;
-  grid-template-columns: repeat(3,1fr);
+  grid-template-columns: repeat(3,0fr);
   grid-gap: calc(3px);
   margin-left: 25px;
-  flex: 0 0 30%;
   img{
     width: 30px;
     height: 30px;
     border-radius: 5px;
+    background-color: #271f1f;
+  }
+  .item-image{
+    position: relative;
+    width: 2rem;
+    height: 2rem;
     background-color: #271f1f;
   }
 `;

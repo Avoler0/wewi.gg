@@ -6,8 +6,10 @@ export const riotImg = {
   champion:function(champion:string){
     return `http://ddragon.leagueoflegends.com/cdn/12.9.1/img/champion/${champion}.png`
   },
-  item:function(id){
-
+  item:function(itemId:number){
+    console.log(itemId);
+    
+    return `http://ddragon.leagueoflegends.com/cdn/12.9.1/img/item/${itemId}.png`
   },
   perk:function(id){
 
