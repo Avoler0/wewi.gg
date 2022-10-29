@@ -94,15 +94,17 @@ export default function RecordCard({detail,puuid}:any) {
     return myTeamKills[0];
   }
   function ItemRender(){
-    let ItemArr = ["item0","item1","item2","item3","item4","item5","item6"];
+    let ItemArr = ["item0","item1","item2","item6","item3","item4","item5"];
     console.log("아이템");
     
-    const Item = ItemArr.map((item)=>{
-      
+    const Item = ItemArr.map((itemId,)=>{
       return (
-        <div className="item-image">
-          {myDetail[item] ? <Image key={item} src={ riotImg.item(myDetail[item])} alt="icon" layout="fill" objectFit="fill"/> : <Image />}
-        </div>
+        <>
+          <div className="item-image">
+            {myDetail[itemId] ? <Image key={itemId} src={ riotImg.item(myDetail[itemId])} alt="icon" layout="fill" objectFit="fill"/> : <Image src={""} alt="defaultIcon" layout="fill" objectFit="fill"  />}
+          </div>
+          {itemId === "item6" ? <br></br> : null}
+        </>
         
       )
     })
@@ -164,11 +166,12 @@ const RecordUl = styled.ul`
 
 `;
 const WarpLi = styled.li`
-  margin: 5px;
-  border: 1px solid white;
-  height: 90px;
   display: flex;
+  justify-content: space-between;
+  height: 90px;
+  margin: 5px;
   padding: 10px;
+  border: 1px solid white;
   color: white;
 `;
 
@@ -211,18 +214,20 @@ const ChampWrap = styled.div`
 
 
 const KdaWrap = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
   margin-left: 25px;
-  font-size: 14px;
-  flex: 0 0 10%;
-  .kda{
-    margin-top: 3px;
+  font-size: 0.9rem;
+  div{
+    
   }
 `;
 
 const StatsWrap = styled.div`
   margin-left: 15px;
   font-size: 14px;
-  flex: 1;
+  flex: 0 0 10%;
   .stats{
     margin-top: 3px;
   }
@@ -261,20 +266,17 @@ const Rune = styled.div`
   background-color: #271f1f;
 `;
 const ItemWrap = styled.div`
-  display: grid;
-  grid-template-columns: repeat(3,0fr);
-  grid-gap: calc(3px);
   margin-left: 25px;
-  img{
-    width: 30px;
-    height: 30px;
-    border-radius: 5px;
-    background-color: #271f1f;
-  }
   .item-image{
     position: relative;
+    display: inline-block;
     width: 2rem;
     height: 2rem;
+    margin-right: 0.3rem;
     background-color: #271f1f;
+    border-radius: 5px;
+    img{
+      border-radius: 5px;
+    }
   }
 `;
