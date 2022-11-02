@@ -6,56 +6,38 @@ import { riotImg } from "../../../hooks/riotImageHook";
 import { queueUtils } from "../../../const/utils";
 import { time } from "../../../hooks/timeHook";
 
-// type detialType = {
-//   gameCreation,
-//     gameDuration,
-//     queueId,
-//     gameEndTimestamp,
-//     gameMode,
-//     win,
-//     assists,
-//     deaths,
-//     kills,
-//     lane,
-//     summoner1Id,
-//     summoner2Id,
-//     totalMinionsKilled,
-//     neutralMinionsKilled,
-//     championName,
-//     perks,
-//     item,
-//     team1Kills,
-//     team2Kills,
-//     teamId,
-//     visionScore
-// }
+type props = {
+  detail:Detail
+}
 
-export default function RecordCard({detail,puuid}:any) {
+type Detail = {
+  gameCreation:number,
+  gameDuration:number,
+  gameStartTimestamp:number,
+  gameEndTimestamp:number,
+  participants:any,
+  teamKill:number,
+  queueId:number,
+  gameLengthTime:number
+}
+export default function RecordCard({detail}:props) {
+  if(!detail) return <div>불러오는 중</div>
+  const { gameCreation,gameDuration,gameStartTimestamp,gameEndTimestamp,participants,teamKill,queueId,gameLengthTime,win  } = detail;
+
+  console.log("카드 디테일",detail.gameCreation);
+
   const [isLoading,setIsLoading] = useState(true);
-  const [myDetail,setMyDetal] = useState({});
   const [runeImg,setRuneImg] = useState({
     rune:["null","null"],
   });
-  const nowDate = new Date();
-
-  
-  
-  
-  const [queueType,setQueueType] = useState({});
-  const result = detail.metadata.participants.findIndex((id:string) => id === puuid )
-  const { queueId,gameLengthTime  } = detail.info;
-  
   
 
   useEffect(()=>{
     
     if(detail){
       (async ()=>{
-        
-        const my = detail.info.participants[result];
-        setMyDetal(my);
         Promise.all([
-          await riotImg.rune(my.perks?.styles[0],my.perks?.styles[1])
+          await riotImg.rune(participants.perks?.styles[0],participants.perks?.styles[1])
         ]).then(([rune])=>{
           const image = {
             rune: rune,
@@ -67,23 +49,8 @@ export default function RecordCard({detail,puuid}:any) {
     }
     
   },[detail])
-  
-    useEffect(()=>{
-      console.log("디테일",detail);
-      console.log("나의 디테일",myDetail);
-  },[myDetail])
-  
-  
 
-  function teamKills(){
-    const myTeamKills = [];
-    detail.info.teams.map((data:any)=>{
-      if(data.teamId === myDetail.teamId){
-        myTeamKills.push(data.objectives.champion.kills)
-      }
-    } )
-    return myTeamKills[0];
-  }
+  
   function ItemRender(){
     let ItemArr = ["item0","item1","item2","item6","item3","item4","item5"];
     
@@ -91,7 +58,7 @@ export default function RecordCard({detail,puuid}:any) {
       return (
         <>
           <div className="item-image">
-            {myDetail[itemId] ? <Image key={itemId} src={ riotImg.item(myDetail[itemId])} alt="icon" layout="fill" objectFit="fill"/> : <span className="item-image" />}
+            {participants[itemId] ? <Image key={itemId} src={ riotImg.item(participants[itemId])} alt="icon" layout="fill" objectFit="fill"/> : <span className="item-image" />}
           </div>
           {itemId === "item6" ? <br></br> : null}
         </>
@@ -104,90 +71,93 @@ export default function RecordCard({detail,puuid}:any) {
   if(isLoading){
     return <div>불러오는 중</div>
   }
+  
   return (
-    <WarpLi win={myDetail.win }>
-      <InfoWrap>
-        <b>{queueUtils.type[queueId]}</b>
-        <div>{time.otherDay(detail.info.gameEndTimestamp)}</div>
-        <b>{myDetail.win ? "승리" : "패배"}</b>
-        <div>{gameLengthTime}</div>
-        <div>{time.pass(detail.info.gameCreation,detail.info.gameEndTimestamp)}</div>
-      </InfoWrap>
-      <ChampWrap>
-        <div>
-          <Image src={riotImg.champion(myDetail?.championName)} alt="icon" layout="fill" objectFit="fill"/>
-        </div>
-      </ChampWrap>
-      <SkillsWrap>
-        <Skill>
+    <WarpLi win={win}>
+      <Wrap win={win}>
+        <InfoWrap>
+          <b>{queueUtils.type[queueId]}</b>
+          <div>{time.otherDay(gameEndTimestamp)}</div>
+          <b>{win ? "승리" : "패배"}</b>
+          <div>{gameLengthTime}</div>
+          <div>{time.pass(gameCreation,gameEndTimestamp)}</div>
+        </InfoWrap>
+        <ChampWrap>
           <div>
-            <Image className="icon" src={riotImg.spell(myDetail.summoner1Id)}  alt="icon" layout="fill" objectFit="fill" objectPosition="center"/>
+            <Image src={riotImg.champion(participants?.championName)} alt="icon" layout="fill" objectFit="fill"/>
           </div>
-          <div>
-            <Image className="icon" src={riotImg.spell(myDetail.summoner2Id)}  alt="icon" layout="fill" objectFit="fill" objectPosition="center"/>
-          </div>
-        </Skill>
-        <Skill>
-          <div>
-            <Image className="icon" src={runeImg.rune[0]}  alt="icon" layout="fill" objectFit="fill" objectPosition="center"/>
-          </div>
-          <div >
-            <Image className="icon" src={runeImg.rune[1]}  alt="icon" layout="fill" objectFit="fill" objectPosition="center" />
-          </div>
-        </Skill>
-      </SkillsWrap>
-      <ItemWrap>
-        {ItemRender()}
-      </ItemWrap>
-      <KdaWrap>
-          <div className="kda">{myDetail.kills} / {myDetail.deaths} / {myDetail.assists}</div>
-          <div className="kda">{((myDetail.kills+myDetail.assists) / myDetail.deaths).toFixed(2)}:1 평점</div>
-          <div className="kda">킬관여 {((myDetail.kills+myDetail.assists)/teamKills()*100).toFixed(0)}%</div>
-      </KdaWrap>
-      <StatsWrap>
-          <div className="stats">{myDetail.totalMinionsKilled + myDetail.neutralMinionsKilled} CS</div>
-          <div className="stats">{((myDetail.totalMinionsKilled + myDetail.neutralMinionsKilled) / Math.floor(detail.info.gameDuration / 60)).toFixed(1)} CS/분</div>
-          <div className="stats"><span>시야점수</span> {myDetail.visionScore}</div>
-      </StatsWrap>
-      </WarpLi>
+        </ChampWrap>
+        <SkillsWrap>
+          <Skill>
+            <div>
+              <Image className="icon" src={riotImg.spell(participants.summoner1Id)}  alt="icon" layout="fill" objectFit="fill" objectPosition="center"/>
+            </div>
+            <div>
+              <Image className="icon" src={riotImg.spell(participants.summoner2Id)}  alt="icon" layout="fill" objectFit="fill" objectPosition="center"/>
+            </div>
+          </Skill>
+          <Skill>
+            <div>
+              <Image className="icon" src={runeImg.rune[0]}  alt="icon" layout="fill" objectFit="fill" objectPosition="center"/>
+            </div>
+            <div >
+              <Image className="icon" src={runeImg.rune[1]}  alt="icon" layout="fill" objectFit="fill" objectPosition="center" />
+            </div>
+          </Skill>
+        </SkillsWrap>
+        <ItemWrap>
+          {ItemRender()}
+        </ItemWrap>
+        <KdaWrap>
+            <div className="kda">{participants.kills} / {participants.deaths} / {participants.assists}</div>
+            <div className="kda">{((participants.kills+participants.assists) / participants.deaths).toFixed(2)}:1 평점</div>
+            <div className="kda">킬관여 {((participants.kills+participants.assists)/teamKill*100).toFixed(0)}%</div>
+        </KdaWrap>
+        <StatsWrap>
+            <div className="stats">{participants.totalMinionsKilled + participants.neutralMinionsKilled} CS</div>
+            <div className="stats">{((participants.totalMinionsKilled + participants.neutralMinionsKilled) / Math.floor(gameDuration / 60)).toFixed(1)} CS/분</div>
+            <div className="stats"><span>시야점수</span> {participants.visionScore}</div>
+        </StatsWrap>
+      </Wrap>
+    </WarpLi>
   );
 }
 
-const RecordUl = styled.ul`
-
-`;
 const WarpLi = styled.li<{win:boolean}>`
+  border-left: 6px solid ${props => props.win ? "rgba(62, 31, 177, 1)" : "rgba(177,31,62,1)"};
+  border-radius: 5px;
+  list-style: none;
+  margin: 5px;
+  color: white;
+`;
+const Wrap = styled.div<{win:boolean}>`
   display: flex;
   justify-content: space-between;
-  height: 90px;
-  margin: 5px;
   padding: 10px;
-  border: 1px solid white;
-  color: white;
+  width: 100%;
+  height: 100px;
+  border: 1px solid ${props => props.win ? "rgba(62, 31, 177, 0.6)" : "rgba(177,31,62,0.6)"};
   background-color: ${props => props.win ? "rgba(62, 31, 177, 0.2)" : "rgba(177,31,62,0.2)"};
+  border-radius: 0 5px 5px 0;
 `;
 const InfoWrap = styled.div`
-  width: 10%;
-  margin-left: 5px;
-  align-items: left;
   display: flex;
   flex-direction: column;
   justify-content: space-around;
-  font-size: 12px;
+  width: 10%;
+  margin-left: 0.8rem;
+  font-size: 0.8rem;
   font-weight: lighter;
-  flex: 0 0 10%;
 `;
 
 const ChampWrap = styled.div`
   display: flex;
   text-align: center;
   flex: 0 0 10%;
-  border-radius: 8rem;
   div{
     position: relative;
     width: 100%;
     height: 100%;
-    border-radius: 8rem;
   }
 `;
 
@@ -204,8 +174,10 @@ const KdaWrap = styled.div`
 `;
 
 const StatsWrap = styled.div`
-  margin-left: 15px;
-  font-size: 14px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  font-size: 0.9rem;
   flex: 0 0 10%;
   .stats{
     margin-top: 3px;
@@ -230,7 +202,7 @@ const Skill = styled.div`
     position: relative;
     width: 1.7rem;
     height: 1.7rem;
-    padding: 1rem;
+    padding: 1.1rem;
     background-color: #271f1f;
     border-radius: 5px;
   }
@@ -239,31 +211,14 @@ const Skill = styled.div`
   }
 `;
 
-const Rune = styled.div`
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-  height: 100%;
-  div{
-    position: relative;
-    width: 1.7rem;
-    height: 1.7rem;
-    padding: 1rem;
-    background-color: #271f1f;
-    border-radius: 5px;
-    span{
-      background-color: #271f1f;
-    }
-  }
-`;
 
 const ItemWrap = styled.div`
   margin-left: 25px;
   .item-image{
     position: relative;
     display: inline-block;
-    width: 2rem;
-    height: 2rem;
+    width: 2.2rem;
+    height: 2.3rem;
     margin-right: 0.3rem;
     background-color: #271f1f;
     border-radius: 5px;
