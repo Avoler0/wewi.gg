@@ -1,3 +1,4 @@
+import { spellName } from './../const/utils';
 import axios from "axios";
 
 
@@ -7,8 +8,6 @@ export const riotImg = {
     return `http://ddragon.leagueoflegends.com/cdn/12.9.1/img/champion/${champion}.png`
   },
   item:function(itemId:number){
-    console.log(itemId);
-    
     return `http://ddragon.leagueoflegends.com/cdn/12.9.1/img/item/${itemId}.png`
   },
   perk:function(id){
@@ -30,8 +29,9 @@ export const riotImg = {
     })
     return result;
   },
-  spell:function(spellName){
-    return `http://ddragon.leagueoflegends.com/cdn/12.9.1/img/spell/${spellName}.png`;
+  spell:function(spellId:number){
+    const spell = spellName(spellId);
+    return `http://ddragon.leagueoflegends.com/cdn/12.9.1/img/spell/${spell}.png`;
   },
 
   

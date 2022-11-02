@@ -38,7 +38,7 @@ export default function RecordCard({detail,puuid}:any) {
   });
   const nowDate = new Date();
 
-  console.log("디테일",detail);
+  
   
   
   const [queueType,setQueueType] = useState({});
@@ -50,8 +50,6 @@ export default function RecordCard({detail,puuid}:any) {
   useEffect(()=>{
     
     if(detail){
-      // time.diff(detail.info.gameCreation,detail.info.gameEndTimestamp)
-      
       (async ()=>{
         
         const my = detail.info.participants[result];
@@ -64,29 +62,22 @@ export default function RecordCard({detail,puuid}:any) {
           }
           setRuneImg(image)
         })
-        
-
         setIsLoading(false);
       })()
     }
-  
-    console.log(myDetail);
     
   },[detail])
   
     useEffect(()=>{
-    console.log(gameLengthTime);
-    console.log("게임길이", );
+      console.log("디테일",detail);
+      console.log("나의 디테일",myDetail);
   },[myDetail])
-  console.log("나의 디테일",myDetail);
   
-  if(isLoading){
-    return <div>기록 없음</div>
-  }
+  
 
   function teamKills(){
     const myTeamKills = [];
-    detail.info.teams.map((data)=>{
+    detail.info.teams.map((data:any)=>{
       if(data.teamId === myDetail.teamId){
         myTeamKills.push(data.objectives.champion.kills)
       }
@@ -95,57 +86,57 @@ export default function RecordCard({detail,puuid}:any) {
   }
   function ItemRender(){
     let ItemArr = ["item0","item1","item2","item6","item3","item4","item5"];
-    console.log("아이템");
     
     const Item = ItemArr.map((itemId,)=>{
       return (
         <>
           <div className="item-image">
-            {myDetail[itemId] ? <Image key={itemId} src={ riotImg.item(myDetail[itemId])} alt="icon" layout="fill" objectFit="fill"/> : <Image src={""} alt="defaultIcon" layout="fill" objectFit="fill"  />}
+            {myDetail[itemId] ? <Image key={itemId} src={ riotImg.item(myDetail[itemId])} alt="icon" layout="fill" objectFit="fill"/> : <span className="item-image" />}
           </div>
           {itemId === "item6" ? <br></br> : null}
         </>
         
       )
     })
-
     return Item
   }
-  // Math.floor((myDetail.totalMinionsKilled + myDetail.neutralMinionsKilled) / detail.info.gameDuration / 60)
-  // detail.info.teams.filter((data)=> data.teamId === myDetail.teamId)
+
+  if(isLoading){
+    return <div>불러오는 중</div>
+  }
   return (
-    <WarpLi>
+    <WarpLi win={myDetail.win }>
       <InfoWrap>
-        <InfoType>{queueUtils.type[queueId]}</InfoType>
-        <InfoTimeStamp>{time.otherDay(detail.info.gameEndTimestamp)}</InfoTimeStamp>
-        <InfoResult>{myDetail.win ? "승리" : "패배"}</InfoResult>
-        <InfoLength>{gameLengthTime}</InfoLength>
-        <InfoLength>{time.pass(detail.info.gameCreation,detail.info.gameEndTimestamp)}</InfoLength>
+        <b>{queueUtils.type[queueId]}</b>
+        <div>{time.otherDay(detail.info.gameEndTimestamp)}</div>
+        <b>{myDetail.win ? "승리" : "패배"}</b>
+        <div>{gameLengthTime}</div>
+        <div>{time.pass(detail.info.gameCreation,detail.info.gameEndTimestamp)}</div>
       </InfoWrap>
       <ChampWrap>
-        <div className="champ-image">
+        <div>
           <Image src={riotImg.champion(myDetail?.championName)} alt="icon" layout="fill" objectFit="fill"/>
         </div>
       </ChampWrap>
-     
-      <SpellWrap>
-        {/* <Image src={spellD}  alt="icon" width="100" height="100" objectFit="cover" />
-        <Image src={spellF}  alt="icon" width="100" height="100" objectFit="cover" /> */}
-      </SpellWrap>
-      <RuneWrap>
-        <Rune margin={true} >
-          <div className="rune-icon"  >
-            <Image className="icon" src={runeImg.rune[0]}  alt="icon" layout="fill" />
+      <SkillsWrap>
+        <Skill>
+          <div>
+            <Image className="icon" src={riotImg.spell(myDetail.summoner1Id)}  alt="icon" layout="fill" objectFit="fill" objectPosition="center"/>
           </div>
-        </Rune>
-        <Rune margin={false} >
-          <div className="rune-icon">
-            <Image className="icon" src={runeImg.rune[1]}  alt="icon" layout="fill" />
+          <div>
+            <Image className="icon" src={riotImg.spell(myDetail.summoner2Id)}  alt="icon" layout="fill" objectFit="fill" objectPosition="center"/>
           </div>
-        </Rune>
-      </RuneWrap>
+        </Skill>
+        <Skill>
+          <div>
+            <Image className="icon" src={runeImg.rune[0]}  alt="icon" layout="fill" objectFit="fill" objectPosition="center"/>
+          </div>
+          <div >
+            <Image className="icon" src={runeImg.rune[1]}  alt="icon" layout="fill" objectFit="fill" objectPosition="center" />
+          </div>
+        </Skill>
+      </SkillsWrap>
       <ItemWrap>
-        {/* {item.map((id:any , index:number)=> id === 0 ? <Image /> : index !== item.length-1  ? <Image key={id} src={ riotImage.item(id) }/> : null)} */}
         {ItemRender()}
       </ItemWrap>
       <KdaWrap>
@@ -165,7 +156,7 @@ export default function RecordCard({detail,puuid}:any) {
 const RecordUl = styled.ul`
 
 `;
-const WarpLi = styled.li`
+const WarpLi = styled.li<{win:boolean}>`
   display: flex;
   justify-content: space-between;
   height: 90px;
@@ -173,8 +164,8 @@ const WarpLi = styled.li`
   padding: 10px;
   border: 1px solid white;
   color: white;
+  background-color: ${props => props.win ? "rgba(62, 31, 177, 0.2)" : "rgba(177,31,62,0.2)"};
 `;
-
 const InfoWrap = styled.div`
   width: 10%;
   margin-left: 5px;
@@ -183,32 +174,20 @@ const InfoWrap = styled.div`
   flex-direction: column;
   justify-content: space-around;
   font-size: 12px;
+  font-weight: lighter;
   flex: 0 0 10%;
 `;
-const InfoTimeStamp = styled.div`
-  font-weight: lighter;
-`;
-const InfoResult =styled.div`
-  font-weight: 700;
-`;
-const InfoType = styled.div`
-  font-weight: bold;
-`;
-const InfoLength = styled.div`
-`;
+
 const ChampWrap = styled.div`
   display: flex;
   text-align: center;
   flex: 0 0 10%;
   border-radius: 8rem;
-  .champ-image{
+  div{
     position: relative;
     width: 100%;
     height: 100%;
     border-radius: 8rem;
-  }
-  .champ-image img{
-
   }
 `;
 
@@ -235,36 +214,49 @@ const StatsWrap = styled.div`
     font-size: 12px;
   }
 `;
-
-const SpellWrap = styled.div`
+const SkillsWrap = styled.div`
   display: flex;
-  flex-direction: column;
   justify-content: space-between;
-  margin-left: 10px;
-  flex: 0 0 10%;
-  img{
-    width: 30px;
-    height: 30px;
-    border-radius: 5px;
-    background-color: #271f1f;
-  }
+  flex-grow: 0.03;
 `;
-const RuneWrap = styled.div`
+const Skill = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  .rune-icon{
+  flex-grow: 0.1;
+  width: 100%;
+  height: 100%;
+  div{
     position: relative;
     width: 1.7rem;
     height: 1.7rem;
+    padding: 1rem;
+    background-color: #271f1f;
+    border-radius: 5px;
   }
+  img{
+    border-radius: 5px;
+  }
+`;
 
-`;
 const Rune = styled.div`
-  padding: 0.2rem;
-  border-radius: 5px;
-  background-color: #271f1f;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  div{
+    position: relative;
+    width: 1.7rem;
+    height: 1.7rem;
+    padding: 1rem;
+    background-color: #271f1f;
+    border-radius: 5px;
+    span{
+      background-color: #271f1f;
+    }
+  }
 `;
+
 const ItemWrap = styled.div`
   margin-left: 25px;
   .item-image{
