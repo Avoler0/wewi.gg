@@ -1,5 +1,6 @@
 import { spellName } from './../const/utils';
 import axios from "axios";
+import { riot } from './riotApiHook';
 
 
 export const riotImg = {
@@ -18,7 +19,7 @@ export const riotImg = {
   },
   
   rune:async function(primary:any,sub:any){
-    const result = await axios.get('https://ddragon.leagueoflegends.com/cdn/12.9.1/data/en_US/runesReforged.json')
+    return await axios.get('https://ddragon.leagueoflegends.com/cdn/12.9.1/data/en_US/runesReforged.json')
     .then((_res)=>{
       const primaryIndex = _res.data.findIndex((data) => data.id === primary?.style);
       const subIndex = _res.data.findIndex((data) => data.id === sub?.style);
@@ -27,7 +28,6 @@ export const riotImg = {
 
       return [`${this.ddragon}/${primaryIcon}`,`${this.ddragon}/${subIcon}`]
     })
-    return result;
   },
   spell:function(spellId:number){
     const spell = spellName(spellId);

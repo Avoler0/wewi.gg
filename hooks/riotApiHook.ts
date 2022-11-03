@@ -1,3 +1,4 @@
+import axios from "axios";
 import { apiInstance } from "./axiosInstance";
 type searchType = "summoner" | "champion"
 type valueType = string | string[]
@@ -63,6 +64,9 @@ export const riot = {
             rejects(_error)
       })
     })
+  },
+  runeInfo: async function(){
+    return await axios.get('https://ddragon.leagueoflegends.com/cdn/12.9.1/data/en_US/runesReforged.json')
   }
 }
 

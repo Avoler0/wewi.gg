@@ -10,7 +10,7 @@ type props = {
 }
 
 export default function Record({matchList,puuid}:props) {
-  const matchLi = matchList.slice(0,3);
+  // const matchList = matchList.slice(0,3);
   const [isLoading,setIsLoading] = useState<boolean>(true);
   const [matchDetail,setMatchDetail] = useState([]);
   function GameDetail(detail:any){
@@ -36,7 +36,7 @@ export default function Record({matchList,puuid}:props) {
     if(isLoading){
       (async()=>{
         const result:any = await Promise.all(
-          matchLi.map((match:string)=>{
+          matchList.map((match:string)=>{
             return riot.record(match)
             .then((_res:any)=>{
               const response = _res.data

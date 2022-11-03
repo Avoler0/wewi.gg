@@ -19,12 +19,12 @@ type Detail = {
   teamKill:number,
   queueId:number,
   gameLengthTime:number
+  win:boolean
 }
 export default function RecordCard({detail}:props) {
-  if(!detail) return <div>불러오는 중</div>
   const { gameCreation,gameDuration,gameStartTimestamp,gameEndTimestamp,participants,teamKill,queueId,gameLengthTime,win  } = detail;
 
-  console.log("카드 디테일",detail.gameCreation);
+  console.log("카드 디테일",detail);
 
   const [isLoading,setIsLoading] = useState(true);
   const [runeImg,setRuneImg] = useState({
@@ -67,7 +67,7 @@ export default function RecordCard({detail}:props) {
     })
     return Item
   }
-
+  
   if(isLoading){
     return <div>불러오는 중</div>
   }

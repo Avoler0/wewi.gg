@@ -21,14 +21,14 @@ export default function Navigation() {
               <Link href="/" style={{borderBottom: urlPath === "/" ? "2px solid white" : "none" }}>홈</Link>
             </NavItem>
             <NavItem>
-              <Link href="/duo" style={{borderBottom: urlPath === `/${PAGE.DUO}` ? "2px solid white" : "none" }}>듀오서치</Link>
+              <Link href="/duo" style={{borderBottom: urlPath === `/${PAGE.DUO}` ? "2px solid white" : "none" }}>듀오</Link>
             </NavItem>
-            <NavItem>
+            {/* <NavItem>
               <Link href="/clan" style={{borderBottom: urlPath === `/${PAGE.CLAN}` ? "2px solid white" : "none" }}>클랜</Link>
-            </NavItem>
-            <NavItem>
+            </NavItem> */}
+            {/* <NavItem>
               <Link href="/comunity" style={{borderBottom: urlPath === `/${PAGE.COMMUNITY}` ? "2px solid white" : "none" }}>커뮤니티</Link>
-            </NavItem>
+            </NavItem> */}
           </NavItems>
         </div>
         <div>
