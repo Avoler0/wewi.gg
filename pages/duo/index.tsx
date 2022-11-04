@@ -1,6 +1,9 @@
+import DuoIndex from "../../component/duo";
 
 
 
 export default function Duo(){
-  return <div>듀오페이지</div>
+  return (
+    <DuoIndex />
+  )
 }
