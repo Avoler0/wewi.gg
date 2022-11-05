@@ -45,31 +45,8 @@ const AddButton = styled.button`
   }
 `;
 export default function DuoIndex(this: any) {
-  const [tierOption,setTierOption] = useState(0);
-  const [duoOption,setGameOption] = useState(0);
-  const [lineOption,setLineOption] = useState(0);
-  const [deleteState,setDeleteState] = useState(false)
-  const [deletePw,setDeletePw] = useState("0");
-  const [matchPw,setMatchPw] = useState("1");
-  const [deleteId,setDeleteId] = useState("0");
 
 
-
-
-
-  const [lineChoice,setLineChoice] = useState('AllLine');
-  
-  const [duoRes,setDuoRes] = useState<any>();
-  const getDuoResData = () => {
-    Promise.all([getDuoMatching()])
-    .then(([fetchDuo]) => {
-      const res = fetchDuo.data
-      setDuoRes(res);
-    })
-  }
-  // useEffect(()=>{
-  //   getDuoResData()
-  // },[])
   
   // useEffect(()=>{
   //   console.log("듀오레스",duoRes);

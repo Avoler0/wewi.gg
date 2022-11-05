@@ -1,46 +1,65 @@
+import { log } from "console";
+import React from "react";
 import styled from "styled-components";
 
 export default function DuoFilter(){
-  function selectGame (event:any) {
-    const value = Number(event.target.value)
-    // setGameOption(value)
+  const [gameSelect,setGameSelect] = React.useState();
+  const [tierSelect,setTierSelect] = React.useState();
+  function formChange(event:HTMLFormElement){
+    const name = event.target.name;
+    const value = event.target.value;
+
+    if(name === 'gameTypes'){
+      setGameSelect(value)
+    }else if(name === 'gameTypes'){
+      setTierSelect(value)
+    }
   }
+
   const lineSelect = (lineValue:string) => {
     const value = Number(lineValue)
     // setLineChoice(lineValue)
     // setLineOption(value)
   } 
-  const selectTier = (event:any) => {
-    const value = Number(event.target.value)
-    // setTierOption(value)
+  const options = {
+    game:[
+      {value:"all",label:"모두보기"},
+      {value:"normal",label:"일반게임"},
+      {value:"solo",label:"솔로랭크"},
+      {value:"team",label:"자유랭크"},
+      {value:"aram",label:"칼 바 람"},
+      {value:"special",label:"특별모드"},
+    ],
+    tier:[
+      {value:"all",label:"모두보기"},
+      {value:"iron",label:"아이언"},
+      {value:"bronze",label:"브론즈"},
+      {value:"silver",label:"실버"},
+      {value:"gold",label:"골드"},
+      {value:"platinum",label:"플레티넘"},
+      {value:"diamond",label:"다이아"},
+      {value:"master",label:"마스터"},
+      {value:"grandmaster",label:"그랜드마스터"},
+      {value:"challenger",label:"챌린저"},
+    ],
+      
   }
+
   return (
     <Filter>
     <Column>
-        <GameFilter>
-          <GameSelect  defaultValue="0" onChange={selectGame}>
-            <GameOption value="0" selected>모두보기</GameOption>
-            <GameOption value="1">일반게임</GameOption>
-            <GameOption value="2" selected>솔로랭크</GameOption>
-            <GameOption value="3">자유랭크</GameOption>
-            <GameOption value="4">칼 바 람</GameOption>
-            <GameOption value="5">특별모드</GameOption>
-          </GameSelect>
-        </GameFilter>
-        <TierFilter>
-          <TierSelect defaultValue="0" onChange={selectTier}>
-            <TierOption value="0" selected>모두보기</TierOption>
-            <TierOption value="1">아이언</TierOption>
-            <TierOption value="2">브론즈</TierOption>
-            <TierOption value="3">실버</TierOption>
-            <TierOption value="4">골드</TierOption>
-            <TierOption value="5">플래티넘</TierOption>
-            <TierOption value="6">다이아</TierOption>
-            <TierOption value="7">마스터</TierOption>
-            <TierOption value="8">그랜드마스터</TierOption>
-            <TierOption value="9">챌린저</TierOption>
-          </TierSelect>
-        </TierFilter>
+          <SelectForm onChange={formChange}>
+            <Select defaultValue="solo" name="gameTypes">
+              {options.game.map(({value,label})=>{
+                return <Option key={value} value={value}>{label}</Option>
+              })}
+            </Select>
+            <Select defaultValue="gold" name="tierTypes">
+              {options.tier.map(({value,label})=>{
+                return <Option key={value} value={value}>{label}</Option>
+              })}
+            </Select>
+          </SelectForm>
         <LineTypes>
           {/* <LineItems onClick={() => lineSelect("0")} bgColor={lineChoice === "0" ? "#7c7c83" : "#2c3e50"}>
             <img  src={`../images/icon/line/Line-All-Ico.png`} />
@@ -89,7 +108,11 @@ const Column = styled.div`
 `;
 const GameFilter = styled.div`
 `;
-const GameSelect = styled.select`
+const SelectForm = styled.div`
+
+`;
+const Select = styled.select`
+  width: 1000px;
   margin-right: 20px ;
   font-size: 15px ;
   border: 1px solid (66,66,84,0.8);
@@ -98,9 +121,13 @@ const GameSelect = styled.select`
   height: 2.2rem;
   border-radius: 5px;
   color: rgba(123,122,142,1);
+
+  :focus{
+    border: none;
+  }
 `;
-const GameOption = styled.option`
- 
+const Option = styled.option`
+  margin-top: 1rem;
 `;
 const TierFilter = styled.div`
 `;
