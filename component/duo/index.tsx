@@ -20,30 +20,7 @@ const BoardLayOut = styled.div`
     grid-template-columns: repeat(2,1fr) ;
   }
 `;
-const AddButton = styled.button`
-  width: 5.2rem;
-  height: 2.2rem;
-  margin-left: 20px;
-  font-size: 16px;
-  font-weight: bold;
-  right: 0;
-  margin-right: 3rem;
-  background-color: #2c3e50;
-  border: none;
-  border-radius: 5px;
-  color: rgba(123,122,142,1);
-  cursor: pointer;
-  @media (max-width: 1199px) {
-    width: 5.2rem;
-  }
-  @media (max-width: 995px) {
-    width: 3.2rem;
-    margin-left: 4rem;
-  }
-  @media (max-width: 600px){
 
-  }
-`;
 export default function DuoIndex(this: any) {
 
 

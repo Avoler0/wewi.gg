@@ -1,11 +1,13 @@
 import { log } from "console";
 import React from "react";
 import styled from "styled-components";
+import Image from "next/image";
 
 export default function DuoFilter(){
   const [gameSelect,setGameSelect] = React.useState();
   const [tierSelect,setTierSelect] = React.useState();
-  function formChange(event:HTMLFormElement){
+  const [lineSelect,setLineSelect] = React.useState();
+  function filterTypes(event:HTMLFormElement){
     const name = event.target.name;
     const value = event.target.value;
 
@@ -16,11 +18,16 @@ export default function DuoFilter(){
     }
   }
 
-  const lineSelect = (lineValue:string) => {
-    const value = Number(lineValue)
-    // setLineChoice(lineValue)
-    // setLineOption(value)
+  function filterLine(event:any) {
+    const alt = event.target.alt
+    if(alt) setLineSelect(alt)
   } 
+
+  function addDuoFind(){
+    console.log("등록")
+  }
+  console.log(lineSelect);
+  
   const options = {
     game:[
       {value:"all",label:"모두보기"},
@@ -48,7 +55,7 @@ export default function DuoFilter(){
   return (
     <Filter>
     <Column>
-          <SelectForm onChange={formChange}>
+          <SelectForm onChange={filterTypes}>
             <Select defaultValue="solo" name="gameTypes">
               {options.game.map(({value,label})=>{
                 return <Option key={value} value={value}>{label}</Option>
@@ -60,29 +67,29 @@ export default function DuoFilter(){
               })}
             </Select>
           </SelectForm>
-        <LineTypes>
-          {/* <LineItems onClick={() => lineSelect("0")} bgColor={lineChoice === "0" ? "#7c7c83" : "#2c3e50"}>
-            <img  src={`../images/icon/line/Line-All-Ico.png`} />
+        <LineTypes onClick={filterLine}>
+          <LineItems bgColor={lineSelect === "tier-all" ? "#7c7c83" : "#2c3e50"} >
+            <Image src={`/images/line-icons/Line-All-Ico.png`} alt="tier-all" layout="fill" objectFit="cover" />
           </LineItems>
-          <LineItems onClick={() => lineSelect("1")} bgColor={lineChoice === "1" ? "#7c7c83" : "#2c3e50"}>
-            <img src={`../images/icon/line/Line-Top-Ico.png`} />
+          <LineItems bgColor={lineSelect === "tier-top" ? "#7c7c83" : "#2c3e50"}>
+            <Image src={`/images/line-icons/Line-Top-Ico.png`} alt="tier-top" layout="fill" objectFit="cover"/>
+          </LineItems> 
+          <LineItems bgColor={lineSelect === "tier-jungle" ? "#7c7c83" : "#2c3e50"}>
+            <Image src={`/images/line-icons/Line-Jungle-Ico.png`} alt="tier-jungle" layout="fill" objectFit="cover"/>
           </LineItems>
-          <LineItems onClick={() => lineSelect("2")} bgColor={lineChoice === "2" ? "#7c7c83" : "#2c3e50"}>
-            <img src={`../images/icon/line/Line-Jungle-Ico.png`} />
+          <LineItems bgColor={lineSelect === "tier-mid" ? "#7c7c83" : "#2c3e50"}>
+            <Image src={`/images/line-icons/Line-Mid-Ico.png`} alt="tier-mid" layout="fill" objectFit="cover"/>
           </LineItems>
-          <LineItems onClick={() => lineSelect("3")} bgColor={lineChoice === "3" ? "#7c7c83" : "#2c3e50"}>
-            <img src={`../images/icon/line/Line-Mid-Ico.png`} />
+          <LineItems bgColor={lineSelect === "tier-bottom" ? "#7c7c83" : "#2c3e50"}>
+            <Image src={`/images/line-icons/Line-Bottom-Ico.png`} alt="tier-bottom" layout="fill" objectFit="cover"/>
           </LineItems>
-          <LineItems onClick={() => lineSelect("4")} bgColor={lineChoice === "4" ? "#7c7c83" : "#2c3e50"}>
-            <img src={`../images/icon/line/Line-Bottom-Ico.png`} />
+          <LineItems bgColor={lineSelect === "tier-support" ? "#7c7c83" : "#2c3e50"}>
+            <Image src={`/images/line-icons/Line-Support-Ico.png`} alt="tier-support" layout="fill" objectFit="cover"/>
           </LineItems>
-          <LineItems onClick={() => lineSelect("5")} bgColor={lineChoice === "5" ? "#7c7c83" : "#2c3e50"}>
-            <img src={`../images/icon/line/Line-Support-Ico.png`} />
-          </LineItems> */}
         </LineTypes>
       </Column>
       <Column>
-        {/* <AddButton onClick={() => addDuoInput()}>등록</AddButton> */}
+        <AddButton onClick={addDuoFind}>등록</AddButton>
       </Column>
     </Filter>
   )
@@ -147,10 +154,11 @@ const TierOption = styled.option`
 
 const LineTypes = styled.ul`
   display: flex ;
-
-  
+  margin: 0;
+  list-style: none;
 `;
 const LineItems = styled.li<{bgColor:any}>`
+  position: relative;
   width: 2.2rem;
   height: 2.2rem;
   padding: 0.2rem;
@@ -160,5 +168,29 @@ const LineItems = styled.li<{bgColor:any}>`
   cursor: pointer;
   img{
     width: 100%;
+  }
+`;
+const AddButton = styled.button`
+  width: 5.2rem;
+  height: 2.2rem;
+  margin-left: 20px;
+  font-size: 16px;
+  font-weight: bold;
+  right: 0;
+  margin-right: 3rem;
+  background-color: #2c3e50;
+  border: none;
+  border-radius: 5px;
+  color: rgba(123,122,142,1);
+  cursor: pointer;
+  @media (max-width: 1199px) {
+    width: 5.2rem;
+  }
+  @media (max-width: 995px) {
+    width: 3.2rem;
+    margin-left: 4rem;
+  }
+  @media (max-width: 600px){
+
   }
 `;
