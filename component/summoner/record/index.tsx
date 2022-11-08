@@ -14,10 +14,9 @@ export default function Record({matchList,puuid}:props) {
   const [isLoading,setIsLoading] = useState<boolean>(true);
   const [matchDetail,setMatchDetail] = useState([]);
   function GameDetail(detail:any){
-    console.log("넘어오는 것",detail);
-    
-    const myGame = detail.metadata.participants.findIndex((id:string) => id === puuid );
+    const myGame = detail.metadata.participants.findIndex((id:string) => id === puuid);
     const myTeam = detail.info.participants.teamId === 100 ? 0 : 1;
+    
     this.gameCreation = detail.info.gameCreation;
     this.gameDuration = detail.info.gameDuration;
     this.gameEndTimestamp = detail.info.gameEndTimestamp;

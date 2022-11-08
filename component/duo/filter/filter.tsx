@@ -1,33 +1,30 @@
-import { log } from "console";
 import React from "react";
 import styled from "styled-components";
 import Image from "next/image";
+import { useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
+import {setLine, setMode, setTier} from "../../../redux/duo/filter"
+
+type FilterState = {
+  tier:string,
+  mode:string,
+  line:string
+}
+type Filter = {
+  filter:FilterState
+}
+
 
 export default function DuoFilter(){
-  const [gameSelect,setGameSelect] = React.useState();
-  const [tierSelect,setTierSelect] = React.useState();
-  const [lineSelect,setLineSelect] = React.useState();
-  function filterTypes(event:HTMLFormElement){
-    const name = event.target.name;
-    const value = event.target.value;
-
-    if(name === 'gameTypes'){
-      setGameSelect(value)
-    }else if(name === 'gameTypes'){
-      setTierSelect(value)
-    }
-  }
-
-  function filterLine(event:any) {
-    const alt = event.target.alt
-    if(alt) setLineSelect(alt)
-  } 
+  const dispatch = useDispatch();
+  const filter = useSelector((state:Filter) => {
+    return state.filter
+  })
 
   function addDuoFind(){
     console.log("등록")
   }
-  console.log(lineSelect);
-  
+  const lines = ["All","Top","Mid","Jungle","Bottom","Support"]
   const options = {
     game:[
       {value:"all",label:"모두보기"},
@@ -49,43 +46,31 @@ export default function DuoFilter(){
       {value:"grandmaster",label:"그랜드마스터"},
       {value:"challenger",label:"챌린저"},
     ],
-      
   }
-
+  
   return (
     <Filter>
     <Column>
-          <SelectForm onChange={filterTypes}>
-            <Select defaultValue="solo" name="gameTypes">
+          <SelectForm>
+            <Select defaultValue="solo" name="gameTypes" onChange={(event)=>{dispatch(setMode(event?.target.value))}}>
               {options.game.map(({value,label})=>{
                 return <Option key={value} value={value}>{label}</Option>
               })}
             </Select>
-            <Select defaultValue="gold" name="tierTypes">
+            <Select defaultValue="gold" name="tierTypes" onChange={(event)=>{dispatch(setTier(event?.target.value))}}>
               {options.tier.map(({value,label})=>{
                 return <Option key={value} value={value}>{label}</Option>
               })}
             </Select>
           </SelectForm>
-        <LineTypes onClick={filterLine}>
-          <LineItems bgColor={lineSelect === "tier-all" ? "#7c7c83" : "#2c3e50"} >
-            <Image src={`/images/line-icons/Line-All-Ico.png`} alt="tier-all" layout="fill" objectFit="cover" />
-          </LineItems>
-          <LineItems bgColor={lineSelect === "tier-top" ? "#7c7c83" : "#2c3e50"}>
-            <Image src={`/images/line-icons/Line-Top-Ico.png`} alt="tier-top" layout="fill" objectFit="cover"/>
-          </LineItems> 
-          <LineItems bgColor={lineSelect === "tier-jungle" ? "#7c7c83" : "#2c3e50"}>
-            <Image src={`/images/line-icons/Line-Jungle-Ico.png`} alt="tier-jungle" layout="fill" objectFit="cover"/>
-          </LineItems>
-          <LineItems bgColor={lineSelect === "tier-mid" ? "#7c7c83" : "#2c3e50"}>
-            <Image src={`/images/line-icons/Line-Mid-Ico.png`} alt="tier-mid" layout="fill" objectFit="cover"/>
-          </LineItems>
-          <LineItems bgColor={lineSelect === "tier-bottom" ? "#7c7c83" : "#2c3e50"}>
-            <Image src={`/images/line-icons/Line-Bottom-Ico.png`} alt="tier-bottom" layout="fill" objectFit="cover"/>
-          </LineItems>
-          <LineItems bgColor={lineSelect === "tier-support" ? "#7c7c83" : "#2c3e50"}>
-            <Image src={`/images/line-icons/Line-Support-Ico.png`} alt="tier-support" layout="fill" objectFit="cover"/>
-          </LineItems>
+        <LineTypes onClick={(event)=>{dispatch(setLine(event?.target.alt))}}>
+          {lines.map((line:string)=>{
+            return (
+              <LineItems bgColor={filter.line === line ? "#7c7c83" : "#2c3e50"} key={line}>
+                <Image src={`/images/line-icons/Line-${line}-Ico.png`} alt={line} layout="fill" objectFit="cover" />
+              </LineItems>
+            )
+          })}
         </LineTypes>
       </Column>
       <Column>

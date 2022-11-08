@@ -1,5 +1,6 @@
 import { configureStore } from '@reduxjs/toolkit';
 import { SummonerType } from '../types/riotType';
+import duoFilter from './duo/filter';
 import searchSlice from './search/searchSlice';
 
 
@@ -11,7 +12,8 @@ export type SearchReduxType = {
 
 const store = configureStore({
   reducer:{
-    search:searchSlice.reducer
+    search:searchSlice.reducer,
+    filter:duoFilter.reducer
   }
 })
 
