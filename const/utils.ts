@@ -121,3 +121,27 @@ export const spellName = (spellId:number) => {
     default: return "Failed"
   }
 }
+
+export const options = {
+  lines : ["All","Top","Mid","Jungle","Bottom","Support"],
+  game:[
+      {value:"all",label:"모두보기"},
+      {value:"normal",label:"일반게임"},
+      {value:"solo",label:"솔로랭크"},
+      {value:"team",label:"자유랭크"},
+      {value:"aram",label:"칼 바 람"},
+      {value:"special",label:"특별모드"},
+    ],
+    tier:[
+      {value:"all",label:"모두보기"},
+      {value:"iron",label:"아이언"},
+      {value:"bronze",label:"브론즈"},
+      {value:"silver",label:"실버"},
+      {value:"gold",label:"골드"},
+      {value:"platinum",label:"플레티넘"},
+      {value:"diamond",label:"다이아"},
+      {value:"master",label:"마스터"},
+      {value:"grandmaster",label:"그랜드마스터"},
+      {value:"challenger",label:"챌린저"},
+    ],
+  }

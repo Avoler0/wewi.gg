@@ -4,18 +4,22 @@ import Image from "next/image";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import {setLine, setMode, setTier} from "../../../redux/duo/filter"
+import useModal from "../../../hooks/useModal";
+import Modal from "../modal/modal";
+import { options } from "../../../const/utils";
 
 type FilterState = {
   tier:string,
   mode:string,
   line:string
 }
-type Filter = {
+export type Filter = {
   filter:FilterState
 }
 
 
 export default function DuoFilter(){
+  const {isShowing,toggle} = useModal();
   const dispatch = useDispatch();
   const filter = useSelector((state:Filter) => {
     return state.filter
@@ -24,29 +28,7 @@ export default function DuoFilter(){
   function addDuoFind(){
     console.log("등록")
   }
-  const lines = ["All","Top","Mid","Jungle","Bottom","Support"]
-  const options = {
-    game:[
-      {value:"all",label:"모두보기"},
-      {value:"normal",label:"일반게임"},
-      {value:"solo",label:"솔로랭크"},
-      {value:"team",label:"자유랭크"},
-      {value:"aram",label:"칼 바 람"},
-      {value:"special",label:"특별모드"},
-    ],
-    tier:[
-      {value:"all",label:"모두보기"},
-      {value:"iron",label:"아이언"},
-      {value:"bronze",label:"브론즈"},
-      {value:"silver",label:"실버"},
-      {value:"gold",label:"골드"},
-      {value:"platinum",label:"플레티넘"},
-      {value:"diamond",label:"다이아"},
-      {value:"master",label:"마스터"},
-      {value:"grandmaster",label:"그랜드마스터"},
-      {value:"challenger",label:"챌린저"},
-    ],
-  }
+  
   
   return (
     <Filter>
@@ -64,7 +46,7 @@ export default function DuoFilter(){
             </Select>
           </SelectForm>
         <LineTypes onClick={(event)=>{dispatch(setLine(event?.target.alt))}}>
-          {lines.map((line:string)=>{
+          {options.lines.map((line:string)=>{
             return (
               <LineItems bgColor={filter.line === line ? "#7c7c83" : "#2c3e50"} key={line}>
                 <Image src={`/images/line-icons/Line-${line}-Ico.png`} alt={line} layout="fill" objectFit="cover" />
@@ -74,8 +56,9 @@ export default function DuoFilter(){
         </LineTypes>
       </Column>
       <Column>
-        <AddButton onClick={addDuoFind}>등록</AddButton>
+        <AddButton onClick={toggle}>등록</AddButton>
       </Column>
+      {isShowing && <Modal isShowing={isShowing} hide={toggle} message={"하이"} />}
     </Filter>
   )
 }
@@ -98,8 +81,7 @@ const Column = styled.div`
   position: relative;
 
 `;
-const GameFilter = styled.div`
-`;
+
 const SelectForm = styled.div`
 
 `;
@@ -120,21 +102,6 @@ const Select = styled.select`
 `;
 const Option = styled.option`
   margin-top: 1rem;
-`;
-const TierFilter = styled.div`
-`;
-const TierSelect = styled.select`
-  margin-right: 20px ;
-  font-size: 15px ;
-  width: 6.5rem;
-  height: 2.2rem;
-  border: 1px solid (66,66,84,0.8);
-  border-radius: 5px;
-  background-color: #2c3e50;
-  color: rgba(123,122,142,1);
-`;
-const TierOption = styled.option`
-
 `;
 
 const LineTypes = styled.ul`

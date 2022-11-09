@@ -13,7 +13,7 @@ export default function Record({matchList,puuid}:props) {
   // const matchList = matchList.slice(0,3);
   const [isLoading,setIsLoading] = useState<boolean>(true);
   const [matchDetail,setMatchDetail] = useState([]);
-  function GameDetail(detail:any){
+  function GameDetail(this: any, detail:any){
     const myGame = detail.metadata.participants.findIndex((id:string) => id === puuid);
     const myTeam = detail.info.participants.teamId === 100 ? 0 : 1;
     
@@ -48,7 +48,7 @@ export default function Record({matchList,puuid}:props) {
             })
           })
         ) 
-        const resultDetail = result.map((data)=>{
+        const resultDetail = result.map((data: any)=>{
           return new GameDetail(data);
         })
         setMatchDetail(resultDetail)

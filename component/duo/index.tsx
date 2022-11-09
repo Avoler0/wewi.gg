@@ -1,30 +1,19 @@
 import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 import styled from "styled-components";
-import DuoFilter from "./filter/filter";
+import DuoFilter, { Filter } from "./filter/filter";
 
 
-const BoardLayOut = styled.div`
-  display:grid ;
-  grid-template-columns: repeat(5,1fr) ;
-  grid-gap: calc(20px);
-  padding-top: 40px ;
-  @media (max-width: 1199px) {
-    grid-template-columns: repeat(4,1fr) ;
-    grid-gap: calc(20px);
-  }
-  @media (max-width: 995px) {
-    grid-template-columns: repeat(3,1fr) ;
-    grid-gap: calc(15px);
-  }
-  @media (max-width: 572px){
-    grid-template-columns: repeat(2,1fr) ;
-  }
-`;
+
 
 export default function DuoIndex(this: any) {
 
-
-  
+  const filter = useSelector((state:Filter) => {
+    return state.filter
+  })
+  useEffect(()=>{
+    console.log("필터 변경")
+  },[filter])
   // useEffect(()=>{
   //   console.log("듀오레스",duoRes);
   //   console.log(deleteState);
@@ -83,6 +72,23 @@ const Wrapper = styled.div`
   }
   @media (max-width: 767px){
 	  width: 567px;
+  }
+`;
+const BoardLayOut = styled.div`
+  display:grid ;
+  grid-template-columns: repeat(5,1fr) ;
+  grid-gap: calc(20px);
+  padding-top: 40px ;
+  @media (max-width: 1199px) {
+    grid-template-columns: repeat(4,1fr) ;
+    grid-gap: calc(20px);
+  }
+  @media (max-width: 995px) {
+    grid-template-columns: repeat(3,1fr) ;
+    grid-gap: calc(15px);
+  }
+  @media (max-width: 572px){
+    grid-template-columns: repeat(2,1fr) ;
   }
 `;
 const Board = styled.div`
