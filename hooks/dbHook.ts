@@ -1,12 +1,11 @@
-import { axios } from 'axios';
+import { apiInstance } from "./axiosInstance";
 
-const server = "http://localhost:4000/"
 
-export const db = {
+export const dbHook = {
   duo:{
     post:function(query:any){
       console.log("훅 ! ",query)
-      axios.post('api/duo',query)
+      apiInstance.post('/duo',query)
     }
   }
 }

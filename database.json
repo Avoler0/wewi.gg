@@ -15,5 +15,13 @@
   ],
   "profile": {
     "name": "typicode"
+  },
+  "duo": {
+    "summoner": "스쿵씨",
+    "line": "All",
+    "game": "All",
+    "mic": false,
+    "memo": "같이할 사람 구합니다 !",
+    "password": "1234"
   }
 }

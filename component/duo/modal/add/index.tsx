@@ -1,23 +1,63 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Image from "next/image";
 import styled , {css} from "styled-components";
 import { options } from "../../../../const/utils";
+import {dbHook} from "../../../../hooks/dbHook"
 
 function DuoInput({hide}:any) {
-  const [lineSelect,setLineSelect] = useState("all");
-  const [gameSelect,setGameSelect] = useState("all");
+  const [lineSelect,setLineSelect] = useState("All");
+  const [gameSelect,setGameSelect] = useState("All");
   const [micSelect,setMiceSelect] = useState(false);
-  function isSetGameSelect(event:any){
-    console.log(event.target.value)
-  }
+  const [inputError,setInputError] = useState({summoner:false,password:false})
+
   function duoInputPost(event:any){
     event.preventDefault();
-    console.log("쿡")
+    
+    const query = {
+      summoner: event.target['summoner'].value,
+      line: lineSelect,
+      game: gameSelect,
+      mic: micSelect,
+      memo: event.target['memo'].value ? event.target['memo'].value : "같이할 사람 구합니다 !",
+      password:event.target['password'].value
+    }
+    if(errorValdation(query.summoner,query.password)){
+      return dbHook.duo.post(query)
+    }else{
+      return 
+    }
   }
-  function isMicSelect(event:any){
-    event.preventDefault();
-    setMiceSelect(prev => !prev)
+  function errorValdation(name,pw){
+    let nameError = false;
+    let pwError = false;
+
+    if(name < 2){
+      setInputError((prev) => {
+        return {...prev,summoner:false}
+      })
+      nameError = false
+    }else{
+      setInputError((prev) => {
+        return {...prev,summoner:true}
+      })
+      nameError = true
+    }
+
+    if(pw < 4){
+      setInputError((prev) => {
+        return {...prev,password:false}
+      })
+      pwError = false
+    }else{
+      setInputError((prev) => {
+        return {...prev,password:true}
+      })
+      pwError = true
+    }
+
+    return nameError && pwError
   }
+  
   return (
     <>
     <Wrap>
@@ -25,41 +65,47 @@ function DuoInput({hide}:any) {
         <CardName>소환사 등록하기</CardName>
         <Xbutton onClick={hide}>X</Xbutton>
       </Head>
-      <Form onSubmit={duoInputPost}>
-        <Label htmlFor="name" >소환사 명</Label>
-          <Input/>
+      <Form onSubmit={duoInputPost} id="myForm" name="myForm">
+        <div>
+          <Label htmlFor="summoner" style={{display:"inline",marginRight:"0.8rem"}}>소환사 명</Label>
+          {inputError.summoner && <InputError style={{display:"inline"}}>소환사 닉네임을 입력 해 주세요.</InputError>}
+        </div>
+        <Input type="text" name="summoner"/>
         <ColumnMiddle>
           <LineWrap>
             <Label>주 포지션</Label>
             <LineBox>
               {options.lines.map((line)=>{
                 return (
-                  <LineItem key={line} onClick={() => setLineSelect(line)} bgColor={lineSelect === line ? "#7c7c83" : "#2c3e50"}>
-                    <Image src={`/images/line-icons/Line-${line}-Ico.png`} alt={line} layout="fill" objectFit="cover" />
-                  </LineItem>
+                    <LineItem key={line} bgColor={lineSelect === line ? "#7c7c83" : "#2c3e50"} onClick={() => setLineSelect(line)}>
+                        <Image src={`/images/line-icons/Line-${line}-Ico.png`} alt={line} layout="fill" objectFit="cover" />
+                    </LineItem>
                 )
               })}
             </LineBox>
           </LineWrap>
           <QueueType>
             <Label>큐 타입</Label>
-            <TypeSelect onChange={isSetGameSelect}>
+            <TypeSelect defaultValue={gameSelect} onChange={(event) => setGameSelect(event.target.value)}>
               {options.game.map((game)=> <TypeOption key={game.value} value={game.value}>{game.label}</TypeOption>)}
             </TypeSelect>
           </QueueType>
           <MicCheck>
              <Label>마이크</Label>
-            <MicButton  micToggle={micSelect} onClick={isMicSelect}>
+            <MicButton micToggle={micSelect} onClick={() => setMiceSelect(prev => !prev)}>
               {/* {onOff ? <MicCircle style={{left:"5px"}} /> : <MicCircle style={{right:"5px"}}/>} */}
               <MicCircle micToggle={micSelect} />
             </MicButton> 
           </MicCheck>
         </ColumnMiddle>
-        <Label>메모</Label>
-        <Input placeholder="같이할 사람 구합니다 !" onChange={(e:any) => setInputContent(e.target.value)} />
+        <Label htmlFor="memo">메모</Label>
+        <Input type="text" name="memo" placeholder="같이할 사람 구합니다 !" />
         <PassWord>
-          <Label >삭제 비밀번호</Label>
-          <Input placeholder="4자리 숫자로 입력 해 주세요" onChange={(e:any) => setInputPassword(e.target.value)}/>
+          <div>
+            <Label style={{display:"inline",marginRight:"0.8rem"}} htmlFor="password">삭제 비밀번호</Label>
+            {inputError.password &&<InputError style={{display:"inline"}}>비밀번호를 4자에 맞춰 입력해주세요.</InputError>}
+          </div>
+          <Input name="password" placeholder="4자리 숫자로 입력 해 주세요" />
         </PassWord>
         <ExitWrap>
           <CancelBt onClick={hide}>취소</CancelBt>
@@ -74,13 +120,7 @@ function DuoInput({hide}:any) {
 
 export default DuoInput;
 
-const Overlay = styled.div`
-  position: absolute;
-  top: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0,0,0,0.5);
-`;
+
 const Wrap = styled.div`
   position: absolute;
   width: 30rem;
@@ -156,6 +196,7 @@ const LineItem = styled.li<{bgColor:any}>`
     width: 100%;
   }
 `;
+
 const QueueType = styled.div`
   padding: 0 15px 0 15px;
 `;
@@ -166,6 +207,7 @@ const TypeSelect = styled.select`
   border: 1px solid rgba(0,0,0,0.2);
   color: white;
   font-size: 14px;
+  cursor: pointer;
 `;
 const TypeOption = styled.option`
   
@@ -173,7 +215,7 @@ const TypeOption = styled.option`
 const MicCheck = styled.div`
   margin-left: 15px;
 `;
-const MicButton = styled.button<{micToggle:boolean}>`
+const MicButton = styled.div<{micToggle:boolean}>`
   position: relative;
   width: 64px;
   height: 32px;
@@ -227,4 +269,8 @@ const OkBt = styled.button`
   border-radius: 5px;
   background-color: #7c7c83;
   cursor: pointer;
+`;
+const InputError = styled.span`
+  font-size: 12px;
+  color:#dd1010e8;
 `;

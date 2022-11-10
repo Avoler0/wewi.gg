@@ -125,12 +125,12 @@ export const spellName = (spellId:number) => {
 export const options = {
   lines : ["All","Top","Mid","Jungle","Bottom","Support"],
   game:[
-      {value:"all",label:"모두보기"},
-      {value:"normal",label:"일반게임"},
-      {value:"solo",label:"솔로랭크"},
-      {value:"team",label:"자유랭크"},
-      {value:"aram",label:"칼 바 람"},
-      {value:"special",label:"특별모드"},
+      {value:"All",label:"모두보기"},
+      {value:"Normal",label:"일반게임"},
+      {value:"Solo",label:"솔로랭크"},
+      {value:"Team",label:"자유랭크"},
+      {value:"Aram",label:"칼 바 람"},
+      {value:"Special",label:"특별모드"},
     ],
     tier:[
       {value:"all",label:"모두보기"},
