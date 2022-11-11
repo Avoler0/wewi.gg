@@ -3,29 +3,44 @@ import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import styled from "styled-components";
 import { dbHook } from "../../hooks/dbHook";
+import { duoSetData, _DuoData } from "../../redux/duo/data";
 import DuoFilter, { Filter } from "./filter/filter";
+
+type DuoData = {
+  duoData:_DuoData
+}
 
 export default function DuoIndex(this: any) {
   const [duo,setDuo] = useState();
+  const [duoFilter,setDuoFilter] = useState();
   const dispatch = useDispatch();
   const filter = useSelector((state:Filter) => {
     return state.duoFilter
   })
+  const duoData = useSelector((state:DuoData) => {
+    return state.duoData
+  })
 
   useEffect(()=>{
-    console.log("유즈 이펙트")
     dbHook.duo.get()
     .then((_res)=>{
-      console.log("초기로드",_res)
+      dispatch(duoSetData(_res))
     })
     .catch((_error)=>{
       console.log("초기로드 에러",_error)
     })
   },[])
+
   useEffect(()=>{
     console.log("필터 변경",filter)
   },[filter])
-  
+
+  useEffect(()=>{
+    setDuo(duoData)
+  },[duoData])
+  useEffect(()=>{
+    console.log("듀데",duo)
+  },[duo])
 
   return (
     <>

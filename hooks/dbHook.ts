@@ -1,3 +1,4 @@
+import { useDispatch } from 'react-redux';
 import { apiInstance } from "./axiosInstance";
 
 
@@ -7,7 +8,7 @@ export const dbHook = {
       return await apiInstance.get('/duo')
       .then((_res)=>{
         console.log("레쓰비get",_res)
-        return _res;
+        return _res.data;
       })
       .catch((_error)=>{
         return _error;
@@ -21,7 +22,8 @@ export const dbHook = {
         return _res;
       })
       .catch((_error)=>{
-        return _error.response.status
+        console.log("레쓰비post error",_error)
+        return {status:_error.response.status}
       })
     },
     delete:async function(id:string){

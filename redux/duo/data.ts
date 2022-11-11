@@ -1,7 +1,6 @@
 import { createSlice,PayloadAction  } from '@reduxjs/toolkit';
-import { SummonerType } from '../../types/riotType';
 
-type Data = {
+export type _DuoData = {
   data:any
 }
 
@@ -11,7 +10,7 @@ const duoData = createSlice({
     data:[]
   },
   reducers:{
-    duoSetData:(state:Data,action:PayloadAction<any>) => {
+    duoSetData:(state:_DuoData,action:PayloadAction<any>) => {
       console.log("듀오 셋 데이터",state,action)
       state.data = action.payload;
     }

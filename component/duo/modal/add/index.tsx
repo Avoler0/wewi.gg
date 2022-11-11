@@ -4,6 +4,8 @@ import styled , {css} from "styled-components";
 import { options } from "../../../../const/utils";
 import {dbHook} from "../../../../hooks/dbHook"
 import { useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
+import { duoSetError } from "../../../../redux/duo/error";
 type ValidationState = {
   summoner:boolean,
   password:boolean,
@@ -15,14 +17,9 @@ function DuoInput({hide}:any) {
   const [lineSelect,setLineSelect] = useState("All");
   const [gameSelect,setGameSelect] = useState("All");
   const [micSelect,setMiceSelect] = useState(false);
-  const [inputError,setInputError] = useState({summoner:true,password:true})
-  const validation = useSelector((state:Validation)=>{
-    return state.duoValidation
-  })
+  const [inputValid,setInputValid] = useState({summoner:true,password:true})
+  const [postError,setPostError] = useState(false);
 
-  useEffect(()=>{
-    console.log("벨리데이션 확인",inputError)
-  },[inputError])
   async function duoInputPost(event:any){
     event.preventDefault();
     
@@ -37,8 +34,12 @@ function DuoInput({hide}:any) {
 
     if(errorValdation(query.summoner,query.password)){
       const result = await dbHook.duo.post(query)
-      
-      console.log("최종 결과",result)
+      if(result.status === 409){
+        setPostError(true);
+      }else{
+        setPostError(false);
+        hide()
+      }
     }else{
       return 
     }
@@ -48,25 +49,25 @@ function DuoInput({hide}:any) {
     let pwError = false;
 
     if(name.length < 2){
-      setInputError((prev) => {
+      setInputValid((prev) => {
         return {...prev,summoner:false}
       })
       nameError = false
     }else{
-      setInputError((prev) => {
+      setInputValid((prev) => {
         return {...prev,summoner:true}
       })
       nameError = true
     }
 
     if(pw.length < 4){
-      setInputError((prev) => {
+      setInputValid((prev) => {
         return {...prev,password:false}
       })
       pwError = false
 
     }else{
-      setInputError((prev) => {
+      setInputValid((prev) => {
         return {...prev,password:true}
       })
       pwError = true
@@ -85,7 +86,8 @@ function DuoInput({hide}:any) {
       <Form onSubmit={duoInputPost} id="myForm" name="myForm">
         <div>
           <Label htmlFor="summoner" style={{display:"inline",marginRight:"0.8rem"}}>소환사 명</Label>
-          {inputError.summoner ? null : <InputError style={{display:"inline"}}>소환사 닉네임을 입력 해 주세요.</InputError>}
+          {inputValid.summoner ? null : <InputError style={{display:"inline"}}>소환사 닉네임을 입력 해 주세요.</InputError>}
+          {postError ? <InputError style={{display:"inline"}}>이미 게시된 소환사 닉네임입니다.</InputError> : null}
         </div>
         <Input type="text" name="summoner"/>
         <ColumnMiddle>
@@ -120,7 +122,7 @@ function DuoInput({hide}:any) {
         <PassWord>
           <div>
             <Label style={{display:"inline",marginRight:"0.8rem"}} htmlFor="password"  >삭제 비밀번호</Label>
-            {inputError.password ? null : <InputError style={{display:"inline"}}>비밀번호를 4자에 맞춰 입력해주세요.</InputError>}
+            {inputValid.password ? null : <InputError style={{display:"inline"}}>비밀번호를 4자에 맞춰 입력해주세요.</InputError>}
           </div>
           <Input type="password" name="password" placeholder="4자리 숫자로 입력 해 주세요" maxLength={4} />
         </PassWord>

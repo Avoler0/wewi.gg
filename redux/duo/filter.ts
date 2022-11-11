@@ -1,5 +1,4 @@
 import { createSlice,PayloadAction  } from '@reduxjs/toolkit';
-import { SummonerType } from '../../types/riotType';
 
 type Filter = {
   tier:string,

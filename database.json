@@ -70,6 +70,42 @@
       "memo": "같이할 사람 구합니다 !",
       "password": "123",
       "id": 6
+    },
+    {
+      "summoner": "스쿵씨1234",
+      "line": "All",
+      "game": "All",
+      "mic": false,
+      "memo": "같이할 사람 구합니다 !",
+      "password": "1234",
+      "id": 7
+    },
+    {
+      "summoner": "스쿵씨12345",
+      "line": "All",
+      "game": "All",
+      "mic": false,
+      "memo": "같이할 사람 구합니다 !",
+      "password": "1234",
+      "id": 8
+    },
+    {
+      "summoner": "스쿵씨15523",
+      "line": "All",
+      "game": "All",
+      "mic": false,
+      "memo": "같이할 사람 구합니다 !",
+      "password": "1234",
+      "id": 9
+    },
+    {
+      "summoner": "스쿵씨15234",
+      "line": "All",
+      "game": "All",
+      "mic": false,
+      "memo": "같이할 사람 구합니다 !",
+      "password": "1234",
+      "id": 10
     }
   ]
 }
