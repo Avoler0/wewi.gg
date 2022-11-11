@@ -20,11 +20,11 @@
     {
       "summoner": "스쿵씨",
       "line": "All",
-      "game": "All",
+      "mode": "Aram",
       "mic": false,
       "memo": "같이할 사람 구합니다 !",
       "password": "1234",
-      "createdAt": 1668159857907,
+      "createdAt": 1668167887165,
       "id": 1
     }
   ]

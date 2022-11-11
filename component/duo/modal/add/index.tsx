@@ -1,24 +1,22 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Image from "next/image";
 import styled , {css} from "styled-components";
 import { options } from "../../../../const/utils";
 import {dbHook} from "../../../../hooks/dbHook"
-import { useSelector } from "react-redux";
-import { useDispatch } from "react-redux";
-import { duoSetError } from "../../../../redux/duo/error";
-type ValidationState = {
-  summoner:boolean,
-  password:boolean,
+
+type InputValid = {
+  summoner: boolean,
+  password:boolean
 }
-export type Validation = {
-  duoValidation:ValidationState
-}
+type Line = "All" | "Top" | "Jungle" | "Bottom" | "Support"
+type Mode = "All" | "Normal" | "Solo" | "Team" | "Aram" | "Special"
+
 function DuoInput({hide}:any) {
-  const [lineSelect,setLineSelect] = useState("All");
-  const [gameSelect,setGameSelect] = useState("All");
-  const [micSelect,setMiceSelect] = useState(false);
-  const [inputValid,setInputValid] = useState({summoner:true,password:true})
-  const [postError,setPostError] = useState(false);
+  const [lineSelect,setLineSelect] = useState<Line>("All");
+  const [gameSelect,setGameSelect] = useState<Mode>("All");
+  const [micSelect,setMiceSelect] = useState<boolean>(false);
+  const [inputValid,setInputValid] = useState<InputValid>({summoner:true,password:true})
+  const [postError,setPostError] = useState<boolean>(false);
 
   async function duoInputPost(event:any){
     event.preventDefault();
@@ -26,7 +24,7 @@ function DuoInput({hide}:any) {
     const query = {
       summoner: event.target['summoner'].value,
       line: lineSelect,
-      game: gameSelect,
+      mode: gameSelect,
       mic: micSelect,
       memo: event.target['memo'].value ? event.target['memo'].value : "같이할 사람 구합니다 !",
       password:event.target['password'].value,
@@ -36,16 +34,16 @@ function DuoInput({hide}:any) {
     if(errorValdation(query.summoner,query.password)){
       const result = await dbHook.duo.post(query)
       console.log("리설트",result)
-      if(result.status === 409){
-        setPostError(true);
-      }else if(result.status === 201){
-        setPostError(false);
-        hide()
+        if(result.status === 409){
+          setPostError(true);
+        }else if(result.status === 201){
+          hide()
+        }
+      }else{
+        return 
       }
-    }else{
-      return 
     }
-  }
+
   function errorValdation(name:string,pw:string){
     let nameError = false;
     let pwError = false;

@@ -13,9 +13,10 @@ import { SummonerInfo } from "../../../types/riotType";
 
 
 function DuoCard({duoRes}:any){
-  const [summonerInfo,setSummonerInfo] = useState<SummonerInfo | string>("0");
+  const [isLoading,setIsLoading] = useState(true);
+  const [summonerInfo,setSummonerInfo] = useState<SummonerInfo|undefined>();
   const report = useState(0);
-  const {summoner,memo,line,password,id,} = duoRes
+  const {summoner,memo,line,password,id,mic} = duoRes
   // const winningRate = Math.round(Win / (Win + Lose) * 100)
   // 소환사 아이콘은 프론트에서 제공해 넘겨주기. getSummonerInfo("스쿵씨")
   // 윈 로즈 프론트에서 사용 가능 getSummonerLeagueInfo(id)
@@ -25,6 +26,7 @@ function DuoCard({duoRes}:any){
     .then((_res)=>{
       console.log("듀오 카드 레스",_res)
       setSummonerInfo(_res)
+      setIsLoading(false)
     })
   },[])
   // setDeleteState(true,duoRes.Password,duoRes.Id)
@@ -33,32 +35,53 @@ function DuoCard({duoRes}:any){
   //   setDeletePw(duoRes.Password);
   //   setDeleteId(duoRes.Id);
   // }
-
+  if(isLoading) return;
   return (
-    <Board >
-      <ProfileIcon imgPath={riotImg.profile(summonerInfo.profileIconId)} />
-      <div>
-        <Column>
-          <NickName>{summoner}</NickName>
-          <BoardDelete>
-            {/* <Trash onClick={deleteBoard} xmlns={`${Trash}`} style={{ width:"13px", */}
-            {/* fill:"#fff", marginRight:"5px" , marginBottom:"2px" , cursor:"pointer"}}/>  */}
-          </BoardDelete>
-        </Column>
-        <Column under >
-          <BoardItems>
-            <BoardLine>
+    <Wrap >
+      <Profile_Inner>
+        <Info_Layer>
+          <ProfileIcon imgPath={riotImg.profile(summonerInfo.profileIconId)}>
+            <div />
+          </ProfileIcon>
+          <Info>
+            <Info_Column>
+              <NickName>{summoner}</NickName>
+              <Level><span>Lv. {summonerInfo.summonerLevel}</span></Level>
+            </Info_Column>
+            <Info_Column >
+              <WinRate>승률 <span>56%</span></WinRate>
+              <MicCheck mic={mic}>Mic<span>{mic ? "On" : "Off"}</span></MicCheck>
+            </Info_Column>
+          </Info>
+          {/* <div>승률</div>
+          <div>Mic On</div> */}
+        </Info_Layer>
+        <Game_Layer under={false} >
+          <Game_Info className="Game_Info">
+            <Line>
               <Image src={`/images/line-icons/Line-${duoRes.line}-Ico.png`} alt="line" layout="fill" objectFit="cover" />
-            </BoardLine>
+            </Line>
+            <Champ>
+              <div>
+                <Image src={riotImg.profile(summonerInfo.profileIconId)} alt="line" layout="fill" objectFit="cover"/>
+              </div>
+              <div>
+                <Image src={riotImg.profile(summonerInfo.profileIconId)} alt="line" layout="fill" objectFit="cover"/>
+              </div>
+              <div>
+                <Image src={riotImg.profile(summonerInfo.profileIconId)} alt="line" layout="fill" objectFit="cover"/>
+              </div>
+            </Champ>
             {/* <BoardWinRate>{winningRate}</BoardWinRate> */}
             {/* <BoardChamp>최근챔 3개</BoardChamp> */}
             {/* <BoardMic>{duoRes.IsMic ? <MicOn style={{fill:"red"}}/>:<MicOff style={{fill:"red"}}/>}</BoardMic> */}
-          </BoardItems>
-        </Column>
-        </div>
-      
-      <div>
-        <span>{memo}</span>
+          </Game_Info>
+        </Game_Layer>
+      </Profile_Inner>
+      <Content_Inner>
+        <Memo_Layer>
+          <span>{memo}</span>
+        </Memo_Layer>
         <BoardFooter>
           <BoardReport>
             {/* <Link to="/reportView">신고 누적 : {report}회</Link> */}
@@ -67,13 +90,14 @@ function DuoCard({duoRes}:any){
             {/* {<span>{resTimeDiff[0]}{resTimeDiff[1]} 전</span>  } */}
           </BoardTime>
         </BoardFooter>
-      </div>
-    </Board>
+      </Content_Inner>
+    </Wrap>
   )
 }
 export default DuoCard;
 
-const Board = styled.div`
+
+const Wrap = styled.div`
   position: relative;
   background-color: #2c3e50 ;
   width: 180px ;
@@ -81,11 +105,85 @@ const Board = styled.div`
   border-radius: 15px ;
   color: white;
 `;
-const BoardBottom = styled.div`
-  font-size: 16px;
-  margin: 5px;
-  height: 42%;
-  color: white;
+const Profile_Inner = styled.div`
+  padding: 0.4rem 0.3rem 0 0.3rem;
+  border-bottom: solid 1px rgba(123,122,142,1);
+`;
+const Info_Layer = styled.div`
+  display: flex;
+  align-items: center;
+  margin-bottom: 0.3rem;
+  div{
+    
+  }
+`;
+
+const ProfileIcon = styled.div<{imgPath:string}>`
+  display: inline-block;
+  div{
+    border: solid 1px white;
+    border-radius: 25px;
+    width: 40px;
+    height: 40px;
+    cursor: pointer;
+    background-image: ${props => `url(${props.imgPath})`};
+    background-size: contain;
+  }
+`;
+const Info = styled.div`
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  margin-left: 1rem;
+`;
+const Info_Column = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+`;
+const WinRate = styled.div`
+  font-size: 13px;
+`;
+const MicCheck = styled.div<{mic:boolean}>`
+  display: flex;
+  align-items: center;
+  font-size: 13px;
+  span{
+    margin-left: 0.5rem;
+    color: ${props => props.mic ? "green" : "red"}
+  }
+`;
+const MicCircle = styled.div`
+  margin-left: 0.3rem;
+
+  div{
+    display: inline-block;
+    width: 12px;
+    height: 12px;
+    border-radius: 10px;
+    background-color: green;
+  }
+`;
+const NickName = styled.div`
+  font-size: 14px;
+  font-weight: 800;
+  cursor: pointer;
+`;
+const Level = styled.span`
+  font-size: 12px;
+  color:#cec7c7;
+`;
+const Game_Layer = styled.div<{under:boolean}>`
+  align-items: center;
+  width: 100%;
+  height: 40px;
+
+`;
+const Content_Inner = styled.div`
+  padding: 0.2rem;
+`;
+const Memo_Layer = styled.div`
+  text-align: center;
 `;
 const BoardFooter = styled.div`
   position: absolute;
@@ -97,7 +195,6 @@ const BoardFooter = styled.div`
   padding: 7px;
   width: 100%;
   color: rgba(255,255,255,0.7)
-  /* color: white; */
 `;
 const BoardTime = styled.div`
   font-weight: 400;
@@ -106,14 +203,7 @@ const BoardReport = styled.div`
   
 `;
 
-const Column = styled.div<{under:boolean}>`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 5px;
-  width: 100%;
-  border-bottom: ${props => props.under ? "solid 1px white" : "none"};
-`;
+
 const Middle = styled.div`
   display: flex;
   width: 100%;
@@ -123,17 +213,33 @@ const Middle = styled.div`
 const BoardDelete = styled.div``
 
 ;
-const BoardItems = styled.div`
+const Game_Info = styled.div`
   display:flex ;
-  position: relative;
-  width: 90% ;
-  height: 40% ;
-  margin: auto ;
+  justify-content: space-between;
 `;
 
-const BoardLine = styled.div`
-  margin-right: 5px;
-  width: 20%;
+const Line = styled.div`
+  position: relative;
+  width: 2.2rem;
+  height: 2.2rem;
+  background-color: rgba(66,66,84,0.8);
+  border-radius: 1rem;
+  img{
+    border-radius: 1rem;
+  }
+`;
+const Champ = styled.div`
+  div{
+    position: relative;
+    display: inline-block;
+    width: 2.2rem;
+    height: 2.2rem;
+    border-radius: 1rem;
+    margin: 0 0.2rem;
+  }
+  img{
+    border-radius: 1rem;
+  }
 `;
 const BoardWinRate = styled.div`
   padding-top: 10px;
@@ -152,18 +258,4 @@ const BoardMic = styled.div`
 const BoardLineIcon = styled.img`
   width: 100%;
 `;
-const ProfileIcon = styled.div<{imgPath:string}>`
-  border: solid 1px white;
-  border-radius: 30px;
-  width: 50px;
-  height: 50px;
-  cursor: pointer;
-  background-image: ${props => `url(${props.imgPath})`};
-  background-size: contain;
-`;
-const NickName = styled.div`
-  font-size: 16px;
-  font-weight: 800;
-  margin: 0 auto;
-  cursor: pointer;
-`;
+

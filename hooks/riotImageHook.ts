@@ -14,7 +14,7 @@ export const riotImg = {
   perk:function(id){
 
   },
-  profile:function(iconNumber:string){
+  profile:function(iconNumber:number){
     return `http://ddragon.leagueoflegends.com/cdn/10.11.1/img/profileicon/${iconNumber}.png`
   },
   

@@ -2,7 +2,13 @@ import React from "react";
 import ReactDOM from "react-dom";
 import styled from "styled-components";
 import DuoInput from "./add";
-function Modal({ isShowing, hide, message }){
+
+type Props = {
+  isShowing: boolean,
+  hide: Function,
+  message:string
+}
+function Modal({ isShowing, hide, message }:Props){
   function handler(event:any){
     event.stopPropagation(); 
     console.log("버블링?")
