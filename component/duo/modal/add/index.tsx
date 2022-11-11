@@ -3,14 +3,27 @@ import Image from "next/image";
 import styled , {css} from "styled-components";
 import { options } from "../../../../const/utils";
 import {dbHook} from "../../../../hooks/dbHook"
-
+import { useSelector } from "react-redux";
+type ValidationState = {
+  summoner:boolean,
+  password:boolean,
+}
+export type Validation = {
+  duoValidation:ValidationState
+}
 function DuoInput({hide}:any) {
   const [lineSelect,setLineSelect] = useState("All");
   const [gameSelect,setGameSelect] = useState("All");
   const [micSelect,setMiceSelect] = useState(false);
-  const [inputError,setInputError] = useState({summoner:false,password:false})
+  const [inputError,setInputError] = useState({summoner:true,password:true})
+  const validation = useSelector((state:Validation)=>{
+    return state.duoValidation
+  })
 
-  function duoInputPost(event:any){
+  useEffect(()=>{
+    console.log("벨리데이션 확인",inputError)
+  },[inputError])
+  async function duoInputPost(event:any){
     event.preventDefault();
     
     const query = {
@@ -21,17 +34,20 @@ function DuoInput({hide}:any) {
       memo: event.target['memo'].value ? event.target['memo'].value : "같이할 사람 구합니다 !",
       password:event.target['password'].value
     }
+
     if(errorValdation(query.summoner,query.password)){
-      return dbHook.duo.post(query)
+      const result = await dbHook.duo.post(query)
+      
+      console.log("최종 결과",result)
     }else{
       return 
     }
   }
-  function errorValdation(name,pw){
+  function errorValdation(name:string,pw:string){
     let nameError = false;
     let pwError = false;
 
-    if(name < 2){
+    if(name.length < 2){
       setInputError((prev) => {
         return {...prev,summoner:false}
       })
@@ -43,11 +59,12 @@ function DuoInput({hide}:any) {
       nameError = true
     }
 
-    if(pw < 4){
+    if(pw.length < 4){
       setInputError((prev) => {
         return {...prev,password:false}
       })
       pwError = false
+
     }else{
       setInputError((prev) => {
         return {...prev,password:true}
@@ -68,7 +85,7 @@ function DuoInput({hide}:any) {
       <Form onSubmit={duoInputPost} id="myForm" name="myForm">
         <div>
           <Label htmlFor="summoner" style={{display:"inline",marginRight:"0.8rem"}}>소환사 명</Label>
-          {inputError.summoner && <InputError style={{display:"inline"}}>소환사 닉네임을 입력 해 주세요.</InputError>}
+          {inputError.summoner ? null : <InputError style={{display:"inline"}}>소환사 닉네임을 입력 해 주세요.</InputError>}
         </div>
         <Input type="text" name="summoner"/>
         <ColumnMiddle>
@@ -102,10 +119,10 @@ function DuoInput({hide}:any) {
         <Input type="text" name="memo" placeholder="같이할 사람 구합니다 !" />
         <PassWord>
           <div>
-            <Label style={{display:"inline",marginRight:"0.8rem"}} htmlFor="password">삭제 비밀번호</Label>
-            {inputError.password &&<InputError style={{display:"inline"}}>비밀번호를 4자에 맞춰 입력해주세요.</InputError>}
+            <Label style={{display:"inline",marginRight:"0.8rem"}} htmlFor="password"  >삭제 비밀번호</Label>
+            {inputError.password ? null : <InputError style={{display:"inline"}}>비밀번호를 4자에 맞춰 입력해주세요.</InputError>}
           </div>
-          <Input name="password" placeholder="4자리 숫자로 입력 해 주세요" />
+          <Input type="password" name="password" placeholder="4자리 숫자로 입력 해 주세요" maxLength={4} />
         </PassWord>
         <ExitWrap>
           <CancelBt onClick={hide}>취소</CancelBt>

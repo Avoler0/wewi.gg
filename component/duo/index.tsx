@@ -1,44 +1,31 @@
 import { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import styled from "styled-components";
+import { dbHook } from "../../hooks/dbHook";
 import DuoFilter, { Filter } from "./filter/filter";
 
-
-
-
 export default function DuoIndex(this: any) {
-
+  const [duo,setDuo] = useState();
+  const dispatch = useDispatch();
   const filter = useSelector((state:Filter) => {
-    return state.filter
+    return state.duoFilter
   })
+
   useEffect(()=>{
-    console.log("필터 변경")
+    console.log("유즈 이펙트")
+    dbHook.duo.get()
+    .then((_res)=>{
+      console.log("초기로드",_res)
+    })
+    .catch((_error)=>{
+      console.log("초기로드 에러",_error)
+    })
+  },[])
+  useEffect(()=>{
+    console.log("필터 변경",filter)
   },[filter])
-  // useEffect(()=>{
-  //   console.log("듀오레스",duoRes);
-  //   console.log(deleteState);
-    
-  // },[duoRes])
-  //   useEffect(()=>{
-  //     console.log("매치비번",typeof matchPw , matchPw);
-  //     console.log("삭제비번",typeof deletePw , deletePw);
-  //   if(deletePw === matchPw){
-  //     deleteDuoMate(deleteId)
-  //   }
-  // },[deletePw,matchPw])
-  // const optionSelect = (data:any) => {
-  //   const {Tier , DuoType , Line} = data;
-  //   let tierB , duoB , lineB = false;
-  //   if(Tier === tierOption || Tier === 0 ||tierOption === 0) tierB = true;
-  //   else tierB = false;
-  //   if(DuoType === duoOption || DuoType === 0 ||duoOption === 0) duoB = true;
-  //   else duoB = false;
-  //   if(Line === lineOption || Line === 0 ||lineOption === 0) lineB = true;
-  //   else lineB = false;
-  //   console.log("티어" ,tierB, "듀오" ,duoB, "라인" , lineB );
-    
-  //   return tierB && duoB && lineB ? true : false;
-  // }
+  
 
   return (
     <>

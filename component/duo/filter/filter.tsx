@@ -3,7 +3,7 @@ import styled from "styled-components";
 import Image from "next/image";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
-import {setLine, setMode, setTier} from "../../../redux/duo/filter"
+import {duoSetFilter} from "../../../redux/duo/filter"
 import useModal from "../../../hooks/useModal";
 import Modal from "../modal/modal";
 import { options } from "../../../const/utils";
@@ -14,38 +14,34 @@ type FilterState = {
   line:string
 }
 export type Filter = {
-  filter:FilterState
+  duoFilter:FilterState
 }
 
 
 export default function DuoFilter(){
   const {isShowing,toggle} = useModal();
   const dispatch = useDispatch();
-  const filter = useSelector((state:Filter) => {
-    return state.filter
-  })
 
-  function addDuoFind(){
-    console.log("등록")
-  }
-  
+  const filter = useSelector((state:Filter) => {
+    return state.duoFilter
+  })
   
   return (
     <Filter>
     <Column>
           <SelectForm>
-            <Select defaultValue="solo" name="gameTypes" onChange={(event)=>{dispatch(setMode(event?.target.value))}}>
+            <Select defaultValue="solo" name="gameMode" onChange={(event)=>{dispatch(duoSetFilter({type:"mode",value:event?.target.value}))}}>
               {options.game.map(({value,label})=>{
                 return <Option key={value} value={value}>{label}</Option>
               })}
             </Select>
-            <Select defaultValue="gold" name="tierTypes" onChange={(event)=>{dispatch(setTier(event?.target.value))}}>
+            <Select defaultValue="gold" name="tierTypes" onChange={(event)=>{dispatch(duoSetFilter({type:"tier",value:event?.target.value}))}}>
               {options.tier.map(({value,label})=>{
                 return <Option key={value} value={value}>{label}</Option>
               })}
             </Select>
           </SelectForm>
-        <LineTypes onClick={(event)=>{dispatch(setLine(event?.target.alt))}}>
+        <LineTypes onClick={(event)=>{dispatch(duoSetFilter({type:"line",value:event?.target.alt}))}}>
           {options.lines.map((line:string)=>{
             return (
               <LineItems bgColor={filter.line === line ? "#7c7c83" : "#2c3e50"} key={line}>
@@ -96,9 +92,7 @@ const Select = styled.select`
   border-radius: 5px;
   color: rgba(123,122,142,1);
 
-  :focus{
-    border: none;
-  }
+
 `;
 const Option = styled.option`
   margin-top: 1rem;

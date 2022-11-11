@@ -8,27 +8,31 @@ type Filter = {
 }
 
 const duoFilter = createSlice({
-  name:'filter',
+  name:'duoFilter',
   initialState:{
     tier:"all",
     mode:"all",
     line:"all"
   },
   reducers:{
-    setTier:(state:Filter,action:PayloadAction<any>) => {
-      console.log("듀오 필터 티어",state,action)
-      state.tier = action.payload;
-    },
-    setMode:(state:Filter,action:PayloadAction<any>) => {
-      console.log("듀오 필터 모드",state,action)
-      state.mode = action.payload;
-    },
-    setLine:(state:Filter,action:PayloadAction<any>) => {
-      console.log("듀오 필터 라인",state,action)
-      state.line = action.payload;
-    },
+    duoSetFilter:(state:Filter,action:PayloadAction<any>) => {
+      const type = action.payload.type;
+      switch (type) {
+        case 'tier':
+          state.tier = action.payload.value;
+          break;
+        case 'mode':
+          state.mode = action.payload.value;
+          break;
+        case 'line':
+          state.line = action.payload.value
+        default:
+          break;
+      }
+    }
   }
 });
 
-export default duoFilter;
-export const {setTier,setMode,setLine} = duoFilter.actions;
+
+export default duoFilter.reducer;
+export const {duoSetFilter} = duoFilter.actions;

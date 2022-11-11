@@ -16,12 +16,60 @@
   "profile": {
     "name": "typicode"
   },
-  "duo": {
-    "summoner": "스쿵씨",
-    "line": "All",
-    "game": "All",
-    "mic": false,
-    "memo": "같이할 사람 구합니다 !",
-    "password": "1234"
-  }
+  "duo": [
+    {
+      "summoner": "스쿵씨",
+      "line": "All",
+      "game": "All",
+      "mic": false,
+      "memo": "같이할 사람 구합니다 !",
+      "password": "12345",
+      "id": 1
+    },
+    {
+      "summoner": "스쿵씨",
+      "line": "All",
+      "game": "All",
+      "mic": false,
+      "memo": "같이할 사람 구합니다 !",
+      "password": "123455",
+      "id": 2
+    },
+    {
+      "summoner": "스쿵씨",
+      "line": "All",
+      "game": "All",
+      "mic": false,
+      "memo": "같이할 사람 구합니다 !",
+      "password": "123455",
+      "id": 3
+    },
+    {
+      "summoner": "스쿵씨1",
+      "line": "All",
+      "game": "All",
+      "mic": false,
+      "memo": "같이할 사람 구합니다 !",
+      "password": "1234",
+      "id": 4
+    },
+    {
+      "summoner": "스쿵씨123",
+      "line": "All",
+      "game": "All",
+      "mic": false,
+      "memo": "같이할 사람 구합니다 !",
+      "password": "1234",
+      "id": 5
+    },
+    {
+      "summoner": "스",
+      "line": "All",
+      "game": "All",
+      "mic": false,
+      "memo": "같이할 사람 구합니다 !",
+      "password": "123",
+      "id": 6
+    }
+  ]
 }
