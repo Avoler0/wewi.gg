@@ -29,14 +29,16 @@ function DuoInput({hide}:any) {
       game: gameSelect,
       mic: micSelect,
       memo: event.target['memo'].value ? event.target['memo'].value : "같이할 사람 구합니다 !",
-      password:event.target['password'].value
+      password:event.target['password'].value,
+      createdAt: new Date().getTime()
     }
 
     if(errorValdation(query.summoner,query.password)){
       const result = await dbHook.duo.post(query)
+      console.log("리설트",result)
       if(result.status === 409){
         setPostError(true);
-      }else{
+      }else if(result.status === 201){
         setPostError(false);
         hide()
       }

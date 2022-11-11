@@ -1,5 +1,4 @@
 import styled from "styled-components";
-import { SummonerType } from "../../../types/riotType";
 import Image from "next/image";
 import { riotImg } from "../../../hooks/riotImageHook";
 

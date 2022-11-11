@@ -1,10 +1,8 @@
-import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import styled from "styled-components";
 import { riot } from "../../hooks/riotApiHook";
 import SummonerProfile from "./profile/profile";
-import Rankinfo from "./league";
 import LeagueInfo from "./league";
 import Record from "./record";
 

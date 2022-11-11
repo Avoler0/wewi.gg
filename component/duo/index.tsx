@@ -4,6 +4,7 @@ import { useSelector } from "react-redux";
 import styled from "styled-components";
 import { dbHook } from "../../hooks/dbHook";
 import { duoSetData, _DuoData } from "../../redux/duo/data";
+import DuoCard from "./card/card";
 import DuoFilter, { Filter } from "./filter/filter";
 
 type DuoData = {
@@ -11,7 +12,7 @@ type DuoData = {
 }
 
 export default function DuoIndex(this: any) {
-  const [duo,setDuo] = useState();
+  const [duo,setDuo] = useState([]);
   const [duoFilter,setDuoFilter] = useState();
   const dispatch = useDispatch();
   const filter = useSelector((state:Filter) => {
@@ -36,7 +37,7 @@ export default function DuoIndex(this: any) {
   },[filter])
 
   useEffect(()=>{
-    setDuo(duoData)
+    setDuo(duoData.data)
   },[duoData])
   useEffect(()=>{
     console.log("듀데",duo)
@@ -48,7 +49,9 @@ export default function DuoIndex(this: any) {
         <Wrapper >
           <DuoFilter />
             <BoardLayOut>
-              {/* {duoRes && duoRes.map((res:any,index:number)=> optionSelect(res) ? <DuoRes key={index} duoRes={res} setDeleteState={setDeleteState} setDeletePw={setDeletePw} setDeleteId={setDeleteId} />  : null )} */}
+              {duo.map((res:any)=> {
+                return <DuoCard key={res.id} duoRes={res} />
+              } )}
             </BoardLayOut>
           </Wrapper>
       </Container>
