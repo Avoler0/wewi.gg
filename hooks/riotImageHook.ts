@@ -8,6 +8,37 @@ export const riotImg = {
   champion:function(champion:string){
     return `http://ddragon.leagueoflegends.com/cdn/12.9.1/img/champion/${champion}.png`
   },
+  championsId:async function(ids:any){
+    const idArr = Object.assign([],ids)
+    const result = await axios.get('http://ddragon.leagueoflegends.com/cdn/12.21.1/data/en_US/champion.json')
+    .then((_res:any)=>{
+      const championList = _res.data.data;
+      if(typeof ids === 'object'){
+        const chapionName = []
+        for(let i in championList){
+          for(const key in idArr){
+            if(championList[i].key == idArr[key]){
+              chapionName.push(championList[i].name)
+              idArr.splice(key,1);
+            }
+          }
+          if(chapionName.length === ids.length) break;
+        }
+        return chapionName
+      }else{
+        const chapionName:string[] = []
+         for(let i in championList){
+          if(championList[i].key == ids){
+            chapionName.push(championList[i].name)
+          }
+          if(chapionName.length === ids.length) break;
+        }
+        return chapionName
+      }
+    })
+    
+    return result.map((value)=> `http://ddragon.leagueoflegends.com/cdn/12.9.1/img/champion/${value}.png`)
+  },
   item:function(itemId:number){
     return `http://ddragon.leagueoflegends.com/cdn/12.9.1/img/item/${itemId}.png`
   },

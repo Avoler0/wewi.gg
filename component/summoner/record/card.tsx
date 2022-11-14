@@ -4,7 +4,7 @@ import styled from "styled-components";
 import Image from "next/image";
 import { riotImg } from "../../../hooks/riotImageHook";
 import { queueUtils } from "../../../const/utils";
-import { time } from "../../../hooks/timeHook";
+import { timeHook } from "../../../hooks/timeHook";
 
 type props = {
   detail:Detail
@@ -77,10 +77,10 @@ export default function RecordCard({detail}:props) {
       <Wrap win={win}>
         <InfoWrap>
           <b>{queueUtils.type[queueId]}</b>
-          <div>{time.otherDay(gameEndTimestamp)}</div>
+          <div>{timeHook.otherDay(gameEndTimestamp)}</div>
           <b>{win ? "승리" : "패배"}</b>
           <div>{gameLengthTime}</div>
-          <div>{time.pass(gameCreation,gameEndTimestamp)}</div>
+          <div>{timeHook.pass(gameCreation,gameEndTimestamp)}</div>
         </InfoWrap>
         <ChampWrap>
           <div>

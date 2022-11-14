@@ -1,13 +1,4 @@
-
-
-// function diffFunc(target){
-//   const now = new Date().getTime();
-//   const diff = Math.floor((now-target.info.gameEndTimestamp) / 1000 / 60)
-//   console.log("차이는",diff);
-  
-// }
-
-export const time = {
+export const timeHook = {
   otherDay:function(target:number){
     const between = Math.floor((new Date().getTime() - target) / 1000 / 60);
     const betweenHour = Math.floor(between / 60)

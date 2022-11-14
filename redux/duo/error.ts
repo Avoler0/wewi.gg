@@ -15,7 +15,6 @@ const duoError = createSlice({
   },
   reducers:{
     duoSetError:(state:Error,action:PayloadAction<any>) => {
-      console.log("듀오 셋 에러",state,action)
       state.stat = action.payload.stat;
       state.status = action.payload.status;
       state.message = action.payload.message;

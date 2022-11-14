@@ -5,6 +5,7 @@ import { riot } from "../../../hooks/riotApiHook";
 import { riotImg } from "../../../hooks/riotImageHook";
 import { url } from "inspector";
 import { SummonerInfo } from "../../../types/riotType";
+import { timeHook } from "../../../hooks/timeHook";
 // import { getTime, timeDiff, } from "../../../commons/functionCollection";
 // import { ReactComponent as Trash } from "../../../images/icons/trash-svgrepo-com.svg"
 // import {ReactComponent as MicOn} from "/MyApp/wewi.gg/src/images/icons/mic-fill-svgrepo-com.svg"
@@ -16,25 +17,28 @@ function DuoCard({duoRes}:any){
   const [isLoading,setIsLoading] = useState(true);
   const [summonerInfo,setSummonerInfo] = useState<SummonerInfo|undefined>();
   const report = useState(0);
-  const {summoner,memo,line,password,id,mic} = duoRes
-  // const winningRate = Math.round(Win / (Win + Lose) * 100)
-  // 소환사 아이콘은 프론트에서 제공해 넘겨주기. getSummonerInfo("스쿵씨")
-  // 윈 로즈 프론트에서 사용 가능 getSummonerLeagueInfo(id)
-  console.log("듀오 레스",duoRes);
+  const {summoner,memo,line,password,id,mic,createdAt} = duoRes
+  // console.log("듀오 레스",duoRes);
   useEffect(()=>{
     riot.summoner("summoner",summoner)
     .then((_res)=>{
       console.log("듀오 카드 레스",_res)
+      const champId = []
+      riot.champion.mastery(_res.id,3)
+      .then((_res)=>{
+        const idResult = _res.data.map((data:any)=> data.championId)
+        riotImg.championsId(idResult).then((_res)=>{
+          console.log("챔피언 리썰트입니다",_res)
+        })
+      })
+      
       setSummonerInfo(_res)
       setIsLoading(false)
     })
+    // 챔피언 마스터리 리스트 받아와서 3개 맵으로 돌려서 프로미스로 state 한번에 저장 
+    
+    
   },[])
-  // setDeleteState(true,duoRes.Password,duoRes.Id)
-  // const deleteBoard = () => {
-  //   setDeleteState(true);
-  //   setDeletePw(duoRes.Password);
-  //   setDeleteId(duoRes.Id);
-  // }
   if(isLoading) return;
   return (
     <Wrap >
@@ -49,12 +53,17 @@ function DuoCard({duoRes}:any){
               <Level><span>Lv. {summonerInfo.summonerLevel}</span></Level>
             </Info_Column>
             <Info_Column >
-              <WinRate>승률 <span>56%</span></WinRate>
-              <MicCheck mic={mic}>Mic<span>{mic ? "On" : "Off"}</span></MicCheck>
+              <Tier>
+                <div className="tier main">골드</div>
+                <div className="tier number">2</div>
+              </Tier>
+              <MicCheck>
+                <div className="mic text">마이크</div>
+                {/* <div className="mic check">{mic ? "On" : "Off"}</div> */}
+                <MicCircle mic={mic}/>
+              </MicCheck>
             </Info_Column>
           </Info>
-          {/* <div>승률</div>
-          <div>Mic On</div> */}
         </Info_Layer>
         <Game_Layer under={false} >
           <Game_Info className="Game_Info">
@@ -87,7 +96,7 @@ function DuoCard({duoRes}:any){
             {/* <Link to="/reportView">신고 누적 : {report}회</Link> */}
           </BoardReport>
           <BoardTime>
-            {/* {<span>{resTimeDiff[0]}{resTimeDiff[1]} 전</span>  } */}
+            {<span>{timeHook.otherDay(createdAt)}</span>  }
           </BoardTime>
         </BoardFooter>
       </Content_Inner>
@@ -141,50 +150,64 @@ const Info_Column = styled.div`
   flex-direction: column;
   justify-content: center;
 `;
-const WinRate = styled.div`
+const Tier = styled.div`
   font-size: 13px;
+  width: 55px;
+  .tier{
+    display: inline-block;
+  }
+
+  .tier.number{
+    margin-left: 0.2rem;
+  }
 `;
-const MicCheck = styled.div<{mic:boolean}>`
+const MicCheck = styled.div`
   display: flex;
   align-items: center;
   font-size: 13px;
-  span{
-    margin-left: 0.5rem;
-    color: ${props => props.mic ? "green" : "red"}
-  }
-`;
-const MicCircle = styled.div`
-  margin-left: 0.3rem;
-
-  div{
+  .mic{
     display: inline-block;
-    width: 12px;
-    height: 12px;
-    border-radius: 10px;
-    background-color: green;
   }
+  .mic.check{
+    margin-left: 0.2rem;
+  }
+
 `;
+const MicCircle = styled.div<{mic:boolean}>`
+  margin-left: 0.3rem;
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  border-radius: 10px;
+  background-color: ${props => props.mic ? "green" : "red"};
+`;
+
 const NickName = styled.div`
   font-size: 14px;
   font-weight: 800;
   cursor: pointer;
 `;
+
 const Level = styled.span`
   font-size: 12px;
   color:#cec7c7;
 `;
+
 const Game_Layer = styled.div<{under:boolean}>`
   align-items: center;
   width: 100%;
   height: 40px;
 
 `;
+
 const Content_Inner = styled.div`
   padding: 0.2rem;
 `;
+
 const Memo_Layer = styled.div`
   text-align: center;
 `;
+
 const BoardFooter = styled.div`
   position: absolute;
   font-size: 12px;
@@ -196,9 +219,11 @@ const BoardFooter = styled.div`
   width: 100%;
   color: rgba(255,255,255,0.7)
 `;
+
 const BoardTime = styled.div`
   font-weight: 400;
 `;
+
 const BoardReport = styled.div`
   
 `;

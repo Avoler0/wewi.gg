@@ -22,6 +22,18 @@ export const riot = {
       return _error
     })
   },
+  champion:{
+    mastery:async function(id:string,count?:number) {
+      return await apiInstance({
+        url:'/champion/mastery/',
+        params:{
+          id:id,
+          count:count
+        }
+      })
+      
+    },
+  },
   matchList:async function (puuid:string,start:number,end:number) {
     console.log("매치리스트 실행");
     return await apiInstance({
