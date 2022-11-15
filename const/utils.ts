@@ -70,6 +70,8 @@ export const tierUtils = {
         return '#EF4F4F';
       case 'CHALLENGER':
         return '#F4C873';
+      default :
+        return '#ffffff';
     }
   },
 }

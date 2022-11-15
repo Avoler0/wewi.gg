@@ -6,39 +6,44 @@ import { riotImg } from "../../../hooks/riotImageHook";
 import { url } from "inspector";
 import { SummonerInfo } from "../../../types/riotType";
 import { timeHook } from "../../../hooks/timeHook";
+import { tierUtils } from "../../../const/utils";
+import router from "next/router"
+import Link from "next/link";
 // import { getTime, timeDiff, } from "../../../commons/functionCollection";
 // import { ReactComponent as Trash } from "../../../images/icons/trash-svgrepo-com.svg"
 // import {ReactComponent as MicOn} from "/MyApp/wewi.gg/src/images/icons/mic-fill-svgrepo-com.svg"
 // import {ReactComponent as MicOff} from "/MyApp/wewi.gg/src/images/icons/mic-mute-fill-svgrepo-com.svg"
 
-
+type SummonerLeague = {
+  tier:string,
+  rank:string
+}
 
 function DuoCard({duoRes}:any){
   const [isLoading,setIsLoading] = useState(true);
   const [summonerInfo,setSummonerInfo] = useState<SummonerInfo|undefined>();
+  const [champPath,setChampPath] = useState<string[]>([]);
+  const [summonerLeague, setSummonerLeague] = useState<SummonerLeague>({tier:"",rank:""});
   const report = useState(0);
   const {summoner,memo,line,password,id,mic,createdAt} = duoRes
-  // console.log("듀오 레스",duoRes);
   useEffect(()=>{
     riot.summoner("summoner",summoner)
     .then((_res)=>{
-      console.log("듀오 카드 레스",_res)
-      const champId = []
-      riot.champion.mastery(_res.id,3)
-      .then((_res)=>{
-        const idResult = _res.data.map((data:any)=> data.championId)
-        riotImg.championsId(idResult).then((_res)=>{
-          console.log("챔피언 리썰트입니다",_res)
-        })
-      })
-      
       setSummonerInfo(_res)
-      setIsLoading(false)
+      Promise.all([riot.champion.mastery(_res.id,3),riot.league(_res.id)])
+      .then(([champIds,league]) => {
+        const champIdArr = champIds.data.map((data:any)=> data.championId)
+        riotImg.championsId(champIdArr).then((_res)=>{
+          setChampPath(_res)
+        })
+        setSummonerLeague({tier:league[1].tier,rank:league[1].rank})
+        setIsLoading(false)
+      })
     })
-    // 챔피언 마스터리 리스트 받아와서 3개 맵으로 돌려서 프로미스로 state 한번에 저장 
-    
-    
   },[])
+  useEffect(()=>{
+    console.log("라인 패스",champPath)
+  },[champPath])
   if(isLoading) return;
   return (
     <Wrap >
@@ -49,13 +54,15 @@ function DuoCard({duoRes}:any){
           </ProfileIcon>
           <Info>
             <Info_Column>
-              <NickName>{summoner}</NickName>
+              <NickName>
+                <Link href={`summoner/${summoner}`}>{summoner}</Link>
+              </NickName>
               <Level><span>Lv. {summonerInfo.summonerLevel}</span></Level>
             </Info_Column>
             <Info_Column >
-              <Tier>
-                <div className="tier main">골드</div>
-                <div className="tier number">2</div>
+              <Tier tierColor={tierUtils.color(summonerLeague.tier)}>
+                <div className="tier main">{summonerLeague.tier ? summonerLeague.tier : "unranked"}</div>
+                <div className="tier number">{summonerLeague.rank}</div>
               </Tier>
               <MicCheck>
                 <div className="mic text">마이크</div>
@@ -71,15 +78,13 @@ function DuoCard({duoRes}:any){
               <Image src={`/images/line-icons/Line-${duoRes.line}-Ico.png`} alt="line" layout="fill" objectFit="cover" />
             </Line>
             <Champ>
-              <div>
-                <Image src={riotImg.profile(summonerInfo.profileIconId)} alt="line" layout="fill" objectFit="cover"/>
-              </div>
-              <div>
-                <Image src={riotImg.profile(summonerInfo.profileIconId)} alt="line" layout="fill" objectFit="cover"/>
-              </div>
-              <div>
-                <Image src={riotImg.profile(summonerInfo.profileIconId)} alt="line" layout="fill" objectFit="cover"/>
-              </div>
+              {champPath.map((path,idx)=>{
+                return (
+                  <div key={idx}>
+                    <Image src={path} alt="line" layout="fill" objectFit="cover"/>
+                  </div>
+                )
+              })}
             </Champ>
             {/* <BoardWinRate>{winningRate}</BoardWinRate> */}
             {/* <BoardChamp>최근챔 3개</BoardChamp> */}
@@ -150,9 +155,10 @@ const Info_Column = styled.div`
   flex-direction: column;
   justify-content: center;
 `;
-const Tier = styled.div`
+const Tier = styled.div<{tierColor:string}>`
   font-size: 13px;
   width: 55px;
+  color: ${props => props.tierColor};
   .tier{
     display: inline-block;
   }

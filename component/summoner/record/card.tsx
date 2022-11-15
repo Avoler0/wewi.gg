@@ -67,7 +67,6 @@ export default function RecordCard({detail}:props) {
     })
     return Item
   }
-  
   if(isLoading){
     return <div>불러오는 중</div>
   }
@@ -111,7 +110,10 @@ export default function RecordCard({detail}:props) {
         <KdaWrap>
             <div className="kda">{participants.kills} / {participants.deaths} / {participants.assists}</div>
             <div className="kda">{((participants.kills+participants.assists) / participants.deaths).toFixed(2)}:1 평점</div>
-            <div className="kda">킬관여 {((participants.kills+participants.assists)/teamKill*100).toFixed(0)}%</div>
+            <div className="kda">킬관여 {
+              participants.kills + participants.deaths + participants.assists == 0 ?
+              "0" : ((participants.kills+participants.assists)/teamKill*100).toFixed(0)
+            }%</div>
         </KdaWrap>
         <StatsWrap>
             <div className="stats">{participants.totalMinionsKilled + participants.neutralMinionsKilled} CS</div>

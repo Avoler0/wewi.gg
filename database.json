@@ -26,6 +26,16 @@
       "password": "1234",
       "createdAt": 1668167887165,
       "id": 1
+    },
+    {
+      "summoner": "육거리",
+      "line": "Top",
+      "mode": "Team",
+      "mic": true,
+      "memo": "같이 하실 분 구합니다. 아무나 환영합니다~",
+      "password": "0626",
+      "createdAt": 1668494198747,
+      "id": 2
     }
   ]
 }
