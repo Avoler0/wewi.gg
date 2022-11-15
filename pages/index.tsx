@@ -1,10 +1,11 @@
+import axios from 'axios';
 import type { NextPage } from 'next'
 import { useRouter } from 'next/router';
+import { useQuery } from 'react-query';
 import styled from "styled-components";
 import { searchMovePath } from '../hooks/searchMovePath';
 
 const Home: NextPage = () => {
-  const router = useRouter();
 
   return (
     <Container>

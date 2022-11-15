@@ -24,7 +24,7 @@ type Detail = {
 export default function RecordCard({detail}:props) {
   const { gameCreation,gameDuration,gameStartTimestamp,gameEndTimestamp,participants,teamKill,queueId,gameLengthTime,win  } = detail;
 
-  console.log("카드 디테일",detail);
+  // console.log("카드 디테일",detail);
 
   const [isLoading,setIsLoading] = useState(true);
   const [runeImg,setRuneImg] = useState({

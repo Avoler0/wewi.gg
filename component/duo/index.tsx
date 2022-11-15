@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useQuery } from "react-query";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import styled from "styled-components";
@@ -12,46 +13,46 @@ type DuoData = {
 }
 
 export default function DuoIndex(this: any) {
-  const [duo,setDuo] = useState([]);
-  const [duoFilter,setDuoFilter] = useState();
   const dispatch = useDispatch();
   const filter = useSelector((state:Filter) => {
     return state.duoFilter
   })
-  const duoData = useSelector((state:DuoData) => {
-    return state.duoData
-  })
 
-  useEffect(()=>{
-    dbHook.duo.get()
+  const {
+    data: duoRes,
+    isLoading,
+  } = useQuery("duoRes",getDuoRes,{
+    onSuccess: data => {
+      dispatch(duoSetData(data))
+    },
+     onError: e => {
+      
+    }
+  });
+  console.log("듀데",duoRes)
+  async function getDuoRes(){
+    return await dbHook.duo.get()
     .then((_res)=>{
-      dispatch(duoSetData(_res))
+      return _res
     })
     .catch((_error)=>{
       console.log("초기로드 에러",_error)
     })
-  },[])
-
+  }
+  
   useEffect(()=>{
     console.log("필터 변경",filter)
   },[filter])
-
-  useEffect(()=>{
-    setDuo(duoData.data)
-  },[duoData])
-  useEffect(()=>{
-    console.log("듀데",duo)
-  },[duo])
-
+  
+  if(isLoading) return <div>데이터 서버 접속 실패</div>
   return (
     <>
       <Container>
         <Wrapper >
           <DuoFilter />
             <BoardLayOut>
-              {duo.map((res:any)=> {
-                return <DuoCard key={res.id} duoRes={res} />
-              } )}
+              {duoRes &&
+               duoRes.map((res:any)=> <DuoCard key={res.id} duoRes={res} />)}
             </BoardLayOut>
           </Wrapper>
       </Container>

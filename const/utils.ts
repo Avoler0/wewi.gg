@@ -71,7 +71,7 @@ export const tierUtils = {
       case 'CHALLENGER':
         return '#F4C873';
       default :
-        return '#ffffff';
+        return 'red';
     }
   },
 }

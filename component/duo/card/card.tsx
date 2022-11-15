@@ -1,25 +1,33 @@
-import { useEffect, useState } from "react";
 import styled from "styled-components";
 import Image from "next/image";
 import { riot } from "../../../hooks/riotApiHook";
 import { riotImg } from "../../../hooks/riotImageHook";
-import { url } from "inspector";
-import { SummonerInfo } from "../../../types/riotType";
 import { timeHook } from "../../../hooks/timeHook";
 import { tierUtils } from "../../../const/utils";
-import router from "next/router"
 import Link from "next/link";
+import { useEffect, useState } from "react";
+import { SummonerInfo } from "../../../types/riotType";
 // import { getTime, timeDiff, } from "../../../commons/functionCollection";
 // import { ReactComponent as Trash } from "../../../images/icons/trash-svgrepo-com.svg"
 // import {ReactComponent as MicOn} from "/MyApp/wewi.gg/src/images/icons/mic-fill-svgrepo-com.svg"
 // import {ReactComponent as MicOff} from "/MyApp/wewi.gg/src/images/icons/mic-mute-fill-svgrepo-com.svg"
-
+type DuoRes = {
+  summoner:string,
+  memo:string,
+  line:string,
+  password:number,
+  id:number,
+  mic:boolean,
+  createdAt:number
+}
+type Props = {
+  duoRes:DuoRes
+}
 type SummonerLeague = {
   tier:string,
   rank:string
 }
-
-function DuoCard({duoRes}:any){
+function DuoCard({duoRes}:Props){
   const [isLoading,setIsLoading] = useState(true);
   const [summonerInfo,setSummonerInfo] = useState<SummonerInfo|undefined>();
   const [champPath,setChampPath] = useState<string[]>([]);
@@ -41,10 +49,9 @@ function DuoCard({duoRes}:any){
       })
     })
   },[])
-  useEffect(()=>{
-    console.log("라인 패스",champPath)
-  },[champPath])
-  if(isLoading) return;
+  if(isLoading) return <div>불러오기 실패</div>;
+
+  
   return (
     <Wrap >
       <Profile_Inner>
@@ -54,15 +61,20 @@ function DuoCard({duoRes}:any){
           </ProfileIcon>
           <Info>
             <Info_Column>
-              <NickName>
+              <NickName nameLength={summoner.length}>
                 <Link href={`summoner/${summoner}`}>{summoner}</Link>
               </NickName>
               <Level><span>Lv. {summonerInfo.summonerLevel}</span></Level>
             </Info_Column>
             <Info_Column >
-              <Tier tierColor={tierUtils.color(summonerLeague.tier)}>
-                <div className="tier main">{summonerLeague.tier ? summonerLeague.tier : "unranked"}</div>
-                <div className="tier number">{summonerLeague.rank}</div>
+              <Tier tierColor={tierUtils.color(summonerLeague?.tier)}>
+                {summonerLeague?.tier ? (
+                  <>
+                    <div className="tier main">{summonerLeague?.tier}</div>
+                    <div className="tier number">{summonerLeague?.rank}</div>
+                  </>
+                ) : <div>unranked</div>}
+                
               </Tier>
               <MicCheck>
                 <div className="mic text">마이크</div>
@@ -154,6 +166,8 @@ const Info_Column = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
+  width: 100%;
+  height: 100%;
 `;
 const Tier = styled.div<{tierColor:string}>`
   font-size: 13px;
@@ -188,8 +202,8 @@ const MicCircle = styled.div<{mic:boolean}>`
   background-color: ${props => props.mic ? "green" : "red"};
 `;
 
-const NickName = styled.div`
-  font-size: 14px;
+const NickName = styled.div<{nameLength:number}>`
+  font-size: ${props => props.nameLength > 3 ? "12px" : "14px"};
   font-weight: 800;
   cursor: pointer;
 `;

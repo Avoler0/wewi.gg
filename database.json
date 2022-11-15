@@ -36,6 +36,16 @@
       "password": "0626",
       "createdAt": 1668494198747,
       "id": 2
+    },
+    {
+      "summoner": "내덕동팬티도둑",
+      "line": "All",
+      "mode": "All",
+      "mic": false,
+      "memo": "같이 할 사람 구합니다",
+      "password": "1234",
+      "createdAt": 1668506837613,
+      "id": 3
     }
   ]
 }

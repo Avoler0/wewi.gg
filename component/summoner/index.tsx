@@ -5,12 +5,14 @@ import { riot } from "../../hooks/riotApiHook";
 import SummonerProfile from "./profile/profile";
 import LeagueInfo from "./league";
 import Record from "./record";
+import { useQuery } from "react-query";
 
 export type props = {
   searchString : string | string[]
 }
 
 export default function Summoner({searchString}:props){
+  
   const [isLoading,setIsLoading] = useState(true);
   const [profile,setProfile] = useState();
   const [league,setLeague] = useState({});
@@ -19,8 +21,28 @@ export default function Summoner({searchString}:props){
   const summoner = useSelector((state:any) =>{
     return state.search.value
   })
-  console.log("지금 검색하는것은",searchString);
-  
+  console.log("데이터입니다.",data);
+  async function getData(){
+    return await riot.summoner(searchType,searchString).then(async (_res:any)=>{
+        const { id,name,profileIconId,puuid,revisionDate,summonerLevel} = _res;
+        Promise.all([
+          await riot.matchList(puuid,1,5),
+          await riot.league(id)
+        ]).then(([fetchMatchList,fetchLeague])=>{
+          // setProfile(_res)
+          // setMatchList(fetchMatchList)
+          // setLeague(fetchLeague)
+          // setIsLoading(false);
+          return {_res,fetchMatchList,fetchLeague}
+        })
+        .catch(([matchError,leagueError])=>{
+          console.log("처음 에러",matchError,leagueError);
+          
+        })
+      }).catch((_error)=>{
+        console.log("기본정보부분 에러",_error);
+      })
+  }
     useEffect(()=>{
       setIsLoading(true)
     if(searchString !== undefined){
