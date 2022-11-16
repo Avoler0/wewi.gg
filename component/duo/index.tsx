@@ -1,10 +1,9 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useQuery } from "react-query";
-import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import styled from "styled-components";
 import { dbHook } from "../../hooks/dbHook";
-import { duoSetData, _DuoData } from "../../redux/duo/data";
+import {  _DuoData } from "../../redux/duo/data";
 import DuoCard from "./card/card";
 import DuoFilter, { Filter } from "./filter/filter";
 
@@ -12,33 +11,14 @@ type DuoData = {
   duoData:_DuoData
 }
 
-export default function DuoIndex(this: any) {
-  const dispatch = useDispatch();
+export default function DuoIndex() {
+  const {data:duoDB,isLoading} = useQuery('duoDB',async () => await dbHook.duo.get());
   const filter = useSelector((state:Filter) => {
     return state.duoFilter
   })
+  
 
-  const {
-    data: duoRes,
-    isLoading,
-  } = useQuery("duoRes",getDuoRes,{
-    onSuccess: data => {
-      dispatch(duoSetData(data))
-    },
-     onError: e => {
       
-    }
-  });
-  console.log("듀데",duoRes)
-  async function getDuoRes(){
-    return await dbHook.duo.get()
-    .then((_res)=>{
-      return _res
-    })
-    .catch((_error)=>{
-      console.log("초기로드 에러",_error)
-    })
-  }
   
   useEffect(()=>{
     console.log("필터 변경",filter)
@@ -51,8 +31,8 @@ export default function DuoIndex(this: any) {
         <Wrapper >
           <DuoFilter />
             <BoardLayOut>
-              {duoRes &&
-               duoRes.map((res:any)=> <DuoCard key={res.id} duoRes={res} />)}
+              {duoDB &&
+               duoDB.map((res:any)=> <DuoCard key={res.id} duoRes={res} />)}
             </BoardLayOut>
           </Wrapper>
       </Container>

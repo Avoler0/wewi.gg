@@ -5,21 +5,23 @@ import { Provider } from 'react-redux';
 import store from '../redux/store';
 import FooterIndex from '../component/footer/footer';
 import { QueryClient, QueryClientProvider } from 'react-query';
-import { useState } from 'react';
+import { ReactQueryDevtools } from "react-query/devtools";
+
+const queryClient = new QueryClient();
 
 function MyApp({ Component, pageProps }: AppProps) {
-  const [queryClient] = useState(() => new QueryClient());
-  console.log("앱 쿼리",queryClient.queryCache)
+  
+  
   return (
     <>
-    <QueryClientProvider client={queryClient}>
-      <Provider store={store}>
-        <HeaderIndex />
-        <Component {...pageProps} />
-        <FooterIndex />
-      </Provider>
-    </QueryClientProvider>
-    
+      <QueryClientProvider client={queryClient}>
+      <ReactQueryDevtools initialIsOpen={true} /> 
+        <Provider store={store}>
+          <HeaderIndex />
+          <Component {...pageProps} />
+          <FooterIndex />
+        </Provider>
+      </QueryClientProvider>
     </>
   )
 }

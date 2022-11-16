@@ -13,7 +13,7 @@ export default function handler(
   console.log(req.method)
   const method = req.method;
   if(method === 'GET'){
-    console.log("겟 작동")
+    console.log("겟 작동?")
     return dbInstance.get(`/duo`)
     .then((_res)=> res.status(200).json(_res.data) )
     .catch((_error)=> res.status(500).json(_error) )

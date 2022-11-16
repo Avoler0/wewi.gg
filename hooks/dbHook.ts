@@ -7,7 +7,6 @@ export const dbHook = {
     get:async function(){
       return await apiInstance.get('/duo')
       .then((_res)=>{
-        console.log("레쓰비get",_res)
         return _res.data;
       })
       .catch((_error)=>{
@@ -15,14 +14,11 @@ export const dbHook = {
       })
     },
     post:async function(query:any){
-      console.log("post",query)
       return await apiInstance.post('/duo',query)
       .then((_res)=>{
-        console.log("레쓰비post",_res.data)
         return _res;
       })
       .catch((_error)=>{
-        console.log("레쓰비post error",_error)
         return {status:_error.response.status}
       })
     },

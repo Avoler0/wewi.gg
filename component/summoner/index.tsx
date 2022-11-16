@@ -21,7 +21,17 @@ export default function Summoner({searchString}:props){
   const summoner = useSelector((state:any) =>{
     return state.search.value
   })
-  console.log("데이터입니다.",data);
+  //  const {
+  //   data: summonerData,
+  //   isLoading,
+  // } = useQuery("duoRes",getDuoRes,{
+  //   onSuccess: data => {
+  //     dispatch(duoSetData(data))
+  //   },
+  //    onError: e => {
+      
+  //   }
+  // });
   async function getData(){
     return await riot.summoner(searchType,searchString).then(async (_res:any)=>{
         const { id,name,profileIconId,puuid,revisionDate,summonerLevel} = _res;

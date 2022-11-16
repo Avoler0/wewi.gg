@@ -8,7 +8,6 @@ export default function TestRender(){
   const { data: text } = useQuery('testText',()=>'' ,{
     staleTime: Infinity,
   });
-  console.log(text);
   return (
     <>
       <div style={{fontSize:"56px"}}>{text}!!</div>

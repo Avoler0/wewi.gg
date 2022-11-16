@@ -5,8 +5,9 @@ import { riotImg } from "../../../hooks/riotImageHook";
 import { timeHook } from "../../../hooks/timeHook";
 import { tierUtils } from "../../../const/utils";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { SummonerInfo } from "../../../types/riotType";
+import { useQuery } from "react-query";
 // import { getTime, timeDiff, } from "../../../commons/functionCollection";
 // import { ReactComponent as Trash } from "../../../images/icons/trash-svgrepo-com.svg"
 // import {ReactComponent as MicOn} from "/MyApp/wewi.gg/src/images/icons/mic-fill-svgrepo-com.svg"
@@ -34,6 +35,12 @@ function DuoCard({duoRes}:Props){
   const [summonerLeague, setSummonerLeague] = useState<SummonerLeague>({tier:"",rank:""});
   const report = useState(0);
   const {summoner,memo,line,password,id,mic,createdAt} = duoRes
+  
+  useMemo(()=>{console.log("듀오레스 메모",duoRes)},[duoRes])
+
+  const { data: duoDB } = useQuery('duoDB',()=>'' ,{
+    staleTime: Infinity,
+  });
   useEffect(()=>{
     riot.summoner("summoner",summoner)
     .then((_res)=>{
