@@ -3,6 +3,8 @@ import Image from "next/image";
 import styled , {css} from "styled-components";
 import { options } from "../../../../const/utils";
 import {dbHook} from "../../../../hooks/dbHook"
+import { riot } from "../../../../hooks/riotApiHook";
+import { riotImg } from "../../../../hooks/riotImageHook";
 
 type InputValid = {
   summoner: boolean,
@@ -10,17 +12,51 @@ type InputValid = {
 }
 type Line = "All" | "Top" | "Jungle" | "Bottom" | "Support"
 type Mode = "All" | "Normal" | "Solo" | "Team" | "Aram" | "Special"
-
+type Rank = {
+  tier:string,
+  rank:string
+}
+type Info = {
+  riotId:string,
+  profileIconId:number,
+  summonerLevel:number
+  soloRank:Rank,
+  teamRank:Rank,
+  threeChamp:string[]
+} | boolean;
 function DuoInput({hide}:any) {
   const [lineSelect,setLineSelect] = useState<Line>("All");
   const [gameSelect,setGameSelect] = useState<Mode>("All");
   const [micSelect,setMiceSelect] = useState<boolean>(false);
   const [inputValid,setInputValid] = useState<InputValid>({summoner:true,password:true})
-  const [postError,setPostError] = useState<boolean>(false);
-
+  const [postError,setPostError] = useState<string>('');
+  async function getSummonerInfo(nick:string){
+    const result = await riot.summoner(nick)
+    if(result){
+      const { id,profileIconId,summonerLevel } = result;
+      return Promise.all([riot.league(result.id),riot.champion.mastery(result.id,3)])
+      .then(async ([leagueRes,masteryRes])=>{
+        const champIds = masteryRes.data.map((_res:any)=> _res.championId)
+        return{
+          riotId:id,
+          profileIconId:profileIconId,
+          summonerLevel:summonerLevel,
+          soloRank:{tier:leagueRes[0]?.tier ? leagueRes[0]?.tier : 'UNRANKED',
+            rank:leagueRes[0]?.rank },
+          teamRank:{tier:leagueRes[1]?.tier ? leagueRes[1]?.tier : 'UNRANKED',
+            rank:leagueRes[1]?.rank },
+          threeChamp: await riotImg.championsId(champIds)
+        }
+      })
+    }else{
+       return false;
+    }
+    
+  }
   async function duoInputPost(event:any){
     event.preventDefault();
-    
+    const info:Info = await getSummonerInfo(event.target['summoner'].value)
+
     const query = {
       summoner: event.target['summoner'].value,
       line: lineSelect,
@@ -28,21 +64,33 @@ function DuoInput({hide}:any) {
       mic: micSelect,
       memo: event.target['memo'].value ? event.target['memo'].value : "같이할 사람 구합니다 !",
       password:event.target['password'].value,
-      createdAt: new Date().getTime()
+      createdAt: new Date().getTime(),
+      riotId:info ? info.riotId : '',
+      profileIconId:info ? info.profileIconId : '',
+      summonerLevel:info ? info.summonerLevel : '',
+      soloRank:info ? info.soloRank : '',
+      teamRank:info ? info.teamRank : '',
+      threeChamp:info ? info.threeChamp : ''
     }
 
-    if(errorValdation(query.summoner,query.password)){
-      const result = await dbHook.duo.post(query)
-      console.log("리설트",result)
-        if(result.status === 409){
-          setPostError(true);
-        }else if(result.status === 201){
-          hide()
+    if(info){
+      const validation = errorValdation(query.summoner,query.password)
+      if(validation){
+        const result = await dbHook.duo.post(query)
+        switch(result.status){
+          case 201:
+            return (
+              setPostError(''),
+              hide() 
+            );
+          default :
+            return setPostError('이미 게시된 소환사 닉네임입니다.');
         }
       }else{
-        return 
+        return setPostError('등록되지 않은 소환사 닉네임입니다.');
       }
     }
+  }
 
   function errorValdation(name:string,pw:string){
     let nameError = false;
@@ -77,17 +125,16 @@ function DuoInput({hide}:any) {
   }
   
   return (
-    <>
     <Wrap>
       <Head>
         <CardName>소환사 등록하기</CardName>
         <Xbutton onClick={hide}>X</Xbutton>
       </Head>
-      <Form onSubmit={duoInputPost} id="myForm" name="myForm">
+      <Form onSubmit={duoInputPost}>
         <div>
           <Label htmlFor="summoner" style={{display:"inline",marginRight:"0.8rem"}}>소환사 명</Label>
           {inputValid.summoner ? null : <InputError style={{display:"inline"}}>소환사 닉네임을 입력 해 주세요.</InputError>}
-          {postError ? <InputError style={{display:"inline"}}>이미 게시된 소환사 닉네임입니다.</InputError> : null}
+          <InputError style={{display:"inline"}}>{postError}</InputError>
         </div>
         <Input type="text" name="summoner"/>
         <ColumnMiddle>
@@ -132,8 +179,6 @@ function DuoInput({hide}:any) {
         </ExitWrap>
       </Form>
     </Wrap>
-    {/* {postState.window && <OverlayMessage setPostState={setPostState} postState={postState}/> } */}
-    </>
   );
 }
 

@@ -9,9 +9,9 @@ type Filter = {
 const duoFilter = createSlice({
   name:'duoFilter',
   initialState:{
-    tier:"all",
-    mode:"all",
-    line:"all"
+    tier:"All",
+    mode:"All",
+    line:"All"
   },
   reducers:{
     duoSetFilter:(state:Filter,action:PayloadAction<any>) => {

@@ -5,7 +5,7 @@ import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import {duoSetFilter} from "../../../redux/duo/filter"
 import useModal from "../../../hooks/useModal";
-import Modal from "../modal/modal";
+import DuoModal from "../modal/modal";
 import { options } from "../../../const/utils";
 
 type FilterState = {
@@ -54,7 +54,7 @@ export default function DuoFilter(){
       <Column>
         <AddButton onClick={toggle}>등록</AddButton>
       </Column>
-      {isShowing && <Modal isShowing={isShowing} hide={toggle} message={"하이"} />}
+      {isShowing && <DuoModal isShowing={isShowing} hide={toggle} method="ADD" />}
     </Filter>
   )
 }

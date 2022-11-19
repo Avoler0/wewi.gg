@@ -36,7 +36,7 @@ export const riotImg = {
         return chapionName
       }
     })
-    return result.map((value)=> `http://ddragon.leagueoflegends.com/cdn/12.9.1/img/champion/${value.replace(' ','')}.png`)
+    return result.map((value)=> `http://ddragon.leagueoflegends.com/cdn/12.9.1/img/champion/${value.replace(/[']|\s/,'')}.png` )
   },
   item:function(itemId:number){
     return `http://ddragon.leagueoflegends.com/cdn/12.9.1/img/item/${itemId}.png`

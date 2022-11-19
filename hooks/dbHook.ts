@@ -5,7 +5,7 @@ import { apiInstance } from "./axiosInstance";
 export const dbHook = {
   duo:{
     get:async function(){
-      return await apiInstance.get('/duo')
+      return await apiInstance.get('/database/duo')
       .then((_res)=>{
         return _res.data;
       })
@@ -14,7 +14,7 @@ export const dbHook = {
       })
     },
     post:async function(query:any){
-      return await apiInstance.post('/duo',query)
+      return await apiInstance.post('/database/duo',query)
       .then((_res)=>{
         return _res;
       })
@@ -22,8 +22,8 @@ export const dbHook = {
         return {status:_error.response.status}
       })
     },
-    delete:async function(id:string){
-      return await apiInstance.delete('/duo',id)
+    delete:async function(id:number){
+      return await apiInstance.delete('/database/duo',{data:{id:id}})
       .then((_res)=>{
         return _res;
       })

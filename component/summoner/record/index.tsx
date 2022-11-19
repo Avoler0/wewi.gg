@@ -35,17 +35,15 @@ export default function Record({matchList,puuid}:props) {
     if(isLoading){
       (async()=>{
         const result:any = await Promise.all(
-          matchList.map((match:string)=>{
-            return riot.record(match)
-            .then((_res:any)=>{
-              const response = _res.data
-              
-              return response
-            })
-            .catch((_error:any)=>{
-              console.log("record failed",_error);
-              return _error
-            })
+          matchList.map(async (match:string)=>{
+            try {
+              const _res:any = await riot.matchDetail(match);
+              const response = _res.data;
+              return response;
+            } catch (_error) {
+              console.log("record failed", _error);
+              return _error;
+            }
           })
         ) 
         const resultDetail = result.map((data: any)=>{

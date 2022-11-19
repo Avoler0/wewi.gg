@@ -1,5 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
-import { riotApi } from '../../../hooks/axiosInstance';
+import { riotApi } from '../../../../../hooks/axiosInstance';
 
 
 type Data = {

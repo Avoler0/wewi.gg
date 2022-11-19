@@ -1,26 +1,27 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import styled from "styled-components";
-import DuoInput from "./add";
+import DuoInput from "./add/duoAdd";
 
 type Props = {
   isShowing: boolean,
   hide: Function,
-  message:string
+  method:'ADD' | 'DELETE'
 }
-function Modal({ isShowing, hide, message }:Props){
+function DuoModal({ isShowing, hide, method }:Props){
   function handler(event:any){
     event.stopPropagation(); 
-    console.log("버블링?")
     hide()
   }
+  
   return(
     isShowing
     ? ReactDOM.createPortal(
         <>
           <Overlay onClick={handler} />
           <ModalLayOut>
-            <DuoInput hide={hide} />
+            {method === 'ADD' && <DuoInput hide={hide} />}
+            {method === 'DELETE' && <DuoInput hide={hide} />}
           </ModalLayOut>
         </>
         ,
@@ -29,7 +30,7 @@ function Modal({ isShowing, hide, message }:Props){
   )
 }
 
-export default Modal;
+export default DuoModal;
 
 const Overlay = styled.div`
   position: absolute;

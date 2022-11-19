@@ -1,25 +1,34 @@
 import styled from "styled-components";
 import Image from "next/image";
-import { riot } from "../../../hooks/riotApiHook";
 import { riotImg } from "../../../hooks/riotImageHook";
 import { timeHook } from "../../../hooks/timeHook";
-import { tierUtils } from "../../../const/utils";
+import { filterName, tierUtils } from "../../../const/utils";
 import Link from "next/link";
-import { useEffect, useMemo, useState } from "react";
-import { SummonerInfo } from "../../../types/riotType";
-import { useQuery } from "react-query";
+import React, { useState } from "react";
+import filter from "../../../redux/duo/filter";
 // import { getTime, timeDiff, } from "../../../commons/functionCollection";
 // import { ReactComponent as Trash } from "../../../images/icons/trash-svgrepo-com.svg"
 // import {ReactComponent as MicOn} from "/MyApp/wewi.gg/src/images/icons/mic-fill-svgrepo-com.svg"
 // import {ReactComponent as MicOff} from "/MyApp/wewi.gg/src/images/icons/mic-mute-fill-svgrepo-com.svg"
+type Rank = {
+  tier:string,
+  rank:string
+}
 type DuoRes = {
   summoner:string,
   memo:string,
   line:string,
+  mode:string,
   password:number,
   id:number,
   mic:boolean,
   createdAt:number
+  profileIconId:number,
+  riotId:string,
+  summonerLevel:number,
+  soloRank:Rank,
+  teamRank:Rank,
+  threeChamp:string[]
 }
 type Props = {
   duoRes:DuoRes
@@ -30,74 +39,74 @@ type SummonerLeague = {
 }
 function DuoCard({duoRes}:Props){
   const [isLoading,setIsLoading] = useState(true);
-  const [summonerInfo,setSummonerInfo] = useState<SummonerInfo|undefined>();
-  const [champPath,setChampPath] = useState<string[]>([]);
-  const [summonerLeague, setSummonerLeague] = useState<SummonerLeague>({tier:"",rank:""});
   const report = useState(0);
-  const {summoner,memo,line,password,id,mic,createdAt} = duoRes
+  const {summoner,mode,memo,line,password,id,mic,createdAt,profileIconId,riotId,summonerLevel,soloRank,teamRank,threeChamp} = duoRes;
+  const soloRankValue = tierUtils.value(soloRank.tier);
+  const teamRankValue = tierUtils.value(teamRank.tier);
+  const rank = soloRankValue > teamRankValue ? soloRank : teamRank;
   
-  useMemo(()=>{console.log("듀오레스 메모",duoRes)},[duoRes])
-
-  const { data: duoDB } = useQuery('duoDB',()=>'' ,{
-    staleTime: Infinity,
-  });
-  useEffect(()=>{
-    riot.summoner("summoner",summoner)
-    .then((_res)=>{
-      setSummonerInfo(_res)
-      Promise.all([riot.champion.mastery(_res.id,3),riot.league(_res.id)])
-      .then(([champIds,league]) => {
-        const champIdArr = champIds.data.map((data:any)=> data.championId)
-        riotImg.championsId(champIdArr).then((_res)=>{
-          setChampPath(_res)
-        })
-        setSummonerLeague({tier:league[1].tier,rank:league[1].rank})
-        setIsLoading(false)
-      })
-    })
-  },[])
-  if(isLoading) return <div>불러오기 실패</div>;
-
+  function cardDelete(){
+    
+  }
+  // 티어 필터 ! , 카드 디자인 변경
+  function rankSlice(tier:string){
+    switch(tier){
+      case 'MASTER':
+        return false;
+      case 'GRANDMASTER':
+        return false;
+      case 'CHALLENGER':
+        return false;
+      case 'UNRANKED':
+        return false;
+      default :
+        return true;
+    }
+  }
   
+  // if(isLoading) return <div>불러오기 실패</div>;
   return (
     <Wrap >
       <Profile_Inner>
-        <Info_Layer>
-          <ProfileIcon imgPath={riotImg.profile(summonerInfo.profileIconId)}>
-            <div />
-          </ProfileIcon>
-          <Info>
-            <Info_Column>
-              <NickName nameLength={summoner.length}>
+        <Info_Inner>
+            <Link href={`summoner/${summoner}`}>
+              <ProfileIcon imgPath={riotImg.profile(profileIconId)}>
+                <div />
+              </ProfileIcon>
+            </Link>
+          <Info_Layer>
+            <NickName nameLength={summoner.length}>
                 <Link href={`summoner/${summoner}`}>{summoner}</Link>
-              </NickName>
-              <Level><span>Lv. {summonerInfo.summonerLevel}</span></Level>
-            </Info_Column>
-            <Info_Column >
-              <Tier tierColor={tierUtils.color(summonerLeague?.tier)}>
-                {summonerLeague?.tier ? (
+            </NickName>
+            <Info_Column>
+              <Level><span>Lv. {summonerLevel}</span></Level>
+              <Tier tierColor={tierUtils.color(rank?.tier)} tierSize={rank?.tier.length}>
+                {rank?.tier && (
                   <>
-                    <div className="tier main">{summonerLeague?.tier}</div>
-                    <div className="tier number">{summonerLeague?.rank}</div>
+                    <div className="tier main">{rank?.tier}</div>
+                    <div className="tier number">{rankSlice(rank?.tier) ? String(rank?.rank).length : null}</div>
                   </>
-                ) : <div>unranked</div>}
-                
+                )}
               </Tier>
+            </Info_Column>
+            <Info_Column style={{display:"flex",justifyContent: 'space-between'}}>
+              <Mode>
+                <div>{filterName.mode(mode)}</div>
+              </Mode>
               <MicCheck>
                 <div className="mic text">마이크</div>
-                {/* <div className="mic check">{mic ? "On" : "Off"}</div> */}
                 <MicCircle mic={mic}/>
               </MicCheck>
             </Info_Column>
-          </Info>
-        </Info_Layer>
+          </Info_Layer>
+        </Info_Inner>
         <Game_Layer under={false} >
-          <Game_Info className="Game_Info">
+          <Game className="Game_Info">
             <Line>
               <Image src={`/images/line-icons/Line-${duoRes.line}-Ico.png`} alt="line" layout="fill" objectFit="cover" />
             </Line>
             <Champ>
-              {champPath.map((path,idx)=>{
+              {threeChamp?.map((path,idx)=>{
                 return (
                   <div key={idx}>
                     <Image src={path} alt="line" layout="fill" objectFit="cover"/>
@@ -105,29 +114,27 @@ function DuoCard({duoRes}:Props){
                 )
               })}
             </Champ>
-            {/* <BoardWinRate>{winningRate}</BoardWinRate> */}
-            {/* <BoardChamp>최근챔 3개</BoardChamp> */}
-            {/* <BoardMic>{duoRes.IsMic ? <MicOn style={{fill:"red"}}/>:<MicOff style={{fill:"red"}}/>}</BoardMic> */}
-          </Game_Info>
+          </Game>
         </Game_Layer>
       </Profile_Inner>
       <Content_Inner>
         <Memo_Layer>
           <span>{memo}</span>
         </Memo_Layer>
-        <BoardFooter>
-          <BoardReport>
-            {/* <Link to="/reportView">신고 누적 : {report}회</Link> */}
-          </BoardReport>
-          <BoardTime>
+        <Footer_Layer>
+          <Time>
             {<span>{timeHook.otherDay(createdAt)}</span>  }
-          </BoardTime>
-        </BoardFooter>
+          </Time>
+          <Report>
+            {/* <Link to="/reportView">신고 누적 : {report}회</Link> */}
+          </Report>
+          <Delete onClick={cardDelete}>삭제</Delete>
+        </Footer_Layer>
       </Content_Inner>
     </Wrap>
   )
 }
-export default DuoCard;
+export default React.memo(DuoCard);
 
 
 const Wrap = styled.div`
@@ -138,11 +145,14 @@ const Wrap = styled.div`
   border-radius: 15px ;
   color: white;
 `;
+const Delete = styled.div`
+
+`;
 const Profile_Inner = styled.div`
-  padding: 0.4rem 0.3rem 0 0.3rem;
+  padding: 0.4rem 0 0 0.3rem;
   border-bottom: solid 1px rgba(123,122,142,1);
 `;
-const Info_Layer = styled.div`
+const Info_Inner = styled.div`
   display: flex;
   align-items: center;
   margin-bottom: 0.3rem;
@@ -163,35 +173,45 @@ const ProfileIcon = styled.div<{imgPath:string}>`
     background-size: contain;
   }
 `;
-const Info = styled.div`
-  display: flex;
-  justify-content: space-between;
-  width: 100%;
-  margin-left: 1rem;
-`;
-const Info_Column = styled.div`
+const Info_Layer = styled.div`
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: space-between;
+  width: 100%;
+  margin-left: 0.5rem;
+`;
+const Info_Column = styled.div`
   width: 100%;
   height: 100%;
-`;
-const Tier = styled.div<{tierColor:string}>`
   font-size: 13px;
-  width: 55px;
+`;
+const NickName = styled.div<{nameLength:number}>`
+  width: 100%;
+  font-size: 14px;
+  font-weight: 800;
+  cursor: pointer;
+`;
+const Level = styled.span`
+  display: inline-block;
+  font-size: 12px;
+  color:#cec7c7;
+`;
+const Tier = styled.div<{tierColor:string,tierSize:number}>`
+  display: inline-block;
+  margin-left: 0.3rem;
+  font-size: 12px;
   color: ${props => props.tierColor};
   .tier{
     display: inline-block;
   }
-
   .tier.number{
-    margin-left: 0.2rem;
+    margin-left: 0.2rem
   }
 `;
 const MicCheck = styled.div`
-  display: flex;
-  align-items: center;
+  display: inline-block;
   font-size: 13px;
+  margin-right: 0.5rem;
   .mic{
     display: inline-block;
   }
@@ -201,24 +221,19 @@ const MicCheck = styled.div`
 
 `;
 const MicCircle = styled.div<{mic:boolean}>`
-  margin-left: 0.3rem;
   display: inline-block;
+  margin-left: 0.2rem;
   width: 12px;
   height: 12px;
   border-radius: 10px;
   background-color: ${props => props.mic ? "green" : "red"};
 `;
-
-const NickName = styled.div<{nameLength:number}>`
-  font-size: ${props => props.nameLength > 3 ? "12px" : "14px"};
-  font-weight: 800;
-  cursor: pointer;
+const Mode = styled.div`
+  display: inline-block;
 `;
 
-const Level = styled.span`
-  font-size: 12px;
-  color:#cec7c7;
-`;
+
+
 
 const Game_Layer = styled.div<{under:boolean}>`
   align-items: center;
@@ -232,10 +247,10 @@ const Content_Inner = styled.div`
 `;
 
 const Memo_Layer = styled.div`
-  text-align: center;
+  text-align: left;
 `;
 
-const BoardFooter = styled.div`
+const Footer_Layer = styled.div`
   position: absolute;
   font-size: 12px;
   display: flex;
@@ -247,25 +262,20 @@ const BoardFooter = styled.div`
   color: rgba(255,255,255,0.7)
 `;
 
-const BoardTime = styled.div`
+const Time = styled.div`
   font-weight: 400;
 `;
 
-const BoardReport = styled.div`
+const Report = styled.div`
   
 `;
 
 
-const Middle = styled.div`
-  display: flex;
-  width: 100%;
-  padding-bottom: 5px;
-  border-bottom: solid 1px white;
-`;
+
 const BoardDelete = styled.div``
 
 ;
-const Game_Info = styled.div`
+const Game = styled.div`
   display:flex ;
   justify-content: space-between;
 `;
@@ -293,21 +303,6 @@ const Champ = styled.div`
     border-radius: 1rem;
   }
 `;
-const BoardWinRate = styled.div`
-  padding-top: 10px;
-  font-size: 12px;
-  margin-right: 5px;
-`;
-const BoardChamp = styled.div`
-  padding-top: 10px;
-  font-size: 13px;
-`;
-const BoardMic = styled.div`
-  padding-top: 10px;
-  position: absolute;
-  right: 0;
-`;
-const BoardLineIcon = styled.img`
-  width: 100%;
-`;
+
+
 

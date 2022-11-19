@@ -5,27 +5,23 @@ type valueType = string | string[]
 
 
 export const riot = {
-  summoner:async function(type:searchType,value:valueType){
+  summoner:async function(value:valueType){
     return await apiInstance({
-      url:`/search/summoner/name/`,
+      url:`/riot/summoner/info/`,
       params:{
-        type:type,
         value:value
       }
     }).then((_res)=>{
       return _res.data;
     }).catch((_error)=>{
-      const status = _error.response.status
-      if(status === 404){
-        return "not find"
-      }
-      return _error
+      console.log(_error)
+      return false;
     })
   },
   champion:{
     mastery:async function(id:string,count?:number) {
       return await apiInstance({
-        url:'/champion/mastery/',
+        url:'riot/champion/mastery/',
         params:{
           id:id,
           count:count
@@ -37,7 +33,7 @@ export const riot = {
   matchList:async function (puuid:string,start:number,end:number) {
     console.log("매치리스트 실행");
     return await apiInstance({
-      url:'/search/summoner/match/',
+      url:'/riot/summoner/match/list',
       params:{
           puuid:puuid,
           start:0,
@@ -52,7 +48,7 @@ export const riot = {
   league:async function(id:string) {
     console.log("리그 실행");
     return await apiInstance({
-      url:'/search/summoner/league/',
+      url:'/riot/summoner/league/',
       params:{
         id:id
       }
@@ -63,10 +59,10 @@ export const riot = {
     })
     
   },
-  record: function (match:string) {
+  matchDetail: function (match:string) {
     return new Promise((resolve,rejects)=>{
       apiInstance({
-          url:'/record/',
+          url:'/riot/summoner/match/detail/',
           params:{
             match:match
           }

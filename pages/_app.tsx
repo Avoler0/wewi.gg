@@ -15,7 +15,7 @@ function MyApp({ Component, pageProps }: AppProps) {
   return (
     <>
       <QueryClientProvider client={queryClient}>
-      <ReactQueryDevtools initialIsOpen={true} /> 
+      {/* <ReactQueryDevtools initialIsOpen={true} />  */}
         <Provider store={store}>
           <HeaderIndex />
           <Component {...pageProps} />

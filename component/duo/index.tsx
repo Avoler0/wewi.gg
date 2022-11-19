@@ -1,7 +1,9 @@
-import { useEffect } from "react";
-import { useQuery } from "react-query";
+import React from "react";
+import { useCallback, useEffect } from "react";
+import { isError, useQuery } from "react-query";
 import { useSelector } from "react-redux";
 import styled from "styled-components";
+import { tierUtils } from "../../const/utils";
 import { dbHook } from "../../hooks/dbHook";
 import {  _DuoData } from "../../redux/duo/data";
 import DuoCard from "./card/card";
@@ -12,35 +14,52 @@ type DuoData = {
 }
 
 export default function DuoIndex() {
-  const {data:duoDB,isLoading} = useQuery('duoDB',async () => await dbHook.duo.get());
+  const {status,data:duoDB,isLoading} = useQuery('duoDB',async () => await dbHook.duo.get());
   const filter = useSelector((state:Filter) => {
     return state.duoFilter
   })
   
-
-      
-  
   useEffect(()=>{
-    console.log("필터 변경",filter)
-  },[filter])
+   console.log("듀오 디비 변경됨")
+    
+  },[duoDB])
   
+  
+
+  function filterling(res:any){
+    const {mode,line} = filter;
+    const tier = filter.tier.toUpperCase();
+    const soloRankValue = tierUtils.value(res.soloRank.tier);
+    const teamRankValue = tierUtils.value(res.teamRank.tier);
+    const resTier = soloRankValue > teamRankValue ? res.soloRank.tier : res.teamRank.tier;
+
+    const is = {
+      tier:false,
+      mode:false,
+      line:false
+    }
+    
+    if(mode === res.mode || mode == 'All' || res.mode == 'All') is.mode = true;
+    if(line === res.line || line == 'All' || res.line == 'All') is.line = true;
+    if(tier === resTier || tier == 'ALL') is.tier = true;
+    
+    return is.tier && is.mode && is.line
+  }
   if(isLoading) return <div>데이터 서버 접속 실패</div>
   return (
-    <>
-      <Container>
-        <Wrapper >
-          <DuoFilter />
-            <BoardLayOut>
-              {duoDB &&
-               duoDB.map((res:any)=> <DuoCard key={res.id} duoRes={res} />)}
-            </BoardLayOut>
-          </Wrapper>
-      </Container>
-      {/* {overlayMatch ? <DuoInput /> : null} */}
-      {/* {deleteState ? <DuoDelete setDeleteState={setDeleteState} setMatchPw={setMatchPw} deletePw={deletePw}/> : null} */}
-    </>
+    <Container>
+      <Wrapper >
+        <DuoFilter />
+          <BoardLayOut>
+            {duoDB?.map((res:any)=> filterling(res) ? <DuoCard key={res.id} duoRes={res} /> : null )}
+          </BoardLayOut>
+        </Wrapper>
+    </Container>
   );
 }
+
+
+
 const Container = styled.div`
   width: 100%;
   height: 100%;
