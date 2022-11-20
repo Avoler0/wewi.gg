@@ -23,6 +23,7 @@ export const dbHook = {
       })
     },
     delete:async function(id:number){
+      console.log("델리트")
       return await apiInstance.delete('/database/duo',{data:{id:id}})
       .then((_res)=>{
         return _res;

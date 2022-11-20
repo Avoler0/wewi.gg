@@ -14,7 +14,7 @@ type DuoData = {
 }
 
 export default function DuoIndex() {
-  const {status,data:duoDB,isLoading} = useQuery('duoDB',async () => await dbHook.duo.get());
+  const {data:duoDB,isLoading} = useQuery('duoDB',async () => await dbHook.duo.get());
   const filter = useSelector((state:Filter) => {
     return state.duoFilter
   })

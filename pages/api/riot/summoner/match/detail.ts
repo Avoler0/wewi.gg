@@ -18,9 +18,9 @@ export default function handler(
     return res.status(200).json(_res.data);
   })
   .catch((_error)=>{
-    console.log("매치 디테일 에러",_error.response.data.status.status_code);
+    console.log("매치 디테일 에러",_error.status);
     
-    return res.status(_error.response.data.status.status_code);
+    return res.status(_error.status);
   })
   },300)
 }

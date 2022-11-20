@@ -30,6 +30,7 @@ function DuoInput({hide}:any) {
   const [micSelect,setMiceSelect] = useState<boolean>(false);
   const [inputValid,setInputValid] = useState<InputValid>({summoner:true,password:true})
   const [postError,setPostError] = useState<string>('');
+
   async function getSummonerInfo(nick:string){
     const result = await riot.summoner(nick)
     if(result){
@@ -81,7 +82,7 @@ function DuoInput({hide}:any) {
           case 201:
             return (
               setPostError(''),
-              hide() 
+              window.location.replace("/duo")
             );
           default :
             return setPostError('이미 게시된 소환사 닉네임입니다.');

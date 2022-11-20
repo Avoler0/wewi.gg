@@ -7,7 +7,7 @@ import { queueUtils } from "../../../const/utils";
 import { timeHook } from "../../../hooks/timeHook";
 
 type props = {
-  detail:Detail
+  match:string
 }
 
 type Detail = {
@@ -21,7 +21,7 @@ type Detail = {
   gameLengthTime:number
   win:boolean
 }
-export default function RecordCard({detail}:props) {
+export default function RecordCard({match}:props) {
   const { gameCreation,gameDuration,gameStartTimestamp,gameEndTimestamp,participants,teamKill,queueId,gameLengthTime,win  } = detail;
 
   // console.log("카드 디테일",detail);

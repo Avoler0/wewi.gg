@@ -1,32 +1,6 @@
 {
   "duo": [
     {
-      "summoner": "스쿵씨",
-      "line": "All",
-      "mode": "All",
-      "mic": false,
-      "memo": "같이할 사람 구합니다 !",
-      "password": "1111",
-      "createdAt": 1668739901819,
-      "riotId": "rPFgYXdzYa-eXaxBbcE5V-XbxjoTm_klJeI2bEDvUP34eA",
-      "profileIconId": 4560,
-      "summonerLevel": 288,
-      "soloRank": {
-        "tier": "GOLD",
-        "rank": "III"
-      },
-      "teamRank": {
-        "tier": "GOLD",
-        "rank": "II"
-      },
-      "threeChamp": [
-        "http://ddragon.leagueoflegends.com/cdn/12.9.1/img/champion/Blitzcrank.png",
-        "http://ddragon.leagueoflegends.com/cdn/12.9.1/img/champion/LeeSin.png",
-        "http://ddragon.leagueoflegends.com/cdn/12.9.1/img/champion/Shaco.png"
-      ],
-      "id": 1
-    },
-    {
       "summoner": "내덕동팬티도둑",
       "line": "All",
       "mode": "All",
@@ -78,42 +52,40 @@
       "id": 3
     },
     {
-      "summoner": "기간티아",
-      "line": "Jungle",
+      "summoner": "스쿵씨",
+      "line": "All",
       "mode": "All",
       "mic": false,
       "memo": "같이할 사람 구합니다 !",
-      "password": "4444",
-      "createdAt": 1668739931903,
-      "riotId": "Raphx-GuNsKvT0O4E39KzQlg72XjjY5HNutmoAtTFFi6WQxrbRwL3POWaA",
-      "profileIconId": 839,
-      "summonerLevel": 169,
+      "password": "1234",
+      "createdAt": 1668932591838,
+      "riotId": "rPFgYXdzYa-eXaxBbcE5V-XbxjoTm_klJeI2bEDvUP34eA",
+      "profileIconId": 4560,
+      "summonerLevel": 288,
       "soloRank": {
-        "tier": "MASTER",
-        "rank": "I"
+        "tier": "UNRANKED"
       },
       "teamRank": {
-        "tier": "GOLD",
-        "rank": "II"
+        "tier": "UNRANKED"
       },
       "threeChamp": [
+        "http://ddragon.leagueoflegends.com/cdn/12.9.1/img/champion/Blitzcrank.png",
         "http://ddragon.leagueoflegends.com/cdn/12.9.1/img/champion/LeeSin.png",
-        "http://ddragon.leagueoflegends.com/cdn/12.9.1/img/champion/RekSai.png",
-        "http://ddragon.leagueoflegends.com/cdn/12.9.1/img/champion/Rengar.png"
+        "http://ddragon.leagueoflegends.com/cdn/12.9.1/img/champion/Shaco.png"
       ],
       "id": 4
     },
     {
       "summoner": "자크헤카림",
-      "line": "Jungle",
-      "mode": "Solo",
+      "line": "All",
+      "mode": "All",
       "mic": false,
       "memo": "같이할 사람 구합니다 !",
-      "password": "6666",
-      "createdAt": 1668739960566,
+      "password": "1234",
+      "createdAt": 1668932764761,
       "riotId": "yyJnZGbSdd18c8EEgF9ZK5IAyjJ7u7tB9Og4zaT368Kp_0KOcAoU_4mcZg",
       "profileIconId": 18,
-      "summonerLevel": 55,
+      "summonerLevel": 57,
       "soloRank": {
         "tier": "GRANDMASTER",
         "rank": "I"
@@ -127,130 +99,6 @@
         "http://ddragon.leagueoflegends.com/cdn/12.9.1/img/champion/Zac.png"
       ],
       "id": 5
-    },
-    {
-      "summoner": "ruanxiu",
-      "line": "Mid",
-      "mode": "Solo",
-      "mic": true,
-      "memo": "빡겜러 구합니다.",
-      "password": "1234",
-      "createdAt": 1668740024737,
-      "riotId": "me18IWIYHuWuixLpt5mOO52N946Gcu1JTpo2mfx40nujWIqwWigsOwRpEw",
-      "profileIconId": 4302,
-      "summonerLevel": 80,
-      "soloRank": {
-        "tier": "CHALLENGER",
-        "rank": "I"
-      },
-      "teamRank": {
-        "tier": "UNRANKED"
-      },
-      "threeChamp": [
-        "http://ddragon.leagueoflegends.com/cdn/12.9.1/img/champion/Akali.png",
-        "http://ddragon.leagueoflegends.com/cdn/12.9.1/img/champion/Syndra.png",
-        "http://ddragon.leagueoflegends.com/cdn/12.9.1/img/champion/Taliyah.png"
-      ],
-      "id": 6
-    },
-    {
-      "summoner": "청주핵버섯",
-      "line": "Top",
-      "mode": "Team",
-      "mic": false,
-      "memo": "티모만 합니다",
-      "password": "1234",
-      "createdAt": 1668740048659,
-      "riotId": "iIrDfBZWARr5rpRVJynBlIEGmnxQAwcDt8CPiYdCVK2z1GA",
-      "profileIconId": 3377,
-      "summonerLevel": 21,
-      "soloRank": {
-        "tier": "UNRANKED"
-      },
-      "teamRank": {
-        "tier": "UNRANKED"
-      },
-      "threeChamp": [
-        "http://ddragon.leagueoflegends.com/cdn/12.9.1/img/champion/MasterYi.png",
-        "http://ddragon.leagueoflegends.com/cdn/12.9.1/img/champion/Teemo.png",
-        "http://ddragon.leagueoflegends.com/cdn/12.9.1/img/champion/Varus.png"
-      ],
-      "id": 7
-    },
-    {
-      "summoner": "serifu",
-      "line": "Bottom",
-      "mode": "Solo",
-      "mic": false,
-      "memo": "같이할 사람 구합니다 !",
-      "password": "1234",
-      "createdAt": 1668769430881,
-      "riotId": "ndBZbqKhMGqJuo1X5kuU5UlgrHJUXeJ0dSbD0n-aVXvMXiE",
-      "profileIconId": 4763,
-      "summonerLevel": 386,
-      "soloRank": {
-        "tier": "UNRANKED"
-      },
-      "teamRank": {
-        "tier": "UNRANKED"
-      },
-      "threeChamp": [
-        "http://ddragon.leagueoflegends.com/cdn/12.9.1/img/champion/Ezreal.png",
-        "http://ddragon.leagueoflegends.com/cdn/12.9.1/img/champion/Yasuo.png",
-        "http://ddragon.leagueoflegends.com/cdn/12.9.1/img/champion/Zed.png"
-      ],
-      "id": 8
-    },
-    {
-      "summoner": "OperChromite",
-      "line": "All",
-      "mode": "All",
-      "mic": false,
-      "memo": "같이할 사람 구합니다 !",
-      "password": "1234",
-      "createdAt": 1668769502951,
-      "riotId": "RjOZ4hntsvH9PMkRur3yBdz2yHhhAowToHaCW4oZT6b0W6YVsH39PqpSEw",
-      "profileIconId": 5212,
-      "summonerLevel": 71,
-      "soloRank": {
-        "tier": "PLATINUM",
-        "rank": "IV"
-      },
-      "teamRank": {
-        "tier": "SILVER",
-        "rank": "III"
-      },
-      "threeChamp": [
-        "http://ddragon.leagueoflegends.com/cdn/12.9.1/img/champion/Galio.png",
-        "http://ddragon.leagueoflegends.com/cdn/12.9.1/img/champion/Rammus.png",
-        "http://ddragon.leagueoflegends.com/cdn/12.9.1/img/champion/Talon.png"
-      ],
-      "id": 9
-    },
-    {
-      "summoner": "가나다라",
-      "line": "All",
-      "mode": "Team",
-      "mic": false,
-      "memo": "같이할 사람 구합니다 !",
-      "password": "1234",
-      "createdAt": 1668817895975,
-      "riotId": "BrLMtBoGUtvsFVtMGJlC16YgCPqVkbZak0zFR8oBoll2Ow",
-      "profileIconId": 871,
-      "summonerLevel": 162,
-      "soloRank": {
-        "tier": "SILVER",
-        "rank": "IV"
-      },
-      "teamRank": {
-        "tier": "UNRANKED"
-      },
-      "threeChamp": [
-        "http://ddragon.leagueoflegends.com/cdn/12.9.1/img/champion/Anivia.png",
-        "http://ddragon.leagueoflegends.com/cdn/12.9.1/img/champion/MissFortune.png",
-        "http://ddragon.leagueoflegends.com/cdn/12.9.1/img/champion/Tristana.png"
-      ],
-      "id": 10
     }
   ]
 }

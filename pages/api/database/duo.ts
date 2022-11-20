@@ -30,10 +30,21 @@ export default function handler(
             return res.status(201).json(_res.data,)
           })
           .catch((_error)=>{
-            console.log("에러",_error.response.data.status.status_code)
-          return res.status(_error.response.data.status.status_code).json(_error);
+            console.log("에러",_error.response.data.status)
+          return res.status(_error.response.data.status).json(_error);
         })
       }
+    })
+  }else if(method === 'DELETE'){
+    console.log('온거',method,req.body.id)
+    return dbInstance.delete('/duo/'+req.body.id)
+    .then((_res)=>{
+      // console.log(_res)
+      return res.status(201).json(_res.data,)
+    })
+    .catch((_error)=>{
+      console.log("에러",_error,_error.response.status)
+      return res.status(_error.response.status).json(_error);
     })
   }
   

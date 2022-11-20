@@ -4,12 +4,9 @@ import { riotImg } from "../../../hooks/riotImageHook";
 import { timeHook } from "../../../hooks/timeHook";
 import { filterName, tierUtils } from "../../../const/utils";
 import Link from "next/link";
-import React, { useState } from "react";
-import filter from "../../../redux/duo/filter";
-// import { getTime, timeDiff, } from "../../../commons/functionCollection";
-// import { ReactComponent as Trash } from "../../../images/icons/trash-svgrepo-com.svg"
-// import {ReactComponent as MicOn} from "/MyApp/wewi.gg/src/images/icons/mic-fill-svgrepo-com.svg"
-// import {ReactComponent as MicOff} from "/MyApp/wewi.gg/src/images/icons/mic-mute-fill-svgrepo-com.svg"
+import React, { useEffect, useState } from "react";
+import DuoDelete from "../modal/delete/duoDelete";
+
 type Rank = {
   tier:string,
   rank:string
@@ -38,16 +35,12 @@ type SummonerLeague = {
   rank:string
 }
 function DuoCard({duoRes}:Props){
-  const [isLoading,setIsLoading] = useState(true);
-  const report = useState(0);
+  const [showDelete,setShowDelete] = useState(false);
   const {summoner,mode,memo,line,password,id,mic,createdAt,profileIconId,riotId,summonerLevel,soloRank,teamRank,threeChamp} = duoRes;
   const soloRankValue = tierUtils.value(soloRank.tier);
   const teamRankValue = tierUtils.value(teamRank.tier);
   const rank = soloRankValue > teamRankValue ? soloRank : teamRank;
-  
-  function cardDelete(){
-    
-  }
+
   // 티어 필터 ! , 카드 디자인 변경
   function rankSlice(tier:string){
     switch(tier){
@@ -63,75 +56,81 @@ function DuoCard({duoRes}:Props){
         return true;
     }
   }
-  
-  // if(isLoading) return <div>불러오기 실패</div>;
+
   return (
-    <Wrap >
-      <Profile_Inner>
-        <Info_Inner>
-            <Link href={`summoner/${summoner}`}>
-              <ProfileIcon imgPath={riotImg.profile(profileIconId)}>
-                <div />
-              </ProfileIcon>
-            </Link>
-          <Info_Layer>
-            <NickName nameLength={summoner.length}>
-                <Link href={`summoner/${summoner}`}>{summoner}</Link>
-            </NickName>
-            <Info_Column>
-              <Level><span>Lv. {summonerLevel}</span></Level>
-              <Tier tierColor={tierUtils.color(rank?.tier)} tierSize={rank?.tier.length}>
-                {rank?.tier && (
-                  <>
-                    <div className="tier main">{rank?.tier}</div>
-                    <div className="tier number">{rankSlice(rank?.tier) ? String(rank?.rank).length : null}</div>
-                  </>
-                )}
-              </Tier>
-            </Info_Column>
-            <Info_Column style={{display:"flex",justifyContent: 'space-between'}}>
-              <Mode>
-                <div>{filterName.mode(mode)}</div>
-              </Mode>
-              <MicCheck>
-                <div className="mic text">마이크</div>
-                <MicCircle mic={mic}/>
-              </MicCheck>
-            </Info_Column>
-          </Info_Layer>
-        </Info_Inner>
-        <Game_Layer under={false} >
-          <Game className="Game_Info">
-            <Line>
-              <Image src={`/images/line-icons/Line-${duoRes.line}-Ico.png`} alt="line" layout="fill" objectFit="cover" />
-            </Line>
-            <Champ>
-              {threeChamp?.map((path,idx)=>{
-                return (
-                  <div key={idx}>
-                    <Image src={path} alt="line" layout="fill" objectFit="cover"/>
-                  </div>
-                )
-              })}
-            </Champ>
-          </Game>
-        </Game_Layer>
-      </Profile_Inner>
-      <Content_Inner>
-        <Memo_Layer>
-          <span>{memo}</span>
-        </Memo_Layer>
-        <Footer_Layer>
-          <Time>
-            {<span>{timeHook.otherDay(createdAt)}</span>  }
-          </Time>
-          <Report>
-            {/* <Link to="/reportView">신고 누적 : {report}회</Link> */}
-          </Report>
-          <Delete onClick={cardDelete}>삭제</Delete>
-        </Footer_Layer>
-      </Content_Inner>
-    </Wrap>
+    <>
+      <Wrap >
+        {showDelete ? (<DuoDelete hide={setShowDelete} id={id} pw={password}/>)  
+        : (<>
+        <Profile_Inner>
+          <Info_Inner>
+              <Link href={`summoner/${summoner}`}>
+                <ProfileIcon imgPath={riotImg.profile(profileIconId)}>
+                  <div />
+                </ProfileIcon>
+              </Link>
+            <Info_Layer>
+              <NickName nameLength={summoner.length}>
+                  <Link href={`summoner/${summoner}`}>{summoner}</Link>
+              </NickName>
+              <Info_Column>
+                <Level><span>Lv. {summonerLevel}</span></Level>
+                <Tier tierColor={tierUtils.color(rank?.tier)} tierSize={rank?.tier.length}>
+                  {rank?.tier && (
+                    <>
+                      <div className="tier main">{rank?.tier}</div>
+                      <div className="tier number">{rankSlice(rank?.tier) ? String(rank?.rank).length : null}</div>
+                    </>
+                  )}
+                </Tier>
+              </Info_Column>
+              <Info_Column style={{display:"flex",justifyContent: 'space-between'}}>
+                <Mode>
+                  <div>{filterName.mode(mode)}</div>
+                </Mode>
+                <MicCheck>
+                  <div className="mic text">마이크</div>
+                  <MicCircle mic={mic}/>
+                </MicCheck>
+              </Info_Column>
+            </Info_Layer>
+          </Info_Inner>
+          <Game_Layer under={false} >
+            <Game className="Game_Info">
+              <Line>
+                <Image src={`/images/line-icons/Line-${duoRes.line}-Ico.png`} alt="line" layout="fill" objectFit="cover" />
+              </Line>
+              <Champ>
+                {threeChamp?.map((path,idx)=>{
+                  return (
+                    <div key={idx}>
+                      <Image src={path} alt="line" layout="fill" objectFit="cover"/>
+                    </div>
+                  )
+                })}
+              </Champ>
+            </Game>
+          </Game_Layer>
+        </Profile_Inner>
+        <Content_Inner>
+          <Memo_Layer>
+            <span>{memo}</span>
+          </Memo_Layer>
+          <Footer_Layer>
+            <Time>
+              {<span>{timeHook.otherDay(createdAt)}</span>  }
+            </Time>
+            <Report>
+              {/* <Link to="/reportView">신고 누적 : {report}회</Link> */}
+            </Report>
+            <Delete onClick={()=>setShowDelete(true)}>삭제</Delete>
+          </Footer_Layer>
+        </Content_Inner>
+        </>
+        )}
+      </Wrap>
+      
+    </>
   )
 }
 export default React.memo(DuoCard);
@@ -146,7 +145,15 @@ const Wrap = styled.div`
   color: white;
 `;
 const Delete = styled.div`
-
+  
+`;
+const DeleteModal = styled.div`
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-color: transparent;
+  z-index: 10;
+  border-radius: 15px ;
 `;
 const Profile_Inner = styled.div`
   padding: 0.4rem 0 0 0.3rem;

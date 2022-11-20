@@ -10,6 +10,7 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<Data>
 ) {
+  console.log("인포 실행")
   await riotApi.get(`https://kr.api.riotgames.com/lol/summoner/v4/summoners/by-name/${req.query.value}`)
   .then((_res:any)=>{
     return res.status(200).json(_res.data);

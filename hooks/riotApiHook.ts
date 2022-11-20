@@ -12,6 +12,7 @@ export const riot = {
         value:value
       }
     }).then((_res)=>{
+      console.log(_res.data)
       return _res.data;
     }).catch((_error)=>{
       console.log(_error)
@@ -60,6 +61,7 @@ export const riot = {
     
   },
   matchDetail: function (match:string) {
+    console.log("넘어온것",match)
     return new Promise((resolve,rejects)=>{
       apiInstance({
           url:'/riot/summoner/match/detail/',

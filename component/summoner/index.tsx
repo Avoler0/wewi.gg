@@ -12,70 +12,20 @@ export type props = {
 }
 
 export default function Summoner({searchString}:props){
-  
-  const [isLoading,setIsLoading] = useState(true);
-  const [profile,setProfile] = useState();
-  const [league,setLeague] = useState({});
-  const [matchList,setMatchList] = useState({});
-  const searchType = "summoner"
-  const summoner = useSelector((state:any) =>{
-    return state.search.value
-  })
-  //  const {
-  //   data: summonerData,
-  //   isLoading,
-  // } = useQuery("duoRes",getDuoRes,{
-  //   onSuccess: data => {
-  //     dispatch(duoSetData(data))
-  //   },
-  //    onError: e => {
-      
-  //   }
-  // });
+  const {data:info,isLoading} = useQuery('info',async () => await getData());
+  console.log("데이터",info)
+
   async function getData(){
-    return await riot.summoner(searchType,searchString).then(async (_res:any)=>{
-        const { id,name,profileIconId,puuid,revisionDate,summonerLevel} = _res;
-        Promise.all([
-          await riot.matchList(puuid,1,5),
-          await riot.league(id)
-        ]).then(([fetchMatchList,fetchLeague])=>{
-          // setProfile(_res)
-          // setMatchList(fetchMatchList)
-          // setLeague(fetchLeague)
-          // setIsLoading(false);
-          return {_res,fetchMatchList,fetchLeague}
-        })
-        .catch(([matchError,leagueError])=>{
-          console.log("처음 에러",matchError,leagueError);
-          
-        })
-      }).catch((_error)=>{
-        console.log("기본정보부분 에러",_error);
-      })
+    return await riot.summoner(searchString)
+    .then(async (_res:any)=>{
+      const { id,name,profileIconId,puuid,revisionDate,summonerLevel} = _res;
+      const league = await riot.league(id)
+
+      return {..._res,rank:league}
+    }).catch((_error)=>{
+      console.log("기본정보부분 에러",_error);
+    })
   }
-    useEffect(()=>{
-      setIsLoading(true)
-    if(searchString !== undefined){
-      riot.summoner(searchType,searchString).then(async (_res:any)=>{
-        const { id,name,profileIconId,puuid,revisionDate,summonerLevel} = _res;
-        Promise.all([
-          await riot.matchList(puuid,1,5),
-          await riot.league(id)
-        ]).then(([fetchMatchList,fetchLeague])=>{
-          setProfile(_res)
-          setMatchList(fetchMatchList)
-          setLeague(fetchLeague)
-          setIsLoading(false);
-        })
-        .catch(([matchError,leagueError])=>{
-          console.log("처음 에러",matchError,leagueError);
-          
-        })
-      }).catch((_error)=>{
-        console.log("기본정보부분 에러",_error);
-      })
-    }
-  },[searchString])
   
   if(isLoading){
     return(<div>없음</div>);
@@ -88,10 +38,10 @@ export default function Summoner({searchString}:props){
       <Wrapper style={{display:"flex"}} id="wrap">
         <Column style={{marginRight:"10px"}}>
           <ProfileView id="profileView">
-            <SummonerProfile profile={profile} />
+            <SummonerProfile profile={info} />
           </ProfileView>
           <RankView>
-            <LeagueInfo league={league} />
+            <LeagueInfo league={info.rank} />
           </RankView>
           <ChampStatsView>
             {/* <ChampRecently gameInfo={gameInfo} /> */}
@@ -99,7 +49,7 @@ export default function Summoner({searchString}:props){
         </Column>
         <Column>
           <RecentlyView>
-            <Record matchList={matchList} puuid={profile.puuid}/>
+            <Record info={info}/>
           </RecentlyView>
         </Column>
       </Wrapper>
