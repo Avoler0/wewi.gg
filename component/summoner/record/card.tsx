@@ -80,7 +80,7 @@ export default function RecordCard({detail}:any) {
           <div>{timeHook.otherDay(gameEndTimestamp)}</div>
           <b className="result">{ gameDuration < 500 ? '다시 하기' : win ? '승리' : '패배' }</b>
           <div>{gameLengthTime}</div>
-          <div>{timeHook.pass(gameCreation,gameEndTimestamp)}</div>
+          <div>{timeHook.duration(gameDuration)}</div>
         </InfoWrap>
         <ChampWrap>
           <div>

@@ -11,10 +11,8 @@ export const timeHook = {
 
     return `${Math.floor(betweenDay / 365)}년 전`
   },
-  pass:function(start:number,end:number){
-    const between = ((end - start) / 1000 / 60).toFixed(2).split(".")
-
-    return `${between[0]}분${between[1]}초`
+  duration:function(time:number){
+    return `${Math.floor(time/60)}분${time%60}초`
   }
 }
 
