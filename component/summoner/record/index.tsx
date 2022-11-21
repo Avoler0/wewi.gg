@@ -19,7 +19,7 @@ export default function Record({info}:props) {
       matchli.map(async (match:string)=>{
         const response = await riot.matchDetail(match)
         const myParticipant = response.data.metadata.participants.indexOf(info.puuid)
-        const myTeamId = response.data.info.participants[myParticipant].teamId
+        const myTeamId = response.data.info.participants[myParticipant].teamId === 100 ? 0 : 1;
         return {myIndex:myParticipant,myTeamId:myTeamId,...response.data};
       })
     )

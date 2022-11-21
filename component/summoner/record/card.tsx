@@ -22,19 +22,16 @@ type Detail = {
   win:boolean
 }
 export default function RecordCard({detail}:any) {
-
-  console.log();
-
-  const {info,myIndex,metadata} = detail;
-  const { gameCreation,gameDuration,gameStartTimestamp,gameEndTimestamp,participants: participants,teamKill,queueId,gameLengthTime,win  } = detail.info;
+  const {info,myIndex,myTeamId,metadata} = detail;
+  const { gameCreation,gameDuration,gameStartTimestamp,gameEndTimestamp,teams,participants,queueId,gameLengthTime,win  } = info;
   const participant = participants[myIndex];
-  console.log("카드 디테일",detail.info);
-
+  const teamKills = teams[myTeamId].objectives.champion.kills
+  const {kills,deaths,assists,totalMinionsKilled,neutralMinionsKilled,visionScore} = participant
+  console.log("카드 디테일",detail);
   const [isLoading,setIsLoading] = useState(true);
   const [runeImg,setRuneImg] = useState({
     rune:["null","null"],
   });
-  console.log(participant.kills+participant.assists,teamKill)
   // return <div>1234</div>;
   useEffect(()=>{
     
@@ -76,12 +73,12 @@ export default function RecordCard({detail}:any) {
   }
   
   return (
-    <WarpLi win={win}>
-      <Wrap win={win}>
-        <InfoWrap>
+    <WarpLi result={win} restart={gameDuration < 500}>
+      <Wrap result={win} restart={gameDuration < 500}>
+        <InfoWrap result={win} restart={gameDuration < 500}>
           <b>{queueUtils.type[queueId]}</b>
           <div>{timeHook.otherDay(gameEndTimestamp)}</div>
-          <b>{win ? "승리" : "패배"}</b>
+          <b className="result">{ gameDuration < 500 ? '다시 하기' : win ? '승리' : '패배' }</b>
           <div>{gameLengthTime}</div>
           <div>{timeHook.pass(gameCreation,gameEndTimestamp)}</div>
         </InfoWrap>
@@ -112,41 +109,38 @@ export default function RecordCard({detail}:any) {
           {ItemRender()}
         </ItemWrap>
         <KdaWrap>
-            <div className="kda">{participant.kills} / {participant.deaths} / {participant.assists}</div>
-            <div className="kda">{((participant.kills+participant.assists) / participant.deaths).toFixed(2)}:1 평점</div>
-            <div className="kda">킬관여 {
-              participant.kills + participant.deaths + participant.assists == 0 ?
-              "0" : ((participant.kills+participant.assists)/teamKill*100).toFixed(0)
-            }%</div>
+            <div className="kda">{kills} / {deaths} / {assists}</div>
+            <div className="kda">{kills+assists+deaths == 0 ? '0.00' : ((participant.kills+participant.assists) / participant.deaths).toFixed(2)}:1 평점</div>
+            <div className="kda">킬관여 { kills + deaths + assists == 0 ? "0" : ((kills+assists)/teamKills*100).toFixed(0)}%</div>
         </KdaWrap>
         <StatsWrap>
-            <div className="stats">{participant.totalMinionsKilled + participant.neutralMinionsKilled} CS</div>
-            <div className="stats">{((participant.totalMinionsKilled + participant.neutralMinionsKilled) / Math.floor(gameDuration / 60)).toFixed(1)} CS/분</div>
-            <div className="stats"><span>시야점수</span> {participant.visionScore}</div>
+            <div className="stats">{totalMinionsKilled + neutralMinionsKilled} CS</div>
+            <div className="stats">{((totalMinionsKilled + neutralMinionsKilled) / Math.floor(gameDuration / 60)).toFixed(1)} CS/분</div>
+            <div className="stats"><span>시야점수</span> {visionScore}</div>
         </StatsWrap>
       </Wrap>
     </WarpLi>
   );
 }
 
-const WarpLi = styled.li<{win:boolean}>`
-  border-left: 6px solid ${props => props.win ? "rgba(62, 31, 177, 1)" : "rgba(177,31,62,1)"};
+const WarpLi = styled.li<{result:boolean,restart:boolean}>`
+  border: 1px solid ${props => props.restart ? 'rgba(34,34,58,0.6)' : props.result ? 'rgba(62, 31, 177, 0.6)' : 'rgba(177,31,62,0.6)'};
+  border-left: 6px solid ${props => props.restart ? 'rgba(34,34,58,1)' : props.result ? 'rgba(62, 31, 177, 1)' : 'rgba(177,31,62,1)'};
   border-radius: 5px;
   list-style: none;
   margin: 5px;
   color: white;
 `;
-const Wrap = styled.div<{win:boolean}>`
+const Wrap = styled.div<{result:boolean,restart:boolean}>`
   display: flex;
   justify-content: space-between;
   padding: 10px;
   width: 100%;
   height: 100px;
-  border: 1px solid ${props => props.win ? "rgba(62, 31, 177, 0.6)" : "rgba(177,31,62,0.6)"};
-  background-color: ${props => props.win ? "rgba(62, 31, 177, 0.2)" : "rgba(177,31,62,0.2)"};
+  background-color: ${props => props.restart ? 'rgba(34,34,58,0.2)' : props.result ? "rgba(62, 31, 177, 0.2)" : "rgba(177,31,62,0.2)"};
   border-radius: 0 5px 5px 0;
 `;
-const InfoWrap = styled.div`
+const InfoWrap = styled.div<{result:boolean,restart:boolean}>`
   display: flex;
   flex-direction: column;
   justify-content: space-around;
@@ -154,6 +148,10 @@ const InfoWrap = styled.div`
   margin-left: 0.8rem;
   font-size: 0.8rem;
   font-weight: lighter;
+
+  .result{
+    color: ${props => props.restart ? '#7272af' : props.result ? '#2e08b9' : 'red'};
+  }
 `;
 
 const ChampWrap = styled.div`
