@@ -1,5 +1,6 @@
 import { log } from "console";
 import React, { useEffect, useState } from "react";
+import { useQueries, useQuery } from "react-query";
 import styled from "styled-components";
 import { riot } from "../../../hooks/riotApiHook";
 import RecordCard from "./card";
@@ -9,22 +10,24 @@ type props = {
 }
 
 export default function Record({info}:props) {
-  const [matchList,setMatchList] = useState([]);
-  const [isLoading,setIsLoading] = useState<boolean>(true);
-  const [matchDetail,setMatchDetail] = useState([]);
-
-  function fetchMatch(){
-    riot.matchList(info.puuid,0,3)
-    .then(async (_res)=>{
-      return _res.map((match:string)=>{
-        riot.matchDetail(match)
+  const { data:details,isLoading } = useQuery('details',async () => await fetchMatch());
+  const [start,setStart] = useState(0);
+  async function fetchMatch(){
+    const matchlist = await riot.matchList(info.puuid,start)
+    const matchli = matchlist.slice(0,3)
+    return await Promise.all(
+      matchli.map(async (match:string)=>{
+        const response = await riot.matchDetail(match)
+        const myParticipant = response.data.metadata.participants.indexOf(info.puuid)
+        const myTeamId = response.data.info.participants[myParticipant].teamId
+        return {myIndex:myParticipant,myTeamId:myTeamId,...response.data};
       })
-      
-    })
-  }
+    )
+}
+{/* <RecordCard key={detail.matadata.matchId} detail={detail}/> */}
   useEffect(()=>{
-
-  },[])
+    console.log("디테일스",details)
+  },[details])
 
   if(isLoading) return (<div>없음</div>)
 
@@ -34,8 +37,12 @@ export default function Record({info}:props) {
       {/* <ChampRecently  /> */}
     </ChampView>
     <GameView >
-
+      {/* <RecordCard /> */}
+      {details?.map((detail)=>{
+        return <RecordCard key={detail.metadata.matchId} detail={detail}/>
+      })}
     </GameView>
+    <div>더보기</div>
   </>
   );
 }

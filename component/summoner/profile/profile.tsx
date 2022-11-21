@@ -3,9 +3,7 @@ import Image from "next/image";
 import { riotImg } from "../../../hooks/riotImageHook";
 
 export default function SummonerProfile({profile}:any) {
-  const {
-    id , name , profileIconId , puuid , revisionDate , summonerLevel
-  } = profile;
+  const { name, profileIconId, summonerLevel } = profile;
   const profileIcon = riotImg.profile(profileIconId)
   
   return(

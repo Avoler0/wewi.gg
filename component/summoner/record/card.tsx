@@ -21,23 +21,27 @@ type Detail = {
   gameLengthTime:number
   win:boolean
 }
-export default function RecordCard({match}:props) {
-  const { gameCreation,gameDuration,gameStartTimestamp,gameEndTimestamp,participants,teamKill,queueId,gameLengthTime,win  } = detail;
+export default function RecordCard({detail}:any) {
 
-  // console.log("카드 디테일",detail);
+  console.log();
+
+  const {info,myIndex,metadata} = detail;
+  const { gameCreation,gameDuration,gameStartTimestamp,gameEndTimestamp,participants: participants,teamKill,queueId,gameLengthTime,win  } = detail.info;
+  const participant = participants[myIndex];
+  console.log("카드 디테일",detail.info);
 
   const [isLoading,setIsLoading] = useState(true);
   const [runeImg,setRuneImg] = useState({
     rune:["null","null"],
   });
-  
-
+  console.log(participant.kills+participant.assists,teamKill)
+  // return <div>1234</div>;
   useEffect(()=>{
     
     if(detail){
       (async ()=>{
         Promise.all([
-          await riotImg.rune(participants.perks?.styles[0],participants.perks?.styles[1])
+          await riotImg.rune(participant.perks?.styles[0],participant.perks?.styles[1])
         ]).then(([rune])=>{
           const image = {
             rune: rune,
@@ -58,7 +62,7 @@ export default function RecordCard({match}:props) {
       return (
         <>
           <div className="item-image">
-            {participants[itemId] ? <Image key={itemId} src={ riotImg.item(participants[itemId])} alt="icon" layout="fill" objectFit="fill"/> : <span className="item-image" />}
+            {participant[itemId] ? <Image key={itemId} src={ riotImg.item(participant[itemId])} alt="icon" layout="fill" objectFit="fill"/> : <span className="item-image" />}
           </div>
           {itemId === "item6" ? <br></br> : null}
         </>
@@ -83,16 +87,16 @@ export default function RecordCard({match}:props) {
         </InfoWrap>
         <ChampWrap>
           <div>
-            <Image src={riotImg.champion(participants?.championName)} alt="icon" layout="fill" objectFit="fill"/>
+            <Image src={riotImg.champion(participant?.championName)} alt="icon" layout="fill" objectFit="fill"/>
           </div>
         </ChampWrap>
         <SkillsWrap>
           <Skill>
             <div>
-              <Image className="icon" src={riotImg.spell(participants.summoner1Id)}  alt="icon" layout="fill" objectFit="fill" objectPosition="center"/>
+              <Image className="icon" src={riotImg.spell(participant.summoner1Id)}  alt="icon" layout="fill" objectFit="fill" objectPosition="center"/>
             </div>
             <div>
-              <Image className="icon" src={riotImg.spell(participants.summoner2Id)}  alt="icon" layout="fill" objectFit="fill" objectPosition="center"/>
+              <Image className="icon" src={riotImg.spell(participant.summoner2Id)}  alt="icon" layout="fill" objectFit="fill" objectPosition="center"/>
             </div>
           </Skill>
           <Skill>
@@ -108,17 +112,17 @@ export default function RecordCard({match}:props) {
           {ItemRender()}
         </ItemWrap>
         <KdaWrap>
-            <div className="kda">{participants.kills} / {participants.deaths} / {participants.assists}</div>
-            <div className="kda">{((participants.kills+participants.assists) / participants.deaths).toFixed(2)}:1 평점</div>
+            <div className="kda">{participant.kills} / {participant.deaths} / {participant.assists}</div>
+            <div className="kda">{((participant.kills+participant.assists) / participant.deaths).toFixed(2)}:1 평점</div>
             <div className="kda">킬관여 {
-              participants.kills + participants.deaths + participants.assists == 0 ?
-              "0" : ((participants.kills+participants.assists)/teamKill*100).toFixed(0)
+              participant.kills + participant.deaths + participant.assists == 0 ?
+              "0" : ((participant.kills+participant.assists)/teamKill*100).toFixed(0)
             }%</div>
         </KdaWrap>
         <StatsWrap>
-            <div className="stats">{participants.totalMinionsKilled + participants.neutralMinionsKilled} CS</div>
-            <div className="stats">{((participants.totalMinionsKilled + participants.neutralMinionsKilled) / Math.floor(gameDuration / 60)).toFixed(1)} CS/분</div>
-            <div className="stats"><span>시야점수</span> {participants.visionScore}</div>
+            <div className="stats">{participant.totalMinionsKilled + participant.neutralMinionsKilled} CS</div>
+            <div className="stats">{((participant.totalMinionsKilled + participant.neutralMinionsKilled) / Math.floor(gameDuration / 60)).toFixed(1)} CS/분</div>
+            <div className="stats"><span>시야점수</span> {participant.visionScore}</div>
         </StatsWrap>
       </Wrap>
     </WarpLi>

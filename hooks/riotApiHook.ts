@@ -31,14 +31,13 @@ export const riot = {
       
     },
   },
-  matchList:async function (puuid:string,start:number,end:number) {
+  matchList:async function (puuid:string,start:number) {
     console.log("매치리스트 실행");
     return await apiInstance({
       url:'/riot/summoner/match/list',
       params:{
           puuid:puuid,
-          start:0,
-          end:20
+          start:start,
       },
     }).then((_res)=>{
       return _res.data;
@@ -60,20 +59,17 @@ export const riot = {
     })
     
   },
-  matchDetail: function (match:string) {
-    console.log("넘어온것",match)
-    return new Promise((resolve,rejects)=>{
-      apiInstance({
+  matchDetail: async function (match:string) {
+    return await apiInstance({
           url:'/riot/summoner/match/detail/',
           params:{
             match:match
           }
           }).then((_res)=>{
-            resolve(_res)
+            return _res
           }).catch((_error)=>{
-            rejects(_error)
+            return _error
       })
-    })
   },
   runeInfo: async function(){
     return await axios.get('https://ddragon.leagueoflegends.com/cdn/12.9.1/data/en_US/runesReforged.json')

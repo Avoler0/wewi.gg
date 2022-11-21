@@ -2,8 +2,8 @@ import styled from "styled-components";
 import Image from "next/image";
 
 export default function LeagueCard({info,margin}:any){
-
-  if(info === undefined) return <div></div>
+  console.log("인포",info)
+  if(!info) return <div>1234</div>;
   const { leaguePoints, losses,queueType,rank,tier,wins } = info;
   const rankType = queueType === "RANKED_SOLO_5x5" ? "솔로 랭크" : "자유 랭크"
   const rate = (wins/(wins+losses))*100

@@ -1,5 +1,3 @@
-import { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
 import styled from "styled-components";
 import { riot } from "../../hooks/riotApiHook";
 import SummonerProfile from "./profile/profile";
@@ -12,21 +10,17 @@ export type props = {
 }
 
 export default function Summoner({searchString}:props){
-  const {data:info,isLoading} = useQuery('info',async () => await getData());
-  console.log("데이터",info)
-
-  async function getData(){
+  const {data:summoner,isLoading} = useQuery('summoner',async () => await fetchSummonerInfo());
+  async function fetchSummonerInfo(){
     return await riot.summoner(searchString)
     .then(async (_res:any)=>{
-      const { id,name,profileIconId,puuid,revisionDate,summonerLevel} = _res;
-      const league = await riot.league(id)
-
+      const league = await riot.league(_res.id)
       return {..._res,rank:league}
     }).catch((_error)=>{
       console.log("기본정보부분 에러",_error);
     })
   }
-  
+
   if(isLoading){
     return(<div>없음</div>);
   }
@@ -38,10 +32,10 @@ export default function Summoner({searchString}:props){
       <Wrapper style={{display:"flex"}} id="wrap">
         <Column style={{marginRight:"10px"}}>
           <ProfileView id="profileView">
-            <SummonerProfile profile={info} />
+            <SummonerProfile profile={summoner} />
           </ProfileView>
           <RankView>
-            <LeagueInfo league={info.rank} />
+            <LeagueInfo league={summoner.rank} />
           </RankView>
           <ChampStatsView>
             {/* <ChampRecently gameInfo={gameInfo} /> */}
@@ -49,7 +43,7 @@ export default function Summoner({searchString}:props){
         </Column>
         <Column>
           <RecentlyView>
-            <Record info={info}/>
+            <Record info={summoner}/>
           </RecentlyView>
         </Column>
       </Wrapper>

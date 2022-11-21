@@ -1,16 +1,17 @@
-import { spellName } from './../const/utils';
+import { riotVersion, spellName } from './../const/utils';
 import axios from "axios";
-import { riot } from './riotApiHook';
 
 
 export const riotImg = {
+  path:`http://ddragon.leagueoflegends.com/cdn/${riotVersion}`,
   ddragon:"https://ddragon.canisback.com/img",
   champion:function(champion:string){
-    return `http://ddragon.leagueoflegends.com/cdn/12.9.1/img/champion/${champion}.png`
+    return `${this.path}/img/champion/${champion}.png`
   },
   championsId:async function(ids:any){
+    
     const idArr = Object.assign([],ids)
-    const result = await axios.get('http://ddragon.leagueoflegends.com/cdn/12.21.1/data/en_US/champion.json')
+    const result = await axios.get(`${this.path}/data/en_US/champion.json`)
     .then((_res:any)=>{
       const championList = _res.data.data;
       if(typeof ids === 'object'){
@@ -36,20 +37,20 @@ export const riotImg = {
         return chapionName
       }
     })
-    return result.map((value)=> `http://ddragon.leagueoflegends.com/cdn/12.9.1/img/champion/${value.replace(/[']|\s/,'')}.png` )
+    return result.map((value)=> `${this.path}/img/champion/${value.replace(/[']|\s/,'')}.png` )
   },
   item:function(itemId:number){
-    return `http://ddragon.leagueoflegends.com/cdn/12.9.1/img/item/${itemId}.png`
+    return `${this.path}/img/item/${itemId}.png`
   },
   perk:function(id){
 
   },
   profile:function(iconNumber:number){
-    return `http://ddragon.leagueoflegends.com/cdn/10.11.1/img/profileicon/${iconNumber}.png`
+    return `${this.path}/img/profileicon/${iconNumber}.png`
   },
   
   rune:async function(primary:any,sub:any){
-    return await axios.get('https://ddragon.leagueoflegends.com/cdn/12.9.1/data/en_US/runesReforged.json')
+    return await axios.get(`${this.path}/data/en_US/runesReforged.json`)
     .then((_res)=>{
       const primaryIndex = _res.data.findIndex((data) => data.id === primary?.style);
       const subIndex = _res.data.findIndex((data) => data.id === sub?.style);
@@ -61,7 +62,7 @@ export const riotImg = {
   },
   spell:function(spellId:number){
     const spell = spellName(spellId);
-    return `http://ddragon.leagueoflegends.com/cdn/12.9.1/img/spell/${spell}.png`;
+    return `${this.path}/img/spell/${spell}.png`;
   },
 
   

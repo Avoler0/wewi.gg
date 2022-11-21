@@ -12,15 +12,12 @@ export default function handler(
   console.log("매치 디테일 실행됨");
   
   setTimeout(()=>{
-  riotApi(`https://asia.api.riotgames.com/lol/match/v5/matches/${req.query.match}`)
-  .then((_res:any)=>{
-    
-    return res.status(200).json(_res.data);
-  })
-  .catch((_error)=>{
-    console.log("매치 디테일 에러",_error.status);
-    
-    return res.status(_error.status);
-  })
+    riotApi(`https://asia.api.riotgames.com/lol/match/v5/matches/${req.query.match}`)
+    .then((_res:any)=>{
+      return res.status(200).json(_res.data);
+    })
+    .catch((_error)=>{
+      return res.status(_error.status);
+    })
   },300)
 }

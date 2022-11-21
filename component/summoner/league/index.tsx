@@ -4,7 +4,7 @@ import LeagueCard from "./card";
 
 
 export default function LeagueInfo({league}:any){
-  if(!league) return <div>없음</div>
+
   const rank = {
     solo:league[0],
     team:league[1]

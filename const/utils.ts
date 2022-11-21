@@ -1,4 +1,7 @@
 
+
+export const riotVersion = '12.22.1';
+
 export const menuUtils = {
   name:function(menu:string){
     switch (menu) {
