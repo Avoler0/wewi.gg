@@ -4,7 +4,7 @@ import styled from "styled-components"
 import { options } from "../../../const/utils"
 import { duoSetFilter } from "../../../redux/duo/filter"
 
-export default function FilterTier({tier,dispatch}:any){
+export default function FilterTier({dispatch}:any){
 
 
   return (
@@ -16,9 +16,6 @@ export default function FilterTier({tier,dispatch}:any){
   )
 }
 
-const SelectForm = styled.div`
-
-`;
 const Select = styled.select`
   width: 1000px;
   margin-right: 20px ;

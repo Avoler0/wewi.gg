@@ -1,12 +1,8 @@
 import React from "react";
 import styled from "styled-components";
-import Image from "next/image";
-import { useSelector } from "react-redux";
-import { useDispatch } from "react-redux";
-import {duoSetFilter} from "../../../redux/duo/filter"
+import { useSelector,useDispatch } from "react-redux";
 import useModal from "../../../hooks/useModal";
 import DuoModal from "../modal/modal";
-import { options } from "../../../const/utils";
 import FilterMode from "./mode";
 import FilterTier from "./tier";
 import FilterLine from "./line";

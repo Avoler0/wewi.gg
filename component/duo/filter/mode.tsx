@@ -2,7 +2,7 @@ import styled from "styled-components"
 import { options } from "../../../const/utils"
 import { duoSetFilter } from "../../../redux/duo/filter"
 
-export default function FilterMode({mode,dispatch}:any){
+export default function FilterMode({dispatch}:any){
 
 
   return (

@@ -2,8 +2,8 @@ import styled from "styled-components"
 
 export default function FooterIndex(){
   return(
-    <div>
-    </div>
+    <Footer>
+    </Footer>
   )
 }
 

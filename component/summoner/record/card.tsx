@@ -23,11 +23,11 @@ type Detail = {
 }
 export default function RecordCard({detail}:any) {
   const {info,myIndex,myTeamId,metadata} = detail;
-  const { gameCreation,gameDuration,gameStartTimestamp,gameEndTimestamp,teams,participants,queueId,gameLengthTime,win  } = info;
+  const { gameCreation,gameDuration,gameStartTimestamp,gameEndTimestamp,teams,participants,queueId,gameLengthTime,  } = info;
   const participant = participants[myIndex];
   const teamKills = teams[myTeamId].objectives.champion.kills
-  const {kills,deaths,assists,totalMinionsKilled,neutralMinionsKilled,visionScore} = participant
-  // console.log("카드 디테일",detail);
+  const {kills,deaths,assists,totalMinionsKilled,neutralMinionsKilled,visionScore,win} = participant
+  console.log("카드 디테일",win);
   const [isLoading,setIsLoading] = useState(true);
   const [runeImg,setRuneImg] = useState({
     rune:["null","null"],
@@ -128,15 +128,15 @@ const WarpLi = styled.li<{result:boolean,restart:boolean}>`
   border-left: 6px solid ${props => props.restart ? 'rgba(34,34,58,1)' : props.result ? 'rgba(62, 31, 177, 1)' : 'rgba(177,31,62,1)'};
   border-radius: 5px;
   list-style: none;
-  margin: 5px;
+  margin: 5px 0;
   color: white;
 `;
 const Wrap = styled.div<{result:boolean,restart:boolean}>`
   display: flex;
   justify-content: space-between;
-  padding: 10px;
   width: 100%;
   height: 100px;
+  padding: 10px;
   background-color: ${props => props.restart ? 'rgba(34,34,58,0.2)' : props.result ? "rgba(62, 31, 177, 0.2)" : "rgba(177,31,62,0.2)"};
   border-radius: 0 5px 5px 0;
 `;
@@ -150,7 +150,7 @@ const InfoWrap = styled.div<{result:boolean,restart:boolean}>`
   font-weight: lighter;
 
   .result{
-    color: ${props => props.restart ? '#7272af' : props.result ? '#2e08b9' : 'red'};
+    color: ${props => props.restart ? '#7272af' : props.result ? '#00adfdd5' : 'red'};
   }
 `;
 
