@@ -10,39 +10,53 @@ type props = {
 }
 
 export default function Record({info}:props) {
-  const { data:details,isLoading } = useQuery('details',async () => await fetchMatch());
+  const [details,setDetails] = useState<any>([])
+  const [isLoading,setIsLoading] = useState(true);
+  // const { data:details,isLoading } = useQuery('details',async () => await fetchMatch());
   const [start,setStart] = useState(0);
   async function fetchMatch(){
     const matchlist = await riot.matchList(info.puuid,start)
-    const matchli = matchlist.slice(0,3)
     return await Promise.all(
-      matchli.map(async (match:string)=>{
+      matchlist.map(async (match:string)=>{
         const response = await riot.matchDetail(match)
         const myParticipant = response.data.metadata.participants.indexOf(info.puuid)
         const myTeamId = response.data.info.participants[myParticipant].teamId === 100 ? 0 : 1;
-        return {myIndex:myParticipant,myTeamId:myTeamId,...response.data};
+        const result = {myIndex:myParticipant,myTeamId:myTeamId,...response.data}
+        return result;
       })
-    )
+    ).then((_res)=>{
+      console.log(_res)
+      // setDetails(prev => [...prev,_res])
+      setDetails(prev => [...prev,_res])
+      setIsLoading(false)
+    })
 }
+  useEffect(()=>{
+    fetchMatch()
+  },[start])
 {/* <RecordCard key={detail.matadata.matchId} detail={detail}/> */}
   useEffect(()=>{
     console.log("디테일스",details)
   },[details])
 
   if(isLoading) return (<div>없음</div>)
-
+//  return (
+//   <button onClick={()=>{setStart(perv => perv + 5)}}>스타트 업</button>)
   return (
   <>
+  <button onClick={()=>{setStart(perv => perv + 5)}}>스타트 업</button>
     <ChampView>
       {/* <ChampRecently  /> */}
     </ChampView>
     <GameView >
       {/* <RecordCard /> */}
       {details?.map((detail)=>{
-        return <RecordCard key={detail.metadata.matchId} detail={detail}/>
+        return detail.map((deta,index)=>{
+           return <RecordCard key={index} detail={deta}/>
+        })
       })}
     </GameView>
-    <div>더보기</div>
+    <div onClick={()=>{setStart(perv => perv + 5)}}>더보기</div>
   </>
   );
 }

@@ -27,7 +27,7 @@ export default function RecordCard({detail}:any) {
   const participant = participants[myIndex];
   const teamKills = teams[myTeamId].objectives.champion.kills
   const {kills,deaths,assists,totalMinionsKilled,neutralMinionsKilled,visionScore} = participant
-  console.log("카드 디테일",detail);
+  // console.log("카드 디테일",detail);
   const [isLoading,setIsLoading] = useState(true);
   const [runeImg,setRuneImg] = useState({
     rune:["null","null"],
@@ -71,7 +71,7 @@ export default function RecordCard({detail}:any) {
   if(isLoading){
     return <div>불러오는 중</div>
   }
-  
+  console.log("트루폴스",gameDuration < 500)
   return (
     <WarpLi result={win} restart={gameDuration < 500}>
       <Wrap result={win} restart={gameDuration < 500}>

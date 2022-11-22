@@ -8,9 +8,8 @@ type Props = {
   isShowing: boolean,
   hide: Function,
   method:'ADD' | 'DELETE',
-  id:number | undefined
 }
-function DuoModal({ isShowing, hide, method ,id}:Props){
+function DuoModal({ isShowing, hide, method}:Props){
   function handler(event:any){
     event.stopPropagation(); 
     hide()

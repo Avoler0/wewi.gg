@@ -11,6 +11,7 @@ export const timeHook = {
 
     return `${Math.floor(betweenDay / 365)}년 전`
   },
+  
   duration:function(time:number){
     return `${Math.floor(time/60)}분${time%60}초`
   }

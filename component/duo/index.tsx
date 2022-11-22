@@ -7,7 +7,7 @@ import { tierUtils } from "../../const/utils";
 import { dbHook } from "../../hooks/dbHook";
 import {  _DuoData } from "../../redux/duo/data";
 import DuoCard from "./card/card";
-import DuoFilter, { Filter } from "./filter/filter";
+import DuoFilter, { Filter } from "./filter";
 
 type DuoData = {
   duoData:_DuoData
