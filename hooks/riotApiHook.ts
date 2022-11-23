@@ -12,10 +12,8 @@ export const riot = {
         value:value
       }
     }).then((_res)=>{
-      console.log(_res.data)
       return _res.data;
     }).catch((_error)=>{
-      console.log(_error)
       return false;
     })
   },
@@ -32,7 +30,6 @@ export const riot = {
     },
   },
   matchList:async function (puuid:string,start:number) {
-    console.log("매치리스트 실행");
     return await apiInstance({
       url:'/riot/summoner/match/list',
       params:{
@@ -46,7 +43,6 @@ export const riot = {
     })
   },
   league:async function(id:string) {
-    console.log("리그 실행");
     return await apiInstance({
       url:'/riot/summoner/league/',
       params:{

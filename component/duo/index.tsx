@@ -18,13 +18,6 @@ export default function DuoIndex() {
   const filter = useSelector((state:Filter) => {
     return state.duoFilter
   })
-  
-  useEffect(()=>{
-   console.log("듀오 디비 변경됨")
-    
-  },[duoDB])
-  
-  
 
   function filterling(res:any){
     const {mode,line} = filter;

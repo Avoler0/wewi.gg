@@ -9,7 +9,6 @@ export const riotImg = {
     return `${this.path}/img/champion/${champion}.png`
   },
   championsId:async function(ids:any){
-    
     const idArr = Object.assign([],ids)
     const result = await axios.get(`${this.path}/data/en_US/champion.json`)
     .then((_res:any)=>{
@@ -41,9 +40,6 @@ export const riotImg = {
   },
   item:function(itemId:number){
     return `${this.path}/img/item/${itemId}.png`
-  },
-  perk:function(id){
-
   },
   profile:function(iconNumber:number){
     return `${this.path}/img/profileicon/${iconNumber}.png`

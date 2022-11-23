@@ -11,7 +11,7 @@ export default function handler(
 ) {
   // https://kr.api.riotgames.com/lol/champion-mastery/v4/champion-masteries/by-summoner/
   const {id,count} = req.query;
-
+  console.log(count)
   if(count){
     riotApi(`https://kr.api.riotgames.com/lol/champion-mastery/v4/champion-masteries/by-summoner/${id}/top?count=${count}`)
     .then((_res:any)=> res.status(200).json(_res.data))

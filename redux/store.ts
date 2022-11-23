@@ -1,9 +1,6 @@
 import { configureStore } from '@reduxjs/toolkit';
 import duoFilter from './duo/filter';
 import duoError from './duo/error';
-import duoData from './duo/data';
-import summoner from './summoner';
-
 
 export type SearchReduxType = {
   search: any;
@@ -14,9 +11,7 @@ export type SearchReduxType = {
 const store = configureStore({
   reducer:{
     duoFilter:duoFilter,
-    duoData:duoData,
     duoError:duoError,
-    summoner:summoner
   }
 })
 

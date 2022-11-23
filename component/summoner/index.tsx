@@ -3,29 +3,32 @@ import { riot } from "../../hooks/riotApiHook";
 import SummonerProfile from "./profile/profile";
 import LeagueInfo from "./league";
 import Record from "./record";
-import { useQuery } from "react-query";
+import React, { useCallback, useEffect, useState } from "react";
 
 export type props = {
   searchString : string | string[]
 }
 
-export default function Summoner({searchString}:props){
-  const {data:summoner,isLoading} = useQuery('summoner',async () => await fetchSummonerInfo());
-  async function fetchSummonerInfo(){
-    return await riot.summoner(searchString)
+export default React.memo(Summoner)
+
+function Summoner({searchString}:props){
+  const [summoner,setSummoner] = useState({});
+  const [isLoading,setIsLoading] = useState(true);
+
+  const fetchSummoner = useCallback(async ()=>{
+    await riot.summoner(searchString)
     .then(async (_res:any)=>{
       const league = await riot.league(_res.id)
-      return {..._res,rank:league}
-    }).catch((_error)=>{
-      console.log("기본정보부분 에러",_error);
+      setSummoner({..._res,rank:league})
+      setIsLoading(false)
     })
-  }
+  },[searchString]) 
 
-  if(isLoading){
-    return(<div>없음</div>);
-  }
-  
-  
+  useEffect(()=>{
+    fetchSummoner();
+  },[fetchSummoner])
+
+  if(isLoading) return <div></div>;
   
   return (
     <Container>
@@ -35,11 +38,11 @@ export default function Summoner({searchString}:props){
             <SummonerProfile profile={summoner} />
           </ProfileView>
           <RankView>
-            <LeagueInfo league={summoner.rank} />
+            <LeagueInfo league={summoner?.rank} />
           </RankView>
-          <ChampStatsView>
-            {/* <ChampRecently gameInfo={gameInfo} /> */}
-          </ChampStatsView>
+          {/* <ChampStatsView>
+            <ChampMastery info={summoner}/>
+          </ChampStatsView> */}
         </Column>
         <Column>
           <RecentlyView>
@@ -50,6 +53,8 @@ export default function Summoner({searchString}:props){
     </Container>
   )
 }
+
+
 const Container = styled.div`
   width: 100%;
   height: 100%;

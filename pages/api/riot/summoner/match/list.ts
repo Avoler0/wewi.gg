@@ -15,7 +15,7 @@ export default async function handler(
     url:`https://asia.api.riotgames.com/lol/match/v5/matches/by-puuid/${req.query.puuid}/ids`,
     params:{
       start:req.query.start,
-      count:10
+      count:2
     }
   })
   .then((_res:any)=>{

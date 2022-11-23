@@ -27,12 +27,11 @@ export default function RecordCard({detail}:any) {
   const participant = participants[myIndex];
   const teamKills = teams[myTeamId].objectives.champion.kills
   const {kills,deaths,assists,totalMinionsKilled,neutralMinionsKilled,visionScore,win} = participant
-  console.log("카드 디테일",win);
   const [isLoading,setIsLoading] = useState(true);
   const [runeImg,setRuneImg] = useState({
     rune:["null","null"],
   });
-  // return <div>1234</div>;
+
   useEffect(()=>{
     
     if(detail){
@@ -49,7 +48,7 @@ export default function RecordCard({detail}:any) {
       })()
     }
     
-  },[detail])
+  },[detail, participant])
 
   
   function ItemRender(){
@@ -71,11 +70,10 @@ export default function RecordCard({detail}:any) {
   if(isLoading){
     return <div>불러오는 중</div>
   }
-  console.log("트루폴스",gameDuration < 500)
   return (
-    <WarpLi result={win} restart={gameDuration < 500}>
-      <Wrap result={win} restart={gameDuration < 500}>
-        <InfoWrap result={win} restart={gameDuration < 500}>
+    <WarpLi doResult={win} doAgain={gameDuration < 500}>
+      <Wrap doResult={win} doAgain={gameDuration < 500}>
+        <InfoWrap doResult={win} doAgain={gameDuration < 500}>
           <b>{queueUtils.type[queueId]}</b>
           <div>{timeHook.otherDay(gameEndTimestamp)}</div>
           <b className="result">{ gameDuration < 500 ? '다시 하기' : win ? '승리' : '패배' }</b>
@@ -123,24 +121,24 @@ export default function RecordCard({detail}:any) {
   );
 }
 
-const WarpLi = styled.li<{result:boolean,restart:boolean}>`
-  border: 1px solid ${props => props.restart ? 'rgba(34,34,58,0.6)' : props.result ? 'rgba(62, 31, 177, 0.6)' : 'rgba(177,31,62,0.6)'};
-  border-left: 6px solid ${props => props.restart ? 'rgba(34,34,58,1)' : props.result ? 'rgba(62, 31, 177, 1)' : 'rgba(177,31,62,1)'};
+const WarpLi = styled.li<{doResult:boolean,doAgain:boolean}>`
+  border: 1px solid ${props => props.doAgain ? 'rgba(34,34,58,0.6)' : props.doResult ? 'rgba(62, 31, 177, 0.6)' : 'rgba(177,31,62,0.6)'};
+  border-left: 6px solid ${props => props.doAgain ? 'rgba(34,34,58,1)' : props.doResult ? 'rgba(62, 31, 177, 1)' : 'rgba(177,31,62,1)'};
   border-radius: 5px;
   list-style: none;
   margin: 5px 0;
   color: white;
 `;
-const Wrap = styled.div<{result:boolean,restart:boolean}>`
+const Wrap = styled.div<{doResult:boolean,doAgain:boolean}>`
   display: flex;
   justify-content: space-between;
   width: 100%;
   height: 100px;
   padding: 10px;
-  background-color: ${props => props.restart ? 'rgba(34,34,58,0.2)' : props.result ? "rgba(62, 31, 177, 0.2)" : "rgba(177,31,62,0.2)"};
+  background-color: ${props => props.doAgain ? 'rgba(34,34,58,0.2)' : props.doResult ? "rgba(62, 31, 177, 0.2)" : "rgba(177,31,62,0.2)"};
   border-radius: 0 5px 5px 0;
 `;
-const InfoWrap = styled.div<{result:boolean,restart:boolean}>`
+const InfoWrap = styled.div<{doResult:boolean,doAgain:boolean}>`
   display: flex;
   flex-direction: column;
   justify-content: space-around;
@@ -150,7 +148,7 @@ const InfoWrap = styled.div<{result:boolean,restart:boolean}>`
   font-weight: lighter;
 
   .result{
-    color: ${props => props.restart ? '#7272af' : props.result ? '#00adfdd5' : 'red'};
+    color: ${props => props.doAgain ? '#7272af' : props.doResult ? '#00adfdd5' : 'red'};
   }
 `;
 

@@ -1,5 +1,5 @@
 
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import styled from "styled-components";
 import { riot } from "../../../hooks/riotApiHook";
 import RecordCard from "./card";
@@ -8,14 +8,15 @@ type props = {
   info:any
 }
 
-export default function Record({info}:props) {
+export default React.memo(Record)
+
+function Record({info}:any) {
   const [details,setDetails] = useState<any>([])
   const [isLoading,setIsLoading] = useState(true);
-  const [start,setStart] = useState(0);
-
-  async function fetchMatch(){
+  const [start,setStart] = useState<number>(0);
+  const fetchMatch = useCallback(async (start:number)=>{
     const matchlist = await riot.matchList(info.puuid,start)
-    return await Promise.all(
+    await Promise.all(
       matchlist.map(async (match:string)=>{
         const response = await riot.matchDetail(match)
         const myParticipant = response.data.metadata.participants.indexOf(info.puuid)
@@ -23,20 +24,17 @@ export default function Record({info}:props) {
         const result = {myIndex:myParticipant,myTeamId:myTeamId,...response.data}
         return result;
       })
-    ).then((_res)=>{
-      setDetails(prev => [...prev,_res])
+    ).then((_details)=>{
+      setDetails((prev:any) => [...prev,..._details])
       setIsLoading(false)
     })
-}
-  useEffect(()=>{
-    fetchMatch()
-  },[start])
+  },[info])
+
 
   useEffect(()=>{
-    console.log("디테일스",details)
-  },[details])
-
-  if(isLoading) return (<div>없음</div>)
+    fetchMatch(start)
+  },[fetchMatch, start])
+  if(isLoading) return (<div></div>)
 
   return (
   <>
@@ -44,13 +42,8 @@ export default function Record({info}:props) {
       {/* <ChampRecently  /> */}
     </ChampView>
     <GameView >
-      {/* <RecordCard /> */}
-      {details?.map((detail)=>{
-        return detail.map((deta,index)=>{
-           return <RecordCard key={index} detail={deta}/>
-        })
-      })}
-      <More onClick={()=>{setStart(perv => perv + 10)}}>더 보기</More>
+      {details && details?.map((detail:any)=> <RecordCard key={detail.metadata.matchId} detail={detail}  />)}
+      <More onClick={()=>{setStart(prev => prev+10)}}>더 보기</More>
     </GameView>
     
   </>

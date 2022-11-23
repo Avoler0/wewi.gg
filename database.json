@@ -1,32 +1,6 @@
 {
   "duo": [
     {
-      "summoner": "내덕동팬티도둑",
-      "line": "All",
-      "mode": "All",
-      "mic": false,
-      "memo": "같이할 사람 구합니다 !",
-      "password": "2222",
-      "createdAt": 1668739911141,
-      "riotId": "bAl4q02cwHdPEBwSJ-na08J3BLzbUNvFMG9EnqFD3e3eYGc",
-      "profileIconId": 4026,
-      "summonerLevel": 681,
-      "soloRank": {
-        "tier": "SILVER",
-        "rank": "III"
-      },
-      "teamRank": {
-        "tier": "SILVER",
-        "rank": "III"
-      },
-      "threeChamp": [
-        "http://ddragon.leagueoflegends.com/cdn/12.9.1/img/champion/Diana.png",
-        "http://ddragon.leagueoflegends.com/cdn/12.9.1/img/champion/Garen.png",
-        "http://ddragon.leagueoflegends.com/cdn/12.9.1/img/champion/Nasus.png"
-      ],
-      "id": 2
-    },
-    {
       "summoner": "잘생겼고롤잘하고",
       "line": "Mid",
       "mode": "All",
