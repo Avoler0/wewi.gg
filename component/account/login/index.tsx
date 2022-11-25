@@ -7,7 +7,7 @@ import { useDispatch } from "react-redux";
 import React from "react";
 import Link from "next/link";
 // import { requestApi }  from "../../../../api/requestApi";
-const { naver } = window as any;
+// const { naver } = window as any;
 
 export default function Login() {
   const dispatch = useDispatch()
@@ -36,23 +36,23 @@ export default function Login() {
   //     })
   //   }
   // }
-  const naverInit = () =>{
-      const login = new naver.LoginWithNaverId({
-      clientId: 'NR61LLLoBLU2vcfbHvDY',
-      callbackUrl: 'http://localhost:3000/login', 
-      callbackHandle:true,
-      isPopup: false, // popup 형식으로 띄울것인지 설정
-      loginButton: { 
-        color: 'green', type: 3, height: '65' 
-      }, //버튼의 스타일, 타입, 크기를 지정
-    });
-    login.init();
-  };
+  // const naverInit = () =>{
+  //     const login = new naver.LoginWithNaverId({
+  //     clientId: 'NR61LLLoBLU2vcfbHvDY',
+  //     callbackUrl: 'http://localhost:3000/login', 
+  //     callbackHandle:true,
+  //     isPopup: false, // popup 형식으로 띄울것인지 설정
+  //     loginButton: { 
+  //       color: 'green', type: 3, height: '65' 
+  //     }, //버튼의 스타일, 타입, 크기를 지정
+  //   });
+  //   login.init();
+  // };
   // const naverToken = location.hash.split('=')[1].split('&')[0];  
-  const postNaverToken = () => {
-   if(!location.hash && loginType !== "naver" ){
-     return;
-   }
+  // const postNaverToken = () => {
+  //  if(!location.hash && loginType !== "naver" ){
+  //    return;
+  //  }
   
   // axios.post('http://localhost:4000/api/login/naver' , {
   //   token:naverToken
@@ -61,29 +61,28 @@ export default function Login() {
   //   //이메일 확인 후 가입 안되어 있으면 가입화면으로
   //   history('/register',{state:res.data})
   // })
-}
- const googleLogin = () => {
-   setLoginType("google");
-   const clientID = '625687004788-gd57fikpm0v5854djf8emrm7bgmh4drg.apps.googleusercontent.com'
-   const path = 'http://localhost:3000/login'
-   const googleOauthURL =`https://accounts.google.com/o/oauth2/v2/auth?client_id=${clientID}`+
-    `&response_type=token&redirect_uri=${path}&scope=https://www.googleapis.com/auth/userinfo.email`;
-    window.location.assign(googleOauthURL);
- }
- const postGoogleToken = () => {
-   if(!window.location.hash && loginType !== "google") return;
-  // const accessToken = window.location.hash.split("=")[1].split("&")[0]
- }
+// }
+//  const googleLogin = () => {
+//    setLoginType("google");
+//    const clientID = '625687004788-gd57fikpm0v5854djf8emrm7bgmh4drg.apps.googleusercontent.com'
+//    const path = 'http://localhost:3000/login'
+//    const googleOauthURL =`https://accounts.google.com/o/oauth2/v2/auth?client_id=${clientID}`+
+//     `&response_type=token&redirect_uri=${path}&scope=https://www.googleapis.com/auth/userinfo.email`;
+//     window.location.assign(googleOauthURL);
+//  }
+//  const postGoogleToken = () => {
+//    if(!window.location.hash && loginType !== "google") return;
+//   // const accessToken = window.location.hash.split("=")[1].split("&")[0]
+//  }
  
-  useEffect(() => {
-    naverInit();
-    postGoogleToken();
-  }, []);
+  // useEffect(() => {
+  //   naverInit();
+  //   postGoogleToken();
+  // }, []);
 
   return (
   <>
     <Head>
-    
     </Head>
     <Container>
       <Layout>
@@ -114,10 +113,10 @@ export default function Login() {
             }
           <OR>OR</OR>
           <FastLogin>간편 로그인</FastLogin>
-          <NaverLogin id='naverIdLogin' onClick={postNaverToken}>
+          <NaverLogin id='naverIdLogin'>
               네이버 로그인
           </NaverLogin>
-          <GoogleLogin onClick={googleLogin}>
+          <GoogleLogin>
             {/* <img src="../images/path-icons/btn_google_signin_dark_normal_web@2x.png" style={{
               width:"314px",
               borderRadius:"20px",
@@ -130,7 +129,7 @@ export default function Login() {
           </ExitWrap>
           <Register>
             <span>아이디가 없다면 ?</span>
-            <Link to="/register">회원가입</Link>
+            <Link href="/register">회원가입</Link>
           </Register>
         </Form>
         
@@ -152,8 +151,7 @@ const Layout = styled.div`
   
 `;
 const Head = styled.div`
-  height: 13rem ;
-  padding-bottom: 48px;
+  height: 7rem ;
 `;
 const LogoWrap = styled.div`
   margin: 0 auto;
