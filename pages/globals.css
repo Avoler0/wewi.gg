@@ -1,6 +1,12 @@
-html,
-body {
+* {
+  margin: 0;
+  padding: 0;
+}
+html,body {
   font-family: 'Nanum Gothic', sans-serif;
+  display: inline-block;
+  width: 100%;
+  height: 100%;
   padding: 0;
   margin: 0;
   background-image: url(https://images.contentstack.io/v3/assets/blt731acb42bb3d1659/blt15d3facea57e5b7e/634613111338101198fce129/K_Sante-Base-Splash.jpg);
@@ -12,7 +18,7 @@ a {
 * {
   box-sizing: border-box;
 }
-ul{
+ol,ul{
   list-style: none;
   margin: 0;
   padding: 0;

@@ -79,32 +79,32 @@ export default function Login() {
   //   naverInit();
   //   postGoogleToken();
   // }, []);
-
+  function postLogin(event:any){
+    event.preventDefault();
+    console.log(event.target)
+  }
   return (
-  <>
-    <Head>
-    </Head>
-    <Container>
-      <Layout>
-        <LogoWrap>
-          <Logo>wewi.gg</Logo>
-        </LogoWrap>
-        <Form onSubmit={(e) => e.preventDefault()}>
-          <InWrap>
-            <Label htmlFor="loginId">이메일</Label>
-            <Input id="loginId" type="text" ref={emailRef} />
-          </InWrap>
-          <InWrap>
-            <Label htmlFor="loginPw">비밀번호</Label>
-            <Input id="loginPw" type="password" ref={pwRef} />
-          </InWrap>
-          <InWrap style={{
-            display:'flex'
-          }}>
-            <CheckBox type="checkbox" id="keepLogin"/>
-            <Label>자동 로그인</Label>
-            <IDPW>ID/PW 찾기</IDPW>
-          </InWrap>
+    <Wrap>
+      <Title>
+        <h1>wewi.gg</h1>
+      </Title>
+      <Container>
+        <Form onSubmit={postLogin}>
+          <Input_Layout>
+            <Label htmlFor="email">이메일</Label>
+            <Input id="email" type="text"/>
+          </Input_Layout>
+          <Input_Layout>
+            <Label htmlFor="password">비밀번호</Label>
+            <Input id="password" type="password"/>
+          </Input_Layout>
+          <Option_Layout>
+            <div>
+              <input type="checkbox" id="keepLogin"/>
+              <label htmlFor="keepLogin" >자동 로그인</label>
+            </div>
+            <div><Link href={"/register"}>ID/PW 찾기</Link></div>
+          </Option_Layout>
             {loginError &&  
               <>
                 <ErrorMsg>아이디 또는 비밀번호를 잘못 입력했습니다.</ErrorMsg>
@@ -132,37 +132,36 @@ export default function Login() {
             <Link href="/register">회원가입</Link>
           </Register>
         </Form>
-        
-      </Layout>
-    </Container>
-  </>
+      </Container>
+    </Wrap>
   );
 }
 
-const Container = styled.div`
+const Wrap = styled.div`
   width: 450px ;
   min-height: 682px;
   margin: 0 auto ;
+  margin-top: 7rem;
   height: 25rem;
+  color:white;
   background-color: #2c3e50;
 `;
-const Layout = styled.div`
-  margin: 0 40px;
+const Container = styled.div`
+  margin: 0 8%;
   
 `;
-const Head = styled.div`
-  height: 7rem ;
-`;
-const LogoWrap = styled.div`
+const Title = styled.section`
   margin: 0 auto;
+  h1{
+    font-size: 48px;
+    font-weight: bold;
+    color: white;
+    text-align: center;
+    padding: 32px 0 24px 0;
+    margin: 0;
+  }
 `;
-const Logo = styled.h1`
-  font-size: 48px;
-  font-weight: bold;
-  color: white;
-  text-align: center;
-  padding: 32px 0 24px 0;
-`;
+
 const Form = styled.form`
   display:flex ;
   flex-direction:column ;
@@ -170,13 +169,29 @@ const Form = styled.form`
   padding: 1rem;
   padding-top: 0;
 `;
-const InWrap = styled.div`
+const Input_Layout = styled.div`
   margin-top: 1rem;
+`;
+const Option_Layout = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 1rem 0;
+  input{
+    margin-right: 0.3rem;
+  }
+  a{
+    color: #8686f0;
+    margin: 0 10px;
+    cursor: pointer;
+    text-decoration: underline;
+  }
+
 `;
 const Label = styled.label`
   font-size: 15px;
   display: block;
-  /* color: rgba(123,122,142,0.8); */
+  color: rgba(123,122,142,0.8);
   color: white;
   margin-bottom: 8px;
 `;
