@@ -1,4 +1,11 @@
 {
+  "account":[
+    {
+      "id":1,
+      "email":"1234",
+      "password":"1234"
+    }
+  ],
   "duo": [
     {
       "summoner": "잘생겼고롤잘하고",

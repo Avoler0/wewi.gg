@@ -6,6 +6,7 @@ import { useDispatch } from "react-redux";
 // import { accountLogin } from "../../../../Redux/accountRedux/accountSlice";
 import React from "react";
 import Link from "next/link";
+import { dbHook } from "../../../hooks/dbHook";
 // import { requestApi }  from "../../../../api/requestApi";
 // const { naver } = window as any;
 
@@ -81,7 +82,12 @@ export default function Login() {
   // }, []);
   function postLogin(event:any){
     event.preventDefault();
-    console.log(event.target)
+    const query = {
+      email:event.target['email'].value,
+      password:event.target['password'].value
+    }
+    const loginResult = dbHook.account.login(query)
+    
   }
   return (
     <Wrap>

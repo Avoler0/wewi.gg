@@ -1,6 +1,10 @@
 import { useDispatch } from 'react-redux';
-import { apiInstance } from "./axiosInstance";
+import { apiInstance, dbInstance } from "./axiosInstance";
 
+type LoginQuery = {
+  email:string,
+  password:string
+}
 
 export const dbHook = {
   duo:{
@@ -30,6 +34,18 @@ export const dbHook = {
       })
       .catch((_error)=>{
         return _error;
+      })
+    }
+  },
+  account:{
+    login:function(query:LoginQuery){
+      console.log(query)
+      apiInstance.post('/database/account/login',query)
+      .then((_res)=>{
+        return _res.status
+      })
+      .catch((_error)=>{
+        return _error.response.status
       })
     }
   }
