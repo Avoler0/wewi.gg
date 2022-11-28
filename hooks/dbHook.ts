@@ -1,9 +1,12 @@
 import { useDispatch } from 'react-redux';
 import { apiInstance, dbInstance } from "./axiosInstance";
 
-type LoginQuery = {
+interface LoginQuery {
   email:string,
   password:string
+}
+interface RegisterQuery extends LoginQuery{
+  nickName:string
 }
 
 export const dbHook = {
@@ -38,14 +41,25 @@ export const dbHook = {
     }
   },
   account:{
-    login:function(query:LoginQuery){
+    login:async function(query:LoginQuery){
       console.log(query)
-      apiInstance.post('/database/account/login',query)
+      return await apiInstance.post('/database/account/login',query)
       .then((_res)=>{
         return _res.status
       })
       .catch((_error)=>{
         return _error.response.status
+      })
+    },
+    register:async function(query:RegisterQuery){
+      return await apiInstance.post('/database/account/register',query)
+      .then((_res)=>{
+        console.log("Register Res",_res)
+        return _res.data
+      })
+      .catch((_error)=>{
+        console.log("Register Err",_error)
+        return _error.response.data
       })
     }
   }

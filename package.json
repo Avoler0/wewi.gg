@@ -8,7 +8,7 @@
     "start": "next start",
     "lint": "next lint",
     "server": "npx json-server ./database.json --port 4000",
-    "play":"dev && server"
+    "play":"next dev && npx json-server ./database.json --port 4000"
   },
   "dependencies": {
     "@types/axios": "^0.14.0",

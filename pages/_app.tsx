@@ -19,7 +19,7 @@ function MyApp({ Component, pageProps }: AppProps) {
       <QueryClientProvider client={queryClient}>
       {/* <ReactQueryDevtools initialIsOpen={true} />  */}
         <Provider store={store}>
-          {login ? null : <HeaderIndex /> }
+          {login || register ? null : <HeaderIndex /> }
           <Component {...pageProps} />
           <FooterIndex />
         </Provider>
