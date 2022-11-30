@@ -1,3 +1,4 @@
+import storage from 'reduxjs-toolkit-persist/lib/storage'
 import { createSlice,PayloadAction  } from '@reduxjs/toolkit';
 
 type Login = {
@@ -22,16 +23,14 @@ const user = createSlice({
       state.email = action.payload.email;
       state.nickName = action.payload.nickName;
     },
-    setLogout:(state:Login,action:PayloadAction<any>) => {
+    setLogout:(state:Login) => {
       state.state = false;
       state.email = '';
       state.nickName = '';
+      storage.removeItem('persist:root')
     },
-    initLogin:(state:Login,action:PayloadAction<any>) => {
-
-    }
   }
 });
 
 export default user.reducer;
-export const {setLogin} = user.actions;
+export const {setLogin,setLogout} = user.actions;

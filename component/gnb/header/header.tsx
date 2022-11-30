@@ -5,13 +5,20 @@ import UserMenu from "../../../images/icons/menu-svgrepo-com.svg"
 import React from "react";
 import Link from "next/link";
 import { useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
+import { setLogout } from "../../../redux/login/user";
 // import { accountReduxT } from "../../../Types/accountTypes";
 // import AccountMenu from "./Menu";
 
 export default function HeaderJSX() {
+  const dispatch = useDispatch();
   const user = useSelector((state:any)=>{
     return state.user;
   })
+  
+  function logout(){
+    dispatch(setLogout())
+  }
   console.log("헤더 스테이트",user)
   return (
     <Header>
@@ -24,7 +31,10 @@ export default function HeaderJSX() {
         <UserWrap>
         
             {user.state ? (
-              <UserName>{user.nickName}님</UserName>
+                <>
+                  <UserName>{user.nickName}님</UserName>
+                  <button onClick={logout}>로그아웃</button>
+                </>
             )
           : (
             <Login>

@@ -7,8 +7,12 @@ import FooterIndex from '../component/footer/footer';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { PersistGate } from 'reduxjs-toolkit-persist/integration/react'
 import { useRouter } from 'next/router';
+import dynamic from 'next/dynamic'
+import Head from 'next/head';
 
-
+const DynamicComponent = dynamic(() => import('../component/account/login'), {
+  ssr: false,
+})
 const queryClient = new QueryClient();
 
 function MyApp({ Component, pageProps }: AppProps) {
@@ -21,6 +25,7 @@ function MyApp({ Component, pageProps }: AppProps) {
       <QueryClientProvider client={queryClient}>
         <Provider store={store}>
           <PersistGate loading={null} persistor={persistore}>
+
             {login || register ? null : <HeaderIndex /> }
             <Component {...pageProps} />
             <FooterIndex />

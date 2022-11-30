@@ -7,12 +7,11 @@ import { useDispatch } from "react-redux";
 import React from "react";
 import Link from "next/link";
 import { dbHook } from "../../../hooks/dbHook";
-import { useRouter } from "next/router";
+import { Router, useRouter } from "next/router";
 import { setLogin } from "../../../redux/login/user";
 import { useSelector } from "react-redux";
+// import NaverLogin from "./naver";
 // import { requestApi }  from "../../../../api/requestApi";
-// const { naver } = window as any;
-
 export default function Login() {
   const dispatch = useDispatch()
   const user = useSelector((state:any)=> state.user)
@@ -23,72 +22,49 @@ export default function Login() {
   });
   const [loginError , setLoginError] = useState(false);
   const [loginType , setLoginType] = useState("basic");
+  useEffect(() => {
+    const {naver} = window as any
+    console.log(window ,naver)
+  }, [window]);
 
-  if(user.state) router.push('/')
 
-  // const onLogin = async () => {
-  //   if(emailRef.current && pwRef.current){
-  //     const email = emailRef.current.value;
-  //     const password = pwRef.current.value;
-  //     requestApi.tryLogin(email,password)
-  //     .then((_response:any)=>{
-  //       if(_response.data.length){
-  //         dispatch(accountLogin(_response.data[0]))
-  //         console.log(location)
-  //         navigate("/")
-  //       }else{
-  //         setLoginError(true);
-  //         console.log("회원 데이터 없음")
-  //       }
-  //     })
-  //     .catch((error)=>{
-  //       console.log("에러",error)
-  //     })
-  //   }
-  // }
-  // const naverInit = () =>{
-  //     const login = new naver.LoginWithNaverId({
-  //     clientId: 'NR61LLLoBLU2vcfbHvDY',
-  //     callbackUrl: 'http://localhost:3000/login', 
-  //     callbackHandle:true,
-  //     isPopup: false, // popup 형식으로 띄울것인지 설정
-  //     loginButton: { 
-  //       color: 'green', type: 3, height: '65' 
-  //     }, //버튼의 스타일, 타입, 크기를 지정
-  //   });
-  //   login.init();
-  // };
-  // const naverToken = location.hash.split('=')[1].split('&')[0];  
-  // const postNaverToken = () => {
-  //  if(!location.hash && loginType !== "naver" ){
-  //    return;
-  //  }
-  
-  // axios.post('http://localhost:4000/api/login/naver' , {
-  //   token:naverToken
-  // }).then((res) => {
-  //   console.log("RES",res.data);
-  //   //이메일 확인 후 가입 안되어 있으면 가입화면으로
-  //   history('/register',{state:res.data})
-  // })
-// }
-//  const googleLogin = () => {
-//    setLoginType("google");
-//    const clientID = '625687004788-gd57fikpm0v5854djf8emrm7bgmh4drg.apps.googleusercontent.com'
-//    const path = 'http://localhost:3000/login'
-//    const googleOauthURL =`https://accounts.google.com/o/oauth2/v2/auth?client_id=${clientID}`+
-//     `&response_type=token&redirect_uri=${path}&scope=https://www.googleapis.com/auth/userinfo.email`;
-//     window.location.assign(googleOauthURL);
-//  }
-//  const postGoogleToken = () => {
-//    if(!window.location.hash && loginType !== "google") return;
-//   // const accessToken = window.location.hash.split("=")[1].split("&")[0]
-//  }
- 
-  // useEffect(() => {
-  //   naverInit();
-  //   postGoogleToken();
-  // }, []);
+
+
+    
+  useEffect(() => {
+    
+    // postGoogleToken();
+    const naverScript = document.createElement("script");
+    naverScript.src = "https://static.nid.naver.com/js/naverLogin_implicit-1.0.3.js";
+    naverScript.async = true;
+    document.body.appendChild(naverScript);
+
+    naverScript.onload = ()=>{ 
+      let naverLogin = new naver_id_login('NR61LLLoBLU2vcfbHvDY','http://localhost:3000/login')
+      // let state = naver_id_login.getUniqState();
+      naverLogin.setButton('green',3,65)
+      naverLogin.setDomain('http://localhost:3000')
+      naverLogin.setState('state');
+      // naverLogin.setPopup();
+      naverLogin.init_naver_id_login();
+      // if(naver){
+      //   console.log("네이버 실행")
+      //   let naverLogin:any;
+      //   const login = () => {
+      //     naverLogin = new naver.LoginWithNaverId({
+      //     clientId: 'NR61LLLoBLU2vcfbHvDY',
+      //     callbackUrl: 'http://localhost:3000/login', 
+      //     callbackHandle:true,
+      //     isPopup: false, // popup 형식으로 띄울것인지 설정
+      //     loginButton: { 
+      //       color: 'green', type: 3, height: '65' 
+      //     }, //버튼의 스타일, 타입, 크기를 지정
+      //     });
+      //     naverLogin.init();
+      }
+
+    
+  }, [window]);
   async function postLogin(event:any){
     event.preventDefault();
     const query = {
@@ -144,9 +120,10 @@ export default function Login() {
             }
           <OR>OR</OR>
           <FastLogin>간편 로그인</FastLogin>
-          <NaverLogin id='naverIdLogin'>
+          <NaverLogin id='naver_id_login'>
               네이버 로그인
           </NaverLogin>
+          {/* <NaverLogin /> */}
           <GoogleLogin>
             {/* <img src="../images/path-icons/btn_google_signin_dark_normal_web@2x.png" style={{
               width:"314px",
@@ -155,7 +132,7 @@ export default function Login() {
             }} /> */}
           </GoogleLogin>
           <ExitWrap>
-            <OkBt>로그인</OkBt>
+            <OkBt name="basicLogin">로그인</OkBt>
             
           </ExitWrap>
           <Register>
