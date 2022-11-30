@@ -7,15 +7,24 @@ import { useDispatch } from "react-redux";
 import React from "react";
 import Link from "next/link";
 import { dbHook } from "../../../hooks/dbHook";
+import { useRouter } from "next/router";
+import { setLogin } from "../../../redux/login/user";
+import { useSelector } from "react-redux";
 // import { requestApi }  from "../../../../api/requestApi";
 // const { naver } = window as any;
 
 export default function Login() {
   const dispatch = useDispatch()
-  const emailRef = React.useRef<HTMLInputElement>(null);
-  const pwRef = React.useRef<HTMLInputElement>(null);
+  const user = useSelector((state:any)=> state.user)
+  const router = useRouter();
+  const [errorMsg,setErrorMsg] = useState({
+    type:'',
+    message:''
+  });
   const [loginError , setLoginError] = useState(false);
   const [loginType , setLoginType] = useState("basic");
+
+  if(user.state) router.push('/')
 
   // const onLogin = async () => {
   //   if(emailRef.current && pwRef.current){
@@ -80,14 +89,28 @@ export default function Login() {
   //   naverInit();
   //   postGoogleToken();
   // }, []);
-  function postLogin(event:any){
+  async function postLogin(event:any){
     event.preventDefault();
     const query = {
       email:event.target['email'].value,
       password:event.target['password'].value
     }
-    const loginResult = dbHook.account.login(query)
+    const loginResult = await dbHook.account.login(query)
     
+    switch(loginResult.status){
+      case 200:
+          dispatch(setLogin({
+            email:loginResult.data[0].email,
+            nickName:loginResult.data[0].nickName
+          }))
+          // router.push('/');
+          break;
+      case 401:
+        return setErrorMsg({type:'password',message:'틀린 비밀번호 입니다.'});
+      case 404:
+        return setErrorMsg({type:'email',message:'없는 이메일 입니다.'});
+    }
+
   }
   return (
     <Wrap>
@@ -98,10 +121,12 @@ export default function Login() {
         <Form onSubmit={postLogin}>
           <Input_Layout>
             <Label htmlFor="email">이메일</Label>
+            {errorMsg.type === 'email' && <ErrorMessage>{errorMsg.message}</ErrorMessage>}
             <Input id="email" type="text"/>
           </Input_Layout>
           <Input_Layout>
             <Label htmlFor="password">비밀번호</Label>
+            {errorMsg.type === 'password' && <ErrorMessage>{errorMsg.message}</ErrorMessage>}
             <Input id="password" type="password"/>
           </Input_Layout>
           <Option_Layout>
@@ -196,7 +221,6 @@ const Option_Layout = styled.div`
 `;
 const Label = styled.label`
   font-size: 15px;
-  display: block;
   color: rgba(123,122,142,0.8);
   color: white;
   margin-bottom: 8px;
@@ -214,14 +238,10 @@ const Input = styled.input`
     outline: none;
   }
 `;
-const CheckBox = styled.input`
-  
-`;
-const IDPW = styled.div`
-  font-size: 15px;
-  color: #8686f0;
-  margin: 0 10px;
-  cursor: pointer;
+const ErrorMessage = styled.span`
+  margin-left: 1rem;
+  color: red;
+  font-size: 14px;
 `;
 const OR = styled.div`
   display: flex;

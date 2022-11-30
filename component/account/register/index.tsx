@@ -1,18 +1,27 @@
 import Link from "next/link";
+import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
 import { dbHook } from "../../../hooks/dbHook";
 import { validHook } from "../../../hooks/validationHook";
-
-
-
-
+import { setLogin } from "../../../redux/login/user";
 
 function Register() {
+  const dispatch = useDispatch();
+  const user = useSelector((state:any)=> state.user)
+  const router = useRouter();
   const [emailError,setEmailError] = useState<string>('');
   const [passwordError,setPasswordError] = useState<string>('');
   const [nickError,setNickError] = useState<string>('');
 
+  if(user.state) router.push('/')
+
+  function resetState(){
+    setEmailError('');
+    setPasswordError('');
+    setNickError('');
+  }
   function validState(emailValid:boolean,pwValid:boolean){
     let email = false;
     let password = false;
@@ -33,6 +42,7 @@ function Register() {
   }
 
   async function postRegister(event:any){
+    resetState();
     event.preventDefault();
     const query = {
       email:event.target[0].value,
@@ -49,11 +59,15 @@ function Register() {
     if(validation){
       await dbHook.account.register(query)
       .then((_res)=>{
-        const response = _res.data;
-        if(response.status === 201){
-          console.log('생성 완료')
-        }else if(response.status === 409){
-          switch(response.conflict){
+        if(_res.status === 201){
+          dispatch(setLogin({
+            type:'basic',
+            email:query.email,
+            nickName:query.nickName
+          }));
+          router.push('/');
+        }else if(_res.status === 409){
+          switch(_res.conflict){
             case 'email':
               return setEmailError('이미 등록된 이메일입니다.');
             case 'nick':

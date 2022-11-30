@@ -45,10 +45,10 @@ export const dbHook = {
       console.log(query)
       return await apiInstance.post('/database/account/login',query)
       .then((_res)=>{
-        return _res.status
+        return _res.data
       })
       .catch((_error)=>{
-        return _error.response.status
+        return _error.response.data
       })
     },
     register:async function(query:RegisterQuery){

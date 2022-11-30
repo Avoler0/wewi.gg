@@ -4,7 +4,9 @@ import { dbInstance } from '../../../../hooks/axiosInstance';
 
 
 type Data = {
-  message:string
+  status:number,
+  error?:string,
+  data?:any
 }
 
 export default async function handler(
@@ -14,17 +16,17 @@ export default async function handler(
   const {email,password} = req.body;
   
   const response = await dbInstance.get(`/account?email=${email}`)
-
+  console.log(response)
   if(response.data[0]){
     const resPassword = response.data[0].password;
     if(resPassword === password){
-      return res.status(200).send({message:'Success Login'})
+      return res.status(200).send({status:200,data:response.data})
     }
     else{
-      return res.status(401).send({message:'Bad Request'})
+      return res.status(401).send({status:401,error:'Bad Request'})
     }
   }else{
-    return res.status(404).send({message:'Not Found Account'})
+    return res.status(404).send({status:404,error:'Not Found Account'})
   }
 
 }

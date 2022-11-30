@@ -4,12 +4,15 @@ import { useState } from "react";
 import UserMenu from "../../../images/icons/menu-svgrepo-com.svg"
 import React from "react";
 import Link from "next/link";
+import { useSelector } from "react-redux";
 // import { accountReduxT } from "../../../Types/accountTypes";
 // import AccountMenu from "./Menu";
 
 export default function HeaderJSX() {
-
-  
+  const user = useSelector((state:any)=>{
+    return state.user;
+  })
+  console.log("헤더 스테이트",user)
   return (
     <Header>
       <Content>
@@ -19,16 +22,18 @@ export default function HeaderJSX() {
           </Link>
         </Logo>
         <UserWrap>
-        {/* {account.login ?  (
-            <>
-              { <UserName>{account.nickName}</UserName> }
-              <UserMenu onClick={() => setUseMenu(prev => !prev)} xmlns={`${UserMenu}`} style={{ width:"13px",
-            fill:"#fff" , cursor:"pointer"}}/>
-            </>
-          ) : <Login onClick={() => navigate('/login')}>로그인</Login>}
-          {useMenu && <Menu>
-             <AccountMenu account={account} />
-            </Menu>} */}
+        
+            {user.state ? (
+              <UserName>{user.nickName}님</UserName>
+            )
+          : (
+            <Login>
+              <Link href={'/login'}>
+                로그인
+              </Link>
+            </Login>
+          )}
+            
         </UserWrap>
       </Content>
     </Header>
@@ -84,6 +89,7 @@ const Login = styled.div`
   padding: 5px 10px;
 `;
 const UserName = styled.span`
+  color: white;
   font-size: 16px;
   font-weight: 500;
 `
