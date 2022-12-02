@@ -16,7 +16,21 @@ function Register() {
   const [nickError,setNickError] = useState<string>('');
 
   if(user.state) router.push('/')
-
+  function naverSignInCallback() {
+      console.log(naver_id_login.getProfileData('email'));
+      console.log(naver_id_login.getProfileData('nickname'));
+      console.log(naver_id_login.getProfileData('age'));
+    }
+  useEffect(()=>{
+    let naver_id_login = new window.naver_id_login('NR61LLLoBLU2vcfbHvDY','http://localhost:3000/register')
+    // 접근 토큰 값 출력
+    console.log(naver_id_login.oauthParams.access_token);
+    // 네이버 사용자 프로필 조회
+    naver_id_login.get_naver_userprofile("naverSignInCallback()");
+    // 네이버 사용자 프로필 조회 이후 프로필 정보를 처리할 callback function
+    console.log("이전",naver_id_login)
+    
+  },[])
   function resetState(){
     setEmailError('');
     setPasswordError('');

@@ -61,6 +61,32 @@ export const dbHook = {
         console.log("Register Err",_error)
         return _error.response.data
       })
+    },
+    naver:{
+      join:async function(token:string){
+        const result = await apiInstance.post(`/database/account/naver/${token}`)
+        console.log("딥훅",result)
+      },
+      login:async function(query:LoginQuery){
+        return await apiInstance.post('/database/account/naver/login',query)
+        .then((_res)=>{
+          return _res.data
+        })
+        .catch((_error)=>{
+          return _error.response.data
+        })
+      },
+      register:async function(query:RegisterQuery){
+        return await apiInstance.post('/database/account/naver/register',query)
+        .then((_res)=>{
+          console.log("Register Res",_res)
+          return _res.data
+        })
+        .catch((_error)=>{
+          console.log("Register Err",_error)
+          return _error.response.data
+        })
+      },
     }
   }
 }

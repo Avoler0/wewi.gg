@@ -25,7 +25,6 @@ function MyApp({ Component, pageProps }: AppProps) {
       <QueryClientProvider client={queryClient}>
         <Provider store={store}>
           <PersistGate loading={null} persistor={persistore}>
-
             {login || register ? null : <HeaderIndex /> }
             <Component {...pageProps} />
             <FooterIndex />

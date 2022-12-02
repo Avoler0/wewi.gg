@@ -1,4 +1,5 @@
 import Document, { Html, Head, Main, NextScript, DocumentContext } from "next/document";
+import Script from "next/script";
 import { ServerStyleSheet } from "styled-components";
 
 class MyDocument extends Document {
@@ -30,10 +31,19 @@ class MyDocument extends Document {
 		return (
 			<Html>
 				<html lang="ko" />
-				<Head></Head>
+				<Head>
+				</Head>
 				<body>
 					<Main />
 					<NextScript />
+					<Script
+						src="https://static.nid.naver.com/js/naverLogin_implicit-1.0.3.js"
+						strategy="beforeInteractive"
+					></Script>
+					<Script
+						src="http://code.jquery.com/jquery-1.11.3.min.js"
+						strategy="beforeInteractive"
+					></Script>
 				</body>
 			</Html>
 		);

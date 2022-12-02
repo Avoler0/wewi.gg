@@ -13,7 +13,7 @@ export default async function handler(
   res: NextApiResponse<Data>
 ) {
   console.log(req.body)
-  const {email,password,nickName} = req.body;
+  const {email,password,nickName,type} = req.body;
 
   const overlapEmail = await dbInstance.get(`/account?email=${email}`).then(res => res.data.length !== 0)
   const overlapNick = await dbInstance.get(`/account?nickName=${nickName}`).then(res => res.data.length !== 0)
