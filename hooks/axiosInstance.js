@@ -16,9 +16,17 @@ const apiInstance = axios.create({
 
 const dbInstance = axios.create({
   baseURL: dbURL,
-  headers: {'X-Custom-Header': 'foobar'}
+  headers: {
+    'X-Custom-Header': 'foobar'}
 });
 
+const naverInstance = axios.create({
+  headers:{
+    'Content-Type': 'application/json',
+    'X-Naver-Client-Id': 'NR61LLLoBLU2vcfbHvDY',
+    'X-Naver-Client-Secret': 'Fx5Nr8FL4W'
+  }
+});
 const riotApi = axios.create({
   headers: {
     "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/106.0.5249.114 Whale/3.17.145.12 Safari/537.36",
@@ -31,4 +39,4 @@ const riotApi = axios.create({
   timeout:1000
 })
 
-export {apiInstance,dbInstance , riotApi};
+export {apiInstance,dbInstance , riotApi,naverInstance};

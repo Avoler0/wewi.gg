@@ -6,7 +6,7 @@ type props = {
   text: string
 }
 
-function NaverAouth({text}){
+function NaverAouth({text}:props){
 
   useEffect(()=>{
       let naver_id_login = new window.naver_id_login('NR61LLLoBLU2vcfbHvDY','http://localhost:3000/register')

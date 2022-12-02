@@ -65,7 +65,8 @@ export const dbHook = {
     naver:{
       join:async function(token:string){
         const result = await apiInstance.post(`/database/account/naver/${token}`)
-        console.log("딥훅",result)
+
+        return result
       },
       login:async function(query:LoginQuery){
         return await apiInstance.post('/database/account/naver/login',query)
