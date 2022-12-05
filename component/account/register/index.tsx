@@ -10,31 +10,26 @@ import { setLogin } from "../../../redux/login/user";
 function Register() {
   const dispatch = useDispatch();
   const user = useSelector((state:any)=> state.user)
+  const oauthEmail = useSelector((state:any)=> state.oauthReg.email)
   const router = useRouter();
   const [emailError,setEmailError] = useState<string>('');
   const [passwordError,setPasswordError] = useState<string>('');
   const [nickError,setNickError] = useState<string>('');
-
+  const [oauthJoin,setOauthJoin] = useState(false);
   if(user.state) router.push('/')
 
-
+  
+  
   useEffect(()=>{
-    if(router.asPath !== '/register'){
-      console.log("ㅇㅇㅇㅇ12345?")
-      const token_parameter = router.asPath.split('=')[1].split('&')[0];
-      (async ()=>{
-        const result = await dbHook.account.naver.join(token_parameter)
-        console.log("레지스터",result)
-      })()
-        
-
-    }
+    if(oauthEmail) setOauthJoin(true)
   },[])
+  
   function resetState(){
     setEmailError('');
     setPasswordError('');
     setNickError('');
   }
+
   function validState(emailValid:boolean,pwValid:boolean){
     let email = false;
     let password = false;
@@ -53,32 +48,16 @@ function Register() {
 
     return email && password
   }
-
-  async function postRegister(event:any){
-    resetState();
-    event.preventDefault();
-    const query = {
-      email:event.target[0].value,
-      password:event.target[1].value,
-      nickName:event.target[2].value
-    };
-    const emailValid = validHook.email(query.email)
-    const passwordValid = validHook.password(query.password)
-
-    const validation = validState(emailValid,passwordValid)
-
-    if(query.nickName < 2) return setNickError('2글자 이상의 닉네임을 입력 해 주세요.')
-
-    if(validation){
-      await dbHook.account.register(query)
+  async function joinPost(query:any){
+    await dbHook.account.register(query)
       .then((_res)=>{
         if(_res.status === 201){
           dispatch(setLogin({
-            type:'basic',
+            type:query.type,
             email:query.email,
             nickName:query.nickName
           }));
-          router.push('/');
+          // router.push('/');
         }else if(_res.status === 409){
           switch(_res.conflict){
             case 'email':
@@ -91,6 +70,27 @@ function Register() {
       .catch((_error)=>{
         console.log("레지스터 에러",_error)
       })
+  }
+
+  async function postRegister(event:any){
+    resetState();
+    event.preventDefault();
+    const query = {
+      email:event.target['email'].value,
+      password:event.target['password'] ? event.target['password'].value : 'oauth-login',
+      nickName:event.target['nickName'].value,
+      type:oauthJoin ? 'oauth' : 'basic'
+    };
+    const emailValid = validHook.email(query.email)
+    const passwordValid = validHook.password(query.password)
+    console.log("타겟",query.password)
+    const validation = validState(emailValid,passwordValid)
+
+    console.log(query.nickName)
+    if(query.nickName < 2) return setNickError('2글자 이상의 닉네임을 입력 해 주세요.')
+
+    if(validation){
+      joinPost(query);
     }else{
       return;
     }
@@ -109,13 +109,16 @@ function Register() {
           <InputDiv>
             <Label htmlFor="regiId">이메일 주소</Label>
             <ErrorMessage>{emailError}</ErrorMessage>
-            <Input type="text" name="email" />
+            {oauthJoin ? 
+            <Input type="text" name="email" value={oauthEmail}/> :
+            <Input type="text" name="email"/>
+            }
           </InputDiv>
-          <InputDiv>
+          {oauthJoin ? null : <InputDiv>
             <Label>비밀번호</Label>
             <ErrorMessage>{passwordError}</ErrorMessage>
             <Input type="password" name="password" />
-          </InputDiv>
+          </InputDiv>}
           <InputDiv>
               <Label>닉네임</Label>
               <ErrorMessage>{nickError}</ErrorMessage>

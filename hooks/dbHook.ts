@@ -9,6 +9,10 @@ interface RegisterQuery extends LoginQuery{
   nickName:string
 }
 
+interface NaverLoginQuery {
+  id: string,
+  email: string
+}
 export const dbHook = {
   duo:{
     get:async function(){
@@ -52,6 +56,7 @@ export const dbHook = {
       })
     },
     register:async function(query:RegisterQuery){
+      console.log("디비훅 가입",query)
       return await apiInstance.post('/database/account/register',query)
       .then((_res)=>{
         console.log("Register Res",_res)
@@ -63,12 +68,12 @@ export const dbHook = {
       })
     },
     naver:{
-      join:async function(token:string){
+      callUserProfile:async function(token:string){
         const result = await apiInstance.post(`/database/account/naver/${token}`)
 
         return result
       },
-      login:async function(query:LoginQuery){
+      login:async function(query:NaverLoginQuery){
         return await apiInstance.post('/database/account/naver/login',query)
         .then((_res)=>{
           return _res.data

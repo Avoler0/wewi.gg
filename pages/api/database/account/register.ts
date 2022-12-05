@@ -12,9 +12,11 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<Data>
 ) {
-  console.log(req.body)
   const {email,password,nickName,type} = req.body;
-
+  console.log("레쓰",req.body)
+  const query = {
+    
+  }
   const overlapEmail = await dbInstance.get(`/account?email=${email}`).then(res => res.data.length !== 0)
   const overlapNick = await dbInstance.get(`/account?nickName=${nickName}`).then(res => res.data.length !== 0)
 
@@ -23,10 +25,21 @@ export default async function handler(
 
   const resultOverlap = overlapEmail && overlapNick;
   if(!resultOverlap){
-    await dbInstance.post('/account',req.body)
-    .then((_res)=>{
-      return res.status(201).send({status:201})
-    })
+    if(type === 'basic'){
+      await dbInstance.post('/account',req.body)
+      .then((_res)=>{
+        return res.status(201).send({status:201})
+      })
+    }else{
+      await dbInstance.post('/account',{
+        email:email,
+        nickName:nickName,
+        type:type
+      })
+      .then((_res)=>{
+        return res.status(201).send({status:201})
+      })
+    }
   }
   
 }

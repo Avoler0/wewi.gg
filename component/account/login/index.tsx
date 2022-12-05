@@ -9,6 +9,7 @@ import { useRouter } from "next/router";
 import { setLogin } from "../../../redux/login/user";
 import { useSelector } from "react-redux";
 import NaverAouth from "./oauth/naver";
+import { setOauthEmail } from "../../../redux/login/oauthReg";
 export default function Login() {
   const router = useRouter();
   const dispatch = useDispatch()
@@ -17,19 +18,40 @@ export default function Login() {
     type:'',
     message:''
   });
-  const [sss,setSss] = useState(null);
-  // if(user.state) router.push('/')
 
-  // if(router.asPath !== '/login'){
-  //   // const token_parameter = router.asPath.split('=')[1].split('&')[0];
-  //   // router.push(`/register#token=${token_parameter}`)
-    
-  // }
-  
-  
-  async function hhhh(email){
-    console.log(email)
-  }
+  if(user.state) router.push('/')
+
+  useEffect(()=>{
+    if(router.asPath !== '/login'){
+      console.log("ㅇㅇㅇㅇ12345?")
+      const token_parameter = router.asPath.split('=')[1].split('&')[0];
+      (async ()=>{
+        await dbHook.account.naver.callUserProfile(token_parameter)
+        .then(async (_res) => {
+          const naver_useProfile = _res.data.response;
+          const { id , email } = naver_useProfile;
+          console.log("RES" , naver_useProfile);
+          
+          const result = await dbHook.account.naver.login(naver_useProfile);
+
+          if(result.status === 200){
+            dispatch(setLogin({
+              type:result.data[0].type,
+              email:result.data[0].email,
+              nickName:result.data[0].nickName
+            }));
+          }else{
+            dispatch(setOauthEmail(email))
+            router.push('register')
+          }
+          console.log(result)
+        })
+      })()
+        
+
+    }
+  },[])
+
   async function postLogin(event:any){
     event.preventDefault();
     const query = {

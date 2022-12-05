@@ -4,6 +4,7 @@ import duoError from './duo/error';
 import user from './login/user'
 import storage from 'reduxjs-toolkit-persist/lib/storage'
 import { persistStore, persistReducer } from 'reduxjs-toolkit-persist'
+import oauthReg from './login/oauthReg';
 export type SearchReduxType = {
   search: any;
   type:string | null,
@@ -17,7 +18,8 @@ const persistConfig = {
 const rootResucers = combineReducers({
   duoFilter:duoFilter,
   duoError:duoError,
-  user:user
+  user:user,
+  oauthReg:oauthReg
 })
 
 const store = configureStore({

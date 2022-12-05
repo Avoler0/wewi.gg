@@ -1,75 +1,10 @@
 {
   "account": [
     {
-      "id": 1,
-      "email": "1234",
-      "password": "1234"
-    },
-    {
-      "email": "1234",
-      "password": "1234",
-      "nickName": "1234",
-      "id": 2
-    },
-    {
-      "email": "1234",
-      "password": "1234",
-      "nickName": "1234",
-      "id": 3
-    },
-    {
-      "email": "123466",
-      "password": "1234666",
-      "nickName": "12346666",
-      "id": 4
-    },
-    {
-      "email": "123466@",
-      "password": "1234666",
-      "nickName": "12346666",
-      "id": 5
-    },
-    {
-      "email": "123466@eweq.123",
-      "password": "1234666",
-      "nickName": "12346666",
-      "id": 6
-    },
-    {
-      "email": "jys1391@gmail.com",
-      "password": "1234@q1234",
-      "nickName": "ssokoe",
-      "id": 7
-    },
-    {
-      "email": "jys1391@naver.com",
-      "password": "1234@q1234",
-      "nickName": "ssokoe",
-      "id": 8
-    },
-    {
-      "email": "jys1391@aaaas.com",
-      "password": "1234@q1234",
-      "nickName": "ssokoe44",
-      "id": 9
-    },
-    {
-      "email": "44213@gmail.com",
-      "password": "jys1391!@",
-      "nickName": "jys1392",
-      "id": 10
-    },
-    {
-      "email": "5353@gmail.com",
-      "password": "jys1391!@",
-      "nickName": "jys139a",
-      "id": 11
-    },
-    {
-      "email": "535553@gmail.com",
-      "password": "jys1391!@",
-      "nickName": "jys13955",
-      "id": 12
+      "email": "avoler01@naver.com",
+      "nickName": "12345",
+      "type": "oauth",
+      "id": 1
     }
   ],
   "duo": [

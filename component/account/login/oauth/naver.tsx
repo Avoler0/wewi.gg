@@ -9,7 +9,7 @@ type props = {
 function NaverAouth({text}:props){
 
   useEffect(()=>{
-      let naver_id_login = new window.naver_id_login('NR61LLLoBLU2vcfbHvDY','http://localhost:3000/register')
+      let naver_id_login = new window.naver_id_login('NR61LLLoBLU2vcfbHvDY','http://localhost:3000/login')
       var state = naver_id_login.getUniqState();
       naver_id_login.setButton('green',3,65)
       naver_id_login.setDomain('http://localhost:3000')
