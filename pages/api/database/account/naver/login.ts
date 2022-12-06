@@ -13,7 +13,7 @@ export default async function handler(
   res: NextApiResponse<Data>
 ) {
   const { id, email} = req.body;
-  
+  console.log("네이버")
   const response = await dbInstance.get(`/account?email=${email}`)
 
   if(response.data[0]){

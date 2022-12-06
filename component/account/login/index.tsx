@@ -23,14 +23,12 @@ export default function Login() {
 
   useEffect(()=>{
     if(router.asPath !== '/login'){
-      console.log("ㅇㅇㅇㅇ12345?")
       const token_parameter = router.asPath.split('=')[1].split('&')[0];
       (async ()=>{
         await dbHook.account.naver.callUserProfile(token_parameter)
         .then(async (_res) => {
           const naver_useProfile = _res.data.response;
           const { id , email } = naver_useProfile;
-          console.log("RES" , naver_useProfile);
           
           const result = await dbHook.account.naver.login(naver_useProfile);
 
@@ -44,7 +42,6 @@ export default function Login() {
             dispatch(setOauthEmail(email))
             router.push('register')
           }
-          console.log(result)
         })
       })()
         
@@ -59,7 +56,7 @@ export default function Login() {
       password:event.target['password'].value
     }
     const loginResult = await dbHook.account.login(query)
-    
+    console.log(loginResult)
     switch(loginResult.status){
       case 200:
           dispatch(setLogin({
@@ -69,7 +66,8 @@ export default function Login() {
           // router.push('/');
           break;
       case 401:
-        return setErrorMsg({type:'password',message:'틀린 비밀번호 입니다.'});
+        if(loginResult.error === 'Oauth Account') return setErrorMsg({type:'email',message:'네이버 로그인 연동이 된 이메일입니다.'}); 
+        else return setErrorMsg({type:'password',message:'틀린 비밀번호 입니다.'});
       case 404:
         return setErrorMsg({type:'email',message:'없는 이메일 입니다.'});
     }

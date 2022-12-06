@@ -1,17 +1,12 @@
 import React from "react";
-import { useCallback, useEffect } from "react";
 import { isError, useQuery } from "react-query";
 import { useSelector } from "react-redux";
 import styled from "styled-components";
 import { tierUtils } from "../../const/utils";
 import { dbHook } from "../../hooks/dbHook";
-import {  _DuoData } from "../../redux/duo/data";
 import DuoCard from "./card/card";
 import DuoFilter, { Filter } from "./filter";
 
-type DuoData = {
-  duoData:_DuoData
-}
 
 export default function DuoIndex() {
   const {data:duoDB,isLoading} = useQuery('duoDB',async () => await dbHook.duo.get());
@@ -38,7 +33,9 @@ export default function DuoIndex() {
     
     return is.tier && is.mode && is.line
   }
-  if(isLoading) return <div>데이터 서버 접속 실패</div>
+
+  if(isLoading) return;
+
   return (
     <Container>
       <Wrapper >

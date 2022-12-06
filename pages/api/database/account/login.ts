@@ -16,6 +16,11 @@ export default async function handler(
   const {email,password} = req.body;
   
   const response = await dbInstance.get(`/account?email=${email}`)
+  console.log(response.data.type)
+  if(response.data[0].type === 'oauth'){
+    return res.status(401).send({status:401,error:'Oauth Account'})
+  }
+
   if(response.data[0]){
     const resPassword = response.data[0].password;
     if(resPassword === password){
