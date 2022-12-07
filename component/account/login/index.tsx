@@ -10,6 +10,7 @@ import { setLogin } from "../../../redux/login/user";
 import { useSelector } from "react-redux";
 import NaverAouth from "./oauth/naver";
 import { setOauthEmail } from "../../../redux/login/oauthReg";
+import GoogleOauth from "./oauth/google";
 export default function Login() {
   const router = useRouter();
   const dispatch = useDispatch()
@@ -74,7 +75,7 @@ export default function Login() {
 
   }
   return (
-    <Wrap>
+    <Wrap id="wrap">
       <Title>
         <h1>wewi.gg</h1>
       </Title>
@@ -100,16 +101,9 @@ export default function Login() {
           <OR>OR</OR>
           <FastLogin>간편 로그인</FastLogin>
           <NaverAouth text='네이버 로그인'/>
-          <GoogleLogin>
-            {/* <img src="../images/path-icons/btn_google_signin_dark_normal_web@2x.png" style={{
-              width:"314px",
-              borderRadius:"20px",
-              cursor: "pointer",
-            }} /> */}
-          </GoogleLogin>
+          <GoogleOauth text="='구글 로그인"/>
           <ExitWrap>
             <OkBt name="basicLogin">로그인</OkBt>
-            
           </ExitWrap>
           <Register>
             <span>아이디가 없다면 ?</span>
@@ -126,7 +120,7 @@ const Wrap = styled.div`
   min-height: 682px;
   margin: 0 auto ;
   margin-top: 7rem;
-  height: 25rem;
+  padding: 1rem;
   color:white;
   background-color: #2c3e50;
 `;
@@ -141,7 +135,7 @@ const Title = styled.section`
     font-weight: bold;
     color: white;
     text-align: center;
-    padding: 32px 0 24px 0;
+    padding: 1rem 0;
     margin: 0;
   }
 `;
@@ -232,7 +226,7 @@ const GoogleLogin = styled.div`
   text-align: center;
 `;
 const ExitWrap = styled.div`
-  margin-top: 30px;
+  margin-top: 15px;
   display: flex;
   justify-content: space-between;
   text-align: center;
