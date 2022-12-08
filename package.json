@@ -11,6 +11,7 @@
     "play": "next dev && npx json-server ./database.json --port 4000"
   },
   "dependencies": {
+    "@react-oauth/google": "^0.5.1",
     "@types/axios": "^0.14.0",
     "@types/qs": "^6.9.7",
     "@types/react-redux": "^7.1.24",

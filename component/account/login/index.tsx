@@ -99,12 +99,13 @@ export default function Login() {
             <div><Link href={"/register"}>ID/PW 찾기</Link></div>
           </Option_Layout>
           <OR>OR</OR>
+          
           <FastLogin>간편 로그인</FastLogin>
-          <NaverAouth text='네이버 로그인'/>
-          <GoogleOauth text="='구글 로그인"/>
-          <ExitWrap>
-            <OkBt name="basicLogin">로그인</OkBt>
-          </ExitWrap>
+          <LoginBtns>
+            <NaverAouth text='네이버 로그인'/>
+            <GoogleOauth text="='구글 로그인"/>
+            <BasicLogin className="login-btn">로그인</BasicLogin>
+          </LoginBtns>
           <Register>
             <span>아이디가 없다면 ?</span>
             <Link href="/register">회원가입</Link>
@@ -114,7 +115,18 @@ export default function Login() {
     </Wrap>
   );
 }
-
+const LoginBtn = styled.div`
+`;
+const LoginBtns = styled.div`
+  padding: 10px;
+  
+  .login-btn{
+    position: relative;
+    width: 300px;
+    margin: auto;
+    margin-bottom: 1rem;
+  }
+`;
 const Wrap = styled.div`
   width: 450px ;
   min-height: 682px;
@@ -231,7 +243,7 @@ const ExitWrap = styled.div`
   justify-content: space-between;
   text-align: center;
 `;
-const OkBt = styled.button`
+const BasicLogin = styled.button`
   margin: 0 auto;
   width: 303px;
   height: 65px;

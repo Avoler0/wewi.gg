@@ -20,12 +20,10 @@ function NaverAouth({text}:props){
   
 
 
-  return <NaverLogin id='naver_id_login'>{text}</NaverLogin>
+  return <div id='naver_id_login' className="login-btn">{text}</div>
   
 }
 const NaverLogin = styled.div`
-  text-align:center;
-  padding: 10px;
 `;
 
 export default NaverAouth;

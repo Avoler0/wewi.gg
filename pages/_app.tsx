@@ -9,6 +9,8 @@ import { PersistGate } from 'reduxjs-toolkit-persist/integration/react'
 import { useRouter } from 'next/router';
 import dynamic from 'next/dynamic'
 import Head from 'next/head';
+import { GoogleOAuthProvider } from '@react-oauth/google';
+
 
 const DynamicComponent = dynamic(() => import('../component/account/login'), {
   ssr: false,

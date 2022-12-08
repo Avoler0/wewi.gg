@@ -44,6 +44,11 @@ class MyDocument extends Document {
 						src="http://code.jquery.com/jquery-1.11.3.min.js"
 						strategy="beforeInteractive"
 					></Script>
+					<Script
+						src="https://accounts.google.com/gsi/client" 
+						async defer
+					></Script>
+					<Script src="https://apis.google.com/js/platform.js" async defer></Script>
 				</body>
 			</Html>
 		);

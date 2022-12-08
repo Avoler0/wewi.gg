@@ -3,28 +3,59 @@ import { useEffect } from "react";
 import styled from "styled-components";
 import Image from "next/image";
 
+
+
 type props = {
   text: string
 }
 
 function GoogleOauth({text}:props){
+ const useScript = (url:string, onload:any) => {
+    const script = document.createElement('script');
 
- 
-  
+    script.src = url;
+    script.onload = onload;
 
+    document.head.appendChild(script);
 
-  return (
-    <GoogleLogin>
-      <Image src={'/images/path-icons/btn_google_signin_dark_normal_web@2x.png'} alt='googleLogin' layout="fill" objectFit="fill" />
-    </GoogleLogin>
-  )
-  
+    return () => {
+      document.head.removeChild(script);
+    };
+};
+useEffect(()=>{
+  const googleScript = document.createElement('script');
+  googleScript.src = 'https://accounts.google.com/gsi/client';
+  document.head.appendChild(googleScript);
+  googleScript.onload = () =>{
+    window.google.accounts.id.initialize({
+      client_id: process.env.REACT_APP_GOOGLE_CLIENT_ID,
+      callback: handleCredentialResponse,
+    });
+    window.google.accounts.id.renderButton(
+      document.getElementById("buttonDiv"),
+      { 'theme': "dark", 
+      'size': "large", 
+      'width': '300', 
+      'height': '65',
+      'longtitle': true,}  // customization attributes
+    );
+  }
+},[])
+function handleCredentialResponse(response) {
+  console.log("Encoded JWT ID token: " + response.credential);
+}
+
+// return <div id="buttonDiv"></div> 
+return (
+  <GoogleLogin>
+    <div id="buttonDiv" className="login-btn"></div> 
+  </GoogleLogin>
+)
+
 }
 const GoogleLogin = styled.div`
-  position: relative;
-  width: 313px;
-  height: 80px;
-  margin: 0 auto;
+
+
 `;
 
 export default GoogleOauth;
