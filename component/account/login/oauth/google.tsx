@@ -25,19 +25,19 @@ function GoogleOauth(){
     googleScript.onload = () =>{
       window.google.accounts.id.initialize({
         client_id: '625687004788-5pv5rsjeqkel0arqfclrmco227f4ven1.apps.googleusercontent.com',
-        callback: handleCredentialResponse,
+        callback: handleGoogleCallBack,
         ux_mode: 'popup',
         login_uri: 'http://localhost:3000/login',
       });
       window.google.accounts.id.renderButton(
         document.getElementById("buttonDiv"),
         { 
-          'type' :'icon',
+          'type':'icon',
           'theme':'outline',
           'shape':'square',
-          'size': "large", 
+          'size': "x-large", 
           'width': '300', 
-          'height': '80',
+          'height': '100',
           'longtitle': true,
           'login_uri' : 'redirect'
         }  // customization attributes
@@ -45,7 +45,7 @@ function GoogleOauth(){
       window.google.accounts.id.prompt();
     }
   },[])
-  function handleCredentialResponse(response) {
+  function handleGoogleCallBack(response) {
     console.log("구글리스폰스",response)
     console.log("Encoded JWT ID token: " + response.credential);
     var base64Payload = response.credential.split('.')[1]; //value 0 -> header, 1 -> payload, 2 -> VERIFY SIGNATURE
@@ -58,20 +58,14 @@ function GoogleOauth(){
     }));
   }
 
-return (
-  <>
-    <GoogleLogin id="buttonDiv" className="구글 로그인" ref={googleRef}></GoogleLogin> 
-    {/* <Link href='/api/oauth/google'>구글 로그인</Link>  서버용 링크 버튼*/}
-    {/* <OauthCustomBtn type='google' isHref='/api/oauth/google'/> */}
-
-  </>
-)
+return <GoogleLogin id="buttonDiv" ></GoogleLogin> ;
 }
 const GoogleLogin = styled.div`
   /* display: none; */
 
 `;
 const Btn = styled.button`
+  z-index: 100;
   display: flex;
   width: 300px;
   height: 45px;

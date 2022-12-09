@@ -77,11 +77,15 @@ export default function Login() {
           <OR>OR</OR>
           
           <FastLogin>간편 로그인</FastLogin>
-          <LoginBtns>
-            <NaverAouth />
-            <GoogleOauth />
-            <BasicLogin className="login-btn">로그인</BasicLogin>
-          </LoginBtns>
+          <LoginBtnInner>
+            <OauthBtn>
+              <NaverAouth />
+              <GoogleOauth />
+            </OauthBtn>
+            
+            <LoginButton className="login-btn">로그인</LoginButton>
+          </LoginBtnInner>
+          
           <Register>
             <span>아이디가 없다면 ?</span>
             <Link href="/register">회원가입</Link>
@@ -91,18 +95,7 @@ export default function Login() {
     </Wrap>
   );
 }
-const LoginBtn = styled.div`
-`;
-const LoginBtns = styled.div`
-  padding: 10px;
-  
-  .login-btn{
-    position: relative;
-    width: 300px;
-    margin: auto;
-    margin-bottom: 1rem;
-  }
-`;
+
 const Wrap = styled.div`
   width: 450px ;
   min-height: 682px;
@@ -198,38 +191,28 @@ const OR = styled.div`
 const FastLogin = styled.h2`
   text-align: center;
 `;
-const NaverLogin = styled.div`
-  text-align:center;
-  padding: 10px;
-`;
-const NaverLink = styled.div`
-  display: inline;
-`;
-const GoogleLogin = styled.div`
-  color: #fff;
-  border: none;
-  border-radius: 5px;
-  margin: 8px 0;
-  font-size: 18px;
-  text-align: center;
-`;
-const ExitWrap = styled.div`
-  margin-top: 15px;
-  display: flex;
-  justify-content: space-between;
-  text-align: center;
-`;
-const BasicLogin = styled.button`
+const LoginButton = styled.button`
   margin: 0 auto;
   width: 303px;
-  height: 65px;
+  height: 50px;
   border: 0.08rem solid rgba(123,122,142,0.8);
   border-radius: 5px;
   background-color: #b5b5c0;
   color: #fff;
   cursor: pointer;
   font-size: 22px;
+  margin-top: 5px;
 `;
+const OauthBtn = styled.div`
+  display: flex;
+  justify-content: space-between;
+  width: 100px;
+`;
+const LoginBtnInner = styled.div`
+  padding: 10px;
+
+`;
+
 const Register = styled.div`
   display: flex;
   justify-content: space-between;
@@ -240,9 +223,4 @@ const Register = styled.div`
     text-decoration: underline;
     color:#1ea1f7;
   }
-`;
-const ErrorMsg = styled.div`
-  padding-left: 5px;
-  font-size: 12px;
-  color: #ff0000c5;
 `;
