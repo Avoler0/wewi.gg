@@ -23,31 +23,7 @@ export default function Login() {
   if(user.state) router.push('/')
 
   useEffect(()=>{
-    if(router.asPath !== '/login'){
-      const token_parameter = router.asPath.split('=')[1].split('&')[0];
-      (async ()=>{
-        await dbHook.account.naver.callUserProfile(token_parameter)
-        .then(async (_res) => {
-          const naver_useProfile = _res.data.response;
-          const { id , email } = naver_useProfile;
-          
-          const result = await dbHook.account.naver.login(naver_useProfile);
-
-          if(result.status === 200){
-            dispatch(setLogin({
-              type:result.data[0].type,
-              email:result.data[0].email,
-              nickName:result.data[0].nickName
-            }));
-          }else{
-            dispatch(setOauthEmail(email))
-            router.push('register')
-          }
-        })
-      })()
-        
-
-    }
+    
   },[])
 
   async function postLogin(event:any){
@@ -102,8 +78,8 @@ export default function Login() {
           
           <FastLogin>간편 로그인</FastLogin>
           <LoginBtns>
-            <NaverAouth text='네이버 로그인'/>
-            <GoogleOauth text="='구글 로그인"/>
+            <NaverAouth />
+            <GoogleOauth />
             <BasicLogin className="login-btn">로그인</BasicLogin>
           </LoginBtns>
           <Register>

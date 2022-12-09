@@ -21,6 +21,7 @@ function Register() {
   
   
   useEffect(()=>{
+    console.log(oauthEmail)
     if(oauthEmail) setOauthJoin(true)
   },[])
   

@@ -7,27 +7,31 @@ import FooterIndex from '../component/footer/footer';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { PersistGate } from 'reduxjs-toolkit-persist/integration/react'
 import { useRouter } from 'next/router';
-import dynamic from 'next/dynamic'
-import Head from 'next/head';
-import { GoogleOAuthProvider } from '@react-oauth/google';
 
-
-const DynamicComponent = dynamic(() => import('../component/account/login'), {
-  ssr: false,
-})
 const queryClient = new QueryClient();
 
 function MyApp({ Component, pageProps }: AppProps) {
   const router = useRouter();
-  const login = router.pathname === '/login';
-  const register = router.pathname === '/register'
+  const isHeader = pathValid(router.pathname);
 
+  function pathValid(path:string){
+    switch(path){
+      case '/login':
+        return false
+      case '/register':
+        return false
+      case '/oauth/callback':
+        return false
+      default:
+        return true
+    }
+  }
   return (
     <>
       <QueryClientProvider client={queryClient}>
         <Provider store={store}>
           <PersistGate loading={null} persistor={persistore}>
-            {login || register ? null : <HeaderIndex /> }
+            {isHeader ? <HeaderIndex /> : null  }
             <Component {...pageProps} />
             <FooterIndex />
           </PersistGate>
