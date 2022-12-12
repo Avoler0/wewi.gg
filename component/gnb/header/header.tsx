@@ -1,25 +1,21 @@
 import styled from "styled-components";
-// import { useNavigate } from "react-router-dom";
 import { useState } from "react";
-import UserMenu from "../../../images/icons/menu-svgrepo-com.svg"
 import React from "react";
 import Link from "next/link";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import { setLogout } from "../../../redux/login/user";
-// import { accountReduxT } from "../../../Types/accountTypes";
-// import AccountMenu from "./Menu";
+import Image from "next/image";
+import UserMenu from "../menu";
 
-export default function HeaderJSX() {
+
+export default function HeaderJSX(){
+  const [showMenu,setShowMenu] = useState(false);
   const dispatch = useDispatch();
   const user = useSelector((state:any)=>{
     return state.user;
   })
   
-  function logout(){
-    dispatch(setLogout())
-  }
-  console.log("헤더 스테이트",user)
   return (
     <Header>
       <Content>
@@ -29,11 +25,12 @@ export default function HeaderJSX() {
           </Link>
         </Logo>
         <UserWrap>
-        
             {user.state ? (
                 <>
                   <UserName>{user.nickName}님</UserName>
-                  <button onClick={logout}>로그아웃</button>
+                  <MenuIcon onClick={()=>setShowMenu(prev => !prev)}>
+                    <Image src={'/images/public-icons/menu.svg'} alt='menu' layout="fill" objectFit="cover"/>
+                  </MenuIcon>
                 </>
             )
           : (
@@ -43,20 +40,22 @@ export default function HeaderJSX() {
               </Link>
             </Login>
           )}
-            
         </UserWrap>
+        {showMenu && <UserMenu hide={setShowMenu} />}
       </Content>
+      
     </Header>
   );
 }
+
 const Header = styled.header`
-  position: relative;
   width: 100%;
   height: 100%;
   padding-top: 0.5rem;
   background-color:#1e2a35 ;
 `;
 const Content = styled.div`
+  position: relative;
   display: flex;
   justify-content: space-between;
   margin: 0 auto;
@@ -72,11 +71,16 @@ const Logo = styled.div`
   color: white;
   cursor: pointer;
 `;
-
+const MenuIcon = styled.div`
+  position: relative;
+  width: 15px;
+  height: 15px;
+  cursor: pointer;
+`;
 const UserWrap = styled.div`
   position: relative;
   display: flex;
-  
+  align-items: center;
   gap: 10px;
   font-size: 14px;
   padding-top: 10px;
