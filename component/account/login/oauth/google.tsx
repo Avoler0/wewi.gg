@@ -3,20 +3,21 @@ import { useEffect, useRef } from "react";
 import styled from "styled-components";
 import Image from "next/image";
 import { useDispatch, useSelector } from "react-redux";
-import { setOauthEmail, setRegisterOauth } from "../../../../redux/login/oauthReg";
-import OauthCustomBtn from "./customBtn";
-import Link from "next/link";
+import { setRegisterOauth } from "../../../../redux/login/oauthReg";
+import { dbHook } from "../../../../hooks/dbHook";
+import { setLogin } from "../../../../redux/login/user";
+import { useRouter } from "next/router";
 
-
-
+type GoogleResponse = {
+  clientId: string,
+  client_id: string,
+  credential: string
+  select_by: string
+}
 function GoogleOauth(){
   const dispatch = useDispatch();
-  const googleRef = useRef();
+  const router = useRouter();
 
-  const users = useSelector((state)=>{
-    return state.oauthReg
-  })
-  console.log(users)
   useEffect(()=>{
     const googleScript = document.createElement('script');
     googleScript.src = 'https://accounts.google.com/gsi/client';
@@ -30,7 +31,7 @@ function GoogleOauth(){
         login_uri: 'http://localhost:3000/login',
       });
       window.google.accounts.id.renderButton(
-        document.getElementById("buttonDiv"),
+        document.getElementById("google_id_login"),
         { 
           'type':'icon',
           'theme':'outline',
@@ -45,48 +46,29 @@ function GoogleOauth(){
       window.google.accounts.id.prompt();
     }
   },[])
-  function handleGoogleCallBack(response) {
-    console.log("구글리스폰스",response)
-    console.log("Encoded JWT ID token: " + response.credential);
-    var base64Payload = response.credential.split('.')[1]; //value 0 -> header, 1 -> payload, 2 -> VERIFY SIGNATURE
-    var payload = Buffer.from(base64Payload, 'base64'); 
-    var result = JSON.parse(payload.toString())
-    console.log("리설트",result.email)
-    dispatch(setRegisterOauth({
-      type:'google',
-      email:result.email
-    }));
+  async function handleGoogleCallBack(response:GoogleResponse) {
+    const base64Payload = response.credential.split('.')[1];
+    const payload = Buffer.from(base64Payload, 'base64'); 
+    const jwt_decoded = JSON.parse(payload.toString())
+
+    const result = await dbHook.account.oauth.login({type:'google',email:jwt_decoded.email,key:jwt_decoded.sub});
+    if(result.status === 200){
+      dispatch(setLogin({
+        type:result.data[0].type,
+        email:result.data[0].email,
+        nickName:result.data[0].nickName
+      }));
+    }else{
+      dispatch(setRegisterOauth({type:'google',email:jwt_decoded.email}))
+      router.push('/register')
+    }
   }
 
-return <GoogleLogin id="buttonDiv" ></GoogleLogin> ;
+return <GoogleLogin id="google_id_login" /> ;
 }
 const GoogleLogin = styled.div`
   /* display: none; */
 
 `;
-const Btn = styled.button`
-  z-index: 100;
-  display: flex;
-  width: 300px;
-  height: 45px;
-  align-items: center;
-  background-color: #ffffff;
-  border: none;
-  border-radius: 3px;
-`;
-const ImageWrap = styled.div`
-  position: relative;
-  width: 40px;
-  height: 40px;
-  flex: 0.2;
-  .naverIcon{
-    text-align: left;
-  }
-`;
-const Text = styled.div`
-  flex: 1;
-  font-size: 17px;
-  color: color;
-  text-align: center;
-`;
+
 export default GoogleOauth;

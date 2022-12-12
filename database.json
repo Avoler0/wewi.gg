@@ -1,6 +1,11 @@
 {
   "account": [
-
+    {
+      "email": "avoler01@naver.com",
+      "nickName": "네이버 avoler",
+      "type": "oauth",
+      "id": 1
+    }
   ],
   "duo": [
     {

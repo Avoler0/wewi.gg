@@ -10,7 +10,7 @@ type Data = {
   data?:any
 }
 
-export default async function handler(
+export default async function callNaverUserProfile(
   req: NextApiRequest,
   res: NextApiResponse<Data>
 ) {

@@ -16,12 +16,10 @@ function Register() {
   const [passwordError,setPasswordError] = useState<string>('');
   const [nickError,setNickError] = useState<string>('');
   const [oauthJoin,setOauthJoin] = useState(false);
+
   if(user.state) router.push('/')
 
-  
-  
   useEffect(()=>{
-    console.log(oauthEmail)
     if(oauthEmail) setOauthJoin(true)
   },[])
   
@@ -84,10 +82,8 @@ function Register() {
     };
     const emailValid = validHook.email(query.email)
     const passwordValid = validHook.password(query.password)
-    console.log("타겟",query.password)
     const validation = validState(emailValid,passwordValid)
 
-    console.log(query.nickName)
     if(query.nickName < 2) return setNickError('2글자 이상의 닉네임을 입력 해 주세요.')
 
     if(validation){

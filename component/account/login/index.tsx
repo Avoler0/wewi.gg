@@ -22,10 +22,6 @@ export default function Login() {
 
   if(user.state) router.push('/')
 
-  useEffect(()=>{
-    
-  },[])
-
   async function postLogin(event:any){
     event.preventDefault();
     const query = {

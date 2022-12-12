@@ -9,8 +9,9 @@ interface RegisterQuery extends LoginQuery{
   nickName:string
 }
 
-interface NaverLoginQuery {
-  id: string,
+interface OauthLoginQuery {
+  type:string
+  key: string,
   email: string
 }
 export const dbHook = {
@@ -67,14 +68,12 @@ export const dbHook = {
         return _error.response.data
       })
     },
-    naver:{
-      callUserProfile:async function(token:string){
-        const result = await apiInstance.post(`/database/account/naver/${token}`)
-
-        return result
+    oauth:{
+      callNaverProfile:async function(token:string){
+        return await apiInstance.post(`/database/account/oauth/${token}`)
       },
-      login:async function(query:NaverLoginQuery){
-        return await apiInstance.post('/database/account/naver/login',query)
+      login:async function(query:OauthLoginQuery){
+        return await apiInstance.post('/database/account/oauth/login',query)
         .then((_res)=>{
           return _res.data
         })
@@ -83,7 +82,7 @@ export const dbHook = {
         })
       },
       register:async function(query:RegisterQuery){
-        return await apiInstance.post('/database/account/naver/register',query)
+        return await apiInstance.post('/database/account/oauth/register',query)
         .then((_res)=>{
           console.log("Register Res",_res)
           return _res.data
