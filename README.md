@@ -1,5 +1,5 @@
 # Riot API를 이용한 League of Legend 전적검색 사이트
-## Next.js를 이용한 SSR로 구성된 사이트로 Next.js의 백엔드 서버를 적극 이용하여 Riot API와 Json-Server 라이브러리 통신 사용
+### Next.js를 이용한 SSR로 구성된 사이트로 Next.js의 백엔드 서버를 적극 이용하여 Riot API와 Json-Server 라이브러리 통신 사용
 
 
 ## 디렉터리 구조
