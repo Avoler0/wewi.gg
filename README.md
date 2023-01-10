@@ -1,4 +1,4 @@
-리팩토링을 진행하고 있는 Next.js 버전 wewi.gg 입니다.
+# Riot API를 이용한 League of Legend 전적검색 사이트
 
 실행방법
 terminal -> npm i -> npm run dev
