@@ -34,7 +34,7 @@ export default function DuoIndex() {
     return is.tier && is.mode && is.line
   }
 
-  if(isLoading) return;
+  if(isLoading) return <div></div>;
 
   return (
     <Container>

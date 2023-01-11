@@ -9,7 +9,6 @@ export default function handler(
   req: NextApiRequest,
   res: NextApiResponse<Data>
 ) {
-  console.log("매치 디테일 실행됨",req.query.match);
   
   setTimeout(()=>{
     riotApi(`https://asia.api.riotgames.com/lol/match/v5/matches/${req.query.match}`)

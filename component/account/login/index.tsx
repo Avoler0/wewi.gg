@@ -175,12 +175,12 @@ const OR = styled.div`
   font-size: 14px;
   text-align: center;
   ::before,::after{
-  content: "";
-  flex-grow: 1;
-  background: rgba(0, 0, 0, 0.35);
-  height: 1px; font-size: 0px;
-  line-height: 0px;
-  margin: 0px 16px;
+    content: "";
+    flex-grow: 1;
+    background: rgba(0, 0, 0, 0.35);
+    height: 1px; font-size: 0px;
+    line-height: 0px;
+    margin: 0px 16px;
   }
   
 `;

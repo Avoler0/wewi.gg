@@ -56,12 +56,12 @@ export default function RecordCard({detail}:any) {
     
     const Item = ItemArr.map((itemId,)=>{
       return (
-        <>
+        <React.Fragment key={itemId}>
           <div className="item-image">
-            {participant[itemId] ? <Image key={itemId} src={ riotImg.item(participant[itemId])} alt="icon" layout="fill" objectFit="fill"/> : <span className="item-image" />}
+            {participant[itemId] ? <Image src={ riotImg.item(participant[itemId])} alt="icon" layout="fill" objectFit="fill"/> : <span className="item-image" />}
           </div>
           {itemId === "item6" ? <br></br> : null}
-        </>
+        </React.Fragment>
         
       )
     })

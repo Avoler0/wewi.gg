@@ -4,14 +4,12 @@ import React from "react";
 import Link from "next/link";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
-import { setLogout } from "../../../redux/login/user";
 import Image from "next/image";
 import UserMenu from "../menu";
 
 
 export default function HeaderJSX(){
   const [showMenu,setShowMenu] = useState(false);
-  const dispatch = useDispatch();
   const user = useSelector((state:any)=>{
     return state.user;
   })

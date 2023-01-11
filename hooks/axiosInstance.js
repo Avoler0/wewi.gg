@@ -1,10 +1,8 @@
 import axios from 'axios'
-import qs from 'qs';
 
 const serverURL = 'http://localhost:3000/api'
 const dbURL = 'http://localhost:4000'
 const API_KEY = 'RGAPI-92b4d59d-ab59-4cd0-bf77-cc23a29d960f'
-import { parse, stringify } from 'qs'
 
 const apiInstance = axios.create({
   baseURL: serverURL,

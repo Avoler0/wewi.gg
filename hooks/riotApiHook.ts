@@ -43,12 +43,14 @@ export const riot = {
     })
   },
   league:async function(id:string) {
+    console.log('리그 레스',id)
     return await apiInstance({
       url:'/riot/summoner/league/',
       params:{
         id:id
       }
     }).then((_res)=>{
+      console.log('리그 레스',_res)
       return _res.data;
     }).catch((_error)=>{
       return _error

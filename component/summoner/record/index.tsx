@@ -35,14 +35,14 @@ function Record({info}:any) {
     fetchMatch(start)
   },[fetchMatch, start])
   if(isLoading) return (<div></div>)
-
+  console.log(details)
   return (
   <>
     <ChampView>
       {/* <ChampRecently  /> */}
     </ChampView>
     <GameView >
-      {details && details?.map((detail:any)=> <RecordCard key={detail.metadata.matchId} detail={detail}  />)}
+      {details && details?.map((detail:any)=> <RecordCard key={detail.info.gameId} detail={detail}  />)}
       <More onClick={()=>{setStart(prev => prev+10)}}>더 보기</More>
     </GameView>
     
