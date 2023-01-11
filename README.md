@@ -7,3 +7,9 @@
 ### 메인 페이지
 ![image](https://user-images.githubusercontent.com/91608021/211710992-3f9608a6-a44e-4978-9bd3-425d1a3e56a1.png)
 
+### 듀오구인 페이지
+![image](https://user-images.githubusercontent.com/91608021/211711142-3e0b96f3-d7c3-4eaa-9040-865b09417a23.png)
+
+### 전적검색 페이지
+![image](https://user-images.githubusercontent.com/91608021/211714575-66fdee09-3243-44e1-9060-6dca818e1f52.png)
+
