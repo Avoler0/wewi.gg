@@ -4,57 +4,6 @@
 <div>Next.js를 이용한 SSR로 구성된 사이트로 Next.js의 백엔드 서버를 적극 이용하여 Riot API와 Json-Server 라이브러리 통신 사용</div>
 
 
-## 디렉터리 구조
-### pages
-```
- 📦pages </br>
- ┣ 📂api  
- ┃ ┗ 📂search  
- ┃ ┃ ┣ 📂champion  
- ┃ ┃ ┃ ┗ 📜[value].ts  
- ┃ ┃ ┗ 📂summoner  
- ┃ ┃ ┃ ┗ 📜[value].ts  
- ┣ 📂duo  
- ┃ ┗ 📜index.tsx  
- ┣ 📂summoner  
- ┃ ┗ 📜[summoner].tsx  
- ┣ 📜globals.css  
- ┣ 📜index.tsx  
- ┣ 📜_app.tsx  
- ┗ 📜_document.tsx  
-```
-### component
-```
-📦component  
- ┣ 📂footer  
- ┃ ┗ 📜footer.tsx  
- ┣ 📂gnb  
- ┃ ┣ 📂header  
- ┃ ┃ ┗ 📜header.tsx  
- ┃ ┣ 📂navigation  
- ┃ ┃ ┗ 📜navigation.tsx  
- ┃ ┗ 📜index.tsx  
- ┗ 📂summoner  
- ┃ ┣ 📂debs  
- ┃ ┃ ┗ 📜profile.tsx  
- ┃ ┣ 📜404.tsx  
- ┃ ┗ 📜index.tsx  
-```
-### redux
-```
-📦redux
- ┣ 📂login
- ┣ 📂search
- ┃ ┗ 📜searchSlice.ts
- ┗ 📜store.ts
-```
+메인 페이지
+![image](https://user-images.githubusercontent.com/91608021/211710992-3f9608a6-a44e-4978-9bd3-425d1a3e56a1.png)
 
-### hooks && const
-```
-📦hooks  
- ┣ 📜axiosInstance.ts  
- ┗ 📜search.ts  
- 
- 📦const  
- ┗ 📜riotApiPath.ts  
-```
