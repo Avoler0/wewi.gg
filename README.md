@@ -10,6 +10,7 @@
   <li>듀오구인 페이지, 회원가입 페이지등 비관계형 Json-Server 라이브러리 로컬 db를 사용하여 데이터 저장</li>
   <li>로그인,회원가입 페이지에서 Naver,Google Oatuh2.0을 추가</li>
 </ul>
+
 ## 페이지들
 ### 메인 페이지
 ![image](https://user-images.githubusercontent.com/91608021/211710992-3f9608a6-a44e-4978-9bd3-425d1a3e56a1.png)
