@@ -239,9 +239,6 @@ const Mode = styled.div`
   display: inline-block;
 `;
 
-
-
-
 const Game_Layer = styled.div<{under:boolean}>`
   align-items: center;
   width: 100%;

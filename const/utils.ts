@@ -192,3 +192,15 @@ export const options = {
       {value:"Challenger",label:"챌린저"},
     ],
   }
+
+  export const lineList = {
+    kor: ['탑','정글','미드','바텀','서포터'],
+    eng: ['Top','Jungle','Mid','Bottom','Support'],
+    trans:{
+      '탑':'Top',
+      '정글':'Jungle',
+      '미드':'Mid',
+      '바텀':'Bottom',
+      '서포터':'Support'
+    }
+  }

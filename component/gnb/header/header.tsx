@@ -49,8 +49,8 @@ export default function HeaderJSX(){
 const Header = styled.header`
   width: 100%;
   height: 100%;
-  padding-top: 0.5rem;
-  background-color:#1e2a35 ;
+  padding: 0.4rem 0;
+  border-bottom: 1px solid #9e9fa3;
 `;
 const Content = styled.div`
   position: relative;
