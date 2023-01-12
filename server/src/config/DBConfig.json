@@ -1,0 +1,9 @@
+{
+    "host": "localhost",
+    "user": "root",
+    "password": "123",
+    "database": "game_community",
+    "checkDuplicate": false,
+    "connectionLimit": 30,
+    "port": 3306
+}
