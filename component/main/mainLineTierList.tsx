@@ -1,14 +1,17 @@
 import styled from "styled-components";
 import { lineList } from "../../const/utils";
 import Image from "next/image";
+import { useSelector } from "react-redux";
 
 export default function MainLineTierList(){
-
+  const version = useSelector((state:any) => {
+    return state.lolVersion.version
+  })
   return(
     <LineTierWrap>
           <LineTierContainer>
             <LineListTitle>
-              <span>v13.01</span> 소환사 협곡 티어</LineListTitle>
+              <span>v{version}</span> 소환사 협곡 티어</LineListTitle>
             <LineList>
                 {lineList.kor.map((lineName:string) => {
                   return (

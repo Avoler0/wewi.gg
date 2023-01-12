@@ -5,6 +5,11 @@ type valueType = string | string[]
 
 
 export const riot = {
+  version:async function () {
+  const result = await axios.get('https://ddragon.leagueoflegends.com/api/versions.json')
+  const versions = result.data;
+  return versions[0]
+  },
   summoner:async function(value:valueType){
     return await apiInstance({
       url:`/riot/summoner/info/`,
