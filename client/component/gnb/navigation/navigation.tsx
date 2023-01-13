@@ -23,12 +23,12 @@ export default function Navigation() {
             <NavItem>
               <Link href="/duo" style={{borderBottom: urlPath === `/${PAGE.DUO}` ? "2px solid white" : "none" }}>듀오</Link>
             </NavItem>
-            {/* <NavItem>
-              <Link href="/clan" style={{borderBottom: urlPath === `/${PAGE.CLAN}` ? "2px solid white" : "none" }}>클랜</Link>
-            </NavItem> */}
-            {/* <NavItem>
-              <Link href="/comunity" style={{borderBottom: urlPath === `/${PAGE.COMMUNITY}` ? "2px solid white" : "none" }}>커뮤니티</Link>
-            </NavItem> */}
+            <NavItem>
+              <Link href="/community" style={{borderBottom: urlPath === `/${PAGE.CLAN}` ? "2px solid white" : "none" }}>커뮤니티</Link>
+            </NavItem>
+            <NavItem>
+              <Link href="/leaderboards" style={{borderBottom: urlPath === `/${PAGE.COMMUNITY}` ? "2px solid white" : "none" }}>랭킹</Link>
+            </NavItem>
           </NavItems>
         </div>
         <div>

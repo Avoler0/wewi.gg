@@ -2,7 +2,7 @@ import DuoIndex from "../../component/duo";
 
 
 
-export default function Duo(){
+export default function DuoPage(){
   return (
     <DuoIndex />
   )
