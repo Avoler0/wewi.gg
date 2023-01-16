@@ -1,8 +1,8 @@
 import styled from "styled-components"
+import { CommunityQueryName } from "../../../const/utils";
 
 
 export default function CommuniryWrite(){
-
   return (
     <Write>
       <Container>
@@ -20,6 +20,14 @@ export default function CommuniryWrite(){
             <input name="title" placeholder="제목" autoComplete="off" title="제목입력" />
           </label>
         </WriteInput>
+        <WriteContent>
+          <Content>
+            <Edit contentEditable="true">
+              <div><br/></div>
+            </Edit>
+          </Content>
+        </WriteContent>
+        
       </Container>
     </Write>
   )
@@ -85,5 +93,24 @@ const WriteInput = styled.div`
       color: #1e2022;
       box-sizing: border-box;
     }
+  }
+`;
+const WriteContent = styled.div`
+  font-size: 16px;
+`;
+const Content = styled.div`
+  width: 100%;
+  min-height: 500px;
+  border: 1px solid #cecdca;
+  margin-top: 16px;
+`;
+
+const Edit = styled.div`
+  width: 100%;
+  height: 100%;
+  padding: 16px 25px 0;
+  font-size: 14px;
+  :focus{
+    outline: 0px solid transparent;
   }
 `;

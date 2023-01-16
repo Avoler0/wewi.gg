@@ -6,7 +6,7 @@ export default function CommunityListCard(){
   return (
     <Card>
       <Recommend>
-        <span><Image src={`/images/public-icons/arrow-up.png`} alt="line" layout="fill" objectFit="cover" /></span>
+        <span><Image src={`/images/public-icons/arrow-up.png`} alt="recommend" layout="fill" objectFit="cover" /></span>
         <div>1234</div>
       </Recommend>
       <Content>
@@ -17,9 +17,9 @@ export default function CommunityListCard(){
           <div>유저 이름</div>
         </Info>
       </Content>
-      <Thumnail>
-        썸네일
-      </Thumnail>
+      <Thumbnail>
+        <Image src={`/images/thumbnail-temp.png`} alt="thumbnail" layout="fill" objectFit="contain" />
+      </Thumbnail>
     </Card>
   )
 }
@@ -34,7 +34,6 @@ const Card = styled.article`
 const Recommend = styled.div`
   display: table-cell;
   width: 10%;
-  background-color: red;
   text-align: center;
   span{
     display: inline-block;
@@ -64,8 +63,10 @@ const Info = styled.div`
   }
   
 `;
-const Thumnail = styled.div`
+const Thumbnail = styled.div`
+  position: relative;
   display: table-cell;
   width: 20%;
+  height: 100%;
   padding: 0 20px;
 `;

@@ -192,7 +192,7 @@ export const options = {
       {value:"Challenger",label:"챌린저"},
     ],
   }
-
+  
   export const lineList = {
     kor: ['탑','정글','미드','바텀','서포터'],
     eng: ['Top','Jungle','Mid','Bottom','Support'],
@@ -202,5 +202,39 @@ export const options = {
       '미드':'Mid',
       '바텀':'Bottom',
       '서포터':'Support'
+    }
+  }
+
+  export const CommunityMenuList = [
+    {
+      'category':'홈',
+      'division':['전체']
+    },
+    {
+      'category':'정보',
+      'division':['유저 뉴스','팁과 노하우']
+    },
+    {
+      'category':'커뮤니티',
+      'division':['자유','유머','영상','사건 사고']
+    }
+  ]
+
+  export const CommunityQueryName = {
+    kor:{
+      '전체':'all',
+      '유저 뉴스':'user-news',
+      '팁과 노하우':'tip',
+      '자유':'free',
+      '유머':'humor',
+      '사건 사고':'issues',
+    },
+    eng:{
+      'all':'전체',
+      'user-news':'유저 뉴스',
+      'tip':'팁과 노하우',
+      'free':'자유',
+      'humor':'유머',
+      'issues':'사건 사고',
     }
   }
