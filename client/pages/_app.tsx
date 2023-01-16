@@ -3,7 +3,7 @@ import type { AppProps } from 'next/app'
 import HeaderIndex from '../component/gnb'
 import { Provider } from 'react-redux';
 import store, { persistore } from '../redux/store';
-import FooterIndex from '../component/footer/footer';
+import Footer from '../component/footer/footer';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { PersistGate } from 'reduxjs-toolkit-persist/integration/react'
 import { useRouter } from 'next/router';
@@ -37,7 +37,7 @@ function MyApp({ Component, pageProps }: AppProps) {
           <PersistGate loading={null} persistor={persistore}>
             {isHeader ? <HeaderIndex /> : null  }
             <Component {...pageProps} />
-            <FooterIndex />
+            <Footer />
           </PersistGate>
         </Provider>
       </QueryClientProvider>

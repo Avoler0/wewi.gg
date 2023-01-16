@@ -1,12 +1,12 @@
 import styled from "styled-components"
 
-export default function FooterIndex(){
+export default function Footer(){
   return(
-    <Footer>
-    </Footer>
+    <FooterJSX>
+    </FooterJSX>
   )
 }
 
-const Footer = styled.footer`
+const FooterJSX = styled.footer`
   padding-bottom: 5rem;
 `;

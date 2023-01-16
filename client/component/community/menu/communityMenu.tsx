@@ -32,9 +32,9 @@ export default function CommunityMenu(){
 
 
 const Menu = styled.div`
+  display: inline-block;
   width: 300px;
-  height: 700px;
-  float: left;
+  height: 100%;
   background-color: white;
   border: 1px solid #cecdca;
 `;

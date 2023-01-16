@@ -36,9 +36,9 @@ export default function CommunityMain(){
 
 
 const ContentMain = styled.div`
-  float: right;
+  position: sticky;
   width: 728px;
-  height: 700px;
+  height: 100%;
 `;
 
 const SubHeader = styled.div`

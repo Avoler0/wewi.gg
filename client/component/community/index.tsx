@@ -7,7 +7,7 @@ import CommunityMenu from "./menu/communityMenu";
 import CommuniryWrite from "./write/communityWrite";
 
 type CommunityParams = {
-  category:string
+  type:string
 }
 
 export default function Community({type}:CommunityParams){
@@ -66,7 +66,10 @@ const Wewigg = styled.div`
 `;
 const Content = styled.div`
   position: relative;
+  display: flex;
+  justify-content: space-between;
   width: 1044px;
+  height: 100%;
   margin: 0 auto;
   margin-top: -40px;
   z-index: 1000;
