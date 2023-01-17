@@ -1,11 +1,11 @@
 import React, { useEffect, useRef, useState } from "react";
 import styled from "styled-components"
 import { CommunityMenuList, CommunityQueryName } from "../../../const/utils";
-
+import Paser from 'html-react-parser'
 
 export default function CommuniryWrite(){
   const writeRef = useRef<HTMLDivElement | null>(null);
-  const [writeData,setWriteData] = useState(null);
+  const [writeData,setWriteData] = useState<String>('');
   function commuOptionList(){
     return CommunityMenuList.map((data:any) => {
       return data.division.map((name:string)=>{
@@ -16,13 +16,11 @@ export default function CommuniryWrite(){
 
   function writeSubmit(event:React.FormEvent){
     event.preventDefault();
-    const value = writeRef?.current?.innerHTML.split('</div><div>').join('<br>').split('<div>').join('<p>').split('</div>').join('</p>')
+    const value = writeRef ? writeRef?.current?.innerHTML.split('</div><div>').join('<br>').split('<div>').join('<p>').split('</div>').join('</p>') : 'string'
+    setWriteData(value);
   }
   useEffect(()=>{
-    // console.log(writeData)
-    // console.log(writeRef?.current?.innerHTML)
-    const vvv = writeRef?.current?.innerHTML.split('</div><div>').join('<br>')
-    console.log(vvv)
+    console.log(writeData)
   },[writeData])
   return (
     <Wrap>
@@ -55,7 +53,9 @@ export default function CommuniryWrite(){
             <Button btType="submit">작성완료</Button>
         </ButtonContain>
       </WriteForm>
-      <div>{writeData}</div>
+      <div>
+        {Paser(writeData)}
+      </div>
     </Wrap>
   )
 }
@@ -137,19 +137,20 @@ const EditContain = styled.div`
   width: 100%;
   height: 100%;
   padding: 16px 25px 0;
-  overflow: hidden;
+  overflow:auto;
 `;
 const Edit = styled.div`
   width: 100%;
   min-height: 0px;
   height: 100%;
   font-size: 14px;
+  
   :focus{
     outline: 0px solid transparent;
   }
 `;
 const ButtonContain = styled.div`
-  margin-top: 20px;
+  margin-top: 10px;
   width: 100%;
 `;
 const Button = styled.button<{btType:string}>`
