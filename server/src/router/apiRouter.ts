@@ -1,15 +1,15 @@
 import express from 'express';
-import { getMenulist, postMenulist } from '../controllers/menulist';
 import { postsController } from '../controllers/posts';
 import multer from 'multer'
 import path from 'path';
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, 'uploads/');
+    cb(null, 'uploads');
   },
   filename: function (req, file, cb) {
-    cb(null,Date.now()+'-'+file.originalname);
+    console.log("콘솔입니다.",req.body , req.query)
+    cb(null,Date.now() + '-' + file.originalname);
   }
 });
 const upload = multer({ storage:storage })
