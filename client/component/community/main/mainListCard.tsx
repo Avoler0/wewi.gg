@@ -1,9 +1,13 @@
 import Image from "next/image";
 import styled from "styled-components";
+import { timeHook } from "../../../hooks/timeHook";
 
 export default function CommunityListCard({postData}:any){
   const {PostId,PostTitle,Content,CommunityName,UserName,CreateAt} = postData
   // console.log("포스트 데이터",postData)
+  const date = new Date(CreateAt);
+  const timeDiff = timeHook.otherDay(date.getTime())
+  console.log(timeDiff)
   return (
     <Card>
       <Recommend>
@@ -14,7 +18,7 @@ export default function CommunityListCard({postData}:any){
         <Title>{PostTitle}</Title>
         <Info>
           <div>{CommunityName}</div>
-          <div>몇 시간 전</div>
+          <div>{timeDiff}</div>
           <div>{UserName}</div>
         </Info>
       </ContentWrap>

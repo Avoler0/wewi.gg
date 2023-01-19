@@ -1,6 +1,6 @@
 export const timeHook = {
   otherDay:function(target:number){
-    const between = Math.floor((new Date().getTime() - target) / 1000 / 60);
+    const between = Math.floor((Date.now() - target) / 1000 / 60);
     const betweenHour = Math.floor(between / 60)
     const betweenDay = Math.floor(betweenHour / 24)
 
