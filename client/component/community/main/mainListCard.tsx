@@ -1,22 +1,23 @@
-import styled from "styled-components"
 import Image from "next/image";
+import styled from "styled-components";
 
-export default function CommunityListCard(){
-
+export default function CommunityListCard({postData}:any){
+  const {PostId,PostTitle,Content,CommunityName,UserName,CreateAt} = postData
+  // console.log("포스트 데이터",postData)
   return (
     <Card>
       <Recommend>
         <span><Image src={`/images/public-icons/arrow-up.png`} alt="recommend" layout="fill" objectFit="cover" /></span>
-        <div>1234</div>
+        <div>XXX</div>
       </Recommend>
-      <Content>
-        <Title>제목입니다.</Title>
+      <ContentWrap>
+        <Title>{PostTitle}</Title>
         <Info>
-          <div>카테고리</div>
+          <div>{CommunityName}</div>
           <div>몇 시간 전</div>
-          <div>유저 이름</div>
+          <div>{UserName}</div>
         </Info>
-      </Content>
+      </ContentWrap>
       <Thumbnail>
         <Image src={`/images/thumbnail-temp.png`} alt="thumbnail" layout="fill" objectFit="contain" />
       </Thumbnail>
@@ -42,8 +43,7 @@ const Recommend = styled.div`
     height: 16px;
   }
 `;
-
-const Content = styled.div`
+const ContentWrap = styled.div`
   display: table-cell;
   width: 70%;
 `;

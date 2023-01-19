@@ -93,5 +93,32 @@ export const dbHook = {
         })
       },
     }
+  },
+  posts:{
+    getList:async function name(commuName:string) {
+      return await dbInstance({
+        method:'get',
+        url:`/posts/${commuName}`,
+      })
+    },
+    getPost:async function name(commuName:string,postsId:number) {
+      return await dbInstance({
+        method:'get',
+        url:`/posts/${commuName}/${postsId}`,
+      })
+    },
+  },
+  write:{
+    post:async function(formData:FormData){
+      console.log("훅에서",formData.get('title'))
+      return await dbInstance({
+        method:'post',
+        url:'/write',
+        headers: {
+          "Content-Type": "multipart/form-data"
+        },
+        data:formData
+      })
+    },
   }
 }

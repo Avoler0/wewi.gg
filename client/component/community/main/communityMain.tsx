@@ -1,14 +1,40 @@
 import Link from "next/link";
+import { useRouter } from "next/router";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components"
+import { CommunityQueryName } from "../../../const/utils";
+import { dbHook } from "../../../hooks/dbHook";
 import CommunityListCard from "./mainListCard";
 
 
-export default function CommunityMain(){
 
+export default function CommunityMain(){
+  const [postsList,setPostsList] = useState([]);
+  const router = useRouter();
+  const commuName:any = router.query.commuName && CommunityQueryName.eng[router.query.commuName]
+  useEffect(()=>{
+    if(commuName){
+      console.log('커뮤네임',commuName)
+      dbHook.posts.getList(commuName)
+      .then((res)=>{
+        console.log(res)
+        const resData = res.data
+        setPostsList(resData)
+      })
+      .catch((err)=>{
+        console.log(err)
+      })
+    }
+    
+  },[commuName])
+  useEffect(()=>{
+    console.log('포스트',postsList)
+  },[postsList])
+  if(!postsList) return <div>불러오기</div>
   return (
     <ContentMain>
       <SubHeader>
-        <SubHeaderInfo>카테고리 이름</SubHeaderInfo>
+        <SubHeaderInfo>{commuName}</SubHeaderInfo>
         <SubHeaderMenu>
           <li>
             <Link href={'/community?sort=popular'}>
@@ -28,7 +54,14 @@ export default function CommunityMain(){
         </SubHeaderMenu>
       </SubHeader>
       <Content>
-        <CommunityListCard />
+        {postsList && postsList.map((data:any)=>{
+          console.log('포데포데',data)
+          return (
+            <React.Fragment key={data.PostId}>
+              <CommunityListCard postData={data}/>
+            </React.Fragment>
+          )
+        })}
       </Content>
     </ContentMain>
   )

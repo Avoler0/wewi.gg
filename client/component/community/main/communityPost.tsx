@@ -23,8 +23,14 @@ export default function CommunityPost(){
         <VoteBoxWrap>
           <VoteBox>
             <Vote>
-              <button>업</button>
-              <button>다운</button>
+              <button>
+                <span className="vote up">추천</span>
+                <span>0</span>
+              </button>
+              <button>
+                <span className="vote down">비추천</span>
+                <span>0</span>
+              </button>
             </Vote>
           </VoteBox>
         </VoteBoxWrap>
@@ -115,8 +121,6 @@ const VoteBox = styled.div`
 `;
 
 const Vote = styled.div`
-
-
   button{
     padding: 12px;
     min-width: 88px;
@@ -129,7 +133,26 @@ const Vote = styled.div`
     background-color: #fff;
     border: 1px solid #dddfe4;
   }
-
+  .vote{
+    width: 16px;
+    height: 16px;
+    background-repeat: no-repeat;
+    background-position: 0 0;
+    background-size: 16px;
+    line-height: 999px;
+    vertical-align: top;
+    overflow: hidden;
+    display: inline-block;
+    margin-top: 1px;
+    transition: all .5s;
+  }
+  
+  .vote.up{
+    background-image: url(/images/public-icons/arrow-up.png);
+  }
+  .vote.down{
+    background-image: url(/images/public-icons/arrow-down.png);
+  }
   :first-child{
     margin-left: 0;
   }

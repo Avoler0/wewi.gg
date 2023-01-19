@@ -2,22 +2,46 @@ import React, { useEffect, useRef, useState } from "react";
 import styled from "styled-components"
 import { CommunityMenuList, CommunityQueryName } from "../../../const/utils";
 import Paser from 'html-react-parser'
+import { dbHook } from "../../../hooks/dbHook";
 
 export default function CommuniryWrite(){
+  const titleRef = useRef<HTMLInputElement | null>(null);
   const writeRef = useRef<HTMLDivElement | null>(null);
-  const [writeData,setWriteData] = useState<String>('');
+  const fileRef = useRef<HTMLInputElement>();
+  const [communityOption,setCommunityOption] = useState<string>('all');
+  const [writeData,setWriteData] = useState<string>('');
   function commuOptionList(){
     return CommunityMenuList.map((data:any) => {
       return data.division.map((name:string)=>{
-        return <option key={name}>{name}</option>
+        const all = name === '전체';
+        if(all){
+          return;
+        }else{
+          return <option key={name} value={name}>{name}</option>
+        }
       })
     })
   }
-
+  function selectedCommuOption(event:React.ChangeEvent<HTMLSelectElement>) {
+    const seletedOption = event.target.value
+    setCommunityOption(seletedOption)
+  }
   function writeSubmit(event:React.FormEvent){
     event.preventDefault();
-    const value = writeRef ? writeRef?.current?.innerHTML.split('</div><div>').join('<br>').split('<div>').join('<p>').split('</div>').join('</p>') : 'string'
-    setWriteData(value);
+    const emptyUserName = 'Avoler'
+    const formData = new FormData();
+    const writeValue = writeRef.current?.innerHTML ? writeRef?.current?.innerHTML.split('</div><div>').join('<br>').split('<div>').join('<p>').split('</div>').join('</p>') : ''
+    const titleValue = titleRef.current?.value ? titleRef.current?.value : '';
+    const files = fileRef.current?.files;
+    formData.append('content', writeValue && writeValue)
+    formData.append('community',communityOption && communityOption)
+    formData.append('title', titleValue && titleValue)
+    formData.append('userName', emptyUserName && emptyUserName)
+    for(let i = 0; i < files.length; i++) {
+      formData.append("files", files[i]);
+    }
+
+    dbHook.write.post(formData)
   }
   useEffect(()=>{
     console.log(writeData)
@@ -28,14 +52,20 @@ export default function CommuniryWrite(){
         <Container>
           <Title>글쓰기</Title>
           <CategorySelect>
-            <select>
+            <select onChange={selectedCommuOption}>
               {commuOptionList()}
             </select>
           </CategorySelect>
           <WriteInput>
             <label>
               <span>제목</span>
-              <input name="title" placeholder="제목" autoComplete="off" title="제목입력" />
+              <input name="title" placeholder="제목" autoComplete="off" title="제목입력" ref={titleRef}/>
+            </label>
+          </WriteInput>
+          <WriteInput>
+            <label>
+              <span>제목</span>
+              <input type="file" ref={fileRef} className="link" name="imageUpload" placeholder="empty파일 업로드" multiple/>
             </label>
           </WriteInput>
           <WriteContent>
@@ -120,6 +150,9 @@ const WriteInput = styled.div`
       font-size: 16px;
       color: #1e2022;
       box-sizing: border-box;
+      :focus{
+        outline: none;
+      }
     }
   }
 `;

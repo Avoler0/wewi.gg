@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 const serverURL = 'http://localhost:3000/api'
-const dbURL = 'http://localhost:4000'
+const dbURL = 'http://localhost:4000/api'
 const API_KEY = 'RGAPI-92b4d59d-ab59-4cd0-bf77-cc23a29d960f'
 
 const apiInstance = axios.create({
@@ -13,9 +13,7 @@ const apiInstance = axios.create({
 });
 
 const dbInstance = axios.create({
-  baseURL: dbURL,
-  headers: {
-    'X-Custom-Header': 'foobar'}
+  baseURL: dbURL
 });
 
 const naverInstance = axios.create({
