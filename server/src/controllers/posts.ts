@@ -1,4 +1,6 @@
+import { MariaDBErrorType } from './../mariadb/mariadDbType';
 import { insertQuery } from "../mariadb/query";
+import { postErrorStateMessage } from "../mariadb/sqlError";
 import { postValue } from "../service/valueDataArrange";
 
 
@@ -26,14 +28,27 @@ export const postsController = {
 
   },
   post:async (req:any,res:any) => {
-    const filesPath = [];
+    const filesPath:Array<string> = [];
     for(let i = 0; i < req.files.length; i++){
       console.log(req.files[i].path)
       filesPath.push(req.files[i].path)
     }
-    const result = await insertQuery.post(req.body,filesPath.join())
 
-    return res.status(result.state).send({message:result.message})
-    
+    return await insertQuery.post(req.body)
+    .then((_response:any)=>{
+      const savePostId = parseInt(_response.insertId)
+      insertQuery.postImage(savePostId,filesPath.join())
+      .then((_response)=>{
+        return res.status(200).send('success request')
+      })
+      .catch((err)=>{
+        const errResult = postErrorStateMessage(err)
+        return res.status(errResult.state).send(errResult.message)
+      })
+    })
+    .catch((err)=>{
+      const errResult = postErrorStateMessage(err)
+      return res.status(errResult.state).send(errResult.message)
+    })
   }
 }

@@ -22,19 +22,44 @@ export const selectQuery = {
 }
 
 export const insertQuery = {
-  post:async function (objectData:any,imagesPath:string){
+  post:async function (objectData:any){
     const conn = await db();
     const values = postValue(objectData)
-    const result = await conn?.query(`INSERT INTO posts(PostTitle,Content,CommunityName,UserName,CreateAt) VALUES(${values});`)
-    .then(async (res)=>{
-      const savePostId = parseInt(res.insertId)
-      console.log("쿼리 후",res,typeof res.insertId, parseInt(res.insertId));
-      return await conn?.query(`INSERT INTO posts_images(PostId,ImagesPath) VALUES(${savePostId},'${imagesPath}');`)
+    const postResult = new Promise(async (resolve,reject)=>{
+      await conn?.query(`INSERT INTO posts(PostTitle,Content,CommunityName,UserName,CreateAt) VALUES(${values});`)
+      .then((res)=>{
+        console.log('프로미스 레스',res)
+        resolve(res)
+      })
+      .catch((err)=>{
+        console.log('프로미스 에러',err)
+        reject(err)
+      })
     })
-    .catch((err:MariaDBErrorType)=>{
-      return postErrorStateMessage(err)
+    return postResult;
+    // await conn?.query(`INSERT INTO posts(PostTitle,Content,CommunityName,UserName,CreateAt) VALUES(${values});`)
+    // .then(async (res)=>{
+    //   const savePostId = parseInt(res.insertId)
+    //   console.log("쿼리 후",res,typeof res.insertId, parseInt(res.insertId));
+    //   return await conn?.query(`INSERT INTO posts_images(PostId,ImagesPath) VALUES(${savePostId},'${imagesPath}');`)
+    // })
+    // .catch((err:MariaDBErrorType)=>{
+    //   return postErrorStateMessage(err)
+    // })
+  },
+    postImage: async function (savePostId:number,imagesPath:string){
+    const conn = await db();
+    return new Promise(async (resolve,reject)=>{
+      await conn?.query(`INSERT INTO posts_images(PostId,ImagesPath) VALUES(${savePostId},'${imagesPath}');`)
+      .then((res)=>{
+        console.log('프로미스 이미지 레스',res)
+        resolve(res)
+      })
+      .catch((err)=>{
+        console.log('프로미스 이미지 에러',err)
+        reject(err)
+      })
     })
-    return result;
   },
 }
 
