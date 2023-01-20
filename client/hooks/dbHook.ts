@@ -101,6 +101,15 @@ export const dbHook = {
         url:`/posts/${commuName}`,
       })
     },
+    getThumbnail:async function name(thumbnailPath:string) {
+      return await dbInstance({
+        method:'get',
+        url:`/posts/images`,
+        params:{
+          src:thumbnailPath
+        }
+      })
+    },
     getPost:async function name(commuName:string,postsId:number) {
       return await dbInstance({
         method:'get',

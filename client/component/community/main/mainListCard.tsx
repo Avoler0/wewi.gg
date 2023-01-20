@@ -1,30 +1,43 @@
 import Image from "next/image";
+import Link from "next/link";
+import { useEffect, useState } from "react";
 import styled from "styled-components";
+import { CommunityQueryName } from "../../../const/utils";
+import { dbHook } from "../../../hooks/dbHook";
 import { timeHook } from "../../../hooks/timeHook";
 
 export default function CommunityListCard({postData}:any){
-  const {PostId,PostTitle,Content,CommunityName,UserName,CreateAt} = postData
-  // console.log("포스트 데이터",postData)
+  const {PostId,PostTitle,Content,CommunityName,UserName,CreateAt,Good,Bad,Thumbnail} = postData
+  const [thumbnailLoading,setThumbnailLoading] = useState(false);
+  console.log("포스트 데이터",postData)
   const date = new Date(CreateAt);
   const timeDiff = timeHook.otherDay(date.getTime())
-  console.log(timeDiff)
+  useEffect(()=>{
+    dbHook.posts.getThumbnail(Thumbnail)
+    .then((res)=>{
+      console.log('썸네일 레스',res)
+      setThumbnailLoading(true)
+    })
+  },[])
   return (
     <Card>
       <Recommend>
         <span><Image src={`/images/public-icons/arrow-up.png`} alt="recommend" layout="fill" objectFit="cover" /></span>
-        <div>XXX</div>
+        <div>{Good - Bad}</div>
       </Recommend>
       <ContentWrap>
-        <Title>{PostTitle}</Title>
+        <Link href={`${CommunityQueryName.kor[CommunityName]}/${PostId}`}>
+          <Title>{PostTitle}</Title>
+        </Link>
         <Info>
           <div>{CommunityName}</div>
           <div>{timeDiff}</div>
           <div>{UserName}</div>
         </Info>
       </ContentWrap>
-      <Thumbnail>
-        <Image src={`/images/thumbnail-temp.png`} alt="thumbnail" layout="fill" objectFit="contain" />
-      </Thumbnail>
+      <ThumbnailWrap>
+        <Image src={`http://localhost:4000/api/posts/images?src=${Thumbnail}`} alt="thumbnail" layout="fill" objectFit="contain" />
+      </ThumbnailWrap>
     </Card>
   )
 }
@@ -67,7 +80,7 @@ const Info = styled.div`
   }
   
 `;
-const Thumbnail = styled.div`
+const ThumbnailWrap = styled.div`
   position: relative;
   display: table-cell;
   width: 20%;

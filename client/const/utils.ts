@@ -219,8 +219,12 @@ export const options = {
       'division':['자유','유머','영상','사건 사고']
     }
   ]
+  interface QueryNameType {
+    kor: {[key:string]:string}
+    eng: {[key:string]:string}
+  }
 
-  export const CommunityQueryName = {
+  export const CommunityQueryName:QueryNameType = {
     kor:{
       '전체':'all',
       '유저 뉴스':'user-news',
