@@ -10,6 +10,7 @@ export default function CommunityListCard({postData}:any){
   const {PostId,PostTitle,Content,CommunityName,UserName,CreateAt,Good,Bad,Thumbnail} = postData
   const [thumbnailLoading,setThumbnailLoading] = useState(false);
   console.log("포스트 데이터",postData)
+  console.log(`${process.env.NEXT_PUBLIC_SERVER_API_IMAGES_URL}?src=${Thumbnail}`)
   const date = new Date(CreateAt);
   const timeDiff = timeHook.otherDay(date.getTime())
   useEffect(()=>{
@@ -26,9 +27,13 @@ export default function CommunityListCard({postData}:any){
         <div>{Good - Bad}</div>
       </Recommend>
       <ContentWrap>
-        <Link href={`${CommunityQueryName.kor[CommunityName]}/${PostId}`}>
-          <Title>{PostTitle}</Title>
-        </Link>
+        
+          <Title>
+            <Link href={`${CommunityQueryName.kor[CommunityName]}/${PostId}`}>
+              {PostTitle}
+            </Link>  
+          </Title>
+        
         <Info>
           <div>{CommunityName}</div>
           <div>{timeDiff}</div>
@@ -36,7 +41,7 @@ export default function CommunityListCard({postData}:any){
         </Info>
       </ContentWrap>
       <ThumbnailWrap>
-        <Image src={`http://localhost:4000/api/posts/images?src=${Thumbnail}`} alt="thumbnail" layout="fill" objectFit="contain" />
+        <Image src={`${process.env.NEXT_PUBLIC_SERVER_API_IMAGES_URL}?src=${Thumbnail}`} alt="thumbnail" layout="fill" objectFit="contain" />
       </ThumbnailWrap>
     </Card>
   )

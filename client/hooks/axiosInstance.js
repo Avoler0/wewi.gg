@@ -1,8 +1,8 @@
 import axios from 'axios'
 
 const serverURL = 'http://localhost:3000/api'
-const dbURL = 'http://localhost:4000/api'
-const API_KEY = 'RGAPI-92b4d59d-ab59-4cd0-bf77-cc23a29d960f'
+const dbURL = process.env.NEXT_PUBLIC_SERVER_API_URL 
+const API_KEY = process.env.EXT_PUBLICK_RIOT_API_KEY
 
 const apiInstance = axios.create({
   baseURL: serverURL,

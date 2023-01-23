@@ -129,5 +129,26 @@ export const dbHook = {
         data:formData
       })
     },
+    getImage:async function(imageUrl:string){
+      console.log("훅에서 empty 이미지",imageUrl)
+      return await dbInstance({
+        method:'get',
+        url:`/write/image`,
+        params:{
+          src:imageUrl
+        }
+      })
+    },
+    postImage:async function(image:FormData){
+      console.log("훅에서 empty 이미지",image.get('title'))
+      return await dbInstance({
+        method:'post',
+        url:'/write/image',
+        headers: {
+          "Content-Type": "multipart/form-data"
+        },
+        data:image
+      })
+    },
   }
 }

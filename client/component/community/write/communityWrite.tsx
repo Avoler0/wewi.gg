@@ -3,11 +3,14 @@ import styled from "styled-components"
 import { CommunityMenuList, CommunityQueryName } from "../../../const/utils";
 import Paser from 'html-react-parser'
 import { dbHook } from "../../../hooks/dbHook";
-
+import Image from "next/image";
 export default function CommuniryWrite(){
   const titleRef = useRef<HTMLInputElement | null>(null);
   const writeRef = useRef<HTMLDivElement | null>(null);
   const fileRef = useRef<HTMLInputElement>();
+  const [emptyImg,setEmptyImg] = useState();
+  const [imageFiles,setImageFiles] = useState();
+  const [thumbnail,setThumbnail] = useState();
   const [communityOption,setCommunityOption] = useState<string>('all');
   const [writeData,setWriteData] = useState<string>('');
   function commuOptionList(){
@@ -43,14 +46,41 @@ export default function CommuniryWrite(){
 
     dbHook.write.post(formData)
   }
+  function inputFilesChange(event:any){
+    const emptyUserName = 'Avoler'
+    const emptyUserNumber = ''+11;
+    const formData = new FormData();
+    const file = event.currentTarget.files[0];
+    formData.append('userNumber',emptyUserNumber)
+    formData.append('image',file)
+    dbHook.write.postImage(formData)
+    .then((res)=>{
+      console.log('파일 보내기 완료',res)
+      // const rr = new Blob([new ArrayBuffer(res.data)], { type: "image/png" });
+      // const dd = URL.createObjectURL(rr)
+      // console.log(rr,dd)
+      // setEmptyImg(res.data)
+    })
+    .catch((err)=>{
+      console.log('파일 보내기 실패',err)
+    })
+    setEmptyImg(file)
+    console.log("이벤트",file)
+  }
   useEffect(()=>{
     console.log(writeData)
   },[writeData])
+  useEffect(()=>{
+    console.log('이펙트?',emptyImg)
+    
+    // URL.createObjectURL(emptyImg)
+  },[emptyImg])
   return (
     <Wrap>
       <WriteForm onSubmit={writeSubmit}>
         <Container>
           <Title>글쓰기</Title>
+          <Empty><Image src={emptyImg} alt="recommend" layout="fill" objectFit="cover" /></Empty>
           <CategorySelect>
             <select onChange={selectedCommuOption}>
               {commuOptionList()}
@@ -65,12 +95,13 @@ export default function CommuniryWrite(){
           <WriteInput>
             <label>
               <span>제목</span>
-              <input type="file" ref={fileRef} className="link" name="imageUpload" placeholder="empty파일 업로드" multiple/>
+              <input type="file" ref={fileRef} className="link" name="imageUpload" placeholder="empty파일 업로드" onChange={inputFilesChange}  accept="image/*"/>
             </label>
           </WriteInput>
           <WriteContent>
             <Content>
               <EditContain>
+                
                 <Edit contentEditable={true} suppressContentEditableWarning={true} ref={writeRef}>
                   <div><br /></div>
                 </Edit>
@@ -89,7 +120,12 @@ export default function CommuniryWrite(){
     </Wrap>
   )
 }
-
+const Empty = styled.span`
+  display: inline-block;
+  position: relative;
+  width: 46px;
+  height: 46px;
+`;
 const Wrap = styled.div`
   position: relative;
 `;
