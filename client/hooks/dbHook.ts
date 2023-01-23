@@ -1,3 +1,4 @@
+import axios from 'axios';
 import { useDispatch } from 'react-redux';
 import { apiInstance, dbInstance } from "./axiosInstance";
 
@@ -130,10 +131,10 @@ export const dbHook = {
       })
     },
     getImage:async function(imageUrl:string){
-      console.log("훅에서 empty 이미지",imageUrl)
+      console.log('겟 이미지 실행',imageUrl)
       return await dbInstance({
         method:'get',
-        url:`/write/image`,
+        url:`/posts/wewigg/images`,
         params:{
           src:imageUrl
         }
@@ -143,7 +144,7 @@ export const dbHook = {
       console.log("훅에서 empty 이미지",image.get('title'))
       return await dbInstance({
         method:'post',
-        url:'/write/image',
+        url:'/posts/images',
         headers: {
           "Content-Type": "multipart/form-data"
         },

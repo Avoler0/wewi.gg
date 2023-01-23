@@ -9,8 +9,7 @@ export default function CommuniryWrite(){
   const writeRef = useRef<HTMLDivElement | null>(null);
   const fileRef = useRef<HTMLInputElement>();
   const [emptyImg,setEmptyImg] = useState();
-  const [imageFiles,setImageFiles] = useState();
-  const [thumbnail,setThumbnail] = useState();
+  const [emptyDiv,setEmptyDiv] = useState();
   const [communityOption,setCommunityOption] = useState<string>('all');
   const [writeData,setWriteData] = useState<string>('');
   function commuOptionList(){
@@ -46,26 +45,31 @@ export default function CommuniryWrite(){
 
     dbHook.write.post(formData)
   }
-  function inputFilesChange(event:any){
+  async function inputFilesChange(event:any){
     const emptyUserName = 'Avoler'
     const emptyUserNumber = ''+11;
     const formData = new FormData();
     const file = event.currentTarget.files[0];
     formData.append('userNumber',emptyUserNumber)
     formData.append('image',file)
-    dbHook.write.postImage(formData)
-    .then((res)=>{
+    await Promise.all([dbHook.write.postImage(formData)])
+    .then(([res])=>{
       console.log('파일 보내기 완료',res)
-      // const rr = new Blob([new ArrayBuffer(res.data)], { type: "image/png" });
-      // const dd = URL.createObjectURL(rr)
-      // console.log(rr,dd)
-      // setEmptyImg(res.data)
+      dbHook.write.getImage(res.data)
+      .then((ress)=>{
+        const srcUrl = process.env.NEXT_PUBLIC_SERVER_API_IMAGES_URL+`?src=${res.data}`
+        const original = writeRef.current?.innerHTML;
+        document.querySelector("#divCC").innerHTML = `
+        ${original}
+          <div>
+            <img src=${srcUrl} alt='image'/>
+          </div>
+        `
+      })
     })
     .catch((err)=>{
       console.log('파일 보내기 실패',err)
     })
-    setEmptyImg(file)
-    console.log("이벤트",file)
   }
   useEffect(()=>{
     console.log(writeData)
@@ -75,12 +79,17 @@ export default function CommuniryWrite(){
     
     // URL.createObjectURL(emptyImg)
   },[emptyImg])
+  function onInput(event){
+    const divC = document.querySelector('.divCC')
+    
+
+
+  }
   return (
     <Wrap>
       <WriteForm onSubmit={writeSubmit}>
         <Container>
           <Title>글쓰기</Title>
-          <Empty><Image src={emptyImg} alt="recommend" layout="fill" objectFit="cover" /></Empty>
           <CategorySelect>
             <select onChange={selectedCommuOption}>
               {commuOptionList()}
@@ -101,9 +110,9 @@ export default function CommuniryWrite(){
           <WriteContent>
             <Content>
               <EditContain>
-                
-                <Edit contentEditable={true} suppressContentEditableWarning={true} ref={writeRef}>
+                <Edit id="divCC" contentEditable={true} suppressContentEditableWarning={true} ref={writeRef} onInput={onInput}>
                   <div><br /></div>
+                  {emptyDiv}
                 </Edit>
               </EditContain>
             </Content>
@@ -120,11 +129,18 @@ export default function CommuniryWrite(){
     </Wrap>
   )
 }
-const Empty = styled.span`
-  display: inline-block;
-  position: relative;
-  width: 46px;
-  height: 46px;
+const PostImageContainer = styled.div`
+  height: 100%;
+  span {
+    position: unset !important;
+  }
+`;
+
+const PostImage = styled(Image)`
+  object-fit: scale-down;
+  width: unset !important;
+  position: relative !important;
+  height: 100% !important;
 `;
 const Wrap = styled.div`
   position: relative;
