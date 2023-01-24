@@ -119,15 +119,12 @@ export const dbHook = {
     },
   },
   write:{
-    post:async function(formData:FormData){
-      console.log("훅에서",formData.get('title'))
+    post:async function(queryData:any){
+      console.log("훅에서",queryData)
       return await dbInstance({
         method:'post',
-        url:'/write',
-        headers: {
-          "Content-Type": "multipart/form-data"
-        },
-        data:formData
+        url:'/posts/write',
+        data:queryData
       })
     },
     getImage:async function(imageUrl:string){

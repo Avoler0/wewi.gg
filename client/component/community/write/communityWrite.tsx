@@ -31,19 +31,15 @@ export default function CommuniryWrite(){
   function writeSubmit(event:React.FormEvent){
     event.preventDefault();
     const emptyUserName = 'Avoler'
-    const formData = new FormData();
-    const writeValue = writeRef.current?.innerHTML ? writeRef?.current?.innerHTML.split('</div><div>').join('<br>').split('<div>').join('<p>').split('</div>').join('</p>') : ''
-    const titleValue = titleRef.current?.value ? titleRef.current?.value : '';
-    const files = fileRef.current?.files;
-    formData.append('content', writeValue && writeValue)
-    formData.append('community',communityOption && communityOption)
-    formData.append('title', titleValue && titleValue)
-    formData.append('userName', emptyUserName && emptyUserName)
-    for(let i = 0; i < files.length; i++) {
-      formData.append("files", files[i]);
+    const writeValue = writeRef.current?.innerHTML ? writeRef?.current?.innerHTML.split('<div>').join('').split('</div>').join('<br>') : ''
+    const query = {
+      content:`<p>${writeValue}</p>`,
+      community:communityOption,
+      title:titleRef.current?.value ? titleRef.current?.value : '',
+      userName:emptyUserName
     }
 
-    dbHook.write.post(formData)
+    dbHook.write.post(query)
   }
   async function inputFilesChange(event:any){
     const emptyUserName = 'Avoler'
@@ -59,12 +55,8 @@ export default function CommuniryWrite(){
       .then((ress)=>{
         const srcUrl = process.env.NEXT_PUBLIC_SERVER_API_IMAGES_URL+`?src=${res.data}`
         const original = writeRef.current?.innerHTML;
-        document.querySelector("#divCC").innerHTML = `
-        ${original}
-          <div>
-            <img src=${srcUrl} alt='image'/>
-          </div>
-        `
+        const divC:HTMLDivElement = document.querySelector("#editDiv")
+        divC.innerHTML = `${original}<img src=${srcUrl} alt='image'/><br>`
       })
     })
     .catch((err)=>{
@@ -80,7 +72,7 @@ export default function CommuniryWrite(){
     // URL.createObjectURL(emptyImg)
   },[emptyImg])
   function onInput(event){
-    const divC = document.querySelector('.divCC')
+    console.log(writeRef.current?.innerHTML)
     
 
 
@@ -110,7 +102,7 @@ export default function CommuniryWrite(){
           <WriteContent>
             <Content>
               <EditContain>
-                <Edit id="divCC" contentEditable={true} suppressContentEditableWarning={true} ref={writeRef} onInput={onInput}>
+                <Edit id="editDiv" contentEditable={true} suppressContentEditableWarning={true} ref={writeRef} onInput={onInput}>
                   <div><br /></div>
                   {emptyDiv}
                 </Edit>
