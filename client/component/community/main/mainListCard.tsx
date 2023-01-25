@@ -2,24 +2,16 @@ import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import styled from "styled-components";
-import { CommunityQueryName } from "../../../const/utils";
+import { CommunityQueryName } from "../../../const/community";
 import { dbHook } from "../../../hooks/dbHook";
 import { timeHook } from "../../../hooks/timeHook";
 
 export default function CommunityListCard({postData}:any){
   const {PostId,PostTitle,Content,CommunityName,UserName,CreateAt,Good,Bad,Thumbnail} = postData
-  const [thumbnailLoading,setThumbnailLoading] = useState(false);
   console.log("포스트 데이터",postData)
-  console.log(`${process.env.NEXT_PUBLIC_SERVER_API_IMAGES_URL}?src=${Thumbnail}`)
   const date = new Date(CreateAt);
   const timeDiff = timeHook.otherDay(date.getTime())
-  useEffect(()=>{
-    dbHook.posts.getThumbnail(Thumbnail)
-    .then((res)=>{
-      console.log('썸네일 레스',res)
-      setThumbnailLoading(true)
-    })
-  },[])
+
   return (
     <Card>
       <Recommend>
@@ -27,13 +19,11 @@ export default function CommunityListCard({postData}:any){
         <div>{Good - Bad}</div>
       </Recommend>
       <ContentWrap>
-        
           <Title>
             <Link href={`${CommunityQueryName.kor[CommunityName]}/${PostId}`}>
               {PostTitle}
             </Link>  
           </Title>
-        
         <Info>
           <div>{CommunityName}</div>
           <div>{timeDiff}</div>

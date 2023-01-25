@@ -1,45 +1,37 @@
 import React, { useEffect, useRef, useState } from "react";
 import styled from "styled-components"
-import { CommunityMenuList, CommunityQueryName } from "../../../const/utils";
 import Paser from 'html-react-parser'
 import { dbHook } from "../../../hooks/dbHook";
 import Image from "next/image";
+import { CommunityWriteOptionList } from "../../../const/community";
 export default function CommuniryWrite(){
   const titleRef = useRef<HTMLInputElement | null>(null);
   const writeRef = useRef<HTMLDivElement | null>(null);
   const fileRef = useRef<HTMLInputElement>();
-  const [emptyImg,setEmptyImg] = useState();
-  const [emptyDiv,setEmptyDiv] = useState();
-  const [communityOption,setCommunityOption] = useState<string>('all');
+  const [thumbnail,setThumbnail] = useState(null);
+  const [communityOption,setCommunityOption] = useState<string>();
   const [writeData,setWriteData] = useState<string>('');
-  function commuOptionList(){
-    return CommunityMenuList.map((data:any) => {
-      return data.division.map((name:string)=>{
-        const all = name === '전체';
-        if(all){
-          return;
-        }else{
-          return <option key={name} value={name}>{name}</option>
-        }
-      })
-    })
-  }
-  function selectedCommuOption(event:React.ChangeEvent<HTMLSelectElement>) {
-    const seletedOption = event.target.value
-    setCommunityOption(seletedOption)
-  }
+
+
   function writeSubmit(event:React.FormEvent){
     event.preventDefault();
-    const emptyUserName = 'Avoler'
-    const writeValue = writeRef.current?.innerHTML ? writeRef?.current?.innerHTML.split('<div>').join('').split('</div>').join('<br>') : ''
-    const query = {
-      content:`<p>${writeValue}</p>`,
-      community:communityOption,
-      title:titleRef.current?.value ? titleRef.current?.value : '',
-      userName:emptyUserName
+    console.log(communityOption)
+    if(communityOption){
+      const emptyUserName = 'Avoler'
+      const writeValue = writeRef.current?.innerHTML ? writeRef?.current?.innerHTML.split('<div>').join('').split('</div>').join('<br>') : ''
+      const query = {
+        content:`<p>${writeValue}</p>`,
+        community:communityOption,
+        title:titleRef.current?.value ? titleRef.current?.value : '',
+        userName:emptyUserName,
+        thumbnail:thumbnail
+      }
+
+      dbHook.write.post(query)
+    }else{
+      alert('게시판을 선택해 주세요.')
     }
 
-    dbHook.write.post(query)
   }
   async function inputFilesChange(event:any){
     const emptyUserName = 'Avoler'
@@ -51,12 +43,14 @@ export default function CommuniryWrite(){
     await Promise.all([dbHook.write.postImage(formData)])
     .then(([res])=>{
       console.log('파일 보내기 완료',res)
+      if(!thumbnail) setThumbnail(res.data)
       dbHook.write.getImage(res.data)
       .then((ress)=>{
         const srcUrl = process.env.NEXT_PUBLIC_SERVER_API_IMAGES_URL+`?src=${res.data}`
         const original = writeRef.current?.innerHTML;
         const divC:HTMLDivElement = document.querySelector("#editDiv")
         divC.innerHTML = `${original}<img src=${srcUrl} alt='image'/><br>`
+        
       })
     })
     .catch((err)=>{
@@ -64,13 +58,9 @@ export default function CommuniryWrite(){
     })
   }
   useEffect(()=>{
-    console.log(writeData)
-  },[writeData])
-  useEffect(()=>{
-    console.log('이펙트?',emptyImg)
-    
-    // URL.createObjectURL(emptyImg)
-  },[emptyImg])
+    console.log('옵션',communityOption)
+  },[communityOption])
+
   function onInput(event){
     console.log(writeRef.current?.innerHTML)
     
@@ -83,8 +73,11 @@ export default function CommuniryWrite(){
         <Container>
           <Title>글쓰기</Title>
           <CategorySelect>
-            <select onChange={selectedCommuOption}>
-              {commuOptionList()}
+            <select onChange={(event:React.ChangeEvent<HTMLSelectElement>) => {setCommunityOption(event.target.value)}}>
+              <option hidden={true}>채널 선택</option>
+              {CommunityWriteOptionList.map((name:any) => 
+                <option key={name} value={name}>{name}</option>
+              )}
             </select>
           </CategorySelect>
           <WriteInput>
@@ -104,7 +97,6 @@ export default function CommuniryWrite(){
               <EditContain>
                 <Edit id="editDiv" contentEditable={true} suppressContentEditableWarning={true} ref={writeRef} onInput={onInput}>
                   <div><br /></div>
-                  {emptyDiv}
                 </Edit>
               </EditContain>
             </Content>

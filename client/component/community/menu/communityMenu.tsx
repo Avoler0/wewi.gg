@@ -2,7 +2,7 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 import styled from "styled-components"
-import { CommunityMenuList, CommunityQueryName } from "../../../const/utils";
+import { CommunityMenuList } from "../../../const/community";
 import { dbHook } from "../../../hooks/dbHook";
 import CommunityLoginBox from "./communityLoginBox";
 
