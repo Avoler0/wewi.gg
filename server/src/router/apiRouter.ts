@@ -1,19 +1,9 @@
 import { writeImagePost, writeImageGet } from './../controllers/writeImage';
 import express from 'express';
-import { postsController } from '../controllers/posts';
+import { getPostWritingData, getPostList, postsWriteInsert, postsGoodUpdate, postsBadUpdate, postsViewUpdate } from '../controllers/posts';
 import multer from 'multer'
-import path from 'path';
 
 const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, 'uploads');
-  },
-  filename: function (req, file, cb) {
-    console.log("콘솔입니다.",req.body , req.query,file)
-    cb(null,Date.now() + '-' + file.originalname);
-  }
-});
-const emptyStorage = multer.diskStorage({
   destination: function (req, file, cb) {
     cb(null, 'emptyUploads');
   },
@@ -22,19 +12,18 @@ const emptyStorage = multer.diskStorage({
     cb(null,Date.now() + '-' + req.body.userNumber+'.'+file.mimetype.split('/')[1]);
   }
 });
+
 const upload = multer({ storage:storage })
-const emptyUpload = multer({ storage:emptyStorage })
 const apiRouter = express();
 
-// apiRouter.get('/mates/', matesController)
-// apiRouter.get('/posts/images', postsController.getPostThumbnail)
-apiRouter.get('/posts/:commuName', postsController.getList)
+apiRouter.get('/posts/list/:commuName',getPostList)
 apiRouter.get('/posts/wewigg/images',writeImageGet)
-apiRouter.get('/posts/:commuName/:boardNumber', postsController.getPosts)
-// apiRouter.get('/menulist/:commuName/', getMenulist)
+apiRouter.get('/posts/content',getPostWritingData)
 
-apiRouter.post('/posts/write',postsController.post)
-apiRouter.post('/posts/images',emptyUpload.fields([{name:'userNumber'},{name:'image',maxCount:1}]),writeImagePost)
-// apiRouter.post('/community/:commuName/', postMenulist)
-// apiRouter.post('/menulist/:commuName/', postMenulist)
+apiRouter.post('/posts/good',postsGoodUpdate)
+apiRouter.post('/posts/bad',postsBadUpdate)
+apiRouter.post('/posts/view',postsViewUpdate)
+apiRouter.post('/posts/write',postsWriteInsert)
+apiRouter.post('/posts/images',upload.fields([{name:'userNumber'},{name:'image',maxCount:1}]),writeImagePost)
+
 export default apiRouter;

@@ -1,52 +1,15 @@
-import { postValue } from "../service/valueDataArrange";
-import {postErrorState, postErrorStateMessage} from './sqlError'
 import db from "./mariadb";
-import { MariaDBErrorType } from "./mariadDbType";
 
-export const selectQuery = {
-  posts:{
-    listAll:async function getPostsAll(){
-      const conn = await db();
-      return new Promise(async (resolve,reject)=>{
-        await conn?.query(`SELECT * FROM posts t1 LEFT JOIN posts_vote t2 ON t1.PostId = t2.PostId;`)
-        .then((res)=>{
-          resolve(res)
-        })
-        .catch((err)=>{
-          console.log('프로미스 에러',err)
-          reject(err)
-        })
-      })
-    },
-    listCommuName:async function getPostsAll(commuName:string){
-      const conn = await db();
-      return new Promise(async (resolve,reject)=>{
-        await conn?.query(`SELECT * FROM posts WHERE CommunityName = '${commuName}'`)
-        .then((res)=>{
-          resolve(res)
-        })
-        .catch((err)=>{
-          console.log('프로미스 에러',err)
-          reject(err)
-        })
-      })
-    },
-    id:async function getPostsID(postId:number){
-      const conn = await db();
-      const readTable = await conn?.query(`SELECT * FROM posts WHERE PostId = '${postId}';`)
-      return readTable[0]['CommunityID'];
-    },
-  },
-}
+
 
 export const insertQuery = {
   post:async function (objectData:any){
     const conn = await db();
-    const {title,content,community,userName} = objectData;
-    const values = `'${title}','${content}','${community}','${userName}',current_timestamp`
+    const {title,content,community,userName,thumbnail} = objectData;
+    const values = `'${title}','${content}','${community}','${userName}','${thumbnail}',current_timestamp`
 
     return new Promise(async (resolve,reject)=>{
-      await conn?.query(`INSERT INTO posts(PostTitle,Content,CommunityName,UserName,CreateAt) VALUES(${values});`)
+      await conn?.query(`INSERT INTO posts(PostTitle,Content,CommunityName,UserName,Thumbnail,CreateAt) VALUES(${values});`)
       .then((res)=>{
         console.log('프로미스 레스',res)
         resolve(res)

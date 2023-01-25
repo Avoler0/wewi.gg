@@ -9,8 +9,10 @@ export const writeImagePost = (req:any,res:any) => {
 
 export const writeImageGet = (req:any,res:any) => {
   const {src} = req.query
-    console.log('겟 ㅇ ㅣ미지 ㅇㅇㅇㅇ',src)
   fs.readFile(src, (err:any,data:any) => {
+    if(err){
+      res.status(400).send('error!')
+    }
     res.writeHead(200);
     res.write(data);
     res.end();
