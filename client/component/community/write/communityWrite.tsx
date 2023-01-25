@@ -1,18 +1,17 @@
 import React, { useEffect, useRef, useState } from "react";
 import styled from "styled-components"
-import Paser from 'html-react-parser'
 import { dbHook } from "../../../hooks/dbHook";
-import Image from "next/image";
 import { CommunityWriteOptionList } from "../../../const/community";
+import { useSelector } from "react-redux";
 export default function CommuniryWrite(){
   const titleRef = useRef<HTMLInputElement | null>(null);
   const writeRef = useRef<HTMLDivElement | null>(null);
-  const fileRef = useRef<HTMLInputElement>();
   const [thumbnail,setThumbnail] = useState(null);
   const [communityOption,setCommunityOption] = useState<string>();
-  const [writeData,setWriteData] = useState<string>('');
-
-
+  const user = useSelector((state:any)=>{
+    return state.user
+  })
+  console.log('유저 정보',user)
   function writeSubmit(event:React.FormEvent){
     event.preventDefault();
     console.log(communityOption)
@@ -28,6 +27,10 @@ export default function CommuniryWrite(){
       }
 
       dbHook.write.post(query)
+      .catch((err)=>{
+        alert('서버 오류! 다시 시도해주세요.')
+      })
+
     }else{
       alert('게시판을 선택해 주세요.')
     }
@@ -48,25 +51,20 @@ export default function CommuniryWrite(){
       .then((ress)=>{
         const srcUrl = process.env.NEXT_PUBLIC_SERVER_API_IMAGES_URL+`?src=${res.data}`
         const original = writeRef.current?.innerHTML;
-        const divC:HTMLDivElement = document.querySelector("#editDiv")
-        divC.innerHTML = `${original}<img src=${srcUrl} alt='image'/><br>`
-        
+        const editDiv: HTMLElement | null = document.querySelector("#editDiv")
+        if(editDiv){
+          editDiv.innerHTML = `${original}<img src=${srcUrl} alt='image'/><br>`
+        }
+      })
+      .catch((err)=>{
+        alert('서버 오류! 다시 시도해주세요.')
       })
     })
     .catch((err)=>{
-      console.log('파일 보내기 실패',err)
+      alert('서버 오류! 다시 시도해주세요.')
     })
   }
-  useEffect(()=>{
-    console.log('옵션',communityOption)
-  },[communityOption])
 
-  function onInput(event){
-    console.log(writeRef.current?.innerHTML)
-    
-
-
-  }
   return (
     <Wrap>
       <WriteForm onSubmit={writeSubmit}>
@@ -89,13 +87,13 @@ export default function CommuniryWrite(){
           <WriteInput>
             <label>
               <span>제목</span>
-              <input type="file" ref={fileRef} className="link" name="imageUpload" placeholder="empty파일 업로드" onChange={inputFilesChange}  accept="image/*"/>
+              <input type="file" className="link" name="imageUpload" placeholder="empty파일 업로드" onChange={inputFilesChange}  accept="image/*"/>
             </label>
           </WriteInput>
           <WriteContent>
             <Content>
               <EditContain>
-                <Edit id="editDiv" contentEditable={true} suppressContentEditableWarning={true} ref={writeRef} onInput={onInput}>
+                <Edit id="editDiv" contentEditable={true} suppressContentEditableWarning={true} ref={writeRef}>
                   <div><br /></div>
                 </Edit>
               </EditContain>
@@ -107,25 +105,10 @@ export default function CommuniryWrite(){
             <Button btType="submit">작성완료</Button>
         </ButtonContain>
       </WriteForm>
-      <div>
-        {Paser(writeData)}
-      </div>
     </Wrap>
   )
 }
-const PostImageContainer = styled.div`
-  height: 100%;
-  span {
-    position: unset !important;
-  }
-`;
 
-const PostImage = styled(Image)`
-  object-fit: scale-down;
-  width: unset !important;
-  position: relative !important;
-  height: 100% !important;
-`;
 const Wrap = styled.div`
   position: relative;
 `;
@@ -192,6 +175,7 @@ const WriteInput = styled.div`
     }
   }
 `;
+
 const WriteContent = styled.div`
   font-size: 16px;
 `;

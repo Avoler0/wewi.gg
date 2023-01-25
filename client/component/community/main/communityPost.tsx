@@ -1,35 +1,83 @@
 import Link from "next/link";
+import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
 import styled from "styled-components"
-import CommunityListCard from "./mainListCard";
+import { dbHook } from "../../../hooks/dbHook";
+import { timeHook } from "../../../hooks/timeHook";
+import { PostType } from "../../../types/dbType";
 
 
 export default function CommunityPost(){
+  const [postsDataValid,setPostsDataValid] = useState(false);
+  const [postsData,setPostsData] = useState<PostType | null>(null);
+  const router = useRouter();
+  console.log('오픈된 포스트 데이터',postsData)
+
+  useEffect(()=>{
+    const {commuName,postId} = router.query;
+    if(postId){
+      (async ()=>{
+        await dbHook.posts.getWritingPost(postId)
+        .then(async (res)=>{
+          const resData = res.data[0];
+          console.log('레스 데이터',resData)
+          if(resData){
+            console.log('하이')
+            setPostsDataValid(true);
+            setPostsData(resData)
+          }
+          await dbHook.posts.postView(postId)
+        })
+      })()
+      console.log('라우터',commuName,postId)
+    }
+    
+  },[router])
+  
+  useEffect(()=>{
+    if(postsData){
+      const Content = document.querySelector('#content')
+      if(Content){
+        Content.innerHTML = postsData?.Content;
+      }
+    }
+  },[postsData])
+
+
+  if(!postsDataValid) <div></div>
 
   return (
     <PostWrap>
       <Post>
         <Header>
-          <Title>안녕하세요 제목입니다.</Title>
+          <Title>{postsData?.PostTitle}</Title>
           <Meta>
-            <MetaLeftList>카테고리 몇분전 유저</MetaLeftList>
-            <MetaRightList>조회 댓글 추천</MetaRightList>
+            <MetaLeftList>
+              <div>{postsData?.CommunityName}</div>
+              <div>{postsData?.CreateAt && timeHook.otherDay(new Date(postsData?.CreateAt).getTime())}</div>
+              <div>{postsData?.UserName}</div>
+            </MetaLeftList>
+            <MetaRightList>
+              <div>조회 {postsData?.View}</div>
+              <div>추천 {postsData?.Good ?? 0}</div>
+            </MetaRightList>
           </Meta>
         </Header>
         <ContentWrap>
           <Content>
-            <p>1234</p>
+            <p id="content">{postsData?.Content}</p>
           </Content>
         </ContentWrap>
         <VoteBoxWrap>
           <VoteBox>
             <Vote>
-              <button>
+              <button onClick={()=>{dbHook.posts.postGood(postsData?.PostId)}}>
                 <span className="vote up">추천</span>
-                <span>0</span>
+                <span>{postsData?.Good ?? 0}</span>
               </button>
-              <button>
+              <button onClick={()=>{dbHook.posts.postBad(postsData?.PostId)}}>
                 <span className="vote down">비추천</span>
-                <span>0</span>
+                <span>{postsData?.Bad ?? 0}</span>
               </button>
             </Vote>
           </VoteBox>
@@ -75,8 +123,16 @@ const MetaLeftList = styled.div`
   float: left;
   div{
     display: inline-block;
-    line-height: 18px;
-    font-size: 14px;
+    vertical-align: middle;
+    position: relative;
+    margin-left: 8px;
+    padding-left: 9px;
+    border-left: 1px solid #ebeef1;
+    :first-child{
+      margin:0;
+      padding: 0;
+      border: none;
+    }
   }
   a{
     line-height: 18px;
@@ -89,6 +145,15 @@ const MetaRightList = styled.div`
   div{
     display: inline-block;
     vertical-align: middle;
+    position: relative;
+    margin-left: 8px;
+    padding-left: 9px;
+    border-left: 1px solid #ebeef1;
+    :first-child{
+      margin:0;
+      padding: 0;
+      border: none;
+    }
   }
   span{
     line-height: 17px;
@@ -108,6 +173,14 @@ const Content = styled.div`
   color: #1e2022;
   word-wrap: break-word;
   word-break: break-word;
+  img{
+    margin: 4px 0 10px;
+    box-sizing: border-box;
+    vertical-align: top;
+    max-width: 100%;
+    width: auto;
+    height: auto;
+  }
 `;
 
 const VoteBoxWrap = styled.div`

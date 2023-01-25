@@ -2,16 +2,15 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import styled from "styled-components"
-import { CommunityQueryName } from "../../../const/utils";
+import { CommunityQueryName } from "../../../const/community";
 import { dbHook } from "../../../hooks/dbHook";
 import CommunityListCard from "./mainListCard";
 
-
-
-export default function CommunityMain(){
+function CommunityMain(){
   const [postsList,setPostsList] = useState([]);
   const router = useRouter();
-  const commuName:any = router.query.commuName && CommunityQueryName.eng[router.query.commuName]
+  const routerCommu = router.query.commuName;
+  const commuName:any = router.query.commuName && CommunityQueryName.eng[routerCommu+'']
   useEffect(()=>{
     if(commuName){
       console.log('커뮤네임',commuName)
@@ -25,8 +24,8 @@ export default function CommunityMain(){
         console.log(err)
       })
     }
-    
   },[commuName])
+
   useEffect(()=>{
     console.log('포스트',postsList)
   },[postsList])
@@ -55,7 +54,6 @@ export default function CommunityMain(){
       </SubHeader>
       <Content>
         {postsList && postsList.map((data:any)=>{
-          console.log('포데포데',data)
           return (
             <React.Fragment key={data.PostId}>
               <CommunityListCard postData={data}/>
@@ -66,7 +64,7 @@ export default function CommunityMain(){
     </ContentMain>
   )
 }
-
+export default React.memo(CommunityMain)
 
 const ContentMain = styled.div`
   position: sticky;

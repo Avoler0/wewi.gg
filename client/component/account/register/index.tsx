@@ -21,7 +21,7 @@ function Register() {
 
   useEffect(()=>{
     if(oauthEmail) setOauthJoin(true)
-  },[])
+  },[oauthEmail])
   
   function resetState(){
     setEmailError('');

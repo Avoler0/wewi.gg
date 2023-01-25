@@ -1,9 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useState } from "react";
 import styled from "styled-components";
 import { CommunityQueryName } from "../../../const/community";
-import { dbHook } from "../../../hooks/dbHook";
 import { timeHook } from "../../../hooks/timeHook";
 
 export default function CommunityListCard({postData}:any){
@@ -31,7 +29,9 @@ export default function CommunityListCard({postData}:any){
         </Info>
       </ContentWrap>
       <ThumbnailWrap>
-        <Image src={`${process.env.NEXT_PUBLIC_SERVER_API_IMAGES_URL}?src=${Thumbnail}`} alt="thumbnail" layout="fill" objectFit="contain" />
+        <Link href={`${CommunityQueryName.kor[CommunityName]}/${PostId}`}>
+          <Image src={`${process.env.NEXT_PUBLIC_SERVER_API_IMAGES_URL}?src=${Thumbnail}`} alt="thumbnail" layout="fill" objectFit="contain" />
+        </Link>  
       </ThumbnailWrap>
     </Card>
   )
@@ -81,4 +81,7 @@ const ThumbnailWrap = styled.div`
   width: 20%;
   height: 100%;
   padding: 0 20px;
+  a{
+    cursor: pointer;
+  }
 `;

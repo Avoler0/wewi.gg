@@ -99,7 +99,7 @@ export const dbHook = {
     getList:async function name(commuName:string) {
       return await dbInstance({
         method:'get',
-        url:`/posts/${commuName}`,
+        url:`/posts/list/${commuName}`,
       })
     },
     getThumbnail:async function name(thumbnailPath:string) {
@@ -111,10 +111,41 @@ export const dbHook = {
         }
       })
     },
-    getPost:async function name(commuName:string,postsId:number) {
+    getWritingPost:async function name(postsId:any) {
+      console.log('훅훅',postsId)
       return await dbInstance({
         method:'get',
-        url:`/posts/${commuName}/${postsId}`,
+        url:'/posts/content',
+        params:{
+          id:postsId
+        }
+      })
+    },
+    postGood:async function name(postsId:any) {
+      return await dbInstance({
+        method:'post',
+        url:'/posts/good',
+        params:{
+          id:postsId
+        }
+      })
+    },
+    postBad:async function name(postsId:any) {
+      return await dbInstance({
+        method:'post',
+        url:'/posts/bad',
+        params:{
+          id:postsId
+        }
+      })
+    },
+    postView:async function name(postsId:any) {
+      return await dbInstance({
+        method:'post',
+        url:'/posts/view',
+        params:{
+          id:postsId
+        }
       })
     },
   },

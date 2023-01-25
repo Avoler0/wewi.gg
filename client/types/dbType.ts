@@ -7,5 +7,6 @@ export type PostType = {
   CreateAt:string,
   Good:number,
   Bad:number,
+  View:number,
   Thumnail:string
 }
