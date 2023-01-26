@@ -3,7 +3,7 @@ import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import styled from "styled-components"
 import { CommunityQueryName } from "../../../const/community";
-import { dbHook } from "../../../hooks/dbHook";
+import { dbPosts } from "../../../hooks/database/posts/posts";
 import CommunityListCard from "./mainListCard";
 
 function CommunityMain(){
@@ -11,10 +11,11 @@ function CommunityMain(){
   const router = useRouter();
   const routerCommu = router.query.commuName;
   const commuName:any = router.query.commuName && CommunityQueryName.eng[routerCommu+'']
+
   useEffect(()=>{
     if(commuName){
       console.log('커뮤네임',commuName)
-      dbHook.posts.getList(commuName)
+      dbPosts.get.postsList(commuName)
       .then((res)=>{
         console.log(res)
         const resData = res.data
@@ -26,10 +27,8 @@ function CommunityMain(){
     }
   },[commuName])
 
-  useEffect(()=>{
-    console.log('포스트',postsList)
-  },[postsList])
-  if(!postsList) return <div>불러오기</div>
+  if(!postsList) return <div>불러오는 중...</div>
+
   return (
     <ContentMain>
       <SubHeader>

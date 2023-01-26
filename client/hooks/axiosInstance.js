@@ -7,9 +7,6 @@ const API_KEY = process.env.EXT_PUBLICK_RIOT_API_KEY
 const apiInstance = axios.create({
   baseURL: serverURL,
   headers: {'X-Custom-Header': 'foobar'},
-  paramsSerializer(params) {
-      return params+"hi"
-    }
 });
 
 const dbInstance = axios.create({

@@ -1,20 +1,13 @@
-import axios from 'axios';
-import { useDispatch } from 'react-redux';
-import { apiInstance, dbInstance } from "./axiosInstance";
+import { apiInstance } from "./axiosInstance";
 
-interface LoginQuery {
-  email:string,
-  password:string
-}
-interface RegisterQuery extends LoginQuery{
-  nickName:string
-}
+
 
 interface OauthLoginQuery {
   type:string
   key: string,
   email: string
 }
+
 export const dbHook = {
   duo:{
     get:async function(){
@@ -58,7 +51,6 @@ export const dbHook = {
       })
     },
     register:async function(query:RegisterQuery){
-      console.log("디비훅 가입",query)
       return await apiInstance.post('/database/account/register',query)
       .then((_res)=>{
         console.log("Register Res",_res)
@@ -95,89 +87,4 @@ export const dbHook = {
       },
     }
   },
-  posts:{
-    getList:async function name(commuName:string) {
-      return await dbInstance({
-        method:'get',
-        url:`/posts/list/${commuName}`,
-      })
-    },
-    getThumbnail:async function name(thumbnailPath:string) {
-      return await dbInstance({
-        method:'get',
-        url:`/posts/images`,
-        params:{
-          src:thumbnailPath
-        }
-      })
-    },
-    getWritingPost:async function name(postsId:any) {
-      console.log('훅훅',postsId)
-      return await dbInstance({
-        method:'get',
-        url:'/posts/content',
-        params:{
-          id:postsId
-        }
-      })
-    },
-    postGood:async function name(postsId:any) {
-      return await dbInstance({
-        method:'post',
-        url:'/posts/good',
-        params:{
-          id:postsId
-        }
-      })
-    },
-    postBad:async function name(postsId:any) {
-      return await dbInstance({
-        method:'post',
-        url:'/posts/bad',
-        params:{
-          id:postsId
-        }
-      })
-    },
-    postView:async function name(postsId:any) {
-      return await dbInstance({
-        method:'post',
-        url:'/posts/view',
-        params:{
-          id:postsId
-        }
-      })
-    },
-  },
-  write:{
-    post:async function(queryData:any){
-      console.log("훅에서",queryData)
-      return await dbInstance({
-        method:'post',
-        url:'/posts/write',
-        data:queryData
-      })
-    },
-    getImage:async function(imageUrl:string){
-      console.log('겟 이미지 실행',imageUrl)
-      return await dbInstance({
-        method:'get',
-        url:`/posts/wewigg/images`,
-        params:{
-          src:imageUrl
-        }
-      })
-    },
-    postImage:async function(image:FormData){
-      console.log("훅에서 empty 이미지",image.get('title'))
-      return await dbInstance({
-        method:'post',
-        url:'/posts/images',
-        headers: {
-          "Content-Type": "multipart/form-data"
-        },
-        data:image
-      })
-    },
-  }
 }

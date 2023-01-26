@@ -3,23 +3,26 @@ import { createSlice,PayloadAction  } from '@reduxjs/toolkit';
 
 type Login = {
   state:boolean,
+  id:number | null,
   email:string,
   nickName:string
-  type:string
+  oauth:string
 }
 
 const user = createSlice({
   name:'user',
   initialState:{
     state:false,
-    type:'',
+    id:null,
+    oauth:'',
     email:'',
     nickName:'',
   },
   reducers:{
     setLogin:(state:Login,action:PayloadAction<any>) => {
       state.state = true;
-      state.type = action.payload.type
+      state.id = action.payload.id
+      state.oauth = action.payload.oauth
       state.email = action.payload.email;
       state.nickName = action.payload.nickName;
     },

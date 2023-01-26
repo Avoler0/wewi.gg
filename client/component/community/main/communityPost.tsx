@@ -2,7 +2,7 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import styled from "styled-components"
-import { dbHook } from "../../../hooks/dbHook";
+import { dbPosts } from "../../../hooks/database/posts/posts";
 import { timeHook } from "../../../hooks/timeHook";
 import { PostType } from "../../../types/dbType";
 
@@ -17,7 +17,7 @@ export default function CommunityPost(){
     const {commuName,postId} = router.query;
     if(postId){
       (async ()=>{
-        await dbHook.posts.getWritingPost(postId)
+        await dbPosts.get.postsById(postId)
         .then(async (res)=>{
           const resData = res.data[0];
           console.log('레스 데이터',resData)
@@ -26,7 +26,7 @@ export default function CommunityPost(){
             setPostsDataValid(true);
             setPostsData(resData)
           }
-          await dbHook.posts.postView(postId)
+          await dbPosts.post.postsView(postId)
         })
       })()
       console.log('라우터',commuName,postId)
@@ -71,11 +71,11 @@ export default function CommunityPost(){
         <VoteBoxWrap>
           <VoteBox>
             <Vote>
-              <button onClick={()=>{dbHook.posts.postGood(postsData?.PostId)}}>
+              <button onClick={()=>{dbPosts.post.postsVoteGood(postsData?.PostId)}}>
                 <span className="vote up">추천</span>
                 <span>{postsData?.Good ?? 0}</span>
               </button>
-              <button onClick={()=>{dbHook.posts.postBad(postsData?.PostId)}}>
+              <button onClick={()=>{dbPosts.post.postsVoteBad(postsData?.PostId)}}>
                 <span className="vote down">비추천</span>
                 <span>{postsData?.Bad ?? 0}</span>
               </button>

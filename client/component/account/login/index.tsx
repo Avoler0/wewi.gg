@@ -9,7 +9,6 @@ import { useRouter } from "next/router";
 import { setLogin } from "../../../redux/login/user";
 import { useSelector } from "react-redux";
 import NaverAouth from "./oauth/naver";
-import { setOauthEmail } from "../../../redux/login/oauthReg";
 import GoogleOauth from "./oauth/google";
 export default function Login() {
   const router = useRouter();
@@ -20,7 +19,7 @@ export default function Login() {
     message:''
   });
 
-  if(user.state) router.push('/')
+  // if(user.state) router.push('/')
 
   async function postLogin(event:any){
     event.preventDefault();
@@ -28,23 +27,32 @@ export default function Login() {
       email:event.target['email'].value,
       password:event.target['password'].value
     }
-    const loginResult = await dbHook.account.login(query)
-    console.log(loginResult)
-    switch(loginResult.status){
-      case 200:
-          dispatch(setLogin({
-            email:loginResult.data[0].email,
-            nickName:loginResult.data[0].nickName
-          }))
-          // router.push('/');
-          break;
-      case 401:
-        if(loginResult.error === 'Oauth Account') return setErrorMsg({type:'email',message:'네이버 로그인 연동이 된 이메일입니다.'}); 
-        else return setErrorMsg({type:'password',message:'틀린 비밀번호 입니다.'});
-      case 404:
-        return setErrorMsg({type:'email',message:'없는 이메일 입니다.'});
-    }
-
+    
+    await dbHook.account.login(query)
+    .then((_res)=>{
+      console.log('로그인 성공',_res)
+    })
+    .catch((_err)=>{
+      console.log('로그인 에러',_err)
+    })
+    // console.log('리설트',loginResult)
+    // switch(loginResult.status){
+    //   case 200:
+    //       dispatch(setLogin({
+    //         email:loginResult.data[0].email,
+    //         nickName:loginResult.data[0].nickName,
+    //         oauth:'',
+    //         email:'',
+    //         nickName:'',
+    //       }))
+    //       // router.push('/');
+    //       break;
+    //   case 401:
+    //     if(loginResult.error === 'Oauth Account') return setErrorMsg({type:'email',message:'네이버 로그인 연동이 된 이메일입니다.'}); 
+    //     else return setErrorMsg({type:'password',message:'틀린 비밀번호 입니다.'});
+    //   case 404:
+    //     return setErrorMsg({type:'email',message:'없는 이메일 입니다.'});
+    // }
   }
   return (
     <Wrap id="wrap">

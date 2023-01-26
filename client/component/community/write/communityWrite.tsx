@@ -3,6 +3,7 @@ import styled from "styled-components"
 import { dbHook } from "../../../hooks/dbHook";
 import { CommunityWriteOptionList } from "../../../const/community";
 import { useSelector } from "react-redux";
+import { dbPostsWrite } from "../../../hooks/database/posts/write";
 export default function CommuniryWrite(){
   const titleRef = useRef<HTMLInputElement | null>(null);
   const writeRef = useRef<HTMLDivElement | null>(null);
@@ -26,7 +27,7 @@ export default function CommuniryWrite(){
         thumbnail:thumbnail
       }
 
-      dbHook.write.post(query)
+      dbPostsWrite.postWrite(query)
       .catch((err)=>{
         alert('서버 오류! 다시 시도해주세요.')
       })
@@ -43,11 +44,11 @@ export default function CommuniryWrite(){
     const file = event.currentTarget.files[0];
     formData.append('userNumber',emptyUserNumber)
     formData.append('image',file)
-    await Promise.all([dbHook.write.postImage(formData)])
+    await Promise.all([dbPostsWrite.postImage(formData)])
     .then(([res])=>{
       console.log('파일 보내기 완료',res)
       if(!thumbnail) setThumbnail(res.data)
-      dbHook.write.getImage(res.data)
+      dbPostsWrite.getImage(res.data)
       .then((ress)=>{
         const srcUrl = process.env.NEXT_PUBLIC_SERVER_API_IMAGES_URL+`?src=${res.data}`
         const original = writeRef.current?.innerHTML;

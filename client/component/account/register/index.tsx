@@ -3,6 +3,7 @@ import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
+import { accountHook } from "../../../hooks/database/account/account";
 import { dbHook } from "../../../hooks/dbHook";
 import { validHook } from "../../../hooks/validationHook";
 import { setLogin } from "../../../redux/login/user";
@@ -10,19 +11,25 @@ import { setLogin } from "../../../redux/login/user";
 function Register() {
   const dispatch = useDispatch();
   const user = useSelector((state:any)=> state.user)
-  const oauthEmail = useSelector((state:any)=> state.oauthReg.email)
+  const oauthState = useSelector((state:any)=> state.oauthReg)
   const router = useRouter();
   const [emailError,setEmailError] = useState<string>('');
   const [passwordError,setPasswordError] = useState<string>('');
   const [nickError,setNickError] = useState<string>('');
-  const [oauthJoin,setOauthJoin] = useState(false);
-
+  console.log('회원가입 유저 데이터',user)
   if(user.state) router.push('/')
 
   useEffect(()=>{
-    if(oauthEmail) setOauthJoin(true)
-  },[oauthEmail])
-  
+    if(oauthState){
+      console.log('오오스 있음',oauthState)
+    }else{
+      console.log('오오스 없음',oauthState)
+    }
+  },[oauthState])
+
+  // function oauthKindsDivision(oauthEmail){
+
+  // }
   function resetState(){
     setEmailError('');
     setPasswordError('');
@@ -47,47 +54,37 @@ function Register() {
 
     return email && password
   }
-  async function joinPost(query:any){
-    await dbHook.account.register(query)
-      .then((_res)=>{
-        if(_res.status === 201){
-          dispatch(setLogin({
-            type:query.type,
-            email:query.email,
-            nickName:query.nickName
-          }));
-          // router.push('/');
-        }else if(_res.status === 409){
-          switch(_res.conflict){
-            case 'email':
-              return setEmailError('이미 등록된 이메일입니다.');
-            case 'nick':
-              return setNickError('이미 등록된 닉네임입니다.');
-          }
-        }
+  function postRegister(query:any){
+    accountHook.register(query)
+      .then((_res:any)=>{
+        alert('회원가입 완료!')
+        router.push('/login')
       })
       .catch((_error)=>{
         console.log("레지스터 에러",_error)
+        setEmailError('이미 등록된 이메일입니다.');
       })
   }
 
-  async function postRegister(event:any){
+  async function postValidation(event:any){
     resetState();
     event.preventDefault();
     const query = {
       email:event.target['email'].value,
-      password:event.target['password'] ? event.target['password'].value : 'oauth-login',
+      password:event.target['password'] ? event.target['password'].value : null,
       nickName:event.target['nickName'].value,
-      type:oauthJoin ? 'oauth' : 'basic'
+      oauthType:oauthState.oauthType ? oauthState.oauthType : null,
+      oauthToken:oauthState.oauthToken ? oauthState.oauthToken : null
     };
+
     const emailValid = validHook.email(query.email)
-    const passwordValid = validHook.password(query.password)
+    const passwordValid = validHook.password(event.target['password'] ? query.password : 'oauth-login') 
     const validation = validState(emailValid,passwordValid)
 
     if(query.nickName < 2) return setNickError('2글자 이상의 닉네임을 입력 해 주세요.')
 
     if(validation){
-      joinPost(query);
+      postRegister(query);
     }else{
       return;
     }
@@ -102,16 +99,14 @@ function Register() {
         </Title>
         <SignTitle>기본 정보 입력</SignTitle>
         <SignExp>회원가입을 위해서 이메일 인증이 진행되며, 인증이 완료되기 전까지 회원가입이 완료가 되지 않습니다.</SignExp>
-        <Form onSubmit={postRegister}>
+        <Form onSubmit={postValidation}>
           <InputDiv>
             <Label htmlFor="regiId">이메일 주소</Label>
             <ErrorMessage>{emailError}</ErrorMessage>
-            {oauthJoin ? 
-            <Input type="text" name="email" value={oauthEmail}/> :
-            <Input type="text" name="email"/>
-            }
+            <Input type="text" name="email" value={oauthState.email ? oauthState.email : null}/>
           </InputDiv>
-          {oauthJoin ? null : <InputDiv>
+          {oauthState.email ? null : 
+          <InputDiv>
             <Label>비밀번호</Label>
             <ErrorMessage>{passwordError}</ErrorMessage>
             <Input type="password" name="password" />
