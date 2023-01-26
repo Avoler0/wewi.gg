@@ -4,7 +4,7 @@ import { getPostWritingData, getPostList, postsWriteInsert, postsGoodUpdate, pos
 import multer from 'multer'
 import { loginController } from '../controllers/account/login';
 
-const apiRouter = express();
+const postsRouter = express();
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
@@ -18,14 +18,14 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage:storage })
 
-apiRouter.get('/list/:commuName',getPostList)
-apiRouter.get('/wewigg/images',writeImageGet)
-apiRouter.get('/content',getPostWritingData)
+postsRouter.get('/list/:commuName',getPostList)
+postsRouter.get('/wewigg/images',writeImageGet)
+postsRouter.get('/content',getPostWritingData)
 
-apiRouter.post('/good',postsGoodUpdate)
-apiRouter.post('/bad',postsBadUpdate)
-apiRouter.post('/view',postsViewUpdate)
-apiRouter.post('/write',postsWriteInsert)
-apiRouter.post('/images',upload.fields([{name:'userNumber'},{name:'image',maxCount:1}]),writeImagePost)
+postsRouter.post('/good',postsGoodUpdate)
+postsRouter.post('/bad',postsBadUpdate)
+postsRouter.post('/view',postsViewUpdate)
+postsRouter.post('/write',postsWriteInsert)
+postsRouter.post('/images',upload.fields([{name:'userNumber'},{name:'image',maxCount:1}]),writeImagePost)
 
-export default apiRouter;
+export default postsRouter;

@@ -1,7 +1,8 @@
 import express from 'express'
-import apiRouter from './router/postsRouter';
+import postsRouter from './router/postsRouter';
 import cors from 'cors';
 import multer from 'multer'
+import accountRouter from './router/accountRouter';
 
 const upload = multer({ dest: 'images/' })
 const app = express();
@@ -14,6 +15,7 @@ app.use(express.json());
 app.use(express.urlencoded( {extended : false } ));
 app.use(cors(corsOptions));
 
-app.use('/wewi-gg/posts',apiRouter)
+app.use('/wewi-gg/posts',postsRouter)
+app.use('/wewi-gg/account',accountRouter)
 
 export default app;
