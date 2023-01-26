@@ -13,6 +13,7 @@ export const postsQuery = {
       return await queryPromise(`SELECT * FROM posts WHERE PostId = '${postId}';`)
     },
   },
+
   insert:{
     posts:async function (objectData:any){
       const {title,content,community,userName,thumbnail} = objectData;
@@ -23,6 +24,7 @@ export const postsQuery = {
       return await queryPromise(`INSERT INTO posts_images(PostId,ImagesPath) VALUES(${savePostId});`)
     }
   },
+  
   update:{
     view:async function(postId:number){
       return await queryPromise(`UPDATE posts SET View = View + 1 WHERE PostId = ${postId};`)

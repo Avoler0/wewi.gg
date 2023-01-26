@@ -1,5 +1,5 @@
 import express from 'express'
-import apiRouter from './router/apiRouter';
+import apiRouter from './router/postsRouter';
 import cors from 'cors';
 import multer from 'multer'
 
@@ -14,6 +14,6 @@ app.use(express.json());
 app.use(express.urlencoded( {extended : false } ));
 app.use(cors(corsOptions));
 
-app.use('/api',apiRouter)
+app.use('/wewi-gg/posts',apiRouter)
 
 export default app;
