@@ -5,6 +5,7 @@ import { useDispatch } from "react-redux";
 import { setLogin } from "../../../../redux/login/user";
 import { setRegisterOauth } from "../../../../redux/login/oauthReg";
 import { dbHook } from "../../../../hooks/dbHook";
+import { accountHook } from "../../../../hooks/database/account/account";
 
 
 function NaverAouth(){
@@ -20,33 +21,17 @@ function NaverAouth(){
     naver_id_login?.init_naver_id_login();
   }
 
-  function handleNaverCallBack(){
+  async function handleNaverCallBack(){
     if(router.asPath !== '/login'){
       const token_parameter = router.asPath.split('=')[1].split('&')[0];
-      (async ()=>{
-        await dbHook.account.oauth.callNaverProfile(token_parameter)
-        .then(async (_res) => {
-          const naver_useProfile = _res.data.response;
-          const { id , email } = naver_useProfile;
-          
-          const result = await dbHook.account.oauth.login({type:'naver',key:id,email:email});
-          if(result.status === 200){
-            dispatch(setLogin({
-              type:result.data[0].type,
-              email:result.data[0].email,
-              nickName:result.data[0].nickName
-            }));
-          }else{
-            dispatch(setRegisterOauth({type:'naver',email}))
-            router.push('/register')
-          }
-        })
-        .catch((_error)=>{
-          console.log("서버 에러")
-        })
-      })()
-        
-
+      console.log(token_parameter)
+      await accountHook.naverOauthApi(token_parameter)
+      .then((_res)=>{
+        console.log('네이버 레스',_res)
+      })
+      .catch((_err)=>{
+        console.log('네이버 에러',_err)
+      })
     }
   }
   useEffect(()=>{

@@ -19,10 +19,10 @@ export async function loginController(req:any,res:any){
         res.status(200).json({Id,Email,Name,OauthType,UpdatedAt})
       }else{
         console.log('400 넘겨줌')
-        res.status(400).send('not matched password')
+        throw new Error('server error!')
       }
     }else{
-      console.log('레스 없음',_response)
+      // console.log('레스 없음',_response)
       res.status(404).json('unknown id')
     }
   }catch(_error:any){

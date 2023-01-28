@@ -1,3 +1,4 @@
+import axios from "axios"
 import { dbInstance } from "../../axiosInstance"
 
 interface LoginQuery {
@@ -31,6 +32,19 @@ export const accountHook = {
         method:'post',
         url:'/account/register',
         data:query
+      })
+      .then((_res)=> resolve(_res))
+      .catch((_err) => reject(_err))
+    })
+  },
+  naverOauthApi:async function name(token:string) {
+    return await new Promise(async (resolve,reject) => {
+      await dbInstance({
+        method:'get',
+        url:'/account/naver',
+        params:{
+          token:token
+        }
       })
       .then((_res)=> resolve(_res))
       .catch((_err) => reject(_err))

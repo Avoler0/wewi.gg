@@ -4,7 +4,6 @@ import styled from "styled-components";
 import { useDispatch } from "react-redux";
 import React from "react";
 import Link from "next/link";
-import { dbHook } from "../../../hooks/dbHook";
 import { useRouter } from "next/router";
 import { setLogin } from "../../../redux/login/user";
 import { useSelector } from "react-redux";
@@ -19,7 +18,6 @@ export default function Login() {
     type:'',
     message:''
   });
-
   if(user.state) router.push('/')
 
   async function postLogin(event:any){
@@ -44,24 +42,6 @@ export default function Login() {
         alert('잘못된 아이디 또는 비밀번호입니다.')
       }
     })
-    // console.log('리설트',loginResult)
-    // switch(loginResult.status){
-    //   case 200:
-    //       dispatch(setLogin({
-    //         email:loginResult.data[0].email,
-    //         nickName:loginResult.data[0].nickName,
-    //         oauth:'',
-    //         email:'',
-    //         nickName:'',
-    //       }))
-    //       // router.push('/');
-    //       break;
-    //   case 401:
-    //     if(loginResult.error === 'Oauth Account') return setErrorMsg({type:'email',message:'네이버 로그인 연동이 된 이메일입니다.'}); 
-    //     else return setErrorMsg({type:'password',message:'틀린 비밀번호 입니다.'});
-    //   case 404:
-    //     return setErrorMsg({type:'email',message:'없는 이메일 입니다.'});
-    // }
   }
   return (
     <Wrap id="wrap">

@@ -56,7 +56,6 @@ function GoogleOauth(){
     const jwt_decoded = JSON.parse(payload.toString())
     await accountHook.login({email:jwt_decoded.email,oauthType:'google',oauthToken:jwt_decoded.sub})
     .then((_res:any)=>{
-      console.log('넘어온 데이터',_res)
       dispatch(setLogin({
         id:_res.data.Id,
         oauth:'google',
@@ -66,7 +65,6 @@ function GoogleOauth(){
       router.push('/')
     })
     .catch((_error)=>{
-      console.log('에러발생',_error)
       dispatch(setRegisterOauth({email:jwt_decoded.email,oauthType:'google',oauthToken:jwt_decoded.sub}))
       router.push('/register')
     })
