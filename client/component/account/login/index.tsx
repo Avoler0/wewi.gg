@@ -10,6 +10,7 @@ import { setLogin } from "../../../redux/login/user";
 import { useSelector } from "react-redux";
 import NaverAouth from "./oauth/naver";
 import GoogleOauth from "./oauth/google";
+import { accountHook } from "../../../hooks/database/account/account";
 export default function Login() {
   const router = useRouter();
   const dispatch = useDispatch()
@@ -19,7 +20,7 @@ export default function Login() {
     message:''
   });
 
-  // if(user.state) router.push('/')
+  if(user.state) router.push('/')
 
   async function postLogin(event:any){
     event.preventDefault();
@@ -28,12 +29,20 @@ export default function Login() {
       password:event.target['password'].value
     }
     
-    await dbHook.account.login(query)
-    .then((_res)=>{
-      console.log('로그인 성공',_res)
+    await accountHook.login(query)
+    .then((_res:any)=>{
+      dispatch(setLogin({
+        id:_res.data.Id,
+        oauth:_res.data.OauthType,
+        email:_res.data.Email,
+        nickName:_res.data.Name,
+      }));
     })
     .catch((_err)=>{
-      console.log('로그인 에러',_err)
+      const error = _err.response;
+      if(error.status === 404 || error.status === 400){
+        alert('잘못된 아이디 또는 비밀번호입니다.')
+      }
     })
     // console.log('리설트',loginResult)
     // switch(loginResult.status){

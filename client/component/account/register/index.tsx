@@ -69,6 +69,7 @@ function Register() {
   async function postValidation(event:any){
     resetState();
     event.preventDefault();
+    // console.log(oauthState.oauthToken ? oauthState.oauthToken : null)
     const query = {
       email:event.target['email'].value,
       password:event.target['password'] ? event.target['password'].value : null,
@@ -76,13 +77,11 @@ function Register() {
       oauthType:oauthState.oauthType ? oauthState.oauthType : null,
       oauthToken:oauthState.oauthToken ? oauthState.oauthToken : null
     };
-
     const emailValid = validHook.email(query.email)
     const passwordValid = validHook.password(event.target['password'] ? query.password : 'oauth-login') 
     const validation = validState(emailValid,passwordValid)
-
     if(query.nickName < 2) return setNickError('2글자 이상의 닉네임을 입력 해 주세요.')
-
+    
     if(validation){
       postRegister(query);
     }else{
