@@ -1,7 +1,7 @@
 import storage from 'reduxjs-toolkit-persist/lib/storage'
 import { createSlice,PayloadAction  } from '@reduxjs/toolkit';
 
-type Login = {
+export type ReduxLoginType = {
   state:boolean,
   id:number | null,
   email:string,
@@ -19,14 +19,14 @@ const user = createSlice({
     nickName:'',
   },
   reducers:{
-    setLogin:(state:Login,action:PayloadAction<any>) => {
+    setLogin:(state:ReduxLoginType,action:PayloadAction<any>) => {
       state.state = true;
       state.id = action.payload.id
       state.oauth = action.payload.oauth
       state.email = action.payload.email;
       state.nickName = action.payload.nickName;
     },
-    setLogout:(state:Login) => {
+    setLogout:(state:ReduxLoginType) => {
       state.state = false;
       state.email = '';
       state.nickName = '';

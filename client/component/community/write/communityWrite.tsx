@@ -1,48 +1,42 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { ChangeEvent, ChangeEventHandler, useRef, useState } from "react";
 import styled from "styled-components"
-import { dbHook } from "../../../hooks/dbHook";
-import { CommunityWriteOptionList } from "../../../const/community";
 import { useSelector } from "react-redux";
 import { dbPostsWrite } from "../../../hooks/database/posts/write";
+import { useRouter } from "next/router";
+import { CommunityWriteOptionList } from "../../../const/community";
 export default function CommuniryWrite(){
+  const router = useRouter();
   const titleRef = useRef<HTMLInputElement | null>(null);
   const writeRef = useRef<HTMLDivElement | null>(null);
-  const [thumbnail,setThumbnail] = useState(null);
-  const [communityOption,setCommunityOption] = useState<string>();
+  const [thumbnail,setThumbnail] = useState('');
+  const [communityOption,setCommunityOption] = useState<string>('');
   const user = useSelector((state:any)=>{
     return state.user
   })
-  console.log('유저 정보',user)
-  function writeSubmit(event:React.FormEvent){
-    event.preventDefault();
-    console.log(communityOption)
+
+  function writeSubmitHandler(){
     if(communityOption){
-      const emptyUserName = 'Avoler'
       const writeValue = writeRef.current?.innerHTML ? writeRef?.current?.innerHTML.split('<div>').join('').split('</div>').join('<br>') : ''
       const query = {
         content:`<p>${writeValue}</p>`,
         community:communityOption,
         title:titleRef.current?.value ? titleRef.current?.value : '',
-        userName:emptyUserName,
+        userName:user.nickName,
         thumbnail:thumbnail
       }
-
       dbPostsWrite.postWrite(query)
-      .catch((err)=>{
+      .catch(()=>{
         alert('서버 오류! 다시 시도해주세요.')
       })
-
     }else{
       alert('게시판을 선택해 주세요.')
     }
-
   }
-  async function inputFilesChange(event:any){
-    const emptyUserName = 'Avoler'
-    const emptyUserNumber = ''+11;
+
+  async function inputFilesChange(event:React.ChangeEvent<HTMLInputElement>){
     const formData = new FormData();
-    const file = event.currentTarget.files[0];
-    formData.append('userNumber',emptyUserNumber)
+    const file = event.currentTarget.files![0];
+    formData.append('userNumber',user.id)
     formData.append('image',file)
     await Promise.all([dbPostsWrite.postImage(formData)])
     .then(([res])=>{
@@ -68,12 +62,13 @@ export default function CommuniryWrite(){
 
   return (
     <Wrap>
-      <WriteForm onSubmit={writeSubmit}>
+      <WriteForm onSubmit={(event) => event.preventDefault()}>
         <Container>
           <Title>글쓰기</Title>
           <CategorySelect>
-            <select onChange={(event:React.ChangeEvent<HTMLSelectElement>) => {setCommunityOption(event.target.value)}}>
-              <option hidden={true}>채널 선택</option>
+            <select 
+            onChange={(event:React.ChangeEvent<HTMLSelectElement>) => {setCommunityOption(event.target.value)}}>
+              <option value="채널 선택" hidden={true}>채널 선택</option>
               {CommunityWriteOptionList.map((name:any) => 
                 <option key={name} value={name}>{name}</option>
               )}
@@ -102,8 +97,8 @@ export default function CommuniryWrite(){
           </WriteContent>
         </Container>
         <ButtonContain>
-            <Button btType="cancel">취소</Button>
-            <Button btType="submit">작성완료</Button>
+          <button className="write-cancel" onClick={()=> router.push('/community')}>취소</button>
+          <button className="write-submit" onClick={writeSubmitHandler}>작성완료</button>
         </ButtonContain>
       </WriteForm>
     </Wrap>
@@ -206,24 +201,24 @@ const Edit = styled.div`
 const ButtonContain = styled.div`
   margin-top: 10px;
   width: 100%;
-`;
-const Button = styled.button<{btType:string}>`
-  cursor: pointer;
-  width: 154px;
-  height: 48px;
-  line-height: 19px;
-  font-size: 16px;
-  border-radius: 4px;
-  border: 1px solid #dddfe4;
-  width: 154px;
-  height: 48px;
-  ${props => props.btType === 'cancel' ? {
-    "color": '#7b858e',
-    "background-color": '#fff',
-  }:{
-    "color": '#fff',
-    "background-color": '#46cfa7',
-    "float" : "right",
-    "position": 'static'
-  }}
+  button{
+    cursor: pointer;
+    width: 154px;
+    height: 48px;
+    line-height: 19px;
+    font-size: 16px;
+    border-radius: 4px;
+    border: 1px solid #dddfe4;
+    width: 154px;
+    height: 48px;
+  }
+  .write-cancel{
+    color: #7b858e;
+    background-color: #fff;
+  }
+  .write-submit{
+    float: right;
+    color: #fff;
+    background-color: #46cfa7;
+  }
 `;

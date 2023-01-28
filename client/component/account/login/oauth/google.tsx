@@ -31,22 +31,25 @@ function GoogleOauth(){
         ux_mode: 'popup',
         login_uri: process.env.NEXT_PUBLIC_LOGIN_URL,
       });
-      window.google.accounts.id.renderButton(
-        document.getElementById("google_id_login"),
-        { 
-          'type':'icon',
-          'theme':'outline',
-          'shape':'square',
-          'size': "x-large", 
-          'width': '300', 
-          'height': '100',
-          'longtitle': true,
-          'login_uri' : 'redirect'
-        }  // customization attributes
-      );
-      window.google.accounts.id.prompt();
-    }
+
+    window.google.accounts.id.renderButton(
+      document.getElementById("google_id_login"),
+      { 
+        'type':'icon',
+        'theme':'outline',
+        'shape':'square',
+        'size': "x-large", 
+        'width': '300', 
+        'height': '100',
+        'longtitle': true,
+        'login_uri' : 'redirect'
+      }  // customization attributes
+    );
+    
+    window.google.accounts.id.prompt();
+  }
   },[])
+
   async function handleGoogleCallBack(response:GoogleResponse) {
     const base64Payload = response.credential.split('.')[1];
     const payload = Buffer.from(base64Payload, 'base64'); 

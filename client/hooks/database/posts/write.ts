@@ -14,7 +14,7 @@ export const dbPostsWrite = {
     console.log('겟 이미지 실행',imageUrl)
     return await dbInstance({
       method:'get',
-      url:`/posts/wewigg/images`,
+      url:`/posts/attach/images`,
       params:{
         src:imageUrl
       }

@@ -9,8 +9,8 @@ import CommunityListCard from "./mainListCard";
 function CommunityMain(){
   const [postsList,setPostsList] = useState([]);
   const router = useRouter();
-  const routerCommu = router.query.commuName;
-  const commuName:any = router.query.commuName && CommunityQueryName.eng[routerCommu+'']
+  const routerCommu:string = router.query.commuName as string;
+  const commuName:string = router.query.commuName as string && CommunityQueryName.eng[routerCommu+'']
 
   useEffect(()=>{
     if(commuName){

@@ -1,14 +1,23 @@
 import Image from "next/image";
 import Link from "next/link";
+import { useEffect } from "react";
 import styled from "styled-components";
 import { CommunityQueryName } from "../../../const/community";
 import { timeHook } from "../../../hooks/timeHook";
 
 export default function CommunityListCard({postData}:any){
   const {PostId,PostTitle,Content,CommunityName,UserName,CreateAt,Good,Bad,Thumbnail} = postData
-  console.log("포스트 데이터",postData)
+  console.log("포스트 데이터",Thumbnail)
   const date = new Date(CreateAt);
   const timeDiff = timeHook.otherDay(date.getTime())
+
+  useEffect(()=>{
+    if(Thumbnail){
+      console.log('썸네일',Thumbnail)
+    }else{
+      console.log('썸네일 없음',Thumbnail)
+    }
+  },[Thumbnail])
 
   return (
     <Card>
@@ -30,8 +39,11 @@ export default function CommunityListCard({postData}:any){
       </ContentWrap>
       <ThumbnailWrap>
         <Link href={`${CommunityQueryName.kor[CommunityName]}/${PostId}`}>
-          <Image src={`${process.env.NEXT_PUBLIC_SERVER_API_IMAGES_URL}?src=${Thumbnail}`} alt="thumbnail" layout="fill" objectFit="contain" />
-        </Link>  
+          {Thumbnail ? 
+            <Image src={`${process.env.NEXT_PUBLIC_SERVER_API_IMAGES_URL}?src=${Thumbnail}`} alt="thumbnail" layout="fill" objectFit="contain" /> 
+            : <span style={{'backgroundColor':'#fff'}}></span>
+          }
+         </Link>  
       </ThumbnailWrap>
     </Card>
   )

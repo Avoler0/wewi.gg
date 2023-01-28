@@ -1,13 +1,21 @@
 import Link from "next/link";
+import { useRouter } from "next/router";
 import styled from "styled-components"
+import { ReduxLoginType } from "../../../../redux/login/user";
 
+type props ={
+  user:ReduxLoginType
+}
 
-export default function CommunityIsLogin(){
-
+export default function CommunityIsLogin({user}:props){
+  const {email,id,nickName,oauth,state} = user;
+  const router = useRouter()
+  console.log(user)
   return(
       <LoginButton>
-        <Link href='/login'>
-          로그인
+        {nickName}
+        <Link href={`${router.query.commuName}/write`} legacyBehavior>
+          글 쓰기
         </Link>
       </LoginButton>
   )

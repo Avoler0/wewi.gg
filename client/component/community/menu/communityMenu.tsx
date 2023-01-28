@@ -2,7 +2,7 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 import styled from "styled-components"
-import { CommunityMenuList } from "../../../const/community";
+import { CommunityMenuList, CommunityQueryName } from "../../../const/community";
 import { dbHook } from "../../../hooks/dbHook";
 import CommunityLoginBox from "./communityLoginBox";
 
@@ -22,7 +22,7 @@ export default function CommunityMenu(){
               {data.division.map((name:string)=>{
                 return (
                 <li key={data.category+' '+name}>
-                  <Link href={'/'}>{name}</Link>
+                  <Link href={`/community/${CommunityQueryName.kor[name]}`}>{name}</Link>
                 </li>)
               })}
             </Division>

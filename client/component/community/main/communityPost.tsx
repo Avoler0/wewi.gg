@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components"
 import { dbPosts } from "../../../hooks/database/posts/posts";
 import { timeHook } from "../../../hooks/timeHook";
@@ -12,9 +12,9 @@ export default function CommunityPost(){
   const [postsData,setPostsData] = useState<PostType | null>(null);
   const router = useRouter();
   console.log('오픈된 포스트 데이터',postsData)
-
+  const {commuName,postId} = router.query;
   useEffect(()=>{
-    const {commuName,postId} = router.query;
+    
     if(postId){
       (async ()=>{
         await dbPosts.get.postsById(postId)
@@ -43,7 +43,13 @@ export default function CommunityPost(){
     }
   },[postsData])
 
-
+  function deleteBtnClick(){
+    dbPosts.delete(postId)
+    .then((_res)=>{
+      console.log('성공',_res)
+      router.push('/community')
+    })
+  }
   if(!postsDataValid) <div></div>
 
   return (
@@ -51,6 +57,14 @@ export default function CommunityPost(){
       <Post>
         <Header>
           <Title>{postsData?.PostTitle}</Title>
+          <PostStateForm onSubmit={(event) => event.preventDefault()}>
+            <button id="h" name="수정" type="submit">
+            수정
+            </button>
+            <button onClick={deleteBtnClick}>
+              삭제
+            </button>
+          </PostStateForm>
           <Meta>
             <MetaLeftList>
               <div>{postsData?.CommunityName}</div>
@@ -79,6 +93,7 @@ export default function CommunityPost(){
                 <span className="vote down">비추천</span>
                 <span>{postsData?.Bad ?? 0}</span>
               </button>
+              
             </Vote>
           </VoteBox>
         </VoteBoxWrap>
@@ -101,6 +116,7 @@ const Header = styled.div`
   border-bottom: 1px solid #ebeef1;
 `;
 const Title = styled.div`
+  display: inline-block;
   line-height: 36px;
   font-size: 24px;
   color: #1e2022;
@@ -228,5 +244,15 @@ const Vote = styled.div`
   }
   :first-child{
     margin-left: 0;
+  }
+`;
+const PostStateForm = styled.form`
+  float: right;
+  margin-top: 5px;
+  margin-right: 10px;
+
+  button{
+    border: none;
+    background-color: transparent;
   }
 `;

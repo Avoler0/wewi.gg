@@ -48,6 +48,11 @@ export const dbPosts = {
           }
         })
       },
-    }
-    
+    },
+    delete:async function name(postsId:any) {
+        return await dbInstance({
+          method:'delete',
+          url:`/posts/delete/${postsId}`,
+        })
+      },
 }
