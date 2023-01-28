@@ -2,10 +2,10 @@
 import { postsQuery } from '../mariadb/query/posts';
 import { postErrorStateMessage } from '../mariadb/sqlError';
 
-export function getPostList(req:any,res:any){
+export async function getPostList(req:any,res:any){
   const {commuName} = req.params;
   if(commuName === '전체'){
-    postsQuery.select.listAll()
+    await postsQuery.select.listAll()
     .then((_response)=>{
       return res.status(200).json(_response)
     })
@@ -14,7 +14,7 @@ export function getPostList(req:any,res:any){
       res.status(err.state).send(err.message);
     })
   }else{
-    postsQuery.select.listByCommu(commuName)
+    await postsQuery.select.listByCommu(commuName)
     .then((_response)=>{
       // console.log('get 보냄')
       return res.status(200).json(_response)
@@ -39,6 +39,7 @@ export async function getPostWritingData(req:any,res:any){
 }
 
 export async function postsWriteInsert(req:any,res:any){
+  console.log('포스트 포스츠',req.body)
   await postsQuery.insert.posts(req.body)
   .then((_response)=>{
     res.status(200).send('success')
@@ -87,4 +88,17 @@ export async function postsViewUpdate(req:any,res:any) {
     const err = postErrorStateMessage(_error);
     res.status(err.state).send(err.message);
   })
+}
+
+export async function postsDelete(req:any,res:any) {
+  const {postsId} = req.params;
+  console.log('델리트',req.params)
+  try{
+    await postsQuery.delete.posts(postsId)
+    console.log('성공')
+    res.status(200)
+  }catch(_error:any){
+    const err = postErrorStateMessage(_error);
+    res.status(err.state).send(err.message);
+  }
 }

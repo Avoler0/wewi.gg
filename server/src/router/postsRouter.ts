@@ -1,8 +1,7 @@
 import { writeImagePost, writeImageGet } from '../controllers/writeImage';
 import express from 'express';
-import { getPostWritingData, getPostList, postsWriteInsert, postsGoodUpdate, postsBadUpdate, postsViewUpdate } from '../controllers/posts';
+import { getPostWritingData, getPostList, postsWriteInsert, postsGoodUpdate, postsBadUpdate, postsViewUpdate, postsDelete } from '../controllers/posts';
 import multer from 'multer'
-import { loginController } from '../controllers/account/login';
 
 const postsRouter = express();
 
@@ -19,7 +18,7 @@ const storage = multer.diskStorage({
 const upload = multer({ storage:storage })
 
 postsRouter.get('/list/:commuName',getPostList)
-postsRouter.get('/wewigg/images',writeImageGet)
+postsRouter.get('/attach/images',writeImageGet)
 postsRouter.get('/content',getPostWritingData)
 
 postsRouter.post('/good',postsGoodUpdate)
@@ -27,5 +26,7 @@ postsRouter.post('/bad',postsBadUpdate)
 postsRouter.post('/view',postsViewUpdate)
 postsRouter.post('/write',postsWriteInsert)
 postsRouter.post('/images',upload.fields([{name:'userNumber'},{name:'image',maxCount:1}]),writeImagePost)
+
+postsRouter.delete('/delete/:postsId',postsDelete);
 
 export default postsRouter;
