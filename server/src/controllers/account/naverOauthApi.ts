@@ -12,10 +12,8 @@ export async function naverOauth(req:any,res:any){
         Authorization:`Bearer ${token}`
       }
     })
-    console.log('네이버 리설트',result)
+    res.status(200).json(result.data);
   }catch(_error:any){
-    console.log('네이버 실패',_error)
-    // const err = accountErrorStateMessage(_error)
-    // res.status(err.state).send(err.message)
+    res.status(502).json(_error)
   }
 }

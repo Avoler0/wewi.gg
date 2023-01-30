@@ -4,7 +4,6 @@ import { accountQuery } from './../../mariadb/query/account';
 
 
 export async function loginController(req:any,res:any){
-  
   const {email,password,oauthType,oauthToken} = req.body;
   console.log('로그인 컨트롤러',req.body)
   try{

@@ -1,6 +1,6 @@
-import { writeImagePost, writeImageGet } from '../controllers/writeImage';
+import { writeImagePost, writeImageGet } from '../controllers/posts/writeImage';
 import express from 'express';
-import { getPostWritingData, getPostList, postsWriteInsert, postsGoodUpdate, postsBadUpdate, postsViewUpdate, postsDelete } from '../controllers/posts';
+import { getPostWritingData, getPostList, postsWriteInsert, postsGoodUpdate, postsBadUpdate, postsViewUpdate, postsDelete } from '../controllers/posts/posts';
 import multer from 'multer'
 
 const postsRouter = express();

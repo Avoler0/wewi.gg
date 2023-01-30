@@ -1,10 +1,9 @@
 import express from 'express'
 import postsRouter from './router/postsRouter';
 import cors from 'cors';
-import multer from 'multer'
 import accountRouter from './router/accountRouter';
+import matesRouter from './router/matesRouter';
 
-const upload = multer({ dest: 'images/' })
 const app = express();
 
 const corsOptions = {
@@ -17,5 +16,5 @@ app.use(cors(corsOptions));
 
 app.use('/wewi-gg/posts',postsRouter)
 app.use('/wewi-gg/account',accountRouter)
-
+app.use('/wewi-gg/mates',matesRouter)
 export default app;

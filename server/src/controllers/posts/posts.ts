@@ -1,6 +1,6 @@
 
-import { postsQuery } from '../mariadb/query/posts';
-import { postErrorStateMessage } from '../mariadb/sqlError';
+import { postsQuery } from '../../mariadb/query/posts';
+import { postErrorStateMessage } from '../../mariadb/sqlError';
 
 export async function getPostList(req:any,res:any){
   const {commuName} = req.params;
