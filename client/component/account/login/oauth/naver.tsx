@@ -26,11 +26,24 @@ function NaverAouth(){
       const token_parameter = router.asPath.split('=')[1].split('&')[0];
       console.log(token_parameter)
       await accountHook.naverOauthApi(token_parameter)
-      .then((_res)=>{
-        console.log('네이버 레스',_res)
+      .then(async (_res:any)=>{
+        console.log('네이버 레스',_res.data.response)
+        await accountHook.login({email:_res.data.response.email,oauthType:'naver',oauthToken:token_parameter})
+        .then((_res:any)=>{
+          dispatch(setLogin({
+            id:_res.data.Id,
+            oauth:'naver',
+            email:_res.data.Email,
+            nickName:_res.data.Name,
+          }));
+        })
+        .catch((_error)=>{
+          dispatch(setRegisterOauth({email:_res.data.response.email,oauthType:'naver',oauthToken:token_parameter}))
+          router.push('/register')
+        })
       })
       .catch((_err)=>{
-        console.log('네이버 에러',_err)
+        alert('서버 오류! 잠시 후 다시 시도 해 주세요.')
       })
     }
   }
