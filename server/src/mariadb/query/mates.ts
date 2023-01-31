@@ -6,11 +6,11 @@ export const matesQuery = {
       return await queryPromise(`SELECT * FROM mates;`)
     }
   },
-  insert:{
-    register:async function(values:any) {
-      const {email,nickName,password,oauthType,oauthToken} = values;
-      return await queryPromise(`INSERT INTO users(Email,Password,Name,OauthType,OauthToken,CreatedAt,UpdatedAt) VALUES('${email}','${password}','${nickName}','${oauthType}','${oauthToken}',current_timestamp,current_timestamp);`)
-    },
+  insert:async function(values:any) {
+    console.log('메이트 인서트 밸류',values)
+    const {seekerName,line,mode,mic,content,password,champions,league} = values;
+    return await queryPromise(`INSERT INTO mates(SeekerName,Line,Mode,Mic,Content,Password,Champions,League,CreateAt) 
+    VALUES('${seekerName}','${line}','${mode}',${mic},'${content}','${password}','${champions}','${league}',current_timestamp);`)
   },
   update:{
     loginUpdateAt:async function (userId:string){
