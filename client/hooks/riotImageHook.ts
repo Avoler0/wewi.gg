@@ -14,17 +14,7 @@ export const riotImg = {
     .then((_res:any)=>{
       const championList = _res.data.data;
       if(typeof ids === 'object'){
-        const chapionName = []
-        for(let i in championList){
-          for(const key in idArr){
-            if(championList[i].key == idArr[key]){
-              chapionName.push(championList[i].name)
-              idArr.splice(key,1);
-            }
-          }
-          if(chapionName.length === ids.length) break;
-        }
-        return chapionName
+        
       }else{
         const chapionName:string[] = []
          for(let i in championList){

@@ -1,15 +1,15 @@
 import { dbInstance } from "../../axiosInstance"
 
 
-export const dbPosts = {
+export const postsHook = {
     get:{
-      postsList:async function name(commuName:string) {
+      list:async function name(commuName:string) {
         return await dbInstance({
           method:'get',
           url:`/posts/list/${commuName}`,
         })
       },
-      postsById:async function name(postsId:any) {
+      listById:async function name(postsId:any) {
         console.log('훅훅',postsId)
         return await dbInstance({
           method:'get',
@@ -20,8 +20,8 @@ export const dbPosts = {
         })
       },
     },
-    post:{
-      postsVoteGood:async function name(postsId:any) {
+    update:{
+      voteGood:async function name(postsId:any) {
       return await dbInstance({
         method:'post',
         url:'/posts/good',
@@ -30,7 +30,7 @@ export const dbPosts = {
         }
       })
       },
-      postsVoteBad:async function name(postsId:any) {
+      voteBad:async function name(postsId:any) {
         return await dbInstance({
           method:'post',
           url:'/posts/bad',
@@ -39,7 +39,7 @@ export const dbPosts = {
           }
         })
       },
-      postsView:async function name(postsId:any) {
+      view:async function name(postsId:any) {
         return await dbInstance({
           method:'post',
           url:'/posts/view',

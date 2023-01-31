@@ -9,7 +9,6 @@ import DuoFilter, { Filter } from "./filter";
 
 
 export default function DuoIndex() {
-  const {data:duoDB,isLoading} = useQuery('duoDB',async () => await dbHook.duo.get());
   const filter = useSelector((state:Filter) => {
     return state.duoFilter
   })
@@ -34,14 +33,13 @@ export default function DuoIndex() {
     return is.tier && is.mode && is.line
   }
 
-  if(isLoading) return <div></div>;
 
   return (
     <Container>
       <Wrapper >
         <DuoFilter />
           <BoardLayOut>
-            {duoDB?.map((res:any)=> filterling(res) ? <DuoCard key={res.id} duoRes={res} /> : null )}
+            {/* {duoDB?.map((res:any)=> filterling(res) ? <DuoCard key={res.id} duoRes={res} /> : null )} */}
           </BoardLayOut>
         </Wrapper>
     </Container>

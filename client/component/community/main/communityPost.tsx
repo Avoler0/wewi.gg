@@ -2,7 +2,7 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import styled from "styled-components"
-import { dbPosts } from "../../../hooks/database/posts/posts";
+import { postsHook } from "../../../hooks/database/posts/posts";
 import { timeHook } from "../../../hooks/timeHook";
 import { PostType } from "../../../types/dbType";
 
@@ -12,27 +12,22 @@ export default function CommunityPost(){
   const [postsData,setPostsData] = useState<PostType | null>(null);
   const router = useRouter();
   console.log('오픈된 포스트 데이터',postsData)
-  const {commuName,postId} = router.query;
+  const { postId } = router.query;
   useEffect(()=>{
-    
     if(postId){
       (async ()=>{
-        await dbPosts.get.postsById(postId)
+        await postsHook.get.listById(postId)
         .then(async (res)=>{
           const resData = res.data[0];
-          console.log('레스 데이터',resData)
           if(resData){
-            console.log('하이')
             setPostsDataValid(true);
             setPostsData(resData)
           }
-          await dbPosts.post.postsView(postId)
+          await postsHook.update.view(postId)
         })
       })()
-      console.log('라우터',commuName,postId)
     }
-    
-  },[router])
+  },[postId])
   
   useEffect(()=>{
     if(postsData){
@@ -44,9 +39,8 @@ export default function CommunityPost(){
   },[postsData])
 
   function deleteBtnClick(){
-    dbPosts.delete(postId)
+    postsHook.delete(postId)
     .then((_res)=>{
-      console.log('성공',_res)
       router.push('/community')
     })
   }
@@ -85,11 +79,11 @@ export default function CommunityPost(){
         <VoteBoxWrap>
           <VoteBox>
             <Vote>
-              <button onClick={()=>{dbPosts.post.postsVoteGood(postsData?.PostId)}}>
+              <button onClick={()=>{postsHook.update.voteGood(postsData?.PostId)}}>
                 <span className="vote up">추천</span>
                 <span>{postsData?.Good ?? 0}</span>
               </button>
-              <button onClick={()=>{dbPosts.post.postsVoteBad(postsData?.PostId)}}>
+              <button onClick={()=>{postsHook.update.voteBad(postsData?.PostId)}}>
                 <span className="vote down">비추천</span>
                 <span>{postsData?.Bad ?? 0}</span>
               </button>

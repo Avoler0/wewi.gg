@@ -5,6 +5,7 @@ import { options } from "../../../../const/utils";
 import {dbHook} from "../../../../hooks/dbHook"
 import { riot } from "../../../../hooks/riotApiHook";
 import { riotImg } from "../../../../hooks/riotImageHook";
+import { matesHook } from "../../../../hooks/database/mates/mates";
 
 type InputValid = {
   summoner: boolean,
@@ -49,6 +50,7 @@ function DuoInput({hide}:any) {
           threeChamp: await riotImg.championsId(champIds)
         }
       })
+
     }else{
        return false;
     }
@@ -56,41 +58,46 @@ function DuoInput({hide}:any) {
   }
   async function duoInputPost(event:any){
     event.preventDefault();
-    const info:Info = await getSummonerInfo(event.target['summoner'].value)
+    // const info:Info = await getSummonerInfo(event.target['summoner'].value)
 
     const query = {
-      summoner: event.target['summoner'].value,
+      seekerName: event.target['summoner'].value,
       line: lineSelect,
       mode: gameSelect,
       mic: micSelect,
-      memo: event.target['memo'].value ? event.target['memo'].value : "같이할 사람 구합니다 !",
+      content: event.target['memo'].value ? event.target['memo'].value : "같이할 사람 구합니다 !",
       password:event.target['password'].value,
-      createdAt: new Date().getTime(),
-      riotId:info ? info.riotId : '',
-      profileIconId:info ? info.profileIconId : '',
-      summonerLevel:info ? info.summonerLevel : '',
-      soloRank:info ? info.soloRank : '',
-      teamRank:info ? info.teamRank : '',
-      threeChamp:info ? info.threeChamp : ''
     }
 
-    if(info){
-      const validation = errorValdation(query.summoner,query.password)
-      if(validation){
-        const result = await dbHook.duo.post(query)
-        switch(result.status){
-          case 201:
-            return (
-              setPostError(''),
-              window.location.replace("/duo")
-            );
-          default :
-            return setPostError('이미 게시된 소환사 닉네임입니다.');
-        }
-      }else{
-        return setPostError('등록되지 않은 소환사 닉네임입니다.');
+    await matesHook.post(query)
+    .then((_res)=>{
+      console.log('포스트 레스',_res)
+    })
+    .catch((_err)=>{
+      console.log('포스트 에러',_err)
+      if(_err.response.status === 409){
+        setPostError('이미 게시된 소환사 닉네임입니다.');
+      }else if(_err.response.status === 404){
+        setPostError('등록되지 않은 소환사 닉네임입니다.');
       }
-    }
+    })
+    // if(info){
+    //   const validation = errorValdation(query.summoner,query.password)
+    //   if(validation){
+    //     const result = await dbHook.duo.post(query)
+    //     switch(result.status){
+    //       case 201:
+    //         return (
+    //           setPostError(''),
+    //           window.location.replace("/duo")
+    //         );
+    //       default :
+    //         return setPostError('이미 게시된 소환사 닉네임입니다.');
+    //     }
+    //   }else{
+    //     return setPostError('등록되지 않은 소환사 닉네임입니다.');
+    //   }
+    // }
   }
 
   function errorValdation(name:string,pw:string){

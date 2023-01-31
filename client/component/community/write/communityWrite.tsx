@@ -1,7 +1,7 @@
-import React, { ChangeEvent, ChangeEventHandler, useRef, useState } from "react";
+import React, { ChangeEvent, ChangeEventHandler, useEffect, useRef, useState } from "react";
 import styled from "styled-components"
 import { useSelector } from "react-redux";
-import { dbPostsWrite } from "../../../hooks/database/posts/write";
+import { postsWriteHook } from "../../../hooks/database/posts/write";
 import { useRouter } from "next/router";
 import { CommunityWriteOptionList } from "../../../const/community";
 export default function CommuniryWrite(){
@@ -13,6 +13,7 @@ export default function CommuniryWrite(){
   const user = useSelector((state:any)=>{
     return state.user
   })
+  if(!user.state) window.history.back();
 
   function writeSubmitHandler(){
     if(communityOption){
@@ -24,7 +25,7 @@ export default function CommuniryWrite(){
         userName:user.nickName,
         thumbnail:thumbnail
       }
-      dbPostsWrite.postWrite(query)
+      postsWriteHook.post.write(query)
       .catch(()=>{
         alert('서버 오류! 다시 시도해주세요.')
       })
@@ -38,11 +39,11 @@ export default function CommuniryWrite(){
     const file = event.currentTarget.files![0];
     formData.append('userNumber',user.id)
     formData.append('image',file)
-    await Promise.all([dbPostsWrite.postImage(formData)])
+    await Promise.all([postsWriteHook.post.image(formData)])
     .then(([res])=>{
       console.log('파일 보내기 완료',res)
       if(!thumbnail) setThumbnail(res.data)
-      dbPostsWrite.getImage(res.data)
+      postsWriteHook.get.image(res.data)
       .then((ress)=>{
         const srcUrl = process.env.NEXT_PUBLIC_SERVER_API_IMAGES_URL+`?src=${res.data}`
         const original = writeRef.current?.innerHTML;

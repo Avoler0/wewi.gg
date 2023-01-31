@@ -1,5 +1,4 @@
 
-import { useEffect, useState } from "react";
 import styled from "styled-components";
 import { useDispatch } from "react-redux";
 import React from "react";
@@ -14,10 +13,7 @@ export default function Login() {
   const router = useRouter();
   const dispatch = useDispatch()
   const user = useSelector((state:any)=> state.user)
-  const [errorMsg,setErrorMsg] = useState({
-    type:'',
-    message:''
-  });
+
   if(user.state) router.push('/')
 
   async function postLogin(event:any){
@@ -52,12 +48,10 @@ export default function Login() {
         <Form onSubmit={postLogin}>
           <Input_Layout>
             <Label htmlFor="email">이메일</Label>
-            {errorMsg.type === 'email' && <ErrorMessage>{errorMsg.message}</ErrorMessage>}
             <Input id="email" type="text"/>
           </Input_Layout>
           <Input_Layout>
             <Label htmlFor="password">비밀번호</Label>
-            {errorMsg.type === 'password' && <ErrorMessage>{errorMsg.message}</ErrorMessage>}
             <Input id="password" type="password"/>
           </Input_Layout>
           <Option_Layout>
@@ -68,17 +62,14 @@ export default function Login() {
             <div><Link href={"/register"}>ID/PW 찾기</Link></div>
           </Option_Layout>
           <OR>OR</OR>
-          
           <FastLogin>간편 로그인</FastLogin>
           <LoginBtnInner>
             <OauthBtn>
               <NaverAouth />
               <GoogleOauth />
             </OauthBtn>
-            
             <LoginButton className="login-btn">로그인</LoginButton>
           </LoginBtnInner>
-          
           <Register>
             <span>아이디가 없다면 ?</span>
             <Link href="/register">회원가입</Link>
@@ -159,11 +150,7 @@ const Input = styled.input`
     outline: none;
   }
 `;
-const ErrorMessage = styled.span`
-  margin-left: 1rem;
-  color: red;
-  font-size: 14px;
-`;
+
 const OR = styled.div`
   display: flex;
   flex-basis: 100%;

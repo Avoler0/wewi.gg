@@ -1,12 +1,14 @@
 import { useRouter } from "next/router";
-import { useEffect, useRef } from "react";
-import styled from "styled-components";
+import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { setLogin } from "../../../../redux/login/user";
 import { setRegisterOauth } from "../../../../redux/login/oauthReg";
-import { dbHook } from "../../../../hooks/dbHook";
 import { accountHook } from "../../../../hooks/database/account/account";
-
+declare global {
+  interface Window {
+    naver_id_login: any;
+  }
+}
 
 function NaverAouth(){
   const router = useRouter();
@@ -24,10 +26,8 @@ function NaverAouth(){
   async function handleNaverCallBack(){
     if(router.asPath !== '/login'){
       const token_parameter = router.asPath.split('=')[1].split('&')[0];
-      console.log(token_parameter)
       await accountHook.naverOauthApi(token_parameter)
       .then(async (_res:any)=>{
-        console.log('네이버 레스',_res.data.response)
         await accountHook.login({email:_res.data.response.email,oauthType:'naver',oauthToken:token_parameter})
         .then((_res:any)=>{
           dispatch(setLogin({
@@ -52,11 +52,8 @@ function NaverAouth(){
     handleNaverCallBack()
   })
 
-  return <NaverLogin  id='naver_id_login'/>
+  return <div  id='naver_id_login'/>
   
 }
-
-const NaverLogin = styled.div`
-`;
 
 export default NaverAouth;

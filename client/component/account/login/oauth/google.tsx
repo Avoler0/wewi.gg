@@ -1,20 +1,21 @@
-import Script from "next/script";
-import { useEffect, useRef } from "react";
-import styled from "styled-components";
-import Image from "next/image";
-import { useDispatch, useSelector } from "react-redux";
+import { useEffect } from "react";
+import { useDispatch } from "react-redux";
 import { setRegisterOauth } from "../../../../redux/login/oauthReg";
-import { dbHook } from "../../../../hooks/dbHook";
 import { setLogin } from "../../../../redux/login/user";
 import { useRouter } from "next/router";
 import { accountHook } from "../../../../hooks/database/account/account";
-
+declare global {
+  interface Window {
+    google: any;
+  }
+}
 type GoogleResponse = {
   clientId: string,
   client_id: string,
   credential: string
   select_by: string
 }
+
 function GoogleOauth(){
   const dispatch = useDispatch();
   const router = useRouter();
@@ -43,7 +44,7 @@ function GoogleOauth(){
         'height': '100',
         'longtitle': true,
         'login_uri' : 'redirect'
-      }  // customization attributes
+      }
     );
     
     window.google.accounts.id.prompt();
@@ -74,9 +75,5 @@ function GoogleOauth(){
 
 return <div id="google_id_login" /> ;
 }
-const GoogleLogin = styled.div`
-  /* display: none; */
-
-`;
 
 export default GoogleOauth;
