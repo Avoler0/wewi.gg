@@ -7,10 +7,10 @@ export const matesQuery = {
     }
   },
   insert:async function(values:any) {
-    console.log('메이트 인서트 밸류',values)
-    const {seekerName,line,mode,mic,content,password,champions,league} = values;
-    return await queryPromise(`INSERT INTO mates(SeekerName,Line,Mode,Mic,Content,Password,Champions,League,CreateAt) 
-    VALUES('${seekerName}','${line}','${mode}',${mic},'${content}','${password}','${champions}','${league}',current_timestamp);`)
+    const {seekerName,line,mode,mic,content,password,champions,league,icon,level} = values;
+    return await queryPromise(`INSERT INTO mates(SeekerName,Line,Mode,Mic,Content,Password,Champions,League,SeekerIcon,SeekerLevel,CreateAt) 
+    VALUES('${seekerName}','${line}','${mode}',${mic},'${content}','${password}','${champions}','${league}','${icon}',${level},current_timestamp);`)
+    
   },
   update:{
     loginUpdateAt:async function (userId:string){

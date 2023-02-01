@@ -4,7 +4,7 @@ import config from '../config/DBConfig.json'
 const pool = mariadb.createPool(config);
 
 export default async function db() {
-    let conn;
+    let conn:any;
     try {
         console.log("DB연결");
         conn = await pool.getConnection();

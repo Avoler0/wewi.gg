@@ -4,6 +4,6 @@
     "password": "123",
     "database": "wewigg",
     "checkDuplicate": false,
-    "connectionLimit": 30,
+    "connectionLimit": 100,
     "port": 3306
 }

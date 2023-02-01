@@ -1,6 +1,6 @@
 import '../../../dotenv'
 import { RIOT_API_KEY } from '../../../dotenv';
-import { riotChampionImage } from '../../api/riotApi/imageApi';
+import { riotChampionImage, riotProfileIconImage } from '../../api/riotApi/imageApi';
 import { summonerMasteryTop } from '../../api/riotApi/mastery';
 import { summonerInfo, summonerLeague } from '../../api/riotApi/summoner';
 import { matesErrorStateMessage } from '../../mariadb/sqlError';
@@ -25,12 +25,11 @@ export async function postMatesList(req:any,res:any) {
     const {id,accountId,puuid,name,profileIconId,summonerLevel} = _res.data;
     return await Promise.all([await summonerMasteryTop(id,3),await summonerLeague(id)])
     .then(async ([mastery,league]:any) => {
+      const profileIcon = await riotProfileIconImage(profileIconId);
       const champIds = mastery.data.map((_res:any)=> _res.championId)
-      const champions = await riotChampionImage(champIds).then((_response)=>{
-        return _response.join();
-      })
+      const champions = await riotChampionImage(champIds).then((_response)=> _response.join())
       const leagueInfo = JSON.stringify(league.data);
-      const summonerValue = {champions:champions,league:leagueInfo};
+      const summonerValue = {champions:champions,league:leagueInfo,icon:profileIcon,level:summonerLevel};
       await matesQuery.insert({...req.body,...summonerValue})
       .then((_res)=>{
         return res.status(200).send('success mates')
