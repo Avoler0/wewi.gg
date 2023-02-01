@@ -12,20 +12,16 @@ type Rank = {
   rank:string
 }
 type DuoRes = {
-  summoner:string,
-  memo:string,
-  line:string,
-  mode:string,
-  password:number,
-  id:number,
-  mic:boolean,
-  createdAt:number
-  profileIconId:number,
-  riotId:string,
-  summonerLevel:number,
-  soloRank:Rank,
-  teamRank:Rank,
-  threeChamp:string[]
+  Id:number,
+  SeekerName:string,
+  Line:string,
+  Mode:string,
+  Mic:boolean,
+  Content:string,
+  Password:string,
+  League:string,
+  Champions:string,
+  CreateAt:string
 }
 type Props = {
   duoRes:DuoRes
@@ -34,77 +30,80 @@ type SummonerLeague = {
   tier:string,
   rank:string
 }
-function DuoCard({duoRes}:Props){
+function DuoCard({duoRes}:any){
+  
+  const {Id,SeekerName,Line,Mode,Mic,Content,Password,League,Champions,SeekerIcon,SeekerLevel,CreateAt} = duoRes
+  console.log(JSON.parse(League))
   const [showDelete,setShowDelete] = useState(false);
-  const {summoner,mode,memo,line,password,id,mic,createdAt,profileIconId,riotId,summonerLevel,soloRank,teamRank,threeChamp} = duoRes;
-  const soloRankValue = tierUtils.value(soloRank.tier);
-  const teamRankValue = tierUtils.value(teamRank.tier);
-  const rank = soloRankValue > teamRankValue ? soloRank : teamRank;
+  // const {summoner,mode,memo,line,password,id,mic,createdAt,profileIconId,riotId,summonerLevel,soloRank,teamRank,threeChamp} = duoRes;
+  // const soloRankValue = tierUtils.value(soloRank.tier);
+  // const teamRankValue = tierUtils.value(teamRank.tier);
+  // const rank = soloRankValue > teamRankValue ? soloRank : teamRank;
 
-  // 티어 필터 ! , 카드 디자인 변경
-  function rankSlice(tier:string){
-    switch(tier){
-      case 'MASTER':
-        return false;
-      case 'GRANDMASTER':
-        return false;
-      case 'CHALLENGER':
-        return false;
-      case 'UNRANKED':
-        return false;
-      default :
-        return true;
-    }
-  }
-
+  // // 티어 필터 ! , 카드 디자인 변경
+  // function rankSlice(tier:string){
+  //   switch(tier){
+  //     case 'MASTER':
+  //       return false;
+  //     case 'GRANDMASTER':
+  //       return false;
+  //     case 'CHALLENGER':
+  //       return false;
+  //     case 'UNRANKED':
+  //       return false;
+  //     default :
+  //       return true;
+  //   }
+  // }
   return (
     <>
       <Wrap >
-        {showDelete ? (<DuoDelete hide={setShowDelete} id={id} pw={password}/>)  
+        {showDelete ? (<DuoDelete hide={setShowDelete} id={Id} pw={Password}/>)  
         : (<>
         <Profile_Inner>
           <Info_Inner>
-              <Link href={`summoner/${summoner}`}>
-                <ProfileIcon imgPath={riotImg.profile(profileIconId)}>
+              <Link href={`summoner/${SeekerName}`}>
+                <ProfileIcon imgPath={SeekerIcon}>
                   <div />
                 </ProfileIcon>
               </Link>
             <Info_Layer>
-              <NickName nameLength={summoner.length}>
-                  <Link href={`summoner/${summoner}`}>{summoner}</Link>
+              <NickName nameLength={SeekerName.length}>
+                  <Link href={`summoner/${SeekerName}`}>{SeekerName}</Link>
               </NickName>
               <Info_Column>
-                <Level><span>Lv. {summonerLevel}</span></Level>
-                <Tier tierColor={tierUtils.color(rank?.tier)} tierSize={rank?.tier.length}>
+                <Level><span>Lv. {SeekerLevel}</span></Level>
+                {/* <Tier tierColor={tierUtils.color(rank?.tier)} tierSize={rank?.tier.length}>
                   {rank?.tier && (
                     <>
                       <div className="tier main">{rank?.tier}</div>
                       <div className="tier number">{rankSlice(rank?.tier) ? String(rank?.rank).length : null}</div>
                     </>
                   )}
-                </Tier>
+                </Tier> */}
               </Info_Column>
               <Info_Column style={{display:"flex",justifyContent: 'space-between'}}>
-                <Mode>
-                  <div>{filterName.mode(mode)}</div>
-                </Mode>
+                <ModeWrap>
+                  <div>{filterName.mode(Mode)}</div>
+                </ModeWrap>
                 <MicCheck>
                   <div className="mic text">마이크</div>
-                  <MicCircle mic={mic}/>
+                  <MicCircle mic={Mic}/>
                 </MicCheck>
               </Info_Column>
             </Info_Layer>
           </Info_Inner>
           <Game_Layer under={false} >
             <Game className="Game_Info">
-              <Line>
-                <Image src={`/images/line-icons/Line-${duoRes.line}-Ico.png`} alt="line" layout="fill" objectFit="cover" />
-              </Line>
+              <LineImage>
+                <Image src={`/images/line-icons/Line-${Line}-Ico.png`} alt="line" layout="fill" objectFit="cover" />
+              </LineImage>
               <Champ>
-                {threeChamp?.map((path,idx)=>{
+                {Champions.split(',')?.map((path:string,idx:number)=>{
+                  console.log(path)
                   return (
                     <div key={idx}>
-                      <Image src={path} alt="line" layout="fill" objectFit="cover"/>
+                      <Image src={path} alt="champ" layout="fill" objectFit="cover"/>
                     </div>
                   )
                 })}
@@ -114,15 +113,12 @@ function DuoCard({duoRes}:Props){
         </Profile_Inner>
         <Content_Inner>
           <Memo_Layer>
-            <span>{memo}</span>
+            <span>{Content}</span>
           </Memo_Layer>
           <Footer_Layer>
             <Time>
-              {<span>{timeHook.otherDay(createdAt)}</span>  }
+              {<span>{timeHook.otherDay(new Date(CreateAt).getTime())}</span>  }
             </Time>
-            <Report>
-              {/* <Link to="/reportView">신고 누적 : {report}회</Link> */}
-            </Report>
             <Delete onClick={()=>setShowDelete(true)}>삭제</Delete>
           </Footer_Layer>
         </Content_Inner>
@@ -146,14 +142,6 @@ const Wrap = styled.div`
 `;
 const Delete = styled.div`
   
-`;
-const DeleteModal = styled.div`
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  background-color: transparent;
-  z-index: 10;
-  border-radius: 15px ;
 `;
 const Profile_Inner = styled.div`
   padding: 0.4rem 0 0 0.3rem;
@@ -235,7 +223,7 @@ const MicCircle = styled.div<{mic:boolean}>`
   border-radius: 10px;
   background-color: ${props => props.mic ? "green" : "red"};
 `;
-const Mode = styled.div`
+const ModeWrap = styled.div`
   display: inline-block;
 `;
 
@@ -269,22 +257,12 @@ const Footer_Layer = styled.div`
 const Time = styled.div`
   font-weight: 400;
 `;
-
-const Report = styled.div`
-  
-`;
-
-
-
-const BoardDelete = styled.div``
-
-;
 const Game = styled.div`
   display:flex ;
   justify-content: space-between;
 `;
 
-const Line = styled.div`
+const LineImage = styled.div`
   position: relative;
   width: 2.2rem;
   height: 2.2rem;

@@ -3,7 +3,7 @@ import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import styled from "styled-components"
 import { CommunityQueryName } from "../../../const/community";
-import { dbPosts } from "../../../hooks/database/posts/posts";
+import { postsHook } from "../../../hooks/database/posts/posts";
 import CommunityListCard from "./mainListCard";
 
 function CommunityMain(){
@@ -15,14 +15,14 @@ function CommunityMain(){
   useEffect(()=>{
     if(commuName){
       console.log('커뮤네임',commuName)
-      dbPosts.get.postsList(commuName)
-      .then((res)=>{
-        console.log(res)
-        const resData = res.data
+      postsHook.get.list(commuName)
+      .then((_res:any)=>{
+        console.log(_res)
+        const resData = _res.data
         setPostsList(resData)
       })
-      .catch((err)=>{
-        console.log(err)
+      .catch((_err:any)=>{
+        console.log(_err)
       })
     }
   },[commuName])

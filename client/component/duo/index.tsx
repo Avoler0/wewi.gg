@@ -1,24 +1,37 @@
-import React from "react";
-import { isError, useQuery } from "react-query";
+import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import styled from "styled-components";
-import { tierUtils } from "../../const/utils";
-import { dbHook } from "../../hooks/dbHook";
-import DuoCard from "./card/card";
+import { matesHook } from "../../hooks/database/mates/mates";
+import DuoCard from './card/card'
+
 import DuoFilter, { Filter } from "./filter";
 
 
 export default function DuoIndex() {
+  const [duoData,setDuoData] = useState([]);
   const filter = useSelector((state:Filter) => {
     return state.duoFilter
   })
-
+  useEffect(()=>{
+    console.log('이펙트')
+    matesHook.get()
+    .then((_res:any)=>{
+      console.log('듀오',_res.data)
+      setDuoData(_res.data)
+    })
+    .catch((_err)=>{
+      alert('서버 오류 !')
+    })
+  },[])
+  useEffect(()=>{
+    console.log('듀오 데이터',duoData)
+  },[duoData])
   function filterling(res:any){
     const {mode,line} = filter;
-    const tier = filter.tier.toUpperCase();
-    const soloRankValue = tierUtils.value(res.soloRank.tier);
-    const teamRankValue = tierUtils.value(res.teamRank.tier);
-    const resTier = soloRankValue > teamRankValue ? res.soloRank.tier : res.teamRank.tier;
+    // const tier = filter.tier.toUpperCase();
+    // const soloRankValue = tierUtils.value(res.soloRank.tier);
+    // const teamRankValue = tierUtils.value(res.teamRank.tier);
+    // const resTier = soloRankValue > teamRankValue ? res.soloRank.tier : res.teamRank.tier;
 
     const is = {
       tier:false,
@@ -28,7 +41,7 @@ export default function DuoIndex() {
     
     if(mode === res.mode || mode == 'All' || res.mode == 'All') is.mode = true;
     if(line === res.line || line == 'All' || res.line == 'All') is.line = true;
-    if(tier === resTier || tier == 'ALL') is.tier = true;
+    // if(tier === resTier || tier == 'ALL') is.tier = true;
     
     return is.tier && is.mode && is.line
   }
@@ -39,9 +52,14 @@ export default function DuoIndex() {
       <Wrapper >
         <DuoFilter />
           <BoardLayOut>
-            {/* {duoDB?.map((res:any)=> filterling(res) ? <DuoCard key={res.id} duoRes={res} /> : null )} */}
+            {duoData && duoData?.map((res:any)=>  <DuoCard key={res.id} duoRes={res} />  )}
           </BoardLayOut>
         </Wrapper>
+        <style jsx global>{`
+            body{
+              background-image: url(https://images.contentstack.io/v3/assets/blt731acb42bb3d1659/blt15d3facea57e5b7e/634613111338101198fce129/K_Sante-Base-Splash.jpg);
+            }
+          `}</style>
     </Container>
   );
 }
