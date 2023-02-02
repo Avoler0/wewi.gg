@@ -77,7 +77,7 @@ export const tierUtils = {
         return '#ffffff';
     }
   },
-  value:function(tier:string){
+  value:function(tier:string | null){
     switch (tier) {
       case 'IRON':
         return 1;

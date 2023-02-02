@@ -7,9 +7,20 @@ import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import DuoDelete from "../modal/delete/duoDelete";
 
-type Rank = {
-  tier:string,
+type RankType = {
+  freshBlood:boolean
+  hotStreak:boolean
+  inactive:boolean
+  leagueId:string
+  leaguePoints:number
+  losses:number
+  queueType:string
   rank:string
+  summonerId:string
+  summonerName:string
+  tier:string
+  veteran:boolean
+  wins:number
 }
 type DuoRes = {
   Id:number,
@@ -21,40 +32,26 @@ type DuoRes = {
   Password:string,
   League:string,
   Champions:string,
-  CreateAt:string
+  CreateAt:string,
+  SeekerIcon:string,
+  SeekerLevel:number
 }
 type Props = {
   duoRes:DuoRes
 }
-type SummonerLeague = {
-  tier:string,
-  rank:string
-}
-function DuoCard({duoRes}:any){
+
+function DuoCard({duoRes}:Props){
   
   const {Id,SeekerName,Line,Mode,Mic,Content,Password,League,Champions,SeekerIcon,SeekerLevel,CreateAt} = duoRes
-  console.log(JSON.parse(League))
   const [showDelete,setShowDelete] = useState(false);
-  // const {summoner,mode,memo,line,password,id,mic,createdAt,profileIconId,riotId,summonerLevel,soloRank,teamRank,threeChamp} = duoRes;
-  // const soloRankValue = tierUtils.value(soloRank.tier);
-  // const teamRankValue = tierUtils.value(teamRank.tier);
-  // const rank = soloRankValue > teamRankValue ? soloRank : teamRank;
+  let soloRank:RankType | null = null;
+  let teamRank:RankType | null = null;
+  JSON.parse(League).forEach((data:any)=>{
+    if(data.queueType === 'RANKED_SOLO_5x5') soloRank = data;
+    if(data.queueType === 'RANKED_FLEX_SR') teamRank = data;
+  })
+  const tierValue:string | null = tierUtils.value(soloRank && soloRank['tier']) > tierUtils.value(teamRank && teamRank['tier']) ? soloRank && soloRank['tier'] : teamRank && teamRank['tier'];
 
-  // // 티어 필터 ! , 카드 디자인 변경
-  // function rankSlice(tier:string){
-  //   switch(tier){
-  //     case 'MASTER':
-  //       return false;
-  //     case 'GRANDMASTER':
-  //       return false;
-  //     case 'CHALLENGER':
-  //       return false;
-  //     case 'UNRANKED':
-  //       return false;
-  //     default :
-  //       return true;
-  //   }
-  // }
   return (
     <>
       <Wrap >
@@ -73,14 +70,11 @@ function DuoCard({duoRes}:any){
               </NickName>
               <Info_Column>
                 <Level><span>Lv. {SeekerLevel}</span></Level>
-                {/* <Tier tierColor={tierUtils.color(rank?.tier)} tierSize={rank?.tier.length}>
-                  {rank?.tier && (
-                    <>
-                      <div className="tier main">{rank?.tier}</div>
-                      <div className="tier number">{rankSlice(rank?.tier) ? String(rank?.rank).length : null}</div>
-                    </>
-                  )}
-                </Tier> */}
+                <TierWrap tierColor={tierUtils.color(tierValue!)}>
+                  <>
+                    <div className="tier main">{tierValue ? tierValue : 'UNRANKED'}</div>
+                  </>
+                </TierWrap>
               </Info_Column>
               <Info_Column style={{display:"flex",justifyContent: 'space-between'}}>
                 <ModeWrap>
@@ -191,16 +185,13 @@ const Level = styled.span`
   font-size: 12px;
   color:#cec7c7;
 `;
-const Tier = styled.div<{tierColor:string,tierSize:number}>`
+const TierWrap = styled.div<{tierColor:string}>`
   display: inline-block;
   margin-left: 0.3rem;
   font-size: 12px;
   color: ${props => props.tierColor};
   .tier{
     display: inline-block;
-  }
-  .tier.number{
-    margin-left: 0.2rem
   }
 `;
 const MicCheck = styled.div`
