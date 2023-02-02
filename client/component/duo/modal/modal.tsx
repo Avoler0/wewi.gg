@@ -14,7 +14,6 @@ function DuoModal({ isShowing, hide, method}:Props){
     event.stopPropagation(); 
     hide()
   }
-  console.log("메쏘드",method)
   return(
     isShowing
     ? ReactDOM.createPortal(

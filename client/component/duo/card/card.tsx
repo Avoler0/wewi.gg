@@ -38,11 +38,13 @@ type DuoRes = {
 }
 type Props = {
   duoRes:DuoRes
+  filter:any
 }
 
-function DuoCard({duoRes}:Props){
+function DuoCard({duoRes,filter}:Props){
   
   const {Id,SeekerName,Line,Mode,Mic,Content,Password,League,Champions,SeekerIcon,SeekerLevel,CreateAt} = duoRes
+  const {tier,line,mode} = filter;
   const [showDelete,setShowDelete] = useState(false);
   let soloRank:RankType | null = null;
   let teamRank:RankType | null = null;
@@ -51,6 +53,19 @@ function DuoCard({duoRes}:Props){
     if(data.queueType === 'RANKED_FLEX_SR') teamRank = data;
   })
   const tierValue:string | null = tierUtils.value(soloRank && soloRank['tier']) > tierUtils.value(teamRank && teamRank['tier']) ? soloRank && soloRank['tier'] : teamRank && teamRank['tier'];
+
+  function cardFilter(){
+    let isMode = false ,isLine = false, isTier = false;
+    
+    if(mode === 'All' || mode === Mode) isMode = true;
+    if(line === 'All' || line === Line) isLine = true;
+    if(tier === 'All' || tier.toLowerCase() === tierValue?.toLowerCase() ) isTier = true;
+    if(tier === 'Unranked' && tierValue === null) isTier = true;
+    
+    return isTier && isMode && isLine;
+  }
+  
+  if(!cardFilter()) return ;
 
   return (
     <>
@@ -94,7 +109,6 @@ function DuoCard({duoRes}:Props){
               </LineImage>
               <Champ>
                 {Champions.split(',')?.map((path:string,idx:number)=>{
-                  console.log(path)
                   return (
                     <div key={idx}>
                       <Image src={path} alt="champ" layout="fill" objectFit="cover"/>

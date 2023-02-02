@@ -13,46 +13,21 @@ export default function DuoIndex() {
     return state.duoFilter
   })
   useEffect(()=>{
-    console.log('이펙트')
     matesHook.get()
     .then((_res:any)=>{
-      console.log('듀오',_res.data)
       setDuoData(_res.data)
     })
     .catch((_err)=>{
       alert('서버 오류 !')
     })
   },[])
-  useEffect(()=>{
-    console.log('듀오 데이터',duoData)
-  },[duoData])
-  function filterling(res:any){
-    const {mode,line} = filter;
-    // const tier = filter.tier.toUpperCase();
-    // const soloRankValue = tierUtils.value(res.soloRank.tier);
-    // const teamRankValue = tierUtils.value(res.teamRank.tier);
-    // const resTier = soloRankValue > teamRankValue ? res.soloRank.tier : res.teamRank.tier;
-
-    const is = {
-      tier:false,
-      mode:false,
-      line:false
-    }
-    
-    if(mode === res.mode || mode == 'All' || res.mode == 'All') is.mode = true;
-    if(line === res.line || line == 'All' || res.line == 'All') is.line = true;
-    // if(tier === resTier || tier == 'ALL') is.tier = true;
-    
-    return is.tier && is.mode && is.line
-  }
-
 
   return (
     <Container>
       <Wrapper >
         <DuoFilter />
           <BoardLayOut>
-            {duoData && duoData?.map((res:any)=>  <DuoCard key={res.id} duoRes={res} />  )}
+            {duoData && duoData?.map((res:any)=>  <DuoCard key={res.Id} duoRes={res} filter={filter} />  )}
           </BoardLayOut>
         </Wrapper>
         <style jsx global>{`

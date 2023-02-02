@@ -30,7 +30,6 @@ function DuoInput({hide}:any) {
 
   async function duoInputPost(event:any){
     event.preventDefault();
-    // const info:Info = await getSummonerInfo(event.target['summoner'].value)
 
     const query = {
       seekerName: event.target['summoner'].value,
