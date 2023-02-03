@@ -18,8 +18,6 @@ export async function getMatesList(req:any,res:any) {
 }
 
 export async function postMatesList(req:any,res:any) {
-  // console.log('포스트 메이트스',req.body,RIOT_API_KEY)
-  
   await summonerInfo(req.body.seekerName)
   .then(async (_res:any)=> {
     const {id,accountId,puuid,name,profileIconId,summonerLevel} = _res.data;
@@ -43,5 +41,9 @@ export async function postMatesList(req:any,res:any) {
   .catch((_err:any)=>{
     return res.status(_err.response.data.status.status_code).send(_err.response.data.status.message)
   })
+  
+}
+
+export async function deleteMates(req:any,res:any) {
   
 }

@@ -22,7 +22,7 @@ function DuoDelete({hide,id,pw}:any) {
     }
     
   }
-  
+  console.log(pw)
   return (
     <Wrap>
       <Form onSubmit={deleteSubmit}>

@@ -12,9 +12,7 @@ export const matesQuery = {
     VALUES('${seekerName}','${line}','${mode}',${mic},'${content}','${password}','${champions}','${league}','${icon}',${level},current_timestamp);`)
     
   },
-  update:{
-    loginUpdateAt:async function (userId:string){
-      return await queryPromise(`UPDATE users SET CreateAt = current_timestamp WHERE Id = ${userId};`)
-    }
-  }
+  delete:async function(matesId:any) {
+
+  },
 }
