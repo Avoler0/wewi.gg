@@ -1,6 +1,5 @@
 import { useState } from "react";
 import styled , {css} from "styled-components";
-import {dbHook} from "../../../../hooks/dbHook"
 
 type Props = {
   hide: Function,
@@ -8,18 +7,18 @@ type Props = {
   pw:number
 }
 
-function DuoDelete({hide,id,pw}:any) {
+function DuoDelete({hide,id,pw}:any) { // 듀오 카드 삭제를 위한 컴포넌트, 기존 카드에 덮어씌움
   const [pwError,setPwError] = useState(false);
   function deleteSubmit(event:any){
     event.preventDefault();
     console.log(pw)
     const inputValue = event.target[0].value
-    if(inputValue == pw){
-      dbHook.duo.delete(id);
-      window.location.replace("/duo")
-    }else{
-      setPwError(true)
-    }
+    // if(inputValue == pw){
+    //   dbHook.duo.delete(id);
+    //   window.location.replace("/duo")
+    // }else{
+    //   setPwError(true)
+    // }
     
   }
   console.log(pw)

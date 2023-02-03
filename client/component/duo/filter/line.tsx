@@ -4,7 +4,7 @@ import styled from "styled-components"
 import { options } from "../../../const/utils"
 import { duoSetFilter } from "../../../redux/duo/filter"
 import Image from "next/image"
-export default function FilterLine({lineSelect,dispatch}:any){
+export default function FilterLine({lineSelect,dispatch}:any){ // 듀오 카드 필터링 Line 부분
 
 
   return (

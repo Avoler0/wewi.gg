@@ -5,19 +5,10 @@ import styled from "styled-components";
 import { CommunityQueryName } from "../../../const/community";
 import { timeHook } from "../../../hooks/timeHook";
 
-export default function CommunityListCard({postData}:any){
+export default function CommunityListCard({postData}:any){ // 포스트 리스트 카드
   const {PostId,PostTitle,Content,CommunityName,UserName,CreateAt,Good,Bad,Thumbnail} = postData
-  console.log("포스트 데이터",Thumbnail)
   const date = new Date(CreateAt);
   const timeDiff = timeHook.otherDay(date.getTime())
-
-  useEffect(()=>{
-    if(Thumbnail){
-      console.log('썸네일',Thumbnail)
-    }else{
-      console.log('썸네일 없음',Thumbnail)
-    }
-  },[Thumbnail])
 
   return (
     <Card>

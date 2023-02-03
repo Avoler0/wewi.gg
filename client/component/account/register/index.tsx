@@ -4,9 +4,7 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
 import { accountHook } from "../../../hooks/database/account/account";
-import { dbHook } from "../../../hooks/dbHook";
 import { validHook } from "../../../hooks/validationHook";
-import { setLogin } from "../../../redux/login/user";
 
 function Register() {
   const dispatch = useDispatch();
@@ -36,7 +34,7 @@ function Register() {
     setNickError('');
   }
 
-  function validState(emailValid:boolean,pwValid:boolean){
+  function validState(emailValid:boolean,pwValid:boolean){ // 이메일과 비밀번호 양식을 검사한 후의 값을 받아 State 갱신
     let email = false;
     let password = false;
 
@@ -54,7 +52,7 @@ function Register() {
 
     return email && password
   }
-  function postRegister(query:any){
+  function postRegister(query:any){ // 회원가입 값을 서버에 보내는 함수
     accountHook.register(query)
       .then((_res:any)=>{
         alert('회원가입 완료!')
@@ -66,20 +64,20 @@ function Register() {
       })
   }
 
-  async function postValidation(event:any){
+  async function postValidation(event:any){ // 서버에 값을 보내기 전에 자체적으로 값을 검사하여 보냄
     resetState();
     event.preventDefault();
     // console.log(oauthState.oauthToken ? oauthState.oauthToken : null)
-    const query = {
+    const query = { // 서버에 보내기 위한 데이터 집합
       email:event.target['email'].value,
       password:event.target['password'] ? event.target['password'].value : null,
       nickName:event.target['nickName'].value,
       oauthType:oauthState.oauthType ? oauthState.oauthType : null,
       oauthToken:oauthState.oauthToken ? oauthState.oauthToken : null
     };
-    const emailValid = validHook.email(query.email)
-    const passwordValid = validHook.password(event.target['password'] ? query.password : 'oauth-login') 
-    const validation = validState(emailValid,passwordValid)
+    const emailValid = validHook.email(query.email) // 이메일 검사 Hook 사용
+    const passwordValid = validHook.password(event.target['password'] ? query.password : 'oauth-login') // 비밀번호 검사 Hook 사용
+    const validation = validState(emailValid,passwordValid) // 이메일과 비밀번호 검사의 값이 올바른지 확인하는 함수
     if(query.nickName < 2) return setNickError('2글자 이상의 닉네임을 입력 해 주세요.')
     
     if(validation){

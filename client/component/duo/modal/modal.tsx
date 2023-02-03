@@ -9,7 +9,7 @@ type Props = {
   hide: Function,
   method:'ADD' | 'DELETE',
 }
-function DuoModal({ isShowing, hide, method}:Props){
+function DuoModal({ isShowing, hide, method}:Props){ // 듀오 카드 Modal Index
   function handler(event:any){
     event.stopPropagation(); 
     hide()

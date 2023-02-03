@@ -1,10 +1,9 @@
 import styled from "styled-components";
 import Image from "next/image";
-import { riotImg } from "../../../hooks/riotImageHook";
 import { timeHook } from "../../../hooks/timeHook";
 import { filterName, tierUtils } from "../../../const/utils";
 import Link from "next/link";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import DuoDelete from "../modal/delete/duoDelete";
 
 type RankType = {
@@ -41,20 +40,20 @@ type Props = {
   filter:any
 }
 
-function DuoCard({duoRes,filter}:Props){
+function DuoCard({duoRes,filter}:Props){ // 듀오 구인 게시글 카드
   
   const {Id,SeekerName,Line,Mode,Mic,Content,Password,League,Champions,SeekerIcon,SeekerLevel,CreateAt} = duoRes
   const {tier,line,mode} = filter;
   const [showDelete,setShowDelete] = useState(false);
   let soloRank:RankType | null = null;
   let teamRank:RankType | null = null;
-  JSON.parse(League).forEach((data:any)=>{
+  JSON.parse(League).forEach((data:any)=>{ // 솔로랭크 , 자유랭크를 나누기 위한 for 문
     if(data.queueType === 'RANKED_SOLO_5x5') soloRank = data;
     if(data.queueType === 'RANKED_FLEX_SR') teamRank = data;
   })
   const tierValue:string | null = tierUtils.value(soloRank && soloRank['tier']) > tierUtils.value(teamRank && teamRank['tier']) ? soloRank && soloRank['tier'] : teamRank && teamRank['tier'];
 
-  function cardFilter(){
+  function cardFilter(){ // 리덕스로 지정된 필터를 값으로 DB에서 받아온 카드 RES에 맞는지 필터링 하여 자체적으로 소거
     let isMode = false ,isLine = false, isTier = false;
     
     if(mode === 'All' || mode === Mode) isMode = true;
@@ -65,7 +64,7 @@ function DuoCard({duoRes,filter}:Props){
     return isTier && isMode && isLine;
   }
   
-  if(!cardFilter()) return ;
+  if(!cardFilter()) return <></>;
 
   return (
     <>

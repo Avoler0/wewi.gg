@@ -2,7 +2,7 @@ import Link from "next/link";
 import styled from "styled-components"
 
 
-export default function CommunityNonLogin(){
+export default function CommunityNonLogin(){ // 비로그인 일 시 왼쪽 메뉴 헤더부분에 띄워주는 컴포넌트
 
   return(
       <LoginButton>

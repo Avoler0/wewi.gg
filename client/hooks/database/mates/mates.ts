@@ -1,8 +1,8 @@
 import { apiInstance, dbInstance } from "../../axiosInstance";
 
 
-export const matesHook = {
-  get:async function(){
+export const matesHook = { // 듀오 구인 페이지 Server 통신 Hook
+  get:async function(){ // 듀오 구인 리스트 Get
       return await new Promise(async (resolve,reject) => {
         await dbInstance({
           method:'get',
@@ -12,7 +12,7 @@ export const matesHook = {
         .catch((_err) => reject(_err))
       })
     },
-  post:async function(query:any){
+  post:async function(query:any){ // 듀오 구인 Add Post
     return await new Promise(async (resolve,reject) => {
       await dbInstance({
         method:'post',
@@ -23,7 +23,7 @@ export const matesHook = {
       .catch((_err) => reject(_err))
     })
   },
-  delete:async function(id:number){
+  delete:async function(id:number){ // 듀오 구인 게시글 삭제
     console.log("델리트")
     return await apiInstance.delete('/database/duo',{data:{id:id}})
     .then((_res)=>{

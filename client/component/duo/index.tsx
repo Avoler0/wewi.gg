@@ -7,13 +7,13 @@ import DuoCard from './card/card'
 import DuoFilter, { Filter } from "./filter";
 
 
-export default function DuoIndex() {
+export default function DuoIndex() { // 듀오 구인 Page 인덱스 부분
   const [duoData,setDuoData] = useState([]);
   const filter = useSelector((state:Filter) => {
     return state.duoFilter
   })
   useEffect(()=>{
-    matesHook.get()
+    matesHook.get() // 듀오 구인 Page 화면에 표시되면 Server에서 듀오 구인 게시글 리스트 받아옴
     .then((_res:any)=>{
       setDuoData(_res.data)
     })
@@ -30,7 +30,7 @@ export default function DuoIndex() {
             {duoData && duoData?.map((res:any)=>  <DuoCard key={res.Id} duoRes={res} filter={filter} />  )}
           </BoardLayOut>
         </Wrapper>
-        <style jsx global>{`
+        <style jsx global>{` // 듀오 구인에서만 Body에 이미지 씌워줌
             body{
               background-image: url(https://images.contentstack.io/v3/assets/blt731acb42bb3d1659/blt15d3facea57e5b7e/634613111338101198fce129/K_Sante-Base-Splash.jpg);
             }

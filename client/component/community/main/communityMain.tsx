@@ -6,7 +6,7 @@ import { CommunityQueryName } from "../../../const/community";
 import { postsHook } from "../../../hooks/database/posts/posts";
 import CommunityListCard from "./mainListCard";
 
-function CommunityMain(){
+function CommunityMain(){ // 커뮤니티 메인 부분 
   const [postsList,setPostsList] = useState([]);
   const router = useRouter();
   const routerCommu:string = router.query.commuName as string;
@@ -15,7 +15,7 @@ function CommunityMain(){
   useEffect(()=>{
     if(commuName){
       console.log('커뮤네임',commuName)
-      postsHook.get.list(commuName)
+      postsHook.get.list(commuName) // 커뮤니티 메인에 접속 시, 전체 커뮤니티를 불러옴
       .then((_res:any)=>{
         console.log(_res)
         const resData = _res.data

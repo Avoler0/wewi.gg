@@ -3,11 +3,10 @@ import { useRouter } from "next/router";
 import { useEffect } from "react";
 import styled from "styled-components"
 import { CommunityMenuList, CommunityQueryName } from "../../../const/community";
-import { dbHook } from "../../../hooks/dbHook";
 import CommunityLoginBox from "./communityLoginBox";
 
 
-export default function CommunityMenu(){
+export default function CommunityMenu(){ // 왼쪽 메뉴 부분 컴포넌트
   
   return (
     <Menu>

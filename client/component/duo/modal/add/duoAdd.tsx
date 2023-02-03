@@ -2,9 +2,6 @@ import { useState } from "react";
 import Image from "next/image";
 import styled , {css} from "styled-components";
 import { options } from "../../../../const/utils";
-import {dbHook} from "../../../../hooks/dbHook"
-import { riot } from "../../../../hooks/riotApiHook";
-import { riotImg } from "../../../../hooks/riotImageHook";
 import { matesHook } from "../../../../hooks/database/mates/mates";
 
 type Line = "All" | "Top" | "Jungle" | "Bottom" | "Support"
@@ -13,14 +10,7 @@ type Rank = {
   tier:string,
   rank:string
 }
-type Info = {
-  riotId:string,
-  profileIconId:number,
-  summonerLevel:number
-  soloRank:Rank,
-  teamRank:Rank,
-  threeChamp:string[]
-} | boolean;
+
 function DuoInput({hide}:any) {
   const [lineSelect,setLineSelect] = useState<Line | string>("All");
   const [gameSelect,setGameSelect] = useState<Mode | string>("All");
@@ -28,7 +18,7 @@ function DuoInput({hide}:any) {
   const [pwValid,setPwValid] = useState<boolean>(false)
   const [postError,setPostError] = useState<string>('');
 
-  async function duoInputPost(event:any){
+  async function duoInputPost(event:any){ // 듀오 카드 추가를 위한 Modal
     event.preventDefault();
 
     const query = {

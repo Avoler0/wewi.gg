@@ -1,35 +1,7 @@
 
 
-export const riotVersion = '12.22.1';
-
-export const menuUtils = {
-  name:function(menu:string){
-    switch (menu) {
-      case 'All':
-        return '전체';
-      case 'Notice':
-        return '공지사항';
-      case 'LoLInfo':
-        return '롤 소식';
-      case 'Tip':
-        return '팁과 노하우';
-      case 'Free':
-        return '자유'
-      case 'Fun':
-        return '유머'
-      case 'Video':
-        return '영상';
-      case 'Event':
-        return '사건사고';
-      case 'FanArt':
-        return '팬아트';
-      default:
-        return 'All'
-    }
-  }
-}
-export const tierUtils = {
-  name:function(tier:string){
+export const tierUtils = { 
+  name:function(tier:string){ // 롤 티어 한글 번역 함수
     switch (tier) {
       case 'IRON':
         return '아이언';
@@ -53,7 +25,7 @@ export const tierUtils = {
         return 'UNRANKED'
     }
   },
-  color:function(tier:string){
+  color:function(tier:string){ // 롤 티어의 값을 반환하는 함수
     switch (tier) {
       case 'IRON':
         return '#94868B';
@@ -77,7 +49,7 @@ export const tierUtils = {
         return '#ffffff';
     }
   },
-  value:function(tier:string | null){
+  value:function(tier:string | null){ // 롤 티어에 값을 매기는 함수
     switch (tier) {
       case 'IRON':
         return 1;
@@ -103,7 +75,7 @@ export const tierUtils = {
   },
 }
 
-export const queueUtils:any = {
+export const queueUtils:any = { // 롤 API에서 넘어노는 큐 타입 넘버를 스트링으로 변환하는 함수
   type:{
     400: '일반 게임', //Normal Draft Pick
     420: '솔로 랭크',
@@ -129,7 +101,7 @@ export const queueUtils:any = {
   }
 }
 
-export const spellName = (spellId:number) => {
+export const spellName = (spellId:number) => { // 롤 API사용시 스펠 넘버를 eng 로 변환 하는 함수
   switch(spellId){
     case 21: return "SummonerBarrier";
     case 1: return "SummonerBoost"
@@ -150,7 +122,7 @@ export const spellName = (spellId:number) => {
     default: return "Failed"
   }
 }
-export const filterName = {
+export const filterName = { // 필터값을 영어로 사용하고 , 이후 값 출력을 위한 함수
   mode:function(value:string){
     switch(value){
       case 'All':
@@ -168,7 +140,7 @@ export const filterName = {
     }
   }
 }
-export const options = {
+export const options = { // 필터부분 옵션출력을 위한 객체
   lines : ["All","Top","Mid","Jungle","Bottom","Support"],
   game:[
       {value:"All",label:"모두보기"},
@@ -193,7 +165,7 @@ export const options = {
     ],
   }
   
-  export const lineList = {
+  export const lineList = { // 라인 관련 리스트
     kor: ['탑','정글','미드','바텀','서포터'],
     eng: ['Top','Jungle','Mid','Bottom','Support'],
     trans:{

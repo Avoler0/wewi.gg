@@ -4,7 +4,7 @@ import styled from "styled-components"
 import { options } from "../../../const/utils"
 import { duoSetFilter } from "../../../redux/duo/filter"
 
-export default function FilterTier({dispatch}:any){
+export default function FilterTier({dispatch}:any){ // 듀오 카드 필터링 Tier 부분
 
 
   return (

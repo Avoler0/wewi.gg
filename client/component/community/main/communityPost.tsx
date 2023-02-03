@@ -7,16 +7,15 @@ import { timeHook } from "../../../hooks/timeHook";
 import { PostType } from "../../../types/dbType";
 
 
-export default function CommunityPost(){
+export default function CommunityPost(){ // 특정 Post 클릭하여 서버에서 받아와 화면에 띄워주는 컴포넌트
   const [postsDataValid,setPostsDataValid] = useState(false);
   const [postsData,setPostsData] = useState<PostType | null>(null);
   const router = useRouter();
-  console.log('오픈된 포스트 데이터',postsData)
   const { postId } = router.query;
   useEffect(()=>{
     if(postId){
       (async ()=>{
-        await postsHook.get.listById(postId)
+        await postsHook.get.listById(postId) // 특정 post id를 기반으로 서버에서 데이터를 받아옴
         .then(async (res)=>{
           const resData = res.data[0];
           if(resData){

@@ -2,7 +2,7 @@ import styled from "styled-components"
 import { options } from "../../../const/utils"
 import { duoSetFilter } from "../../../redux/duo/filter"
 
-export default function FilterMode({dispatch}:any){
+export default function FilterMode({dispatch}:any){ // 듀오 카드 필터링 Mode(큐 타입) 부분
 
 
   return (

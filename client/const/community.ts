@@ -18,10 +18,10 @@
     kor: {[key:string]:string}
     eng: {[key:string]:string}
   }
-  export const CommunityWriteOptionList = [
+  export const CommunityWriteOptionList = [ // 글 쓰기시 커뮤니티 출력을 위한 배열
     '전체','유저 뉴스','팁과 노하우','자유','유머','사건 사고'
   ]
-  export const CommunityQueryName:QueryNameType = {
+  export const CommunityQueryName:QueryNameType = { // router시 영어로 된 path 이름을 변환 하기 위한 객체
     kor:{
       '전체':'all',
       '유저 뉴스':'user-news',

@@ -17,7 +17,7 @@ export type Filter = {
 }
 
 
-export default function DuoFilter(){
+export default function DuoFilter(){ // 듀오 카드 필터링 Index
   const {isShowing,toggle} = useModal();
   const dispatch = useDispatch();
   const filter = useSelector((state:Filter) => {
