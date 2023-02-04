@@ -25,7 +25,7 @@
 ![image](https://user-images.githubusercontent.com/91608021/216753196-965c51ad-d41d-4fb6-9ede-65a8777e21f1.png)
 
 ### 커뮤니티 페이지
-![image](https://user-images.githubusercontent.com/91608021/216753220-2210f6d7-ec9b-4691-b2f3-005a18ed1919.png)
+![image](https://user-images.githubusercontent.com/91608021/216753272-5320d1e1-052b-400e-8cdc-b508ac1589b4.png)
 
 ### 커뮤니티 글 쓰기 페이지
 ![image](https://user-images.githubusercontent.com/91608021/216753248-d591b66e-e5c7-489b-8976-36c726a2dd07.png)
