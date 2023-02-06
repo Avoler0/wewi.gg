@@ -7,7 +7,7 @@
 <ul>
   <li>5가지 정도의 Riot Api를 사용하여 Json 데이터를 내려받아 데이터 정렬 후 사용</li>
   <li>Redux toolkit을 이용해 로그인시의 전역상태를 관리</li>
-  <li>듀오구인 페이지, 회원가입 페이지등 비관계형 Json-Server 라이브러리 로컬 db를 사용하여 데이터 저장</li>
+  <li>듀오구인 페이지, 회원가입 페이지등 Node.js를 이용하여 mariaDB 관계형 sql에 데이터 저장</li>
   <li>로그인,회원가입 페이지에서 Naver,Google Oatuh2.0을 추가</li>
 </ul>
 
@@ -22,4 +22,10 @@
 ![image](https://user-images.githubusercontent.com/91608021/211714575-66fdee09-3243-44e1-9060-6dca818e1f52.png)
 
 ### 로그인&회원가입 페이지
-![image](https://user-images.githubusercontent.com/91608021/211714854-c445dee6-d5c4-4f84-bae6-035e15472b8c.png)
+![image](https://user-images.githubusercontent.com/91608021/216753196-965c51ad-d41d-4fb6-9ede-65a8777e21f1.png)
+
+### 커뮤니티 페이지
+![image](https://user-images.githubusercontent.com/91608021/216753272-5320d1e1-052b-400e-8cdc-b508ac1589b4.png)
+
+### 커뮤니티 글 쓰기 페이지
+![image](https://user-images.githubusercontent.com/91608021/216753248-d591b66e-e5c7-489b-8976-36c726a2dd07.png)
