@@ -1,5 +1,6 @@
 import { useState } from "react";
 import styled , {css} from "styled-components";
+import { matesHook } from "../../../../hooks/database/mates/mates";
 
 type Props = {
   hide: Function,
@@ -9,16 +10,18 @@ type Props = {
 
 function DuoDelete({hide,id,pw}:any) { // 듀오 카드 삭제를 위한 컴포넌트, 기존 카드에 덮어씌움
   const [pwError,setPwError] = useState(false);
+  console.log(id,pw)
   function deleteSubmit(event:any){
     event.preventDefault();
     console.log(pw)
-    const inputValue = event.target[0].value
-    // if(inputValue == pw){
-    //   dbHook.duo.delete(id);
-    //   window.location.replace("/duo")
-    // }else{
-    //   setPwError(true)
-    // }
+    const pwInput = event.target[0].value
+    console.log(pwInput)
+    if(pwInput == pw){
+      matesHook.delete(id);
+      window.location.replace("/duo")
+    }else{
+      setPwError(true)
+    }
     
   }
   console.log(pw)

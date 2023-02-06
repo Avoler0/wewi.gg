@@ -164,8 +164,12 @@ export const options = { // 필터부분 옵션출력을 위한 객체
       {value:"Challenger",label:"챌린저"},
     ],
   }
-  
-  export const lineList = { // 라인 관련 리스트
+    type LineListTrans = {
+    kor:string[]
+    eng:string[]
+    trans:{[key:string]:string}
+  }
+  export const lineList:LineListTrans = { // 라인 관련 리스트
     kor: ['탑','정글','미드','바텀','서포터'],
     eng: ['Top','Jungle','Mid','Bottom','Support'],
     trans:{

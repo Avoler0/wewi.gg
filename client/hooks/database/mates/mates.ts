@@ -25,12 +25,16 @@ export const matesHook = { // 듀오 구인 페이지 Server 통신 Hook
   },
   delete:async function(id:number){ // 듀오 구인 게시글 삭제
     console.log("델리트")
-    return await apiInstance.delete('/database/duo',{data:{id:id}})
-    .then((_res)=>{
-      return _res;
-    })
-    .catch((_error)=>{
-      return _error;
+    return await new Promise(async (resolve,reject) => {
+      await dbInstance({
+        method:'delete',
+        url:'/mates/delete',
+        data:{
+          id:id
+        }
+      })
+      .then((_res)=> resolve(_res))
+      .catch((_err) => reject(_err))
     })
   }
 }

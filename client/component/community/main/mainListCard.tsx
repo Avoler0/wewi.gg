@@ -1,6 +1,5 @@
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect } from "react";
 import styled from "styled-components";
 import { CommunityQueryName } from "../../../const/community";
 import { timeHook } from "../../../hooks/timeHook";
