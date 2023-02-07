@@ -1,6 +1,6 @@
 import { useState } from "react";
 import styled , {css} from "styled-components";
-import { matesHook } from "../../../../hooks/database/mates/mates";
+import { matesHook } from "../../../../hooks/server/mates/mates";
 
 type Props = {
   hide: Function,

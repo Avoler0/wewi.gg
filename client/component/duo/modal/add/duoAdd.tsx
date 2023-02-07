@@ -2,7 +2,7 @@ import { useState } from "react";
 import Image from "next/image";
 import styled , {css} from "styled-components";
 import { options } from "../../../../const/utils";
-import { matesHook } from "../../../../hooks/database/mates/mates";
+import { matesHook } from "../../../../hooks/server/mates/mates";
 
 type Line = "All" | "Top" | "Jungle" | "Bottom" | "Support"
 type Mode = "All" | "Normal" | "Solo" | "Team" | "Aram" | "Special"

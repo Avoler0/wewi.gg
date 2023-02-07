@@ -1,7 +1,7 @@
 import React, { ChangeEvent, ChangeEventHandler, useEffect, useRef, useState } from "react";
 import styled from "styled-components"
 import { useSelector } from "react-redux";
-import { postsWriteHook } from "../../../hooks/database/posts/write";
+import { postsWriteHook } from "../../../hooks/server/posts/write";
 import { useRouter } from "next/router";
 import { CommunityWriteOptionList } from "../../../const/community";
 export default function CommuniryWrite(){

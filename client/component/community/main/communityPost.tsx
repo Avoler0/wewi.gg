@@ -2,7 +2,7 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import styled from "styled-components"
-import { postsHook } from "../../../hooks/database/posts/posts";
+import { postsHook } from "../../../hooks/server/posts/posts";
 import { timeHook } from "../../../hooks/timeHook";
 import { PostType } from "../../../types/dbType";
 

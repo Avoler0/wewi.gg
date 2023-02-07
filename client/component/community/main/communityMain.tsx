@@ -3,7 +3,7 @@ import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import styled from "styled-components"
 import { CommunityQueryName } from "../../../const/community";
-import { postsHook } from "../../../hooks/database/posts/posts";
+import { postsHook } from "../../../hooks/server/posts/posts";
 import CommunityListCard from "./mainListCard";
 
 function CommunityMain(){ // 커뮤니티 메인 부분 

@@ -1,7 +1,5 @@
 import { useRouter } from "next/router";
 import styled from "styled-components";
-import Summoner from "../../component/summoner";
-import NotFindSummoner from "../../component/summoner/404";
 import CommunityMain from "./main/communityMain";
 import CommunityPost from "./main/communityPost";
 import CommunityMenu from "./menu/communityMenu";

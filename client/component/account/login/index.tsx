@@ -8,7 +8,7 @@ import { setLogin } from "../../../redux/login/user";
 import { useSelector } from "react-redux";
 import NaverAouth from "./oauth/naver";
 import GoogleOauth from "./oauth/google";
-import { accountHook } from "../../../hooks/database/account/account";
+import { accountHook } from "../../../hooks/server/account/account";
 export default function Login() {
   const router = useRouter();
   const dispatch = useDispatch()

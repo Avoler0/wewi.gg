@@ -3,7 +3,7 @@ import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
-import { accountHook } from "../../../hooks/database/account/account";
+import { accountHook } from "../../../hooks/server/account/account";
 import { validHook } from "../../../hooks/validationHook";
 
 function Register() {

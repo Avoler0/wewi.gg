@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import styled from "styled-components";
-import { matesHook } from "../../hooks/database/mates/mates";
+import { matesHook } from "../../hooks/server/mates/mates";
 import DuoCard from './card/card'
 
 import DuoFilter, { Filter } from "./filter";
