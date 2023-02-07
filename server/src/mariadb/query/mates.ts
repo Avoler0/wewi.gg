@@ -12,7 +12,7 @@ export const matesQuery = {
     VALUES('${seekerName}','${line}','${mode}',${mic},'${content}','${password}','${champions}','${league}','${icon}',${level},current_timestamp);`)
     
   },
-  delete:async function(matesId:any) {
-
+  delete:async function(matesId:number) {
+    return await queryPromise(`DELETE FROM mates WHERE Id = ${matesId};`)
   },
 }

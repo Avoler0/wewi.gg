@@ -3,6 +3,7 @@ import postsRouter from './router/postsRouter';
 import cors from 'cors';
 import accountRouter from './router/accountRouter';
 import matesRouter from './router/matesRouter';
+import riotRouter from './router/riotRouter';
 
 const app = express();
 
@@ -17,4 +18,5 @@ app.use(cors(corsOptions));
 app.use('/wewi-gg/posts',postsRouter)
 app.use('/wewi-gg/account',accountRouter)
 app.use('/wewi-gg/mates',matesRouter)
+app.use('/wewi-gg/lol',riotRouter)
 export default app;

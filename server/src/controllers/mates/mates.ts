@@ -1,5 +1,4 @@
 import '../../../dotenv'
-import { RIOT_API_KEY } from '../../../dotenv';
 import { riotChampionImage, riotProfileIconImage } from '../../api/riotApi/imageApi';
 import { summonerMasteryTop } from '../../api/riotApi/mastery';
 import { summonerInfo, summonerLeague } from '../../api/riotApi/summoner';
@@ -45,5 +44,11 @@ export async function postMatesList(req:any,res:any) {
 }
 
 export async function deleteMates(req:any,res:any) {
-  
+  const {id} = req.body;
+  try{
+    const result = await matesQuery.delete(id)
+    return res.status(200).json(result)
+  }catch(_err:any){
+    return res.status(_err.response.data.status.status_code).send(_err.response.data.status.message)
+  }
 }

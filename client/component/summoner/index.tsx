@@ -1,12 +1,12 @@
 import styled from "styled-components";
-import { riot } from "../../hooks/riotApiHook";
 import SummonerProfile from "./profile/profile";
 import LeagueInfo from "./league";
 import Record from "./record";
 import React, { useCallback, useEffect, useState } from "react";
+import { riotSummonerHook } from "../../hooks/server/riot/summoner";
 
 export type props = {
-  searchString : string | string[]
+  searchString : string
 }
 
 export default React.memo(Summoner)
@@ -16,9 +16,10 @@ function Summoner({searchString}:props){
   const [isLoading,setIsLoading] = useState(true);
 
   const fetchSummoner = useCallback(async ()=>{
-    await riot.summoner(searchString)
+    await riotSummonerHook.info(searchString)
     .then(async (_res:any)=>{
-      const league = await riot.league(_res.id)
+      const resData = _res.data;
+      const league = await riotSummonerHook.league(resData.id)
       setSummoner({..._res,rank:league})
       setIsLoading(false)
     })
