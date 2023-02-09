@@ -12,7 +12,7 @@ function LeagueInfo({league}:any){
     solo:league[0] ? league[0].queueType === 'RANKED_SOLO_5x5' ? league[0] : league[1] : 'unranked',
     team:league[1] ? league[1].queueType === 'RANKED_FLEX_SR' ? league[1] : league[0] : 'unranked'
   }
-
+  console.log(rank.team)
   return (
     <RankWrap>
       {rank.solo === 'unranked' ? <LeagueUnrankCard margin={true} /> : <LeagueCard info={rank.solo} margin={true} /> }

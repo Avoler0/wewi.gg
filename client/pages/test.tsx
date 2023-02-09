@@ -4,8 +4,8 @@ import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { useQueryClient } from "react-query";
 import { useDispatch,useSelector } from "react-redux";
-import { naverInstance } from "../hooks/axiosInstance";
-import { riotSummonerHook } from "../hooks/server/riot/summoner";
+import { riotImageHook } from "../hooks/server/riot/image";
+import { riotMatchHook } from "../hooks/server/riot/match";
 
 
 export default function Test(){
@@ -13,12 +13,12 @@ export default function Test(){
   const queryClient = useQueryClient();
   const router = useRouter();
 
-  
-  const onClick = async () => {
-    await riotSummonerHook.info('스쿵씨')
+  const onClick = () => {
+    riotImageHook.spell(12)
     .then((_res:any)=>{
-      console.log(_res)
+      console.log('데이터',_res)
     })
+
   }
   return (
     <>

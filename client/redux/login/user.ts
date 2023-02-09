@@ -28,6 +28,8 @@ const user = createSlice({
     },
     setLogout:(state:ReduxLoginType) => {
       state.state = false;
+      state.id = null;
+      state.oauth = '';
       state.email = '';
       state.nickName = '';
       storage.removeItem('persist:root')

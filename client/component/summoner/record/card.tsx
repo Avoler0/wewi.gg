@@ -5,6 +5,7 @@ import Image from "next/image";
 import { riotImg } from "../../../hooks/riotImageHook";
 import { queueUtils } from "../../../const/utils";
 import { timeHook } from "../../../hooks/timeHook";
+import { riotImageHook } from "../../../hooks/server/riot/image";
 
 type props = {
   match:string
@@ -28,28 +29,33 @@ export default function RecordCard({detail}:any) {
   const teamKills = teams[myTeamId].objectives.champion.kills
   const {kills,deaths,assists,totalMinionsKilled,neutralMinionsKilled,visionScore,win} = participant
   const [isLoading,setIsLoading] = useState(true);
-  const [runeImg,setRuneImg] = useState({
-    rune:["null","null"],
+  const [icons,setIcons] = useState({
+    champion:'',
+    rune1:'',
+    rune2:'',
+    spell1:'',
+    spell2:''
   });
 
   useEffect(()=>{
-    
     if(detail){
       (async ()=>{
-        Promise.all([
-          await riotImg.rune(participant.perks?.styles[0],participant.perks?.styles[1])
-        ]).then(([rune])=>{
-          const image = {
-            rune: rune,
-          }
-          setRuneImg(image)
+        await Promise.all([
+          riotImageHook.champion(participant?.championName),
+          riotImageHook.spell(participant.summoner1Id),
+          riotImageHook.spell(participant.summoner2Id),
+          riotImageHook.rune(participant.perks?.styles[0].style),
+          riotImageHook.rune(participant.perks?.styles[1].style)
+        ]).then(([champion,spell1,spell2,rune1,rune2]:any)=>{
+          setIcons({champion,spell1,spell2,rune1,rune2})
+          setIsLoading(false);
         })
-        setIsLoading(false);
+        
       })()
     }
     
   },[detail, participant])
-
+  console.log(icons)
   
   function ItemRender(){
     let ItemArr = ["item0","item1","item2","item6","item3","item4","item5"];
@@ -82,24 +88,24 @@ export default function RecordCard({detail}:any) {
         </InfoWrap>
         <ChampWrap>
           <div>
-            <Image src={riotImg.champion(participant?.championName)} alt="icon" layout="fill" objectFit="fill"/>
+            <Image src={icons?.champion} alt="champ" layout="fill" objectFit="fill"/>
           </div>
         </ChampWrap>
         <SkillsWrap>
           <Skill>
             <div>
-              <Image className="icon" src={riotImg.spell(participant.summoner1Id)}  alt="icon" layout="fill" objectFit="fill" objectPosition="center"/>
+              <Image className="icon" src={icons.spell1}  alt="spell2" layout="fill" objectFit="fill" objectPosition="center"/>
             </div>
             <div>
-              <Image className="icon" src={riotImg.spell(participant.summoner2Id)}  alt="icon" layout="fill" objectFit="fill" objectPosition="center"/>
+              <Image className="icon" src={icons.spell2}  alt="spell2" layout="fill" objectFit="fill" objectPosition="center"/>
             </div>
           </Skill>
           <Skill>
             <div>
-              <Image className="icon" src={runeImg.rune[0]}  alt="icon" layout="fill" objectFit="fill" objectPosition="center"/>
+              <Image className="icon" src={icons.rune1}  alt="icon" layout="fill" objectFit="fill" objectPosition="center"/>
             </div>
             <div >
-              <Image className="icon" src={runeImg.rune[1]}  alt="icon" layout="fill" objectFit="fill" objectPosition="center" />
+              <Image className="icon" src={icons.rune2}  alt="icon" layout="fill" objectFit="fill" objectPosition="center" />
             </div>
           </Skill>
         </SkillsWrap>

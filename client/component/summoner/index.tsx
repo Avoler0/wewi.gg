@@ -19,8 +19,9 @@ function Summoner({searchString}:props){
     await riotSummonerHook.info(searchString)
     .then(async (_res:any)=>{
       const resData = _res.data;
-      const league = await riotSummonerHook.league(resData.id)
-      setSummoner({..._res,rank:league})
+      const league:any = await riotSummonerHook.league(resData.id)
+      // console.log('리그리그',league)
+      setSummoner({...resData,rank:league.data})
       setIsLoading(false)
     })
   },[searchString]) 
@@ -28,7 +29,9 @@ function Summoner({searchString}:props){
   useEffect(()=>{
     fetchSummoner();
   },[fetchSummoner])
-
+  useEffect(()=>{
+    console.log('리소스',summoner)
+  },[summoner])
   if(isLoading) return <div></div>;
   
   return (
@@ -41,9 +44,6 @@ function Summoner({searchString}:props){
           <RankView>
             <LeagueInfo league={summoner?.rank} />
           </RankView>
-          {/* <ChampStatsView>
-            <ChampMastery info={summoner}/>
-          </ChampStatsView> */}
         </Column>
         <Column>
           <RecentlyView>

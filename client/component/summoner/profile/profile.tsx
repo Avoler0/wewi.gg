@@ -1,11 +1,19 @@
 import styled from "styled-components";
 import Image from "next/image";
-import { riotImg } from "../../../hooks/riotImageHook";
+import { riotImageHook } from "../../../hooks/server/riot/image";
+import { useEffect, useState } from "react";
 
 export default function SummonerProfile({profile}:any) {
   const { name, profileIconId, summonerLevel } = profile;
-  const profileIcon = riotImg.profile(profileIconId)
+  const [profileIcon,setProfileIcon] = useState(null);
   
+  useEffect(()=>{
+    (async ()=>{
+      await riotImageHook.profile(profileIconId)
+      .then((_res)=> setProfileIcon(_res))
+    })()
+  })
+  if(!profileIcon) return <div></div>
   return(
     <ProfileWrap>
         <IconBox >
@@ -18,14 +26,7 @@ export default function SummonerProfile({profile}:any) {
         <Name>
           {name}
         </Name>
-        <Update>      
-          최근 업데이트:하루전
-        </Update>
-        <Vote>
-          {/* <Good><Up style={{width:"20px",height:"20px"   ,boxSizing:"content-box" , fill:"yellow"}} /><span>0</span></Good> */}
-          {/* <Bad><Down style={{width:"20px",height:"20px"   ,boxSizing:"content-box" , fill:"yellow"}} /><span>0</span></Bad> */}
-        </Vote> 
-       </NameBox>
+      </NameBox>
     </ProfileWrap>
   )
 }
@@ -66,7 +67,7 @@ const Level = styled.span`
   text-align: center;
 `;
 const NameBox = styled.div`
-  
+  margin-left: 10px;
 `;
 const Name = styled.div`
   margin: 10px 0 5px 0;

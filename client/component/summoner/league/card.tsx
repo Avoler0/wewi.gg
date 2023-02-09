@@ -6,14 +6,14 @@ export default function LeagueCard({info,margin}:any){
   const { leaguePoints, losses,queueType,rank,tier,wins } = info;
   const rankType = queueType === "RANKED_SOLO_5x5" ? "솔로 랭크" : "자유 랭크"
   const rate = (wins/(wins+losses))*100
-
+  console.log(info.tier.toLowerCase())
   return(
     <Card margin={margin} >
       <RankTitle>{rankType}</RankTitle>
       <InfoWrap>
         <ImageDiv>
           <div>
-            <Image src={`/images/tier-icons/tier-icons/${info.tier.toLowerCase().trim()}_${info.rank.toLowerCase().trim()}.png`} alt="tier" width="80" height="80" objectFit="cover"/>
+            <Image src={`/images/tier-icons/emblem-icons/emblem-${info.tier.toLowerCase()}.png`} alt="tier" width="350" height="300" objectFit="none"/>
           </div>
         </ImageDiv>
         <ContentDiv>
@@ -39,7 +39,6 @@ export default function LeagueCard({info,margin}:any){
 }
 
 const Card = styled.div<{margin:boolean}>`
-  align-items: center;
   width: 100%;
   height: 8rem;
   background-color: #2c3e50;
@@ -47,6 +46,7 @@ const Card = styled.div<{margin:boolean}>`
   margin-bottom: ${props => props.margin ? "0.5rem":"0"}
 `;
 const RankTitle = styled.div`
+  height: 20%;
   padding: 0.1rem 0 0.2rem 0.7rem;
   color: white;
   font-weight: bold;
@@ -55,12 +55,14 @@ const RankTitle = styled.div`
 const InfoWrap = styled.div`
   display: flex;
   align-items: center;
+  height: 80%;
 `;
 const ImageDiv = styled.div`
   flex: 4;
+  width: 100%;
+  height: 100%;
   div{
     display: inline-block;
-    padding: 0.5rem;
     border-radius: 5rem;
   }
 `;

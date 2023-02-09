@@ -2,6 +2,7 @@
 import React, { useCallback, useEffect, useState } from "react";
 import styled from "styled-components";
 import { riot } from "../../../hooks/riotApiHook";
+import { riotMatchHook } from "../../../hooks/server/riot/match";
 import RecordCard from "./card";
 
 type props = {
@@ -14,28 +15,26 @@ function Record({info}:any) {
   const [details,setDetails] = useState<any>([])
   const [isLoading,setIsLoading] = useState(true);
   const [start,setStart] = useState<number>(0);
-  const fetchMatch = useCallback(async (start:number)=>{
-    const matchlist = await riot.matchList(info.puuid,start)
+  const fetchMatch = useCallback(async (start?:number)=>{
+    const matchlist:any = await riotMatchHook.list(info.puuid,start ?? 0).then((_res:any) => _res.data)
+    console.log('퓨 아이디 !!!!!',info.puuid)
     await Promise.all(
       matchlist.map(async (match:string)=>{
-        const response = await riot.matchDetail(match)
-        const myParticipant = response.data.metadata.participants.indexOf(info.puuid)
-        const myTeamId = response.data.info.participants[myParticipant].teamId === 100 ? 0 : 1;
-        const result = {myIndex:myParticipant,myTeamId:myTeamId,...response.data}
-        return result;
+        return riotMatchHook.detail(info.puuid,match).then((_res:any)=> _res.data)
       })
     ).then((_details)=>{
       setDetails((prev:any) => [...prev,..._details])
-      setIsLoading(false)
+      setIsLoading(false);
     })
   },[info])
 
 
   useEffect(()=>{
-    fetchMatch(start)
-  },[fetchMatch, start])
+    fetchMatch()
+  },[fetchMatch])
+
   if(isLoading) return (<div></div>)
-  console.log(details)
+  console.log('디테일',details)
   return (
   <>
     <ChampView>
@@ -43,7 +42,10 @@ function Record({info}:any) {
     </ChampView>
     <GameView >
       {details && details?.map((detail:any)=> <RecordCard key={detail.info.gameId} detail={detail}  />)}
-      <More onClick={()=>{setStart(prev => prev+10)}}>더 보기</More>
+      <More onClick={()=>{
+        fetchMatch(start+5);
+        setStart(+5)
+      }}>더 보기</More>
     </GameView>
     
   </>
