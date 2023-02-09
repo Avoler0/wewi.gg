@@ -1,7 +1,7 @@
 import '../../../dotenv'
 import { riotChampionImage, riotProfileIconImage } from '../../api/riotApi/imageApi';
-import { summonerMasteryTop } from '../../api/riotApi/mastery';
-import { summonerInfo, summonerLeague } from '../../api/riotApi/summoner';
+import { summonerMasteryTop } from '../../api/riotApi/masteryApi';
+import { summonerInfo, summonerLeague } from '../../api/riotApi/summonerApi';
 import { matesErrorStateMessage } from '../../mariadb/sqlError';
 import { matesQuery } from './../../mariadb/query/mates';
 

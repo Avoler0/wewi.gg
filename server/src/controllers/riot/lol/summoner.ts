@@ -1,4 +1,4 @@
-import { summonerInfo, summonerLeague } from "../../../api/riotApi/summoner";
+import { summonerInfo, summonerLeague } from "../../../api/riotApi/summonerApi";
 
 
 export async function getlolInfo(req:any,res:any){
