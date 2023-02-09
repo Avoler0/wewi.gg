@@ -20,7 +20,6 @@ function Summoner({searchString}:props){
     .then(async (_res:any)=>{
       const resData = _res.data;
       const league:any = await riotSummonerHook.league(resData.id)
-      // console.log('리그리그',league)
       setSummoner({...resData,rank:league.data})
       setIsLoading(false)
     })
@@ -29,9 +28,7 @@ function Summoner({searchString}:props){
   useEffect(()=>{
     fetchSummoner();
   },[fetchSummoner])
-  useEffect(()=>{
-    console.log('리소스',summoner)
-  },[summoner])
+
   if(isLoading) return <div></div>;
   
   return (

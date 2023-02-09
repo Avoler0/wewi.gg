@@ -6,6 +6,7 @@ import { riotImg } from "../../../hooks/riotImageHook";
 import { queueUtils } from "../../../const/utils";
 import { timeHook } from "../../../hooks/timeHook";
 import { riotImageHook } from "../../../hooks/server/riot/image";
+import { useRouter } from "next/router";
 
 type props = {
   match:string
@@ -23,52 +24,62 @@ type Detail = {
   win:boolean
 }
 export default function RecordCard({detail}:any) {
+  
   const {info,myIndex,myTeamId,metadata} = detail;
   const { gameCreation,gameDuration,gameStartTimestamp,gameEndTimestamp,teams,participants,queueId,gameLengthTime,  } = info;
   const participant = participants[myIndex];
   const teamKills = teams[myTeamId].objectives.champion.kills
   const {kills,deaths,assists,totalMinionsKilled,neutralMinionsKilled,visionScore,win} = participant
   const [isLoading,setIsLoading] = useState(true);
+  const [itemIcons,setItemIcons] = useState([]);
   const [icons,setIcons] = useState({
     champion:'',
     rune1:'',
     rune2:'',
     spell1:'',
-    spell2:''
+    spell2:'',
   });
-
   useEffect(()=>{
     if(detail){
+      const ItemArr = ["item0","item1","item2","item6","item3","item4","item5"];
       (async ()=>{
         await Promise.all([
           riotImageHook.champion(participant?.championName),
           riotImageHook.spell(participant.summoner1Id),
           riotImageHook.spell(participant.summoner2Id),
           riotImageHook.rune(participant.perks?.styles[0].style),
-          riotImageHook.rune(participant.perks?.styles[1].style)
+          riotImageHook.rune(participant.perks?.styles[1].style),
+          
         ]).then(([champion,spell1,spell2,rune1,rune2]:any)=>{
           setIcons({champion,spell1,spell2,rune1,rune2})
           setIsLoading(false);
         })
-        
+
+        await Promise.all(
+          ItemArr.map((item:string)=>{
+            return riotImageHook.item(participant[item])
+          })
+        ).then((item:any) => {
+          setItemIcons(item)
+        })
       })()
     }
     
   },[detail, participant])
-  console.log(icons)
+  console.log(itemIcons)
   
   function ItemRender(){
-    let ItemArr = ["item0","item1","item2","item6","item3","item4","item5"];
-    
-    const Item = ItemArr.map((itemId,)=>{
+    const Item = itemIcons.map((item,index)=>{
+      const itemId = item?.split('/')[7];
+      console.log(itemId)
       return (
-        <React.Fragment key={itemId}>
+        <React.Fragment key={item}>
           <div className="item-image">
-            {participant[itemId] ? <Image src={ riotImg.item(participant[itemId])} alt="icon" layout="fill" objectFit="fill"/> : <span className="item-image" />}
+            {itemId === '0.png' ? <span className="item-image" />
+             : <Image src={item} alt="icon" layout="fill" objectFit="fill"/>}
           </div>
-          {itemId === "item6" ? <br></br> : null}
+          {index === 3 ? <br></br> : null}
         </React.Fragment>
-        
       )
     })
     return Item

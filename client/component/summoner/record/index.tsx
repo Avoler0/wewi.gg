@@ -17,7 +17,6 @@ function Record({info}:any) {
   const [start,setStart] = useState<number>(0);
   const fetchMatch = useCallback(async (start?:number)=>{
     const matchlist:any = await riotMatchHook.list(info.puuid,start ?? 0).then((_res:any) => _res.data)
-    console.log('퓨 아이디 !!!!!',info.puuid)
     await Promise.all(
       matchlist.map(async (match:string)=>{
         return riotMatchHook.detail(info.puuid,match).then((_res:any)=> _res.data)
@@ -34,7 +33,7 @@ function Record({info}:any) {
   },[fetchMatch])
 
   if(isLoading) return (<div></div>)
-  console.log('디테일',details)
+
   return (
   <>
     <ChampView>
