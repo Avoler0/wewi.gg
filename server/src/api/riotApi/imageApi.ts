@@ -51,6 +51,7 @@ export async function riotSpellIconImage(iconId:number){
       break;
     }
   }
+  console.log('스펠 네임',spellName)
   return `http://ddragon.leagueoflegends.com/cdn/${version}/img/spell/${spellName}`
 }
 export async function riotRuneIconImage(runeId:string){

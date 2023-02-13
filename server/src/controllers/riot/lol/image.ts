@@ -3,13 +3,15 @@ import { riotChampionIconImage, riotItemIconImage, riotProfileIconImage, riotRun
 
 
 export async function getProfileIcon(req:any,res:any){
-  const {iconId} = req.params;
-  console.log('프로필 아이콘',iconId);
+  console.log('프로필 아이콘',req.params.iconId);
+
   try{
-    const result = await riotProfileIconImage(iconId);
+    const result = await riotProfileIconImage(req.params.iconId);
     res.status(200).send(result)
   }catch(_err:any){
-    res.status(_err.response.status).send(_err.response.statusText)
+    console.log(_err)
+    res.status(400)
+    // res.status(_err.response.status).send(_err.response.statusText)
   }
 }
 
@@ -19,7 +21,9 @@ export async function getChampionIcon(req:any,res:any){
     const result = await riotChampionIconImage(championId);
     res.status(200).send(result)
   }catch(_err:any){
-    res.status(_err.response.status).send(_err.response.statusText)
+    console.log(_err)
+    res.status(400)
+    // res.status(_err.response.status).send(_err.response.statusText)
   }
 }
 
@@ -31,7 +35,9 @@ export async function getItemIcon(req:any,res:any){
     console.log('아이템 리설트',result)
     res.status(200).send(result)
   }catch(_err:any){
-    res.status(_err.response.status).send(_err.response.statusText)
+    console.log(_err)
+    res.status(400)
+    // res.status(_err.response.status).send(_err.response.statusText)
   }
 }
 
@@ -41,7 +47,8 @@ export async function getSpellIcon(req:any,res:any){
     const result:any = await riotSpellIconImage(iconId);
     res.status(200).send(result)
   }catch(_err:any){
-    res.status(_err.response.status).send(_err.response.statusText)
+    console.log('스펠 아이콘 에러',_err)
+    // res.status(_err.response.status).send(_err.response.statusText)
   }
 }
 
@@ -51,6 +58,7 @@ export async function getRuneIcon(req:any,res:any){
     const result:any = await riotRuneIconImage(runeId);
     res.status(200).send(result)
   }catch(_err:any){
-    res.status(_err.response.status).send(_err.response.statusText)
+    console.log('룬 아이콘 에러',_err)
+    // res.status(_err.response.status).send(_err.response.statusText)
   }
 }
