@@ -9,7 +9,7 @@ export default function LeagueUnrankCard({margin}:any){
         <Rank>
           <div>Unranked</div>
         </Rank>
-      </InfoWrap> *
+      </InfoWrap>
     </Card>
   )
 
@@ -20,16 +20,15 @@ const Card = styled.div<{margin:boolean}>`
   flex-direction: column;
   width: 100%;
   height: 8rem;
-  background-color: #2c3e50;
+  background-color: #fff;
   border-radius: 0.5rem;
-  margin-bottom: ${props => props.margin ? "0.5rem":"0"}
+  margin-bottom: ${props => props.margin ? "0.5rem":"0"};
+  color:black;
 `;
 const RankTitle = styled.div`
   padding: 0.1rem 0 0.2rem 0.7rem;
-  color: white;
-  font-weight: bold;
   text-align: left;
-  border-bottom: 1px solid #706a6a;
+  border-bottom: 1px solid rgb(205, 215, 224);
 `;
 const InfoWrap = styled.div`
   width: 100%;

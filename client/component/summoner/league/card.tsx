@@ -41,15 +41,14 @@ export default function LeagueCard({info,margin}:any){
 const Card = styled.div<{margin:boolean}>`
   width: 100%;
   height: 8rem;
-  background-color: #2c3e50;
+  background-color: #fff;
+  color: black;
   border-radius: 0.5rem;
   margin-bottom: ${props => props.margin ? "0.5rem":"0"}
 `;
 const RankTitle = styled.div`
   height: 20%;
   padding: 0.1rem 0 0.2rem 0.7rem;
-  color: white;
-  font-weight: bold;
   border-bottom: 1px solid #706a6a;
 `;
 const InfoWrap = styled.div`
@@ -73,10 +72,10 @@ const ContentDiv = styled.div`
   justify-content: space-between;
 `;
 const Rank = styled.div`
-  color: white;
   font-size: 0.9rem;
+  font-weight: bold;
 `;
 const WinRate = styled.div`
   padding-right: 1rem;
-  color: #cccccc;
+  font-size: 0.8rem;
 `;

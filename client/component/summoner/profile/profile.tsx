@@ -73,7 +73,6 @@ const Name = styled.div`
   margin: 10px 0 5px 0;
   font-size: 18px;
   font-weight: bold;
-  color: white;
 `;
 const Update = styled.div`
   font-size: 12px;

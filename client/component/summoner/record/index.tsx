@@ -6,12 +6,13 @@ import { riotMatchHook } from "../../../hooks/server/riot/match";
 import RecordCard from "./card";
 
 type props = {
-  info:any
+  info:any,
+  searchString:any
 }
 
 export default React.memo(Record)
 
-function Record({info}:any) {
+function Record({info,searchString}:any) {
   const [details,setDetails] = useState<any>([])
   const [isLoading,setIsLoading] = useState(true);
   const [start,setStart] = useState<number>(0);
@@ -31,6 +32,10 @@ function Record({info}:any) {
   useEffect(()=>{
     fetchMatch()
   },[fetchMatch])
+
+  useEffect(()=>{
+    setDetails([])
+  },[searchString])
 
   if(isLoading) return (<div></div>)
 
@@ -52,17 +57,19 @@ function Record({info}:any) {
 }
 
 const ChampView = styled.div`
-
+  
 `;
 const GameView = styled.div`
-  padding: 5px;
+  padding: 0 5px;
+  background-color: #fff;
+  border-radius: 5px;
 `;
 
 const More = styled.button`
   width: 100%;
   height: 30px;
-  margin: 10px auto;
-  background-color: #3c556e;
+  margin: 0 auto;
+  background-color: #9fb2c5;
   border: none;
   color: white;
   font-size: 14px;

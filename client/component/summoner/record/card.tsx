@@ -66,12 +66,10 @@ export default function RecordCard({detail}:any) {
     }
     
   },[detail, participant])
-  console.log(itemIcons)
   
   function ItemRender(){
     const Item = itemIcons.map((item,index)=>{
       const itemId = item?.split('/')[7];
-      console.log(itemId)
       return (
         <React.Fragment key={item}>
           <div className="item-image">
@@ -139,11 +137,11 @@ export default function RecordCard({detail}:any) {
 }
 
 const WarpLi = styled.li<{doResult:boolean,doAgain:boolean}>`
-  border: 1px solid ${props => props.doAgain ? 'rgba(34,34,58,0.6)' : props.doResult ? 'rgba(62, 31, 177, 0.6)' : 'rgba(177,31,62,0.6)'};
+  border: 1px solid ${props => props.doAgain ? 'rgba(34,34,58,0.6)' : props.doResult ? 'rgba(62, 31, 177, 1)' : 'rgba(177,31,62,1)'};
   border-left: 6px solid ${props => props.doAgain ? 'rgba(34,34,58,1)' : props.doResult ? 'rgba(62, 31, 177, 1)' : 'rgba(177,31,62,1)'};
   border-radius: 5px;
   list-style: none;
-  margin: 5px 0;
+  margin-bottom: 10px;
   color: white;
 `;
 const Wrap = styled.div<{doResult:boolean,doAgain:boolean}>`
@@ -152,7 +150,7 @@ const Wrap = styled.div<{doResult:boolean,doAgain:boolean}>`
   width: 100%;
   height: 100px;
   padding: 10px;
-  background-color: ${props => props.doAgain ? 'rgba(34,34,58,0.2)' : props.doResult ? "rgba(62, 31, 177, 0.2)" : "rgba(177,31,62,0.2)"};
+  background-color: ${props => props.doAgain ? 'rgba(34,34,58,0.2)' : props.doResult ? "rgba(62, 31, 177, 0.8)" : "rgba(177,31,62,0.8)"};
   border-radius: 0 5px 5px 0;
 `;
 const InfoWrap = styled.div<{doResult:boolean,doAgain:boolean}>`

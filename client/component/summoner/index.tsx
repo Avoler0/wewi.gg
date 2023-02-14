@@ -44,13 +44,15 @@ function Summoner({searchString}:props){
         </Column>
         <Column>
           <RecentlyView>
-            <Record info={summoner}/>
+            <Record info={summoner} searchString={searchString}/>
           </RecentlyView>
         </Column>
       </Wrapper>
       <style jsx global>{`
         body{
-          background-image: url(https://images.contentstack.io/v3/assets/blt731acb42bb3d1659/blt15d3facea57e5b7e/634613111338101198fce129/K_Sante-Base-Splash.jpg);
+          
+          /* background-image: url(https://images.contentstack.io/v3/assets/blt731acb42bb3d1659/blt15d3facea57e5b7e/634613111338101198fce129/K_Sante-Base-Splash.jpg); */
+          /* background-repeat: repeat; */
         }
       `}</style>
     </Container>
@@ -61,6 +63,8 @@ function Summoner({searchString}:props){
 const Container = styled.div`
   width: 100%;
   height: 100%;
+  color:black;
+  background-color: RGB(235, 238, 241);
 `;
 
 const Wrapper = styled.div`
@@ -79,7 +83,7 @@ const Wrapper = styled.div`
 `;
 const ProfileView = styled.div`
   width: 19rem;
-  background-color: #2c3e50;
+  background-color: #fff;
   margin-bottom: 6px;
   border-radius: 5px;
   display: block;
@@ -93,7 +97,7 @@ const RankView = styled.div`
 const ChampStatsView = styled.div`
   width: 19rem;
   min-height: 300px;
-  background-color: #2c3e50;
+  background-color: #fff;
   margin: 6px 0;
   border-radius: 5px;
   display: block;
@@ -101,7 +105,6 @@ const ChampStatsView = styled.div`
 const RecentlyView = styled.div`
   min-width: 56rem;
   min-height: 60rem;
-  background-color: #2c3e50;
   border-radius: 5px;
 `;
 const Column = styled.div`
