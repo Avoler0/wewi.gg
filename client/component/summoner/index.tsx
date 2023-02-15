@@ -4,6 +4,7 @@ import LeagueInfo from "./league";
 import Record from "./record";
 import React, { useCallback, useEffect, useState } from "react";
 import { riotSummonerHook } from "../../hooks/server/riot/summoner";
+import Summoner404Page from "./summoner404";
 
 export type props = {
   searchString : string
@@ -23,13 +24,16 @@ function Summoner({searchString}:props){
       setSummoner({...resData,rank:league.data})
       setIsLoading(false)
     })
+    .catch((_err)=>{
+      console.log('유저 못찾음?',_err)
+    })
   },[searchString]) 
 
   useEffect(()=>{
     fetchSummoner();
   },[fetchSummoner])
 
-  if(isLoading) return <div></div>;
+  if(isLoading) return <Summoner404Page></Summoner404Page>;
   
   return (
     <Container>

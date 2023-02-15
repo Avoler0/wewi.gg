@@ -7,12 +7,12 @@ import RecordCard from "./card";
 
 type props = {
   info:any,
-  searchString:any
+  searchString:string
 }
 
 export default React.memo(Record)
 
-function Record({info,searchString}:any) {
+function Record({info,searchString}:props) {
   const [details,setDetails] = useState<any>([])
   const [isLoading,setIsLoading] = useState(true);
   const [start,setStart] = useState<number>(0);

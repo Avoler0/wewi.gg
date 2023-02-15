@@ -1,7 +1,7 @@
 import { useRouter } from "next/router";
 import Community from "../../component/community";
 import Summoner from "../../component/summoner";
-import NotFindSummoner from "../../component/summoner/404";
+import NotFindSummoner from "../../component/summoner/summoner404";
 
 
 export default function CommunityPage(){
