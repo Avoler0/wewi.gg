@@ -3,7 +3,7 @@ import { useDispatch } from "react-redux";
 import { setRegisterOauth } from "../../../../redux/login/oauthReg";
 import { setLogin } from "../../../../redux/login/user";
 import { useRouter } from "next/router";
-import { accountHook } from "../../../../hooks/database/account/account";
+import { accountHook } from "../../../../hooks/server/account/account";
 declare global {
   interface Window {
     google: any;

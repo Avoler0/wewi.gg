@@ -3,7 +3,7 @@ import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { setLogin } from "../../../../redux/login/user";
 import { setRegisterOauth } from "../../../../redux/login/oauthReg";
-import { accountHook } from "../../../../hooks/database/account/account";
+import { accountHook } from "../../../../hooks/server/account/account";
 declare global {
   interface Window {
     naver_id_login: any;
@@ -37,7 +37,7 @@ function NaverAouth(){
             nickName:_res.data.Name,
           }));
         })
-        .catch((_error)=>{
+        .catch((_error:any)=>{
           dispatch(setRegisterOauth({email:_res.data.response.email,oauthType:'naver',oauthToken:token_parameter}))
           router.push('/register')
         })

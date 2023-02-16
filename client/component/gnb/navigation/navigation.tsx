@@ -26,9 +26,9 @@ export default function Navigation() {
             <NavItem>
               <Link href="/community" style={{borderBottom: urlPath === `/${PAGE.CLAN}` ? "2px solid white" : "none" }}>커뮤니티</Link>
             </NavItem>
-            <NavItem>
+            {/* <NavItem>
               <Link href="/leaderboards" style={{borderBottom: urlPath === `/${PAGE.COMMUNITY}` ? "2px solid white" : "none" }}>랭킹</Link>
-            </NavItem>
+            </NavItem> */}
           </NavItems>
         </div>
         <div>

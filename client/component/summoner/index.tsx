@@ -25,7 +25,7 @@ function Summoner({searchString}:props){
       setIsLoading(false)
     })
     .catch((_err)=>{
-      console.log('유저 못찾음?',_err)
+      setIsLoading(true) // 404 페이지로 이동
     })
   },[searchString]) 
 

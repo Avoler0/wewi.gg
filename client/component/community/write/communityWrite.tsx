@@ -41,8 +41,8 @@ export default function CommuniryWrite(){
     formData.append('image',file)
     await Promise.all([postsWriteHook.post.image(formData)])
     .then(([res])=>{
-      console.log('파일 보내기 완료',res)
       if(!thumbnail) setThumbnail(res.data)
+      
       postsWriteHook.get.image(res.data)
       .then((ress)=>{
         const srcUrl = process.env.NEXT_PUBLIC_SERVER_API_IMAGES_URL+`?src=${res.data}`
