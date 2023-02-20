@@ -11,7 +11,7 @@ export async function getProfileIcon(req:any,res:any){
   }catch(_err:any){
     console.log(_err)
     res.status(400)
-    // res.status(_err.response.status).send(_err.response.statusText)
+    res.status(_err.response.status).send(_err.response.statusText)
   }
 }
 
@@ -23,7 +23,7 @@ export async function getChampionIcon(req:any,res:any){
   }catch(_err:any){
     console.log(_err)
     res.status(400)
-    // res.status(_err.response.status).send(_err.response.statusText)
+    res.status(_err.response.status).send(_err.response.statusText)
   }
 }
 
@@ -37,7 +37,7 @@ export async function getItemIcon(req:any,res:any){
   }catch(_err:any){
     console.log(_err)
     res.status(400)
-    // res.status(_err.response.status).send(_err.response.statusText)
+    res.status(_err.response.status).send(_err.response.statusText)
   }
 }
 
@@ -48,7 +48,7 @@ export async function getSpellIcon(req:any,res:any){
     res.status(200).send(result)
   }catch(_err:any){
     console.log('스펠 아이콘 에러',_err)
-    // res.status(_err.response.status).send(_err.response.statusText)
+    res.status(_err.response.status).send(_err.response.statusText)
   }
 }
 
@@ -59,6 +59,6 @@ export async function getRuneIcon(req:any,res:any){
     res.status(200).send(result)
   }catch(_err:any){
     console.log('룬 아이콘 에러',_err)
-    // res.status(_err.response.status).send(_err.response.statusText)
+    res.status(_err.response.status).send(_err.response.statusText)
   }
 }

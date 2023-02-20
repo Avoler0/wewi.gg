@@ -2,8 +2,6 @@ import axios from "axios"
 
 export async function naverOauth(req:any,res:any){
   const {token} = req.query;
-  console.log('네이버 오오스',token)
-
   try{
     const result = await axios({
       method:'get',
