@@ -3,7 +3,6 @@ import { useState } from "react";
 import React from "react";
 import Link from "next/link";
 import { useSelector } from "react-redux";
-import { useDispatch } from "react-redux";
 import Image from "next/image";
 import UserMenu from "../menu";
 
