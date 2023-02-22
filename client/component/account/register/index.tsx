@@ -17,17 +17,6 @@ function Register() {
   console.log('회원가입 유저 데이터',user)
   if(user.state) router.push('/')
 
-  useEffect(()=>{
-    if(oauthState){
-      console.log('오오스 있음',oauthState)
-    }else{
-      console.log('오오스 없음',oauthState)
-    }
-  },[oauthState])
-
-  // function oauthKindsDivision(oauthEmail){
-
-  // }
   function resetState(){
     setEmailError('');
     setPasswordError('');

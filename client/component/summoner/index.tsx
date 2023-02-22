@@ -13,7 +13,7 @@ export type props = {
 export default React.memo(Summoner)
 
 function Summoner({searchString}:props){
-  const [summoner,setSummoner] = useState({});
+  const [summoner,setSummoner] = useState<any>({});
   const [isLoading,setIsLoading] = useState(true);
 
   const fetchSummoner = useCallback(async ()=>{
