@@ -2,7 +2,6 @@ import React from "react";
 import { useEffect, useState } from "react";
 import styled from "styled-components";
 import Image from "next/image";
-import { riotImg } from "../../../hooks/riotImageHook";
 import { queueUtils } from "../../../const/utils";
 import { timeHook } from "../../../hooks/timeHook";
 import { riotImageHook } from "../../../hooks/server/riot/image";
@@ -68,7 +67,7 @@ export default function RecordCard({detail}:any) {
   },[detail, participant])
   
   function ItemRender(){
-    const Item = itemIcons.map((item,index)=>{
+    const Item = itemIcons.map((item:any,index:number)=>{
       const itemId = item?.split('/')[7];
       return (
         <React.Fragment key={item}>

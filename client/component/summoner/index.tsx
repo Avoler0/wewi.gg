@@ -7,7 +7,7 @@ import { riotSummonerHook } from "../../hooks/server/riot/summoner";
 import Summoner404Page from "./summoner404";
 
 export type props = {
-  searchString : string
+  searchString : any
 }
 
 export default React.memo(Summoner)

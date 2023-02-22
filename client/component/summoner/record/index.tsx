@@ -1,7 +1,6 @@
 
 import React, { useCallback, useEffect, useState } from "react";
 import styled from "styled-components";
-import { riot } from "../../../hooks/riotApiHook";
 import { riotMatchHook } from "../../../hooks/server/riot/match";
 import RecordCard from "./card";
 

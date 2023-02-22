@@ -1,5 +1,5 @@
 import { useRouter } from "next/router";
-import Summoner from "../../component/summoner";
+import Summoner from "../../component/summoner/index";
 import NotFindSummoner from "../../component/summoner/summoner404";
 
 
