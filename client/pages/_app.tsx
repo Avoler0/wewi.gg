@@ -7,10 +7,6 @@ import Footer from '../component/footer/footer';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { PersistGate } from 'reduxjs-toolkit-persist/integration/react'
 import { useRouter } from 'next/router';
-import { useEffect } from 'react';
-import axios from 'axios';
-import { useDispatch } from 'react-redux';
-import { setLoLVersion } from '../redux/riot/version';
 
 const queryClient = new QueryClient();
 

@@ -1,4 +1,3 @@
-import { useRouter } from "next/router";
 import Register from "../component/account/register";
 
 

@@ -12,7 +12,6 @@ export default function HeaderJSX(){
   const user = useSelector((state:any)=>{
     return state.user;
   })
-  console.log('헤더 유저',user)
   return (
     <Header>
       <Content>
