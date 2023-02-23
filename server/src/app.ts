@@ -4,11 +4,12 @@ import cors from 'cors';
 import accountRouter from './router/accountRouter';
 import matesRouter from './router/matesRouter';
 import riotRouter from './router/riotRouter';
+import { FRONT_ADRESS } from '../dotenv';
 
 const app = express();
 
 const corsOptions = {
-  origin:'http://localhost:3000',
+  origin:FRONT_ADRESS,
   credentials:true
 }
 app.use(express.json()); 
