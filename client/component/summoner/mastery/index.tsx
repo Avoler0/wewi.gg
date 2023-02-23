@@ -5,9 +5,6 @@ import styled from "styled-components";
 export default React.memo(ChampMastery)
 
 function ChampMastery({info}:any){
-  console.log("마스터리",info)
-
-
 
   return (
     <Wrap>

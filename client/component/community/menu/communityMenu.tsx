@@ -7,7 +7,6 @@ import CommunityLoginBox from "./communityLoginBox";
 
 
 export default function CommunityMenu(){ // 왼쪽 메뉴 부분 컴포넌트
-  
   return (
     <Menu>
       <MenuHeader>

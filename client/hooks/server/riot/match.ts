@@ -17,7 +17,6 @@ export const riotMatchHook = {
     })
   },
   detail:async function (puuid:string,matchId:string) {
-    console.log('리스트',puuid,matchId)
     return await new Promise(async (resolve,reject) => {
       await dbInstance({
         method:'get',

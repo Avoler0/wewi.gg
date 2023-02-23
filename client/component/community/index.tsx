@@ -11,7 +11,6 @@ type CommunityParams = {
 
 export default function Community({type}:CommunityParams){
   const router = useRouter();
-  console.log(type)
   return (
     <Wrap>
       <Banner className="banner">
