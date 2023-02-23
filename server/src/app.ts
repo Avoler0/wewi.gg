@@ -9,7 +9,7 @@ import { FRONT_ADRESS } from '../dotenv';
 const app = express();
 
 const corsOptions = {
-  origin:FRONT_ADRESS,
+  origin:'http://35.79.79.134:3000',
   credentials:true
 }
 app.use(express.json()); 
