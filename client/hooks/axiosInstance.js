@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-const serverURL = 'http://localhost:3000/api'
+const serverURL = process.env.NEXT_PUBLIC_SERVER_API_URL
 const dbURL = process.env.NEXT_PUBLIC_SERVER_API_URL 
 const API_KEY = process.env.EXT_PUBLICK_RIOT_API_KEY
 
