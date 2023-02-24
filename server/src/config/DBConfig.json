@@ -1,7 +1,7 @@
 {
-    "host": "localhost",
+    "host": "http://35.79.79.134/",
     "user": "root",
-    "password": "123",
+    "password": "",
     "database": "wewigg",
     "checkDuplicate": false,
     "connectionLimit": 100,

@@ -14,7 +14,7 @@
 
 -- 테이블 데이터 wewigg.users:~5 rows (대략적) 내보내기
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
-INSERT IGNORE INTO `users` (`Id`, `Email`, `Name`, `Password`, `CreatedAt`, `UpdatedAt`, `OauthType`, `OauthToken`) VALUES
+INSERT INTO `users` (`Id`, `Email`, `Name`, `Password`, `CreatedAt`, `UpdatedAt`, `OauthType`, `OauthToken`) VALUES
 	(50, 'jys1391@gmail.com', '테스트 계정', 'null', '2023-01-26 21:16:47', '2023-01-26 21:16:47', 'google', '111513919415132003355'),
 	(51, 'test@test.com', 'test', 'test1234!', '2023-01-28 20:41:56', '2023-01-28 20:41:56', 'null', 'null'),
 	(52, 'avoler01@naver.com', '테스트 네이버', 'null', '2023-01-30 16:07:27', '2023-01-30 16:07:27', 'naver', 'AAAAOBwAzQ-rwNeL9mvJwUYiAA3okT6aYPWi_zZZiTvZ9nx5pBAs4iNgPh6YvAK2d3Gb54A82Z5G82vj6-g1I03xOX8'),
