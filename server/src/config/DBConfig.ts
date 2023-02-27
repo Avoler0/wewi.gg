@@ -1,7 +1,9 @@
 export const config = {
-    "host": "35.79.79.134",
-    "user": process.env.SQL_ID,
-    "password": process.env.SQL_PW,
+    "host": process.env.HOST,
+    // "user": process.env.SQL_ID,
+    // "password": process.env.SQL_PW,
+    "user": "root",
+    "password": "123",
     "database": "wewigg",
     "checkDuplicate": false,
     "connectionLimit": 100,

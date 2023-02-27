@@ -8,6 +8,7 @@ export default async function db() {
     try {
         console.log("DB연결");
         conn = await pool.getConnection();
+        await conn.release();
     } catch(err){
         console.error(err);
     } finally{
