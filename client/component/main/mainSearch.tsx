@@ -19,7 +19,7 @@ export default function MainSearch(){
             <SearchButton >검색</SearchButton>
           </SearchForm>
         </SearchContainer>
-        <style jsx global>{` // 듀오 구인에서만 Body에 이미지 씌워줌
+        <style jsx global>{` // 메인에서만 Body에 이미지 씌워줌
             body{
               background-image: url(https://images.contentstack.io/v3/assets/blt731acb42bb3d1659/blt15d3facea57e5b7e/634613111338101198fce129/K_Sante-Base-Splash.jpg);
             }
@@ -27,11 +27,6 @@ export default function MainSearch(){
       </SearchWrap>
   )
 }
-
-const Wrap =styled.div`
-  width: 100%;
-  height: 100%;
-`;
 
 const SearchWrap = styled.article`
   width: 100%;
