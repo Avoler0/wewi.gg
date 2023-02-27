@@ -6,6 +6,5 @@ const server = http.createServer(app);
 const PORT = process.env.PORT || 4000;
 
 server.listen(PORT, () => {
-  console.log(`server on http://localhost:${PORT}`)
-  console.log(process.env.SQL_ID)
+  console.log(`server on ${process.env.HOST}:${PORT}`)
 })

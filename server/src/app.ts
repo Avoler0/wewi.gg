@@ -4,7 +4,6 @@ import cors from 'cors';
 import accountRouter from './router/accountRouter';
 import matesRouter from './router/matesRouter';
 import riotRouter from './router/riotRouter';
-import { FRONT_ADRESS } from '../dotenv';
 
 const app = express();
 
