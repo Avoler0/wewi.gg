@@ -12,6 +12,7 @@ const queryClient = new QueryClient();
 
 function MyApp({ Component, pageProps }: AppProps) {
   const router = useRouter();
+  console.log(router.pathname)
   const isHeader = pathValid(router.pathname);
   function pathValid(path:string){
     switch(path){
@@ -33,7 +34,7 @@ function MyApp({ Component, pageProps }: AppProps) {
           <PersistGate loading={null} persistor={persistore}>
             {isHeader ? <HeaderIndex /> : null  }
             <Component {...pageProps} />
-            <Footer />
+            { router.pathname === '/' ? null : <Footer />}
           </PersistGate>
         </Provider>
       </QueryClientProvider>

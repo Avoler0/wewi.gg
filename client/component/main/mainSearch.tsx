@@ -6,34 +6,44 @@ import { searchMovePath } from "../../hooks/searchMovePath";
 export default function MainSearch(){
 
   return (
-    <SearchWrap>
-      <SearchContainer>
-        <Title>
-          <Banner>
-            <BannerMemo>Wewi.gg</BannerMemo>
-          </Banner>
-        </Title>
-        <SearchForm onSubmit={searchMovePath}>
-          <SearchLabel htmlFor="SearchInput" />
-          <SearchInput name="search" placeholder="소환사명" ></SearchInput>
-          <SearchButton >검색</SearchButton>
-        </SearchForm>
-      </SearchContainer>
-    </SearchWrap>
+      <SearchWrap>
+        <SearchContainer>
+          <Title>
+            <Banner>
+              <BannerMemo>Wewi.gg</BannerMemo>
+            </Banner>
+          </Title>
+          <SearchForm onSubmit={searchMovePath}>
+            <SearchLabel htmlFor="SearchInput" />
+            <SearchInput name="search" placeholder="소환사명" ></SearchInput>
+            <SearchButton >검색</SearchButton>
+          </SearchForm>
+        </SearchContainer>
+        <style jsx global>{` // 듀오 구인에서만 Body에 이미지 씌워줌
+            body{
+              background-image: url(https://images.contentstack.io/v3/assets/blt731acb42bb3d1659/blt15d3facea57e5b7e/634613111338101198fce129/K_Sante-Base-Splash.jpg);
+            }
+          `}</style>
+      </SearchWrap>
   )
 }
 
-const SearchWrap = styled.article`
+const Wrap =styled.div`
   width: 100%;
   height: 100%;
-  background-image: url(https://images.contentstack.io/v3/assets/blt731acb42bb3d1659/blt15d3facea57e5b7e/634613111338101198fce129/K_Sante-Base-Splash.jpg);
-  background-size: cover;
-  background-repeat: no-repeat;
-  padding: 5rem 0;
+`;
 
+const SearchWrap = styled.article`
+  width: 100%;
+  min-height: 100%;
+  /* background-image: url(https://images.contentstack.io/v3/assets/blt731acb42bb3d1659/blt15d3facea57e5b7e/634613111338101198fce129/K_Sante-Base-Splash.jpg); */
+  /* background-size: auto; */
+  /* background-repeat: repeat; */
+  padding: 5rem 0;
 `;
 const SearchContainer = styled.div`
   width: 1120px;
+  height: 100%;
   margin: 0 auto;
   @media (min-width: 992px) and (max-width: 1120px) {
    max-width: 792px;

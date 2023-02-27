@@ -1,4 +1,9 @@
 
+/* #__next{
+  width: 100%;
+  height: 100%;
+} */
+
 html,body {
   font-family: 'Nanum Gothic', sans-serif;
   display: inline-block;

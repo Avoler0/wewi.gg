@@ -1,5 +1,5 @@
 import mariadb from "mariadb";
-import config from '../config/DBConfig.json'
+import { config } from "../config/DBConfig";
 
 const pool = mariadb.createPool(config);
 
