@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-title-in-document-head */
 import Document, { Html, Head, Main, NextScript, DocumentContext } from "next/document";
 import Script from "next/script";
 import { ServerStyleSheet } from "styled-components";
@@ -32,6 +33,7 @@ class MyDocument extends Document {
 			<Html>
 				<html lang="ko" />
 				<Head>
+					<title>WEWI.GG</title>
 				</Head>
 				<body>
 					<Main />
