@@ -76,7 +76,7 @@ const Name = styled.div`
 `;
 const Update = styled.div`
   font-size: 12px;
-    font-weight: none;
+  font-weight: none;
 `;
 const Vote = styled.div`
   display: flex;

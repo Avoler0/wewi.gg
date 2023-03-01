@@ -2,29 +2,30 @@ import React from "react";
 import styled from "styled-components";
 import Link from "next/link";
 import { searchMovePath } from "../../../hooks/searchMovePath";
+import { useRouter } from "next/router";
 
 export default function Navigation() {
+  const router = useRouter();
   const PAGE = {
     DUO: "duo",
     CLAN: "clan",
     COMMUNITY: "community",
   }
-  const urlPath = "/"
-
+  const urlPath = router.pathname.split('/')[1]
 
   return (
     <Nav>
       <Content>
         <div>
           <NavItems>
-            <NavItem>
-              <Link href="/" style={{borderBottom: urlPath === "/" ? "2px solid white" : "none" }}>홈</Link>
+            <NavItem style={{borderBottom: urlPath === "" ? "2px solid white" : "none" }} path={router.pathname === `/`}>
+              <Link href="/">홈</Link>
             </NavItem>
-            <NavItem>
-              <Link href="/duo" style={{borderBottom: urlPath === `/${PAGE.DUO}` ? "2px solid white" : "none" }}>듀오</Link>
+            <NavItem path={urlPath === `${PAGE.DUO}`}>
+              <Link href="/duo">듀오찾기</Link>
             </NavItem>
-            <NavItem>
-              <Link href="/community" style={{borderBottom: urlPath === `/${PAGE.CLAN}` ? "2px solid white" : "none" }}>커뮤니티</Link>
+            <NavItem path={urlPath === `${PAGE.COMMUNITY}`}>
+              <Link href="/community">커뮤니티</Link>
             </NavItem>
             {/* <NavItem>
               <Link href="/leaderboards" style={{borderBottom: urlPath === `/${PAGE.COMMUNITY}` ? "2px solid white" : "none" }}>랭킹</Link>
@@ -34,10 +35,10 @@ export default function Navigation() {
         <div>
           <Colum>
             <SearchWrap onSubmit={searchMovePath}>
-              <SearchIco>GG</SearchIco>
+              {/* <SearchIco>GG</SearchIco> */}
               <SearchInput type="text" name="search" />
               {/* <SearchTest /> */}
-              <SearchButton>검색</SearchButton>
+              <SearchButton>.GG</SearchButton>
             </SearchWrap>
           </Colum>
         </div>
@@ -47,7 +48,7 @@ export default function Navigation() {
 }
 
 const Nav = styled.nav`
-  padding: 0.2rem 0;
+  padding: 0.1rem 0;
   color: #bdc3c7;
   @media (min-width: 992px) and (max-width: 1199px) {
   }
@@ -78,14 +79,16 @@ const NavItems = styled.ul`
   height: 100%;
   margin: 0;
   padding: 0;
+  font-weight: 700;
 `;
-const NavItem = styled.li`
+const NavItem = styled.li<{path:any}>`
   margin-right: 3rem ;
   list-style: none;
   display: flex;
   justify-content: middle;
   cursor: pointer;
-
+  color: ${props => props.path && '#fff'};
+  border-bottom: ${props => props.path && '2px solid white'};
   @media (min-width: 992px) and (max-width: 1199px) {
     font-size: 22px;
     margin-right: 32px ;
@@ -104,6 +107,7 @@ const SearchWrap = styled.form`
   position: relative;
   background-color: #2d3e4e;
   border: 1px solid #554747;
+  padding: 0.2rem;
 `;
 const SearchIco = styled.div`
   padding-right: 4px;
@@ -126,12 +130,16 @@ const SearchInput = styled.input`
   :focus{
     outline: none;
   }
+  &:-webkit-autofill {
+    box-shadow: 0 0 0 1000px #2d3e4e inset !important;
+    -webkit-text-fill-color: #fff;
+  }
 `;
 const SearchButton = styled.button`
   border: none;
   background-color: transparent;
   color: #fff;
-  font-size: 16px;
+  font-size: 20px;
   font-weight: bold;
   height: 100%;
   cursor: pointer;
