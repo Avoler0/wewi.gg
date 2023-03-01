@@ -21,7 +21,8 @@
 ![image](https://user-images.githubusercontent.com/91608021/211711142-3e0b96f3-d7c3-4eaa-9040-865b09417a23.png)
 
 ### 전적검색 페이지
-![image](https://user-images.githubusercontent.com/91608021/211714575-66fdee09-3243-44e1-9060-6dca818e1f52.png)
+![image](https://user-images.githubusercontent.com/91608021/222068960-7f930882-c9ba-4207-9fec-16b77fbae79c.png)
+
 
 ### 로그인&회원가입 페이지
 ![image](https://user-images.githubusercontent.com/91608021/216753196-965c51ad-d41d-4fb6-9ede-65a8777e21f1.png)
