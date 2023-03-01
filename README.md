@@ -1,6 +1,6 @@
 # Riot API를 이용한 League of Legend 전적검색 사이트
 ## 사용 기술
-<strong style="color:red">Next.js, Riot API, Json-Server, Redux-toolkit, MariaDB, Node.js, AWS EC2</strong>
+<strong>Next.js, Riot API, Json-Server, Redux-toolkit, MariaDB, Node.js, AWS EC2</strong>
 <div>Next.js를 이용한 SSR로 구성된 사이트로 Next.js의 백엔드 서버를 적극 이용하여 Riot API와 비관계형 db 라이브러리 Json-Server을 통신 사용</div>
 <div>추가로 Amazon Web Services EC2를 이용하여 웹 배포를 하였음</div>
 
