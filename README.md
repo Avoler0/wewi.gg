@@ -15,13 +15,14 @@
 
 ## 페이지들
 ### 메인 페이지
-![image](https://user-images.githubusercontent.com/91608021/211710992-3f9608a6-a44e-4978-9bd3-425d1a3e56a1.png)
+![image](https://user-images.githubusercontent.com/91608021/222413218-7efa4b56-0e3f-4634-a977-81c2b27047bc.png)
+
 
 ### 듀오구인 페이지
-![image](https://user-images.githubusercontent.com/91608021/211711142-3e0b96f3-d7c3-4eaa-9040-865b09417a23.png)
+![image](https://user-images.githubusercontent.com/91608021/222413257-a102a9bc-97a0-4b8a-ad14-8d9a5eb6a679.png)
 
 ### 전적검색 페이지
-![image](https://user-images.githubusercontent.com/91608021/222068960-7f930882-c9ba-4207-9fec-16b77fbae79c.png)
+![image](https://user-images.githubusercontent.com/91608021/222413314-daed047e-2f21-4c75-959e-c2c7e05e0dfd.png)
 
 
 ### 로그인&회원가입 페이지
