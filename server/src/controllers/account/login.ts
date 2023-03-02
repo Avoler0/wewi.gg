@@ -10,13 +10,12 @@ export async function loginController(req:any,res:any){
     if(_response[0]){
       const {Id,Email,Name,OauthToken,OauthType,Password,CreatedAt,UpdatedAt} = _response[0]
       if(Password === password || oauthType){
-        res.status(200).json({Id,Email,Name,OauthType,UpdatedAt}).send('success')
+        res.status(200).json({Id,Email,Name,OauthType,UpdatedAt})
       }else{
         throw new Error('server error!')
       }
     }else{
-      // console.log('레스 없음',_response)
-      res.status(404).json('unknown id')
+      res.status(404).send('unknown id')
     }
   }catch(_error:any){
     const err = accountErrorStateMessage(_error)
