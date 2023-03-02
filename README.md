@@ -29,7 +29,7 @@
 ![image](https://user-images.githubusercontent.com/91608021/216753196-965c51ad-d41d-4fb6-9ede-65a8777e21f1.png)
 
 ### 커뮤니티 페이지
-![image](https://user-images.githubusercontent.com/91608021/216753272-5320d1e1-052b-400e-8cdc-b508ac1589b4.png)
+![image](https://user-images.githubusercontent.com/91608021/222413449-3c62cd43-923e-4238-9e7b-b483b87a20c2.png)
 
 ### 커뮤니티 글 쓰기 페이지
-![image](https://user-images.githubusercontent.com/91608021/216753248-d591b66e-e5c7-489b-8976-36c726a2dd07.png)
+![image](https://user-images.githubusercontent.com/91608021/222413556-134e5cc2-52a8-4373-b447-8e7412cfa529.png)
