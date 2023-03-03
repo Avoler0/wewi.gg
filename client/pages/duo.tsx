@@ -1,4 +1,4 @@
-import DuoIndex from "../../component/duo";
+import DuoIndex from "../component/duo";
 
 
 

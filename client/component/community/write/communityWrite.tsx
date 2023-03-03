@@ -13,7 +13,11 @@ export default function CommuniryWrite(){
   const user = useSelector((state:any)=>{
     return state.user
   })
-  if(!user.state) window.history.back();
+  if(!user.state){
+    alert('로그인 후 이용해주세요.')
+    window.history.back();
+    return <div></div>
+  }
 
   function writeSubmitHandler(){
     if(communityOption){

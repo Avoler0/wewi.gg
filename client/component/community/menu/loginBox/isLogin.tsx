@@ -12,7 +12,9 @@ export default function CommunityIsLogin({user}:props){ // 로그인 일 시 왼
   const router = useRouter()
   return(
       <LoginButton>
-        {nickName}
+        <NickName>
+          {nickName}
+        </NickName>
         <Link href={`${router.query.commuName}/write`} legacyBehavior>
           글 쓰기
         </Link>
@@ -33,4 +35,8 @@ const LoginButton = styled.div`
     background-color: #46cfa7;
     color: #fff;
   }
+`;
+
+const NickName = styled.div`
+  padding: 0.5rem 0;
 `;

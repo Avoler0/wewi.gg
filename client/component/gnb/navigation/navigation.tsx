@@ -27,6 +27,9 @@ export default function Navigation() {
             <NavItem path={urlPath === `${PAGE.COMMUNITY}`}>
               <Link href="/community">커뮤니티</Link>
             </NavItem>
+            <NavItem path={urlPath === `champions`}>
+              <Link href="/champions" style={{borderBottom: urlPath === `/${PAGE.COMMUNITY}` ? "2px solid white" : "none" }}>챔피언 분석</Link>
+            </NavItem>
             {/* <NavItem>
               <Link href="/leaderboards" style={{borderBottom: urlPath === `/${PAGE.COMMUNITY}` ? "2px solid white" : "none" }}>랭킹</Link>
             </NavItem> */}
