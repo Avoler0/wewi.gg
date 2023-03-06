@@ -4,6 +4,7 @@ const nextConfig = {
     domains:["localhost","35.79.79.134","ddragon.leagueoflegends.com","ddragon.canisback.com","openapi.naver.com"]
   },
   reactStrictMode: false,
+  
   async redirects() {
     return [
       {
@@ -16,5 +17,12 @@ const nextConfig = {
   swcMinify: true,
 
 };
-
+webpack: config => {
+    config.module.rules.push({
+      test: /\.svg$/i,
+      issuer: /\.[jt]sx?$/,
+      use: ["@svgr/webpack"]
+    });
+    return config;
+  }
 module.exports = nextConfig

@@ -47,7 +47,7 @@ const Container = styled.div`
 `;
 
 const Wrapper = styled.div`
-  max-width: 1200px;
+  width: ${props => props.theme.windowSize.pc};
   margin: 0 auto;
   padding-top: 150px;  
   @media (min-width: 992px) and (max-width: 1199px) {

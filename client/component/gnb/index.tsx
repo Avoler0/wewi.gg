@@ -1,5 +1,6 @@
 import { useRouter } from "next/router";
 import styled from "styled-components";
+import Header2 from "./header/haeder2";
 import Header from "./header/header";
 import Navigation from "./navigation/navigation";
 
@@ -10,10 +11,10 @@ export default function HeaderIndex(){
   // if(router === '') return null;
 
   return(
-    <Container>
-      <Header/>
-      <Navigation />
-    </Container>
+    // <Container>
+      <Header2/>
+      /* <Navigation /> */
+    // </Container>
   )
 }
 

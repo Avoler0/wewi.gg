@@ -1,0 +1,12 @@
+{
+  "colorInfo.excludedFields": [
+    "alpha",
+    "hex",
+    "rgb"
+  ],
+  "colorInfo.fields": [
+    "alpha",
+    "hex",
+    "rgb"
+  ]
+}

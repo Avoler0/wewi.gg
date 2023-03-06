@@ -7,7 +7,8 @@ import Footer from '../component/footer/footer';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { PersistGate } from 'reduxjs-toolkit-persist/integration/react'
 import { useRouter } from 'next/router';
-
+import { ThemeProvider } from 'styled-components';
+import theme from './theme'
 const queryClient = new QueryClient();
 
 function MyApp({ Component, pageProps }: AppProps) {
@@ -30,13 +31,15 @@ function MyApp({ Component, pageProps }: AppProps) {
   return (
     <>
       <QueryClientProvider client={queryClient}>
-        <Provider store={store}>
-          <PersistGate loading={null} persistor={persistore}>
-            {isHeader ? <HeaderIndex /> : null  }
-            <Component {...pageProps} />
-            { router.pathname === '/' ? null : <Footer />}
-          </PersistGate>
-        </Provider>
+        <ThemeProvider theme={theme}>
+          <Provider store={store}>
+            <PersistGate loading={null} persistor={persistore}>
+              {isHeader ? <HeaderIndex /> : null  }
+              <Component {...pageProps} />
+              { router.pathname === '/' ? null : <Footer />}
+            </PersistGate>
+          </Provider>
+        </ThemeProvider>
       </QueryClientProvider>
     </>
   )
