@@ -9,7 +9,7 @@ export default function MainLineTierList(){
   })
   return(
     <LineTierWrap>
-          <LineTierContainer>
+          {/* <LineTierContainer>
             <LineListTitle>
               <span>v{version}</span> 소환사 협곡 티어</LineListTitle>
             <LineList>
@@ -33,14 +33,17 @@ export default function MainLineTierList(){
                   </ListItem>)
                 })}
             </LineList>
-          </LineTierContainer>
+          </LineTierContainer> */}
         </LineTierWrap>
   )
 }
 
 const LineTierWrap = styled.article`
-  width: 100%;
-  height: 100%;
+  width: ${props => props.theme.windowSize.pc};
+  flex: 2 0 auto;
+  background-color: #fff;
+  border-radius: 15px 15px 0 0;
+  margin: 0 auto;
   margin-top: 3rem;
 `;
 const LineTierContainer = styled.div`

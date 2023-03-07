@@ -19,13 +19,10 @@ export default function SearchToolBar({show}:any){
 
 
 const ToolBar = styled.div`
-  position: fixed;
-  right: 0;
-  left: 0;
-  top: 15%;
+  right: 13%;
+  top: 72px;
   width: 25%;
   margin: 0 auto;
-  
 `;
 
 const Content = styled.div`
@@ -36,16 +33,14 @@ const Search = styled.div`
   position: relative;
   input{
     width: 100%;
-    color: #fff;
     padding: 1rem 1rem;
     border: 0;
     outline: none;
     font-size: 1rem;
-    background-color: rgb(58, 71, 92);
-    border-radius: 5px;
+    background-color: #fff;
+    border-radius: 0 0 5px 5px;
   }
   input::placeholder {
-    color: #ffffffa9;
   }
 
   button{
@@ -57,12 +52,12 @@ const Search = styled.div`
     font-weight: 700;
     border: none;
     background-color: transparent;
-    color: #fff;
   }
 `;
 
 const Cancel = styled.div`
+  cursor: pointer;
   float: right;
-  color: #fff;
   margin-right: 0.5rem;
+  color: #fff;
 `;

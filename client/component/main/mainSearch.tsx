@@ -19,23 +19,14 @@ export default function MainSearch(){
             <SearchButton >검색</SearchButton>
           </SearchForm>
         </SearchContainer>
-        <style jsx global>{` // 메인에서만 Body에 이미지 씌워줌
-            body{
-              background-image: url(https://images.contentstack.io/v3/assets/blt731acb42bb3d1659/blt15d3facea57e5b7e/634613111338101198fce129/K_Sante-Base-Splash.jpg);
-            }
-          `}</style>
       </SearchWrap>
   )
 }
 
 const SearchWrap = styled.article`
   width: 100%;
-  min-height: 100%;
-  height: 100000px;
-  /* background-image: url(https://images.contentstack.io/v3/assets/blt731acb42bb3d1659/blt15d3facea57e5b7e/634613111338101198fce129/K_Sante-Base-Splash.jpg); */
-  /* background-size: auto; */
-  /* background-repeat: repeat; */
-  padding: 5rem 0;
+  flex: 1 0 auto;
+  margin-top: 10rem;
 `;
 const SearchContainer = styled.div`
   width: 1120px;

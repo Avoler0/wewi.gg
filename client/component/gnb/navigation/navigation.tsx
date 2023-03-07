@@ -18,7 +18,7 @@ export default function Navigation() {
       <Content>
         <div>
           <NavItems>
-            <NavItem style={{borderBottom: urlPath === "" ? "2px solid white" : "none" }} path={router.pathname === `/`}>
+            <NavItem path={router.pathname === `/`}>
               <Link href="/">홈</Link>
             </NavItem>
             <NavItem path={urlPath === `${PAGE.DUO}`}>
@@ -28,7 +28,7 @@ export default function Navigation() {
               <Link href="/community">커뮤니티</Link>
             </NavItem>
             <NavItem path={urlPath === `champions`}>
-              <Link href="/champions" style={{borderBottom: urlPath === `/${PAGE.COMMUNITY}` ? "2px solid white" : "none" }}>챔피언 분석</Link>
+              <Link href="/champions">챔피언 분석</Link>
             </NavItem>
             {/* <NavItem>
               <Link href="/leaderboards" style={{borderBottom: urlPath === `/${PAGE.COMMUNITY}` ? "2px solid white" : "none" }}>랭킹</Link>
