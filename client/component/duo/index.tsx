@@ -35,7 +35,6 @@ export default function DuoIndex() { // 듀오 구인 Page 인덱스 부분
 }
 
 
-
 const Container = styled.div`
   width: 100%;
   height: 100%;
@@ -44,7 +43,8 @@ const Container = styled.div`
 const Wrapper = styled.div`
   width: ${props => props.theme.windowSize.pc};
   margin: 0 auto;
-  padding-top: 150px;  
+  padding: 1rem;
+  
   @media (min-width: 992px) and (max-width: 1199px) {
     width: 792px;
   }
@@ -59,7 +59,8 @@ const BoardLayOut = styled.div`
   display:grid ;
   grid-template-columns: repeat(5,1fr) ;
   grid-gap: calc(20px);
-  padding-top: 40px ;
+  margin-top: 40px ;
+  background-color: rgb(22, 43, 59);
   @media (max-width: 1199px) {
     grid-template-columns: repeat(4,1fr) ;
     grid-gap: calc(20px);

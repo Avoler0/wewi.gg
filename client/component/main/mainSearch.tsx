@@ -26,7 +26,6 @@ export default function MainSearch(){
 const SearchWrap = styled.article`
   width: 100%;
   flex: 1 0 auto;
-  margin-top: 10rem;
 `;
 const SearchContainer = styled.div`
   width: 1120px;

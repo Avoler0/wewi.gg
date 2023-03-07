@@ -26,27 +26,30 @@ export default function DuoFilter(){ // 듀오 카드 필터링 Index
   
   return (
     <Filter>
-    <Column>
-      <div>
-        <FilterMode dispatch={dispatch}/>
-        <FilterTier dispatch={dispatch}/>
-      </div>
-      <div>
-        <FilterLine dispatch={dispatch} lineSelect={filter.line}/>
-      </div>
+      <Column>
+        <div>
+          <FilterLine dispatch={dispatch} lineSelect={filter.line}/>
+        </div>
+        <SelectFilter>
+          <FilterLayout><FilterMode dispatch={dispatch}/></FilterLayout>
+          <FilterLayout><FilterTier dispatch={dispatch}/></FilterLayout>
+        </SelectFilter>
       </Column>
       <Column>
-        <AddButton onClick={toggle}>등록</AddButton>
+        <AddButton onClick={toggle}>소환사 등록하기</AddButton>
       </Column>
       {isShowing && <DuoModal isShowing={isShowing} hide={toggle} method="ADD" />}
     </Filter>
   )
 }
 
+
 const Filter = styled.div`
   display: flex ;
   justify-content: space-between;
   width: 100%;
+  height: 2.5rem;
+  color: #ece5e5;
   @media (max-width: 1199px) {
     width: 100%;
   }
@@ -60,22 +63,28 @@ const Filter = styled.div`
 const Column = styled.div`
   display: flex ;
   position: relative;
-
 `;
-
+const SelectFilter = styled.div`
+  display: flex;
+`; 
+const FilterLayout = styled.div`
+  margin-left: 2rem ;
+  border: 1px solid rgb(75, 75, 100);
+  background-color: rgb(22, 43, 59);
+`;
 const AddButton = styled.button`
-  width: 5.2rem;
-  height: 2.2rem;
+  height: 100%;
   margin-left: 20px;
   font-size: 16px;
-  font-weight: bold;
+  font-weight: 60;
   right: 0;
-  margin-right: 3rem;
-  background-color: #2c3e50;
-  border: none;
-  border-radius: 5px;
-  color: rgba(123,122,142,1);
+  padding: 0 .5rem;
+  align-items: center;
+  vertical-align: middle;
+  border: 1px solid rgb(75, 75, 100);
+  background-color: rgb(37, 131, 84);
   cursor: pointer;
+  color: #ece5e5;
   @media (max-width: 1199px) {
     width: 5.2rem;
   }

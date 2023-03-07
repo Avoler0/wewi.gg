@@ -1,16 +1,17 @@
-import styled from "styled-components"
+import styled, { css, keyframes } from "styled-components"
+import { searchMovePath } from "../../../hooks/searchMovePath";
 
 
-export default function SearchToolBar({show}:any){
+export default function SearchToolBar({show,setShow}:any){
   return (
-    <ToolBar>
+    <ToolBar show={show}>
       <Content>
-        <Search>
-          <input type='text' placeholder="소환사 이름 검색"/>
+        <Search onSubmit={searchMovePath}>
+          <input type='text' name="search" placeholder="소환사 이름 검색"/>
           <button>.GG</button>
         </Search>
       </Content>
-      <Cancel onClick={show}>
+      <Cancel onClick={setShow}>
         닫기
       </Cancel>
     </ToolBar>
@@ -18,18 +19,21 @@ export default function SearchToolBar({show}:any){
 }
 
 
-const ToolBar = styled.div`
+const ToolBar = styled.div<{show:boolean}>`
+  display: ${props => props.show ? 'block' : 'none'};
   right: 13%;
   top: 72px;
   width: 25%;
   margin: 0 auto;
+  
 `;
 
 const Content = styled.div`
   /* position: absolute; */
 `;
 
-const Search = styled.div`
+const Search = styled.form`
+  
   position: relative;
   input{
     width: 100%;
@@ -39,10 +43,13 @@ const Search = styled.div`
     font-size: 1rem;
     background-color: #fff;
     border-radius: 0 0 5px 5px;
+    transition: all 0.2s ease;
+    :hover{
+      background-color: #ffffffeb;
+    }
   }
   input::placeholder {
   }
-
   button{
     position: absolute;
     padding: 0 12px 0 12px;

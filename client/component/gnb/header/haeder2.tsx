@@ -14,17 +14,14 @@ export default function Header2(){
   const [toolBar,setToolBar] = useState(false);
   const showToolBar = () => {
     setToolBar(prev => !prev)
-    setHoverHeader(prev => !prev)
   } ;
   const mouseOut = () => {
-    if(toolBar){
-      return
-    }else{
+    if(!toolBar){
       setToolBar(false)
       setHoverHeader(false)
     }
+    return
   }
-  console.log('호버',hoverHeader, '액티브',toolBar)
   return (
     <>
       <HeaderWrap >
@@ -45,6 +42,9 @@ export default function Header2(){
               <li>
                 <Link href="/champions">소환사 랭크</Link>
               </li>
+              <li>
+                <Link href="/spectate/pro-gamer">프로 관전</Link>
+              </li>
             </Menu>
           </Nav>
           {
@@ -62,7 +62,7 @@ export default function Header2(){
               </button>
             </span>
           </User>
-          {toolBar && <SearchToolBar show={showToolBar} />}
+          <SearchToolBar show={toolBar}  setShow={showToolBar}/>
         </Content>
       </HeaderWrap>
       {/* {hoverHeader ? toolBar &&  : null} */}
@@ -76,12 +76,14 @@ const HeaderWrap = styled.header`
   color: #fff;
   /* background-color: RGB(21, 26, 34); */
   z-index: 100;
+  
 `
 const Content = styled.nav<{mouse:any}>`
   position: relative;
   height: 4.5rem;
   color: ${props => props.mouse ? 'RGB(21, 26, 34)' : '#fff'};
   background-color: ${props => props.mouse ? '#fff' : null};
+  transition: all 0.3s ease;
 `;
 const Logo = styled.div`
   position: absolute;
@@ -104,8 +106,13 @@ const Menu = styled.ul`
     justify-content: center;
     align-items: center;
     margin: 0 1.7rem;
-    font-size: 1.2rem;
+    font-size: 1.1rem;
     font-weight: 600;
+  }
+  
+  li:hover{
+    color: #000000a4;
+    border-bottom: 2px solid #000000a4;
   }
 `;
 const Search = styled.div`

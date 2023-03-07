@@ -15,17 +15,16 @@ export default function FilterMode({dispatch}:any){ // 듀오 카드 필터링 M
 }
 
 const Select = styled.select`
-  width: 1000px;
-  margin-right: 20px ;
-  font-size: 15px ;
-  border: 1px solid (66,66,84,0.8);
-  background-color: #2c3e50;
+  background-color: rgb(22, 43, 59);
   width: 6.5rem;
-  height: 2.2rem;
-  border-radius: 5px;
-  color: rgba(123,122,142,1);
+  height: 100%;
+  padding: 0.2rem;
+  font-size: .925rem;
+  color: #ece5e5;
+  border: none;
 `;
 
 const Option = styled.option`
+  border-radius: 0;
   margin-top: 1rem;
 `;

@@ -10,6 +10,9 @@ html,body {
   height: 100%;
   padding: 0;
   margin: 0;
+  color: #fff;
+  background-image: url('/images/public-icons/background.jpg');
+  background-repeat: repeat;
   background-color: rgba(245, 245, 245, 1);
 }
 a, button{

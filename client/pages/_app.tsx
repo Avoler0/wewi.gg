@@ -7,7 +7,7 @@ import Footer from '../component/footer/footer';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { PersistGate } from 'reduxjs-toolkit-persist/integration/react'
 import { useRouter } from 'next/router';
-import { ThemeProvider } from 'styled-components';
+import styled, { ThemeProvider } from 'styled-components';
 import theme from './theme'
 const queryClient = new QueryClient();
 
@@ -35,7 +35,9 @@ function MyApp({ Component, pageProps }: AppProps) {
           <Provider store={store}>
             <PersistGate loading={null} persistor={persistore}>
               {isHeader ? <HeaderIndex /> : null  }
-              <Component {...pageProps} />
+              <Container>
+                <Component {...pageProps} />
+              </Container>
               { router.pathname === '/' ? null : <Footer />}
             </PersistGate>
           </Provider>
@@ -46,3 +48,9 @@ function MyApp({ Component, pageProps }: AppProps) {
 }
 
 export default MyApp
+
+const Container = styled.div`
+  width: 100%;
+  height: 100%;
+  padding-top: 12rem;
+`;
