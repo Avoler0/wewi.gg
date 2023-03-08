@@ -73,6 +73,20 @@ export const tierUtils = {
         return 0;
     }
   },
+  number:function(rank:string | null){
+    switch (rank) {
+      case 'I':
+        return 1;
+      case 'II':
+        return 2;
+      case 'III':
+        return 3;
+      case 'IV':
+        return 4;
+      default :
+        return 0;
+    }
+  }
 }
 
 export const queueUtils:any = { // 롤 API에서 넘어노는 큐 타입 넘버를 스트링으로 변환하는 함수

@@ -3,7 +3,7 @@
 
 
 const windowSize = {
-  pc:'1280px',
+  pc:'1080px',
   mobile:'414px'
 }
 

@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import styled from "styled-components"
 import SearchIcon from "../../../public/images/public-icons/search";
 import SearchSvg from "../../../public/images/public-icons/search.svg";
@@ -12,16 +12,29 @@ export default function Header2(){
   const router = useRouter();
   const [hoverHeader, setHoverHeader] = useState(false);
   const [toolBar,setToolBar] = useState(false);
-  const showToolBar = () => {
+  function showToolBar(){
     setToolBar(prev => !prev)
   } ;
-  const mouseOut = () => {
+  function mouseOut(){
     if(!toolBar){
       setToolBar(false)
       setHoverHeader(false)
     }
     return
   }
+  function scrollHandler(){
+    if(window.scrollY > 0) {
+      setHoverHeader(true)
+    }else{
+      setHoverHeader(false)
+    }
+  }
+  useEffect(()=>{
+    window.addEventListener('scroll',scrollHandler);
+    return(()=>{
+      window.addEventListener('scroll',scrollHandler);
+    })
+  })
   return (
     <>
       <HeaderWrap >

@@ -44,6 +44,7 @@ const Card = styled.article`
   width: 100%;
   padding: 10px 0;
   border-bottom: 1px solid #cecdca;
+  color: black;
 `;
 
 const Recommend = styled.div`
@@ -63,6 +64,7 @@ const ContentWrap = styled.div`
 `;
 const Title = styled.div`
   vertical-align: center;
+  color: #1a1b1b;
 `;
 const Info = styled.div`
   margin-top: 5px;

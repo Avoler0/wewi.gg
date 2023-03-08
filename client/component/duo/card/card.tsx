@@ -41,7 +41,6 @@ type Props = {
 }
 
 function DuoCard({duoRes,filter}:Props){ // 듀오 구인 게시글 카드
-  
   const {Id,SeekerName,Line,Mode,Mic,Content,Password,League,Champions,SeekerIcon,SeekerLevel,CreateAt} = duoRes
   const {tier,line,mode} = filter;
   const [showDelete,setShowDelete] = useState(false);

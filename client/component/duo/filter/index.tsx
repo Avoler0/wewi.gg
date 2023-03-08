@@ -50,6 +50,7 @@ const Filter = styled.div`
   width: 100%;
   height: 2.5rem;
   color: #ece5e5;
+  margin-bottom: 2rem;
   @media (max-width: 1199px) {
     width: 100%;
   }

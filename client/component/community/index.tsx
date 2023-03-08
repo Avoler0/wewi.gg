@@ -27,13 +27,6 @@ export default function Community({type}:CommunityParams){
         {type === 'list' && <CommunityMain />}
         {type === 'write' && <CommuniryWrite />}
       </Content>
-      <style jsx global>{` // 메인에서만 Body에 이미지 씌워줌
-        body{
-          /* background-image: url(https://images.contentstack.io/v3/assets/blt731acb42bb3d1659/blt15d3facea57e5b7e/634613111338101198fce129/K_Sante-Base-Splash.jpg); */
-          background-image: url('/images/public-icons/background.jpg')
-          background-repeat: repeat;
-        }
-      `}</style>
     </Wrap>
   )
 }
@@ -42,6 +35,7 @@ export default function Community({type}:CommunityParams){
 const Wrap = styled.div`
   width: 100%;
   height: 100%;
+  color: black;
 `;
 const Banner = styled.div`
   position: relative;
@@ -54,7 +48,7 @@ const BannerBackground = styled.div`
   left: 0;
   width: 100%;
   height: 100%;
-  background-image: url(https://images.contentstack.io/v3/assets/blt187521ff0727be24/bltfe6820bc73fa8d1b/60ee0febeebf8245e1b490fb/noxus-bastion.jpg);
+  /* background-image: url(https://images.contentstack.io/v3/assets/blt187521ff0727be24/bltfe6820bc73fa8d1b/60ee0febeebf8245e1b490fb/noxus-bastion.jpg); */
   background-position: 50% 50%;
   background-size: 100%;
 `;
