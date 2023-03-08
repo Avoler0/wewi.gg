@@ -9,11 +9,13 @@ import { PersistGate } from 'reduxjs-toolkit-persist/integration/react'
 import { useRouter } from 'next/router';
 import styled, { ThemeProvider } from 'styled-components';
 import theme from '../const/theme'
+import { useEffect } from 'react';
+import axios from 'axios';
+import { vistantPost } from '../hooks/server/visitant';
 const queryClient = new QueryClient();
 
 function MyApp({ Component, pageProps }: AppProps) {
   const router = useRouter();
-  console.log(router.pathname)
   const isHeader = pathValid(router.pathname);
   function pathValid(path:string){
     switch(path){
@@ -27,7 +29,12 @@ function MyApp({ Component, pageProps }: AppProps) {
         return true
     }
   }
-
+  useEffect( () => {
+    axios.get('https://geolocation-db.com/json/')
+    .then((res) => {
+      vistantPost(res.data.IPv4)
+    })
+  },[])
   return (
     <>
       <QueryClientProvider client={queryClient}>
