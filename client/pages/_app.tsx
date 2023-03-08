@@ -8,7 +8,7 @@ import { QueryClient, QueryClientProvider } from 'react-query';
 import { PersistGate } from 'reduxjs-toolkit-persist/integration/react'
 import { useRouter } from 'next/router';
 import styled, { ThemeProvider } from 'styled-components';
-import theme from './theme'
+import theme from '../const/theme'
 const queryClient = new QueryClient();
 
 function MyApp({ Component, pageProps }: AppProps) {
