@@ -1,7 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   images:{
-    domains:["localhost","35.79.79.134","ddragon.leagueoflegends.com","ddragon.canisback.com","openapi.naver.com","https://geolocation-db.com/json/"]
+    domains:["localhost","35.79.79.134","ddragon.leagueoflegends.com","ddragon.canisback.com","openapi.naver.com"]
   },
   reactStrictMode: false,
   
