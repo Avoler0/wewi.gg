@@ -4,7 +4,7 @@ const nextConfig = {
     domains:["localhost","35.79.79.134","ddragon.leagueoflegends.com","ddragon.canisback.com","openapi.naver.com"]
   },
   reactStrictMode: false,
-  
+  pageExtensions: ['page.tsx', 'page.ts', 'page.jsx', 'page.js'],
   async redirects() {
     return [
       {
