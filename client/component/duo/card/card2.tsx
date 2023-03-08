@@ -1,5 +1,5 @@
+/* eslint-disable @next/next/no-img-element */
 import styled from "styled-components"
-import Image from "next/image"
 import { tierUtils } from "../../../const/utils"
 import { timeHook } from "../../../hooks/timeHook"
 import { useEffect, useState } from "react"
@@ -62,6 +62,19 @@ export default function DuoCard2({duoRes,filter}:Props){
       setCreateAtState(timeHook.otherDay(new Date(CreateAt).getTime()))
     },60000)
   },[])
+  console.log(leagueParse?.tier, tier)
+  function cardFilter(){ // 리덕스로 지정된 필터를 값으로 DB에서 받아온 카드 RES에 맞는지 필터링 하여 자체적으로 소거
+    let isMode = false ,isLine = false, isTier = false;
+    
+    if(mode === 'All' || mode === Mode) isMode = true;
+    if(line === 'All' || line === Line) isLine = true;
+    if(tier === 'All' || tier.toLowerCase() === leagueParse?.tier?.toLowerCase() ) isTier = true;
+    if(tier === 'Unranked' && leagueParse?.tier === undefined) isTier = true;
+    
+    return isTier && isMode && isLine;
+  }
+  
+  if(!cardFilter()) return <></>;
   return (
     <Card>
       <User>
@@ -96,8 +109,12 @@ export default function DuoCard2({duoRes,filter}:Props){
       </Champ>
       <WinRate>
         <Rate>
-          <Win divWidth={winRate}></Win>
-          <Lose divWidth={loseRate}></Lose>
+          <Win divWidth={winRate}>
+            {isNaN(winRate) ? null : <span>{leagueParse?.wins}승</span>}
+          </Win>
+          <Lose divWidth={loseRate}>
+            {isNaN(loseRate) ?  null : <span>{leagueParse?.losses}패</span>}
+          </Lose>
         </Rate>
         <span>{winRate ? winRate+'%' : null}</span>
       </WinRate>
@@ -113,6 +130,9 @@ export default function DuoCard2({duoRes,filter}:Props){
       <Create>
         {createAtState}
       </Create>
+      <Dot>
+        <img src="/images/public-icons/dot.svg" alt="dot"/>
+      </Dot>
     </Card>
   )
 }
@@ -201,20 +221,22 @@ const ChampIcon = styled.span`
 const WinRate = styled.div`
   display: flex;
   width: 15%;
+  height: 100%;
   padding: .5rem .625rem;
   align-items: center;
   justify-content: space-between;
+  font-size: .685rem;
   span{
-    width: 20%;
     margin-left: .4rem;
   }
 `;
 
 const Rate = styled.div`
+  display: inline-block;
   width: 80%;
-  height: 60%;
-  background-color: black;
-  border-radius: 5px;
+  height: 1.2rem;
+  background-color: rgb(27, 52, 71);
+  border-radius: 2px;
   z-index: 1;
   overflow: hidden;
 `;
@@ -222,14 +244,22 @@ const Rate = styled.div`
 const Win = styled.div<{divWidth:number}>`
   display: inline-block;
   background-color: rgb(67, 64, 240);
-  width: ${props => props.divWidth}%;
+  width: ${props => props.divWidth ? props.divWidth : 0}%;
   height: 100%;
+  span{
+    float: left;
+  }
 `;
 const Lose = styled.div<{divWidth:number}>`
   display: inline-block;
   background-color: rgb(231, 77, 97);
-  width: ${props => props.divWidth}%;
+  width: ${props => props.divWidth ? props.divWidth : 0}%;
   height: 100%;
+  span{
+    float: right;
+    margin-left: 0;
+    margin-right: .4rem;
+  }
 `
 const KDA = styled.div`
   display: flex;
@@ -264,4 +294,15 @@ const Create = styled.div`
   width: 7%;
   flex-shrink: 0;
   text-align: center;
+`;
+
+const Dot = styled.div` 
+  display: inline;
+  width: 3%;
+  align-items: center;
+  img{
+    width: 24px;
+    height: 24px;
+    filter: opacity(0.5) drop-shadow(0 0 0 rgb(219, 218, 213));
+  }
 `;
