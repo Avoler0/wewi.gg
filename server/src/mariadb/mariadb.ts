@@ -6,12 +6,11 @@ const pool = mariadb.createPool(config);
 export default async function db() {
     let conn:any;
     try {
-        console.log("DB연결");
+        console.log("DB연결", config.user);
         conn = await pool.getConnection();
         await conn.release();
     } catch(err){
         console.error('DB 연결 에러',err);
-        
     } finally{
         if(conn) return conn;
     }
