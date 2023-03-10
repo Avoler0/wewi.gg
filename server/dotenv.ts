@@ -1,7 +1,7 @@
 import dotenv from 'dotenv'
 
 dotenv.config();
-
+export const HOST = process.env.HOST
 export const RIOT_API_KEY = process.env.RIOT_API_KEY;
 export const FRONT_ADRESS = process.env.FRONT_ADRESS;
 export const SQL_ID = process.env.SQL_ID;
