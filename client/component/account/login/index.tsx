@@ -84,7 +84,6 @@ const Wrap = styled.div`
   width: 450px ;
   min-height: 682px;
   margin: 0 auto ;
-  margin-top: 7rem;
   padding: 1rem;
   color:white;
   background-color: #2c3e50;

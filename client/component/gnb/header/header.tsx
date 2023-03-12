@@ -37,7 +37,7 @@ export default function HeaderJSX(){
             </Login>
           )}
         </UserWrap>
-        {showMenu && <UserMenu hide={setShowMenu} />}
+        {showMenu && <UserMenu show={setShowMenu} />}
       </Content>
       
     </Header>

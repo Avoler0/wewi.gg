@@ -123,11 +123,10 @@ const Wrap = styled.div`
   width: 610px;
   min-height: 100%;
   margin: 0 auto ;
-  margin-top: 7rem;
   background-color: #2c3e50;
 `;
 const Container = styled.div`
-  margin: 0 60px;
+  margin: 0 4.5rem;
   padding: 1rem;
 `;
 const Title = styled.div`
@@ -136,7 +135,6 @@ const Title = styled.div`
     font-weight: bold;
     color: white;
     text-align: center;
-    padding: 24px 0;
   }
 `;
 const SignTitle = styled.div`
@@ -182,7 +180,7 @@ const Input = styled.input`
   }
 `;
 const ExitWrap = styled.div`
-  margin: 2.5rem 0;
+  margin-top: 2rem;
   display: flex;
   justify-content: space-between;
 `;

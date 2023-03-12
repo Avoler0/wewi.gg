@@ -1,10 +1,10 @@
-import Image from "next/image";
+/* eslint-disable @next/next/no-img-element */
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 import styled from "styled-components"
-import SearchIcon from "../../../public/images/public-icons/search";
-import SearchSvg from "../../../public/images/public-icons/search.svg";
+import UserMenu from "../menu";
 import SearchToolBar from "../search/searchToolBar";
 
 
@@ -12,6 +12,12 @@ export default function Header2(){
   const router = useRouter();
   const [hoverHeader, setHoverHeader] = useState(false);
   const [toolBar,setToolBar] = useState(false);
+  const [showMenu,setShowMenu] = useState(false);
+  const user = useSelector((state:any)=>{
+    return state.user;
+  })
+
+
   function showToolBar(){
     setToolBar(prev => !prev)
   } ;
@@ -19,6 +25,7 @@ export default function Header2(){
     if(!toolBar){
       setToolBar(false)
       setHoverHeader(false)
+      setShowMenu(false)
     }
     return
   }
@@ -60,25 +67,40 @@ export default function Header2(){
               </li>
             </Menu>
           </Nav>
-          {
-            toolBar ? null : router.pathname === '/' ? null :
-            <Search>
-              <span onClick={showToolBar} >
-                검색
-              </span>
-            </Search>
-          }
-          <User>
-            <span>
-              <button>
-                로그인
-              </button>
-            </span>
-          </User>
+          <RightColumn>
+            {
+              toolBar ? null : router.pathname === '/' ? null :
+              <Search>
+                <span onClick={showToolBar} >
+                  검색
+                </span>
+              </Search>
+            }
+            <User>
+              {user.state ? (
+                  <UserContent>
+                    <span>{user.nickName}님</span>
+                    <img src={'/images/public-icons/menu.svg'} alt='menu' width="15" height="15" onClick={()=>setShowMenu(prev => !prev)}/>
+                  </UserContent>
+                  )
+                : (
+                  <UserContent>
+                    <span>
+                      <button>
+                        <Link href="/login">로그인</Link>
+                      </button>
+                    </span>
+                  </UserContent>
+                )}
+                
+                <UserMenu showMenu={showMenu} setShowMenu={setShowMenu} />
+                {/* {hoverHeader ? showMenu ?   <UserMenu showMenu={setShowMenu} showHover={showMenu} /> : null : null} */}
+            </User>
+          </RightColumn>
+          
           <SearchToolBar show={toolBar}  setShow={showToolBar}/>
         </Content>
       </HeaderWrap>
-      {/* {hoverHeader ? toolBar &&  : null} */}
     </>
   )
 }
@@ -128,12 +150,17 @@ const Menu = styled.ul`
     border-bottom: 2px solid #000000a4;
   }
 `;
-const Search = styled.div`
+
+const RightColumn = styled.div`
+  display: flex;
   position: absolute;
   right: 8rem;
   top: 50%;
-  margin-right: 8rem;
   transform: translateY(-50%);
+`;
+
+const Search = styled.div`
+  margin-right: 2rem;
   font-size: 1rem;
   font-weight: 400;
   span{
@@ -141,11 +168,6 @@ const Search = styled.div`
   }
 `;
 const User = styled.div`
-  position: absolute;
-  right: 9.5rem;
-  top: 50%;
-  transform: translateY(-50%);
-  
   button{
     background-color: rgba(43, 31, 211, 0.678);
     color: #fff;
@@ -157,5 +179,14 @@ const User = styled.div`
 
   button span{
     padding: 0.5rem;
+  }
+`;
+
+const UserContent = styled.div`
+  display: flex;
+  align-items: center;
+
+  span{
+    margin-right: .5rem;
   }
 `;
