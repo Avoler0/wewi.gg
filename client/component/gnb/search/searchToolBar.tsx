@@ -1,14 +1,16 @@
+import { useState } from "react";
 import styled, { css, keyframes } from "styled-components"
 import { searchMovePath } from "../../../hooks/searchMovePath";
 
 
 export default function SearchToolBar({show,setShow}:any){
+
   return (
     <ToolBar show={show}>
       <Content>
         <Search onSubmit={searchMovePath}>
-          <input type='text' name="search" placeholder="소환사 이름 검색"/>
-          <button>.GG</button>
+          <input type='text' name="search" placeholder="소환사 이름 검색" autoComplete="off" />
+          <button onClick={setShow}>.GG</button>
         </Search>
       </Content>
       <Cancel onClick={setShow}>

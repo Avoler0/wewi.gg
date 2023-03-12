@@ -15,7 +15,7 @@ export default function MainSearch(){
           </Title>
           <SearchForm onSubmit={searchMovePath}>
             <SearchLabel htmlFor="SearchInput" />
-            <SearchInput name="search" placeholder="소환사명" ></SearchInput>
+            <SearchInput name="search" placeholder="소환사명" autoComplete="off"></SearchInput>
             <SearchButton >검색</SearchButton>
           </SearchForm>
         </SearchContainer>
