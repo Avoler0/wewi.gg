@@ -61,13 +61,11 @@ const Container = styled.div`
   width: 100%;
   height: 100%;
   color:black;
-  background-color: RGB(235, 238, 241);
 `;
 
 const Wrapper = styled.div`
   max-width: 1200px;
   margin: 0 auto;
-  padding-top: 150px;  
   @media (min-width: 992px) and (max-width: 1199px) {
     width: 792px;
   }
@@ -80,7 +78,6 @@ const Wrapper = styled.div`
 `;
 const ProfileView = styled.div`
   width: 19rem;
-  background-color: #fff;
   margin-bottom: 6px;
   border-radius: 5px;
   display: block;
@@ -94,7 +91,7 @@ const RankView = styled.div`
 const ChampStatsView = styled.div`
   width: 19rem;
   min-height: 300px;
-  background-color: #fff;
+  background-color: rgb(22, 43, 59);
   margin: 6px 0;
   border-radius: 5px;
   display: block;

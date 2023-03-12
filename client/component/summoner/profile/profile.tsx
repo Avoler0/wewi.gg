@@ -36,6 +36,8 @@ const ProfileWrap = styled.div`
   width: 100%;
   height: 100%;
   padding: 10px;
+  background-color: rgb(22, 43, 59);
+  color: #fff;
 `;
 const IconBox = styled.div`
   display: inline-block;

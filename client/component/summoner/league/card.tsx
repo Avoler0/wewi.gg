@@ -3,9 +3,11 @@ import Image from "next/image";
 
 export default function LeagueCard({info,margin}:any){
   
-  const { leaguePoints, losses,queueType,rank,tier,wins } = info;
+  const { leaguPoints, losses,queueType,rank,tier,wins } = info;
   const rankType = queueType === "RANKED_SOLO_5x5" ? "솔로 랭크" : "자유 랭크"
   const rate = (wins/(wins+losses))*100
+
+  console.log(leaguePoints)
   return(
     <Card margin={margin} >
       <RankTitle>{rankType}</RankTitle>
@@ -18,7 +20,7 @@ export default function LeagueCard({info,margin}:any){
         <ContentDiv>
           <Rank>
             <div>{tier} {rank}</div>
-            <div>{leaguePoints}LP</div>
+            {/* <div>{leaguePoints}LP</div> */}
           </Rank>
           <WinRate>
             <div>
@@ -40,9 +42,8 @@ export default function LeagueCard({info,margin}:any){
 const Card = styled.div<{margin:boolean}>`
   width: 100%;
   height: 8rem;
-  background-color: #fff;
-  color: black;
-  border-radius: 0.5rem;
+  background-color: rgb(22, 43, 59);
+  color: #fff;
   margin-bottom: ${props => props.margin ? "0.5rem":"0"}
 `;
 const RankTitle = styled.div`

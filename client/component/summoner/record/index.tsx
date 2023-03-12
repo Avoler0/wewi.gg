@@ -60,8 +60,7 @@ const ChampView = styled.div`
 `;
 const GameView = styled.div`
   padding: 0 5px;
-  background-color: #fff;
-  border-radius: 5px;
+  background-color: rgb(22, 43, 59);
 `;
 
 const More = styled.button`

@@ -7,13 +7,14 @@ export default React.memo(LeagueInfo)
 
 function LeagueInfo({league}:any){
   const rank = {
-    solo:league[0] ? league[0].queueType === 'RANKED_SOLO_5x5' ? league[0] : league[1] : 'unranked',
-    team:league[1] ? league[1].queueType === 'RANKED_FLEX_SR' ? league[1] : league[0] : 'unranked'
+    solo:league[0] ? league[0].queueType === 'RANKED_SOLO_5x5' ? league[0] : league[1] : undefined,
+    team:league[1] ? league[1].queueType === 'RANKED_FLEX_SR' ? league[1] : league[0] : undefined
   }
+
   return (
     <RankWrap>
-      {rank.solo === 'unranked' ? <LeagueUnrankCard margin={true} /> : <LeagueCard info={rank.solo} margin={true} /> }
-      {rank.team === 'unranked' ? <LeagueUnrankCard margin={false} /> : <LeagueCard info={rank.team} margin={false} /> }
+      {rank.solo ?  <LeagueCard info={rank.solo} margin={true} /> : <LeagueUnrankCard margin={true} /> }
+      {rank.team ? <LeagueCard info={rank.team} margin={false} /> : <LeagueUnrankCard margin={false} />   }
     </RankWrap>
   )
 }
@@ -25,6 +26,5 @@ const RankWrap = styled.div`
   align-items: center;
   width: 100%;
   height: 100%;
-  background-color: RGB(235, 238, 241);
 `;
 
