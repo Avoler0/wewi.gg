@@ -237,7 +237,6 @@ const Rate = styled.div`
   height: 1.2rem;
   background-color: rgb(27, 52, 71);
   border-radius: 2px;
-  z-index: 1;
   overflow: hidden;
 `;
 
