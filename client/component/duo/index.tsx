@@ -54,7 +54,6 @@ const Container = styled.div`
 const Wrapper = styled.div`
   width: ${props => props.theme.windowSize.pc};
   margin: 0 auto;
-  padding: 1rem;
   
   @media (min-width: 992px) and (max-width: 1199px) {
     width: 792px;

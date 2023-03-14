@@ -15,9 +15,7 @@ const nextConfig = {
     ]
   },
   swcMinify: true,
-
-};
-webpack: config => {
+  webpack: config => {
     config.module.rules.push({
       test: /\.svg$/i,
       issuer: /\.[jt]sx?$/,
@@ -25,4 +23,6 @@ webpack: config => {
     });
     return config;
   }
+};
+
 module.exports = nextConfig
