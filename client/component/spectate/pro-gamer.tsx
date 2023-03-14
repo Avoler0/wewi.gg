@@ -4,12 +4,48 @@ import ProCard from "./card/card";
 
 
 export default function ProGamer(){
-  const pro_gamer = ["hide on bush","쭌 베","T1 Roach","baut12"]
+  const pro_gamer = [
+    { 
+      nick:"hide on bush",
+      team:"T1 Challengers",
+      teamNick:"Faker"
+    },
+    {
+      nick:"Asperrr",
+      team:"T1 Challengers",
+      teamNick:"Asper"
+    },
+    { 
+      nick:"쭌 베",
+      team:"T1 Challengers",
+      teamNick:"Bay"
+    },
+    { 
+      nick:"T1 Roach",
+      team:"T1 Challengers",
+      teamNick:"Roach"
+    },
+    { 
+      nick:"baut12",
+      team:"T1 Challengers",
+      teamNick:"Baut"
+    },
+    { 
+      nick:"T1 Trigger",
+      team:"T1 Challengers",
+      teamNick:"Trigger"
+    },
+    { 
+      nick:"krats aira",
+      team:"Rascal Jester",
+      teamNick:"Ssol"
+    },
+  ]
   return (
     <Spectate>
       <List>
-        {pro_gamer.map((nick:string)=>{
-          return <ProCard key={nick} nickName={nick} />
+        {pro_gamer.map((gamer:any)=>{
+          return <ProCard key={gamer.nick} gamer={gamer} />
         })}
       </List>
       

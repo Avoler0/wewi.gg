@@ -144,6 +144,7 @@ const Card = styled.div`
   font-size: .75rem;
   flex-shrink: 0;
   align-items: center;
+  border-bottom: 1px solid rgb(39, 58, 73);
 `;
 
 const User = styled.div`
