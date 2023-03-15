@@ -11,9 +11,12 @@ export const timeHook = {
 
     return `${Math.floor(betweenDay / 365)}년 전`
   },
-  
-  duration:function(time:number){
-    return `${Math.floor(time/60)}분${time%60}초`
+
+  secDuration:function(oldTime:any){
+    let currentTime = Date.now();
+    let diff = currentTime - oldTime;
+
+    return`${Math.floor(diff / 1000 / 60)}:${Math.floor(diff / 1000 % 60)}`
   }
 }
 

@@ -40,10 +40,12 @@ export default function RecordCard({detail}:any) {
   });
   useEffect(()=>{
     if(detail){
+      console.log('챔피언 챔피언 챔피언',participant)
       const ItemArr = ["item0","item1","item2","item6","item3","item4","item5"];
+      
       (async ()=>{
         await Promise.all([
-          riotImageHook.champion(participant?.championName),
+          riotImageHook.championByName(participant?.championName),
           riotImageHook.spell(participant.summoner1Id),
           riotImageHook.spell(participant.summoner2Id),
           riotImageHook.rune(participant.perks?.styles[0].style),

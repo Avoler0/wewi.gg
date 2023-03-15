@@ -1,34 +1,45 @@
+/* eslint-disable jsx-a11y/alt-text */
+/* eslint-disable @next/next/no-img-element */
 import { useEffect, useState } from "react";
 import styled from "styled-components"
 import VideoSvg from '../../../public/images/public-icons/video.svg'
-import { riotSummonerHook } from "../../../hooks/server/riot/summoner";
 import { riotSpectateHook } from "../../../hooks/server/riot/spectate";
+import { riotImageHook } from "../../../hooks/server/riot/image";
+import { timeHook } from "../../../hooks/timeHook";
+import CardTime from "./cardTime";
 
 export default function ProCard({gamer}:any){
   const [inGame,setInGame] = useState(false);
-  const {nick,team,teamNick} = gamer;
+  const {nick,team,teamNick,id} = gamer;
+  const [gameData,setGameData] = useState<any>();
+  
   useEffect(()=>{
-    riotSummonerHook.info(gamer.nick)
-    .then((_res:any)=>{
-      const id = _res.data.id;
-      console.log('데이터',id)
-      riotSpectateHook.watch(id)
-      .then((_watchRes)=>{
-        console.log("왓치레스",_watchRes)
-        setInGame(true)
-      })
-      .catch((_watchError) => {
-        console.log("왓치에러",_watchError)
-      })
-    })
+      (async()=>{
+        await Promise.all([riotSpectateHook.watch(id)])
+        .then(async ([_watchRes]:any)=>{
+          console.log("왓치레스",_watchRes.data)
+          const findResult = _watchRes.data.participants.findIndex((data:any)=> data.summonerName === nick)
+          console.log('파인드 파티시팬트',{..._watchRes.data,findIndex:findResult})
+          const result = await riotImageHook.championById(_watchRes.data?.participants[findResult].championId)
+          console.log('게임 데이터 파헤치기',result)
+          setGameData({..._watchRes.data,findIndex:findResult,findChamp:result})
+          setInGame(true)
+        })
+        .catch((_watchError) => {
+          console.log("왓치에러",_watchError)
+        })
+      })()
   },[])
-
-  if(!inGame) return
+  
+  // timeHook.elapsed(gameData?.gameStartTime)
+  console.log('게임 데이터 파헤치기',gameData)
+  if(!inGame) return <></>
+  // console.log(timeHook.elapsed(gameData?.gameStartTime))
   return (
     <Card>
       <Content>
           <Team_Icon>
-            <img src={`/images/pro-team-icons/${gamer.team}.webp`} />
+            <img src={`/images/pro-team-icons/${gamer.team}.webp`} alt="team" />
           </Team_Icon>
           <Team_Info>
             <div>{team}</div>
@@ -39,7 +50,7 @@ export default function ProCard({gamer}:any){
         </GameType>
         <NickName>{nick}</NickName>
         <Profile_Icon>
-
+          <img src={gameData.findChamp} />
         </Profile_Icon>
         <User_Info>
           <span>그랜드마스터</span>
@@ -50,7 +61,7 @@ export default function ProCard({gamer}:any){
             <div>
               <div>
                 <VideoSvg />
-                <span>13:11</span>
+                <CardTime time={gameData?.gameStartTime}/>
               </div>
               <button>관전하기</button>
             </div>
