@@ -1,0 +1,74 @@
+openapi: 3.0.0
+info:
+  version: 0.0.1
+  title: WEWI.GG API docs
+  description: WEWI.GG Web Page API List
+servers:
+  - url: http://localhost:4000/wewi-gg
+    description: Optional server description, e.g. Main (production) server
+paths:
+  /account/login:
+    post:
+      tags:
+        - account
+      summary: 로그인
+      requestBody:
+        content:
+          application/json:    # Media type
+            schema:            # Request body contents
+              type: object
+              properties: 
+                email:
+                  type: string
+                password:
+                  type: string
+                  nullable: true
+                oauthType:
+                  type: string
+                  nullable: true
+                oauthToken: 
+                  type: string
+                  nullable: true
+                
+            example:           
+              email: test@test.com
+              password: test1234!
+              oauthType: null | google | naver
+              oauthToken: null | AAAAOBwAzQ-rwNeL9mvJwUYiAA3okT6aYPWi_zZZiTvZ9nx5pBAs4iNgPh6YvAK2d3Gb54A82Z5G82vj6...
+      responses:
+        '200':
+          description: 성공적으로 로그인 요청
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Id:
+                    type: number
+                  Email:
+                    type: string
+                  Name:
+                    type: string
+                  OauthType:
+                    type: string
+                    nullable: true
+                  UpdatedAt:
+                    type: string
+        '400':
+          description: 계정의 아이디 또는 비밀번호가 다를 경우
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        '409':
+          description: 생성하는 계정 ID가 이미 존재 할 경우
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string

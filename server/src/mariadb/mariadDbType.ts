@@ -6,5 +6,6 @@ export type MariaDBErrorType = {
   fatal:boolean,
   errno:number,
   sqlState:string,
-  code:string
+  code:string,
+  message:string
 }

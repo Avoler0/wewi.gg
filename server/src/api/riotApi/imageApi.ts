@@ -4,7 +4,27 @@ import { riotDragonVersion, riotRuneJson, riotSpellJson } from "./const";
 
 const dragonPath = 'http://ddragon.leagueoflegends.com/cdn/'
 
+export async function riotChampionIdImage(ids:any){
+  console.log('아이디',ids)
+  const version = await riotDragonVersion();
+  const result = await riotDragonApi(`${version}/data/en_US/champion.json`)
+  .then((_res:any) => {
+    const championList = _res.data.data;
+    let chapionName = '';
+    for(let name in championList){
+      if(championList[name].key === ids+''){
+        chapionName = championList[name].image.full
+        break;
+      }
+    }
+    return chapionName
+  })
+
+  return `${dragonPath}${version}/img/champion/${result.replace(/[']|\s/,'')}`
+}
+
 export async function riotChampionImage(ids:any){
+  console.log('아이디',ids)
   const version = await riotDragonVersion();
   const idArr = Object.assign([],ids)
   const result = await riotDragonApi(`${version}/data/en_US/champion.json`)
