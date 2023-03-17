@@ -29,7 +29,6 @@ paths:
                 oauthToken: 
                   type: string
                   nullable: true
-                
             example:           
               email: test@test.com
               password: test1234!
@@ -72,3 +71,329 @@ paths:
                 properties:
                   message:
                     type: string
+  /account/register:
+    post:
+      tags:
+        - account
+      summary: 회원가입
+      requestBody:
+        content:
+          application/json:    # Media type
+            schema:            # Request body contents
+              type: object
+              properties: 
+                email:
+                  type: string
+                password:
+                  type: string
+                nickName:
+                  type: string
+                oauthType:
+                  type: string
+                  nullable: true
+                oauthToken: 
+                  type: string
+                  nullable: true
+            example:           
+              email: test@test.com
+              password: test1234!
+              nickName: 테스트계정
+              oauthType: null | google | naver
+              oauthToken: null | AAAAOBwAzQ-rwNeL9mvJwUYiAA3okT6aYPWi_zZZiTvZ9nx5pBAs4iNgPh6YvAK2d3Gb54A82Z5G82vj6...
+      responses:
+        '200':
+          description: 성공적으로 회원가입
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  userId:
+                    type: string
+                  message:
+                    type: string
+        '400':
+          description: 이미 존재하는 계정일 경우
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+  /mates/list:
+    get:
+      tags:
+        - mates
+      summary: 듀오 찾기 게시글 조회
+      responses:
+        '200':
+          description: 성공적으로 듀오 찾기 게시글 조회
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Id:
+                    type: number
+                  SeekerName:
+                    type: string
+                  Line:
+                    type: string
+                  Mode:
+                    type: string
+                  Mic:
+                    type: boolean
+                  Champions:
+                    type: string
+                  League:
+                    type: object
+                  CreateAt:
+                    type: string
+                  SeekerLevel:
+                    type: number
+                  SeekerIcon:
+                    type: string
+              example:           
+                seekerName: 스쿵씨
+                password: 1234
+                line: Jungle
+                mode: Solo
+                mic: true
+                content: 같이할 사람 구합니다 !
+        '500':
+          description: 서버 에러
+  /mates/add:
+    post:
+      tags:
+        - mates
+      summary: 듀오 찾기 게시글 추가
+      requestBody:
+        content:
+          application/json:    # Media type
+            schema:            # Request body contents
+              type: object
+              properties: 
+                seekerName:
+                  type: string
+                password: 
+                  type: string
+                line:
+                  type: string
+                mode:
+                  type: string
+                mic:
+                  type: boolean
+                content: 
+                  type: string
+            example:           
+              seekerName: 스쿵씨
+              password: 1234
+              line: Jungle
+              mode: Solo
+              mic: true
+              content: 같이할 사람 구합니다 !
+      responses:
+        '200':
+          description: 성공적으로 듀오 찾기 게시글 추가
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        '400':
+          description: 이미 생성된 게시글일 경우
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+  /posts/list/:commuName:
+    get:
+      parameters:
+        - in: commuName
+          commuName: id
+          required: true
+          description: 커뮤니티의 태그를 사용 / all의 경우 모든 커뮤 리스트를 불러옴
+      tags:
+        - posts
+      summary: 커뮤니티 게시글 리스트 받아오기
+      responses:
+        '200':
+          description: 성공적으로 커뮤니티 게시글 조회
+          content:
+            application/json:
+              schema:            # Request body contents
+              type: object
+              properties: 
+                PostId:
+                  type: number
+                PostTitle: 
+                  type: string
+                Content:
+                  type: string
+                CommunityName:
+                  type: string
+                UserName:
+                  type: string
+                CreateAt: 
+                  type: string
+                Thumbnail:
+                  type: string
+                Good:
+                  type: number
+                Bad: 
+                  type: number
+                View:
+                  type: number
+        '500':
+          description: 서버 오류
+  /posts/write:
+    post:
+      tags:
+        - posts
+      summary: 커뮤니티 게시글 글 쓰기
+      requestBody:
+        content:
+          application/json:    # Media type
+            schema:            # Request body contents
+              type: object
+              properties: 
+                title:
+                  type: string
+                content: 
+                  type: string
+                community:
+                  type: string
+                userName:
+                  type: string
+                thumbnail:
+                  type: string
+                  nullable: true
+            example:           
+              title: 글 제목 입니다!
+              content: <p>글 내용입니다.<br><img src="http://localhost:4000/wewi-gg/posts/attach/images?src=emptyUploads/1674904569892-50.png" alt="image"><br></p>
+              community: free
+              userName: 테스트계정
+              thumbnail: 'emptyUploads/1679041647223-51.png'
+      responses:
+        '200':
+          description: 성공적으로 커뮤니티 게시글 조회
+          content:
+            application/json:
+              schema:            # Request body contents
+              type: object
+              properties: 
+                message:
+                  type: string
+        '400':
+          description: 이미 게시된 적이 있는 제목일 경우
+          content:
+            application/json:
+              schema:            # Request body contents
+              type: object
+              properties: 
+                message:
+                  type: string
+  /posts/image:
+    post:
+      tags:
+        - posts
+      summary: 이미지 저장용 API / 게시글 작성 시 사용 되는 사진을 저장하여 다시 돌려주는 용도
+      requestBody:
+        content:
+          application/json:    # Media type
+            schema:            # Request body contents
+              type: object
+              properties: 
+                title:
+                  type: string
+                content: 
+                  type: string
+                community:
+                  type: string
+                userName:
+                  type: string
+                thumbnail:
+                  type: string
+                  nullable: true
+            example:           
+              title: 글 제목 입니다!
+              content: <p>글 내용입니다.<br><img src="http://localhost:4000/wewi-gg/posts/attach/images?src=emptyUploads/1674904569892-50.png" alt="image"><br></p>
+              community: free
+              userName: 테스트계정
+              thumbnail: 'emptyUploads/1679041647223-51.png'
+      responses:
+        '200':
+          description: 성공적으로 커뮤니티 게시글 조회
+          content:
+            application/json:
+              schema:            # Request body contents
+              type: object
+              properties: 
+                message:
+                  type: string
+        '400':
+          description: 이미 게시된 적이 있는 제목일 경우
+          content:
+            application/json:
+              schema:            # Request body contents
+              type: object
+              properties: 
+                message:
+                  type: string
+  /posts/attach/images:
+    get:
+      parameters:
+        - in: src
+          src: path
+          required: true
+          description: 이미지 경로
+      tags:
+        - posts
+      summary: 커뮤니티 글쓰기 이미지 조회
+      responses:
+        '200':
+          description: 이미지 조회 / 이미지를 화면에 띄워줌 ex) http://localhost:4000/wewi-gg/posts/attach/images?src=emptyUploads/1679043775960-51.webp
+        '500':
+          description: 서버 오류
+  /posts/images:
+    post:
+      tags:
+        - posts
+      summary: 커뮤니티 글쓰기 이미지 보냄
+      requestBody:
+        content:
+          multipart/form-data:    # Media type
+            schema:            # Request body contents
+              type: object
+              properties: 
+                fieldname:
+                  type: string
+                originalname:
+                  type: string
+                encoding:
+                  type: string
+                minmtype:
+                  type: string
+            example:           
+              fieldname: image
+              originalname: grandmaster.png
+              encoding: 7bit
+              minmtype: image/png
+      responses:
+        '200':
+          description: 이미지 경로를 보냄
+          content:
+            application/json:
+              schema:            # Request body contents
+              type: object
+              properties: 
+                data:
+                  type: string
+        '500':
+          description: 서버 오류

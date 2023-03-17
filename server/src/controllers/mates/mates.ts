@@ -8,7 +8,6 @@ import { matesQuery } from './../../mariadb/query/mates';
 export async function getMatesList(req:any,res:any) {
   try{
     const result = await matesQuery.select.mates()
-    
     res.status(200).json(result)
   }catch(_error:any){
     const err = matesErrorStateMessage(_error);
@@ -29,7 +28,7 @@ export async function postMatesList(req:any,res:any) {
       const summonerValue = {champions:champions,league:leagueInfo,icon:profileIcon,level:summonerLevel};
       await matesQuery.insert({...req.body,...summonerValue})
       .then((_res)=>{
-        return res.status(200).send('success mates')
+        return res.status(200).json({message:'success mates add'})
       })
       .catch((_err)=>{
         const err = matesErrorStateMessage(_err);

@@ -9,7 +9,7 @@ export async function loginController(req:any,res:any){
     const _response:any = await accountQuery.select.loginByEmail(email)
     if(_response[0]){
       const {Id,Email,Name,OauthToken,OauthType,Password,CreatedAt,UpdatedAt} = _response[0]
-      if(Password === password && oauthType){
+      if(Password === password || oauthType){
         res.status(200).json({Id,Email,Name,OauthType,UpdatedAt})
       }else{
         throw new Error('비밀번호가 올바르지 않습니다.');

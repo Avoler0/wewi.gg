@@ -28,8 +28,8 @@ export async function getPostWritingData(req:any,res:any){
   const {id} = req.query;
   await postsQuery.select.postsById(id)
   .then((_response)=>{
-    console.log(_response)
-    res.status(200).json(_response)
+
+    res.status(200).json({message: '성공적으로 게시 되었습니다.'})
   })
   .catch((_error)=>{
     const err = postErrorStateMessage(_error);
@@ -38,6 +38,7 @@ export async function getPostWritingData(req:any,res:any){
 }
 
 export async function postsWriteInsert(req:any,res:any){
+  console.log(req.body)
   await postsQuery.insert.posts(req.body)
   .then((_response)=>{
     res.status(200).send('success')

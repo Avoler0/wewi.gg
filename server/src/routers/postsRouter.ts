@@ -10,7 +10,7 @@ const storage = multer.diskStorage({
     cb(null, 'emptyUploads');
   },
   filename: function (req, file, cb) {
-    console.log("콘솔입니다.",req.body.userNumber , req.query.userNumber,file)
+    console.log(file)
     cb(null,Date.now() + '-' + req.body.userNumber+'.'+file.mimetype.split('/')[1]);
   }
 });

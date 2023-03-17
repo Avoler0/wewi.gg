@@ -7,6 +7,6 @@ const matesRouter = express();
 matesRouter.get('/list',getMatesList)
 
 matesRouter.post('/add',postMatesList)
-// matesRouter.post('/register',registerController)
+
 matesRouter.delete('/delete',deleteMates)
 export default matesRouter;
