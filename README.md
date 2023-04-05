@@ -13,8 +13,14 @@
   <li>커뮤니티 페이지 또한 Node.js, mariaDB를 이용하여 데이터 통신</li>
 </ul>
 
-## 페이지들
-### 메인 페이지
+## 아키텍처
+
+## 플로우차트
+
+![flow](./readmeImg/wewi_flow.png)
+
+<!-- ## 페이지들 -->
+<!-- ### 메인 페이지
 ![image](https://user-images.githubusercontent.com/91608021/222413218-7efa4b56-0e3f-4634-a977-81c2b27047bc.png)
 
 
@@ -32,4 +38,4 @@
 ![image](https://user-images.githubusercontent.com/91608021/222413449-3c62cd43-923e-4238-9e7b-b483b87a20c2.png)
 
 ### 커뮤니티 글 쓰기 페이지
-![image](https://user-images.githubusercontent.com/91608021/222413556-134e5cc2-52a8-4373-b447-8e7412cfa529.png)
+![image](https://user-images.githubusercontent.com/91608021/222413556-134e5cc2-52a8-4373-b447-8e7412cfa529.png) -->

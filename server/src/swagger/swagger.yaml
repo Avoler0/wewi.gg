@@ -5,7 +5,7 @@ info:
   description: WEWI.GG Web Page API List
 servers:
   - url: http://localhost:4000/wewi-gg
-    description: Optional server description, e.g. Main (production) server
+    description: WEWI.GG API URL
 paths:
   /account/login:
     post:
@@ -299,54 +299,7 @@ paths:
               properties: 
                 message:
                   type: string
-  /posts/image:
-    post:
-      tags:
-        - posts
-      summary: 이미지 저장용 API / 게시글 작성 시 사용 되는 사진을 저장하여 다시 돌려주는 용도
-      requestBody:
-        content:
-          application/json:    # Media type
-            schema:            # Request body contents
-              type: object
-              properties: 
-                title:
-                  type: string
-                content: 
-                  type: string
-                community:
-                  type: string
-                userName:
-                  type: string
-                thumbnail:
-                  type: string
-                  nullable: true
-            example:           
-              title: 글 제목 입니다!
-              content: <p>글 내용입니다.<br><img src="http://localhost:4000/wewi-gg/posts/attach/images?src=emptyUploads/1674904569892-50.png" alt="image"><br></p>
-              community: free
-              userName: 테스트계정
-              thumbnail: 'emptyUploads/1679041647223-51.png'
-      responses:
-        '200':
-          description: 성공적으로 커뮤니티 게시글 조회
-          content:
-            application/json:
-              schema:            # Request body contents
-              type: object
-              properties: 
-                message:
-                  type: string
-        '400':
-          description: 이미 게시된 적이 있는 제목일 경우
-          content:
-            application/json:
-              schema:            # Request body contents
-              type: object
-              properties: 
-                message:
-                  type: string
-  /posts/attach/images:
+  /posts/attach/images/:src:
     get:
       parameters:
         - in: src
@@ -387,7 +340,7 @@ paths:
               minmtype: image/png
       responses:
         '200':
-          description: 이미지 경로를 보냄
+          description: 이미지 저장 완료
           content:
             application/json:
               schema:            # Request body contents

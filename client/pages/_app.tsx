@@ -45,7 +45,7 @@ function MyApp({ Component, pageProps }: AppProps) {
               <Container>
                 <Component {...pageProps} />
               </Container>
-              { router.pathname === '/' ? null : <Footer />}
+              <Footer />
             </PersistGate>
           </Provider>
         </ThemeProvider>

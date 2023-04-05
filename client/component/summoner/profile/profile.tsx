@@ -2,18 +2,22 @@ import styled from "styled-components";
 import Image from "next/image";
 import { riotImageHook } from "../../../hooks/server/riot/image";
 import { useEffect, useState } from "react";
+import React from "react";
 
 export default function SummonerProfile({profile}:any) {
   const { name, profileIconId, summonerLevel } = profile;
   const [profileIcon,setProfileIcon] = useState(null);
-  
-  useEffect(()=>{
-    (async ()=>{
+
+  React.useEffect(()=>{
+    const timer = setTimeout(async()=>{
       await riotImageHook.profile(profileIconId)
       .then((_res)=> setProfileIcon(_res))
-    })()
-  })
+    },0);
+    return()=>clearTimeout(timer);
+  },[profileIconId])
+
   if(!profileIcon) return <div></div>
+
   return(
     <ProfileWrap>
         <IconBox >

@@ -14,7 +14,6 @@ interface RegisterQuery extends LoginQuery{
 
 export const accountHook = { // 로그인 , 회원가입 부분 Server 통신 Hook
   login:async function(query:LoginQuery){ // 로그인 시 Server 접속
-    console.log('로그인 훅',query)
     return await new Promise(async (resolve,reject) => {
       await dbInstance({
         method:'post',
@@ -26,7 +25,6 @@ export const accountHook = { // 로그인 , 회원가입 부분 Server 통신 Ho
     })
   },
   register:async function(query:RegisterQuery){ // 회원가입 시 유저 데이터를 담아 서버에 보냄
-    console.log("회원가입 훅",query)
     return await new Promise(async (resolve,reject) => {
       await dbInstance({
         method:'post',

@@ -48,7 +48,6 @@ function Register() {
         router.push('/login')
       })
       .catch((_error)=>{
-        console.log("레지스터 에러",_error)
         setEmailError('이미 등록된 이메일입니다.');
       })
   }

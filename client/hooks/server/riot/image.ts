@@ -11,7 +11,6 @@ export const riotImageHook = {
     return result.data;
   },
   championById:async function(championId:number) {
-    console.log('챔피언 아이디',championId)
     const result = await dbInstance.get(`/lol/images/champion/id/${championId}`);
     return result.data;
   },

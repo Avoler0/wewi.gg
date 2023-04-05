@@ -14,7 +14,7 @@ export default function Login() {
   const dispatch = useDispatch()
   const user = useSelector((state:any)=> state.user)
 
-  if(user.state) router.push('/')
+  // if(user.state) router.push('/')
 
   async function postLogin(event:any){
     event.preventDefault();
@@ -25,6 +25,7 @@ export default function Login() {
     
     await accountHook.login(query)
     .then((_res:any)=>{
+      console.log(_res)
       dispatch(setLogin({
         id:_res.data.Id,
         oauth:_res.data.OauthType,
@@ -33,6 +34,7 @@ export default function Login() {
       }));
     })
     .catch((_err)=>{
+      console.log(_err)
       const error = _err.response;
       if(error.status === 404 || error.status === 400){
         alert('잘못된 아이디 또는 비밀번호입니다.')
