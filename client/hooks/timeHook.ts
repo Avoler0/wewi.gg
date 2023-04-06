@@ -3,7 +3,6 @@ export const timeHook = {
     const between = Math.floor((Date.now() - target) / 1000 / 60);
     const betweenHour = Math.floor(between / 60)
     const betweenDay = Math.floor(betweenHour / 24)
-
     if(between < 1) return "방금 전";
     if(between < 60) return `${between}분 전`;
     if(betweenHour < 24) return `${betweenHour}시간 전`
@@ -17,6 +16,12 @@ export const timeHook = {
     let diff = currentTime - oldTime;
 
     return`${Math.floor(diff / 1000 / 60)}:${Math.floor(diff / 1000 % 60)}`
-  }
+  },
+  elapsedTime:function(secondsTime:any){
+    const minute = Math.floor(secondsTime / 60)
+    const seconds = secondsTime % 60
+
+    return`${minute}분 ${seconds}초`
+  },
 }
 

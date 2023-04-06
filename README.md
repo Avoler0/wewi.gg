@@ -14,28 +14,6 @@
 </ul>
 
 ## 아키텍처
-
+![architecture](./readmeImg/architecture.png)
 ## 플로우차트
-
 ![flow](./readmeImg/wewi_flow.png)
-
-<!-- ## 페이지들 -->
-<!-- ### 메인 페이지
-![image](https://user-images.githubusercontent.com/91608021/222413218-7efa4b56-0e3f-4634-a977-81c2b27047bc.png)
-
-
-### 듀오구인 페이지
-![image](https://user-images.githubusercontent.com/91608021/222413257-a102a9bc-97a0-4b8a-ad14-8d9a5eb6a679.png)
-
-### 전적검색 페이지
-![image](https://user-images.githubusercontent.com/91608021/222413314-daed047e-2f21-4c75-959e-c2c7e05e0dfd.png)
-
-
-### 로그인&회원가입 페이지
-![image](https://user-images.githubusercontent.com/91608021/216753196-965c51ad-d41d-4fb6-9ede-65a8777e21f1.png)
-
-### 커뮤니티 페이지
-![image](https://user-images.githubusercontent.com/91608021/222413449-3c62cd43-923e-4238-9e7b-b483b87a20c2.png)
-
-### 커뮤니티 글 쓰기 페이지
-![image](https://user-images.githubusercontent.com/91608021/222413556-134e5cc2-52a8-4373-b447-8e7412cfa529.png) -->
