@@ -1,9 +1,16 @@
 import styled from "styled-components"
 import ProCard from "./card/card";
+import { useEffect } from "react";
+import { useRouter } from "next/router";
 
 
 
 export default function ProGamer(){
+  const router = useRouter();
+  useEffect(()=>{
+    alert('준비중입니다.')
+    router.back();
+  },[])
   const pro_gamer = [
     { 
       nick:"hide on bush",

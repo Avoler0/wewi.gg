@@ -3,7 +3,7 @@ const nextConfig = {
   images:{
     domains:["localhost","35.79.79.134","ddragon.leagueoflegends.com","ddragon.canisback.com","openapi.naver.com"]
   },
-  reactStrictMode: false,
+  reactStrictMode: true,
   staticPageGenerationTimeout: 1000,
   async redirects() {
     return [
