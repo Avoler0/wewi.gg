@@ -42,44 +42,31 @@ export default function RecordCard({detail}:any) {
   useEffect(()=>{
     if(detail){
       const ItemArr = ["item0","item1","item2","item6","item3","item4","item5"];
+      
       (async ()=>{
-        // await Promise.all([
-        //   riotImageHook.championByName(participant?.championName),
-        //   riotImageHook.spell(participant.summoner1Id),
-        //   riotImageHook.spell(participant.summoner2Id),
-        //   riotImageHook.rune(participant.perks?.styles[0].style),
-        //   riotImageHook.rune(participant.perks?.styles[1].style),
+        await Promise.all([
+          riotImageHook.championByName(participant?.championName),
+          riotImageHook.spell(participant.summoner1Id),
+          riotImageHook.spell(participant.summoner2Id),
+          riotImageHook.rune(participant.perks?.styles[0].style),
+          riotImageHook.rune(participant.perks?.styles[1].style),
           
-        // ]).then(([champion,spell1,spell2,rune1,rune2]:any)=>{
-        //   setIcons({champion,spell1,spell2,rune1,rune2})
-        //   setIsLoading(false);
-        // })
+        ]).then(([champion,spell1,spell2,rune1,rune2]:any)=>{
+          setIcons({champion,spell1,spell2,rune1,rune2})
+          setIsLoading(false);
+        })
 
-        // await Promise.all(
-        //   ItemArr.map((item:string)=>{
-        //     return riotImageHook.item(participant[item])
-        //   })
-        // ).then((item:any) => {
-        //   setItemIcons(item)
-        // })
-
-        await riotImageHook.championByName(participant?.championName),
-        await riotImageHook.spell(participant.summoner1Id),
-        await riotImageHook.spell(participant.summoner2Id),
-        await riotImageHook.rune(participant.perks?.styles[0].style),
-        await riotImageHook.rune(participant.perks?.styles[1].style),
-
-        await riotImageHook.item(participant['item0'])
-        await riotImageHook.item(participant['item1'])
-        await riotImageHook.item(participant['item2'])
-        await riotImageHook.item(participant['item6'])
-        await riotImageHook.item(participant['item3'])
-        await riotImageHook.item(participant['item4'])
-        await riotImageHook.item(participant['item5'])
+        await Promise.all(
+          ItemArr.map((item:string)=>{
+            return riotImageHook.item(participant[item])
+          })
+        ).then((item:any) => {
+          setItemIcons(item)
+        })
       })()
     }
-    
-  },[detail, participant])
+      
+  },[])
   
   function ItemRender(){
     const Item = itemIcons.map((item:any,index:number)=>{

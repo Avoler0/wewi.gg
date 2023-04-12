@@ -1,4 +1,4 @@
-import Register from "../component/account/register";
+import Register from "../../component/account/register";
 
 
 

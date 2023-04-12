@@ -29,7 +29,11 @@ function Record({info,searchString}:props) {
 
 
   useEffect(()=>{
-    fetchMatch()
+    const timer = setTimeout(()=>{
+      fetchMatch()
+    },600)
+
+    return () => clearTimeout(timer);
   },[fetchMatch])
 
   useEffect(()=>{
@@ -37,15 +41,14 @@ function Record({info,searchString}:props) {
   },[searchString])
 
   if(isLoading) return (<div></div>)
-
+  console.log(details)
   return (
   <>
     <ChampView>
       {/* <ChampRecently  /> */}
     </ChampView>
     <GameView >
-      {/* {details && details?.map((detail:any)=> <RecordCard key={detail.info.gameId} detail={detail}  />)} */}
-      <RecordCard key={details[0].info.gameId} detail={details[0]}  />
+      {details && details?.map((detail:any)=> <RecordCard key={detail.info.gameId} detail={detail}  />)}
       <More onClick={()=>{
         fetchMatch(start+5);
         setStart(+5)
