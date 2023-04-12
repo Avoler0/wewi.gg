@@ -16,6 +16,6 @@
     "jsx": "preserve",
     "incremental": true
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx","custom.d.ts", "hooks/riotApiHook.ts", "hooks/axiosInstance.js"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx","custom.d.ts", "hooks/riotApiHook.ts", "hooks/axiosInstance.js", "pages/account/login/oauth"],
   "exclude": ["node_modules"]
 }

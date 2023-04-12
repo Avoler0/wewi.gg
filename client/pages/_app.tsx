@@ -12,6 +12,7 @@ import theme from '../const/theme'
 import { useEffect } from 'react';
 import axios from 'axios';
 import { vistantPost } from '../hooks/server/visitant';
+import Head from 'next/head';
 const queryClient = new QueryClient();
 
 function MyApp({ Component, pageProps }: AppProps) {
@@ -41,6 +42,9 @@ function MyApp({ Component, pageProps }: AppProps) {
         <ThemeProvider theme={theme}>
           <Provider store={store}>
             <PersistGate loading={null} persistor={persistore}>
+              <Head>
+                <title>WEWI.GG</title>
+              </Head>
               {isHeader ? <HeaderIndex /> : null  }
               <Container>
                 <Component {...pageProps} />

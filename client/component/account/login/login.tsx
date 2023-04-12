@@ -1,7 +1,7 @@
 
 import styled from "styled-components";
 import { useDispatch } from "react-redux";
-import React from "react";
+import React, { useEffect } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { setLogin } from "../../../redux/login/user";
@@ -41,6 +41,49 @@ export default function Login() {
       }
     })
   }
+
+  function initNaverOauth(){
+    const naver_id_login = new window.naver_id_login('NR61LLLoBLU2vcfbHvDY','http://localhost:3000/account/login/oauth/naver')
+    const state = naver_id_login.getUniqState();
+    naver_id_login.setButton('green',0,40)
+    naver_id_login.setDomain('http://localhost:3000')
+    naver_id_login.setState(state);
+    naver_id_login?.init_naver_id_login();
+  }
+
+  function initGoogleOauth(){
+    const googleScript = document.createElement('script');
+    googleScript.src = 'https://accounts.google.com/gsi/client';
+    document.head.appendChild(googleScript);
+    
+    googleScript.onload = () =>{
+      window.google.accounts.id.initialize({
+        client_id: '625687004788-5pv5rsjeqkel0arqfclrmco227f4ven1.apps.googleusercontent.com',
+        ux_mode: 'popup',
+        login_uri: process.env.NEXT_PUBLIC_LOGIN_URL,
+      });
+
+    window.google.accounts.id.renderButton(
+      document.getElementById("google_id_login"),
+      { 
+        'type':'icon',
+        'theme':'outline',
+        'shape':'square',
+        'size': "x-large", 
+        'width': '300', 
+        'height': '100',
+        'longtitle': true,
+        'login_uri' : 'redirect'
+      }
+    );
+    
+    window.google.accounts.id.prompt();
+  }
+}
+  useEffect(()=>{
+    initNaverOauth();
+    initGoogleOauth();
+  },[])
   return (
     <Wrap id="wrap">
       <Title>
@@ -67,8 +110,8 @@ export default function Login() {
           <FastLogin>간편 로그인</FastLogin>
           <LoginBtnInner>
             <OauthBtn>
-              <NaverAouth />
-              <GoogleOauth />
+              <div  id='naver_id_login'/>
+              <div id="google_id_login" />
             </OauthBtn>
             <LoginButton className="login-btn">로그인</LoginButton>
           </LoginBtnInner>

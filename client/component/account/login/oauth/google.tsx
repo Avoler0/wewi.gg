@@ -69,11 +69,9 @@ function GoogleOauth(){
       dispatch(setRegisterOauth({email:jwt_decoded.email,oauthType:'google',oauthToken:jwt_decoded.sub}))
       router.push('/register')
     })
-    
-
   }
 
-return <div id="google_id_login" /> ;
+return <div>잠시만 기다려주세요. 구글 로그인 중 입니다.</div> ;
 }
 
 export default GoogleOauth;

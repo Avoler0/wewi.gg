@@ -87,7 +87,7 @@ export default function Header2(){
                   <UserContent>
                     <span>
                       <button>
-                        <Link href="/login">로그인</Link>
+                        <Link href="/account/login">로그인</Link>
                       </button>
                     </span>
                   </UserContent>

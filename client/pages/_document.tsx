@@ -31,10 +31,7 @@ class MyDocument extends Document {
 	render() {
 		return (
 			<Html>
-				<html lang="ko" />
-				<Head>
-					<title>WEWI.GG</title>
-				</Head>
+				<Head />
 				<body>
 					<Main />
 					<NextScript />
