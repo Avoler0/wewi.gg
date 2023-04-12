@@ -2,22 +2,19 @@ import { createSlice,PayloadAction  } from '@reduxjs/toolkit';
 
 type OauthRegister = {
   email:string,
-  oauthType:string,
-  oauthToken:string
+  type:string,
 }
 
 const oauthReg = createSlice({
   name:'oauthReg',
   initialState:{
     email:'',
-    oauthType:'',
-    oauthToken:''
+    type:'',
   },
   reducers:{
     setRegisterOauth:(state:OauthRegister,action:PayloadAction<any>) => {
       state.email = action.payload.email;
-      state.oauthType = action.payload.oauthType;
-      state.oauthToken = action.payload.oauthToken;
+      state.type = action.payload.type;
     },
   }
 });

@@ -6,8 +6,7 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { setLogin } from "../../../redux/login/user";
 import { useSelector } from "react-redux";
-import NaverAouth from "./oauth/naver";
-import GoogleOauth from "./oauth/google";
+import jwt from 'jsonwebtoken'
 import { accountHook } from "../../../hooks/server/account/account";
 export default function Login() {
   const router = useRouter();
@@ -20,7 +19,8 @@ export default function Login() {
     event.preventDefault();
     const query = {
       email:event.target['email'].value,
-      password:event.target['password'].value
+      password:event.target['password'].value,
+      type:'wewigg'
     }
     
     await accountHook.login(query)
@@ -83,6 +83,12 @@ export default function Login() {
   useEffect(()=>{
     initNaverOauth();
     initGoogleOauth();
+    // const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NTIsImVtYWlsIjoiYXZvbGVyMDFAbmF2ZXIuY29tIiwibmFtZSI6Iu2FjOyKpO2KuCDrhKTsnbTrsoQiLCJjcmVhdGVBdCI6IjIwMjMtMDEtMzBUMDc6MDc6MjcuMDAwWiIsInVwZGF0ZUF0IjoiMjAyMy0wMS0zMFQwNzowNzoyNy4wMDBaIiwidHlwZSI6Im5hdmVyIiwiaWF0IjoxNjgxMjg3MjMxLCJleHAiOjE2ODEyOTA4MzEsImlzcyI6Indld2lnZyIsInN1YiI6Indld2lnZyBqd3RUb2tlbiJ9.J5hm9OF1E9z87B0AatIifLkwSPedFpFXe3Z_TDm1tVk'
+    // const secret:any = 'c1a6488d6984dc1e7fbd881cda8c84e537abb731da6c16ce1309a2f048ba7effa847087fa7c91cb8faffab660843d522ca5679cad4f3b711107c8fda76eacdf4'
+    // // const secret:any = '1234'
+    // const ve = jwt.verify(token,secret)
+
+    // console.log('검증',ve)
   },[])
   return (
     <Wrap id="wrap">

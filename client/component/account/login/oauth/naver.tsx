@@ -1,11 +1,12 @@
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
-import { setLogin } from "../../../../redux/login/user";
 import { setRegisterOauth } from "../../../../redux/login/oauthReg";
 import { accountHook } from "../../../../hooks/server/account/account";
 import styled from "styled-components";
-import axios from "axios";
+import jwt from 'jsonwebtoken'
+import { jwtTokenDecode } from "../../../../hooks/jwtToken";
+import { setLogin } from "../../../../redux/login/user";
 declare global {
   interface Window {
     naver_id_login: any;
@@ -26,36 +27,42 @@ function NaverOauth(){
   }
 
   async function handleNaverCallBack(){
-    const {naver_id_login} = window as any
     const naver_login = new window.naver_id_login('NR61LLLoBLU2vcfbHvDY','http://localhost:3000/account/login/oauth/naver')
     
-    console.log(naver_login.oauthParams.access_token)
     await accountHook.naverOauthApi(naver_login.oauthParams.access_token)
-    // if(router.asPath !== '/login'){
-    //   const token_parameter = router.asPath.split('=')[1].split('&')[0];
-    //   await accountHook.naverOauthApi(token_parameter)
-    //   .then(async (_res:any)=>{
-    //     await accountHook.login({email:_res.data.response.email,oauthType:'naver',oauthToken:token_parameter})
-    //     .then((_res:any)=>{
-    //       dispatch(setLogin({
-    //         id:_res.data.Id,
-    //         oauth:'naver',
-    //         email:_res.data.Email,
-    //         nickName:_res.data.Name,
-    //       }));
-    //     })
-    //     .catch((_error:any)=>{
-    //       dispatch(setRegisterOauth({email:_res.data.response.email,oauthType:'naver',oauthToken:token_parameter}))
-    //       router.push('/register')
-    //     })
-    //   })
-    //   .catch((_err)=>{
-    //     alert('서버 오류! 잠시 후 다시 시도 해 주세요.')
-    //   })
-    // }
+    .then(async (_res:any)=>{
+      await accountHook.oauthLogin({email:_res.data.response.email,type:'naver'})
+      .then((_res:any)=>{
+        const token = _res.data.token;
+        const payload = jwtTokenDecode(token);
+        dispatch(setLogin({
+          id:payload.id,
+          type:payload.type,
+          email:payload.email,
+          nickName:payload.name,
+        }));
+
+        window.location.href = '/'
+      })
+      .catch((_err:any)=> {
+        if(_err.response.data.conflict === '없는 아이디'){
+          dispatch(setRegisterOauth({email:_res.data.response.email,type:'naver'}))
+          router.push('/account/register')
+        }else if(_err.response.data.conflict === 'WEWI.GG ID'){
+          alert('이미 가입된 아이디입니다.')
+          window.location.href = '/account/login'
+        }else{
+          alert('서버에 오류가 발생했습니다.')
+        }
+      })
+    })
   }
   useEffect(()=>{
-    handleNaverCallBack()
+    const timer = setTimeout(()=>{
+      handleNaverCallBack()
+    },600)
+
+    return () => clearTimeout(timer)
   })
 
   return <OauthText>잠시만 기다려주세요. 네이버 로그인 중 입니다.</OauthText>

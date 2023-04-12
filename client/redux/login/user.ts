@@ -6,7 +6,7 @@ export type ReduxLoginType = {
   id:number | null,
   email:string,
   nickName:string
-  oauth:string
+  type:string
 }
 
 const user = createSlice({
@@ -14,7 +14,7 @@ const user = createSlice({
   initialState:{
     state:false,
     id:null,
-    oauth:'',
+    type:'',
     email:'',
     nickName:'',
   },
@@ -22,14 +22,14 @@ const user = createSlice({
     setLogin:(state:ReduxLoginType,action:PayloadAction<any>) => {
       state.state = true;
       state.id = action.payload.id
-      state.oauth = action.payload.oauth
+      state.type = action.payload.type
       state.email = action.payload.email;
       state.nickName = action.payload.nickName;
     },
     setLogout:(state:ReduxLoginType) => {
       state.state = false;
       state.id = null;
-      state.oauth = '';
+      state.type = '';
       state.email = '';
       state.nickName = '';
       storage.removeItem('persist:root')

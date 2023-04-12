@@ -1,15 +1,13 @@
-import axios from "axios"
 import { dbInstance } from "../../axiosInstance"
-
-interface LoginQuery {
-  email:string,
-  password?:string
-  oauthType?:string
-  oauthToken?:string
+interface OauthLoginQuery{
+  email:string
+  type:string
+}
+interface LoginQuery extends OauthLoginQuery{
+  password:string
 }
 interface RegisterQuery extends LoginQuery{
   nickName:string,
-  
 }
 
 export const accountHook = { // 로그인 , 회원가입 부분 Server 통신 Hook
@@ -18,6 +16,17 @@ export const accountHook = { // 로그인 , 회원가입 부분 Server 통신 Ho
       await dbInstance({
         method:'post',
         url:'/account/login',
+        data:query
+      })
+      .then((_res)=> resolve(_res))
+      .catch((_err) => reject(_err))
+    })
+  },
+  oauthLogin:async function(query:OauthLoginQuery){ // 로그인 시 Server 접속
+    return await new Promise(async (resolve,reject) => {
+      await dbInstance({
+        method:'post',
+        url:'/account/login/oauth',
         data:query
       })
       .then((_res)=> resolve(_res))
@@ -47,5 +56,18 @@ export const accountHook = { // 로그인 , 회원가입 부분 Server 통신 Ho
       .then((_res)=> resolve(_res))
       .catch((_err) => reject(_err))
     })
-  }
+  },
+  jwtDecode:async function name(token:string) {
+    return await new Promise(async (resolve,reject) => {
+      await dbInstance({
+        method:'get',
+        url:'/account/token',
+        params:{
+          token:token
+        }
+      })
+      .then((_res)=> resolve(_res))
+      .catch((_err) => reject(_err))
+    })
+  },
 }
