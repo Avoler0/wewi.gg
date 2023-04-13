@@ -4,6 +4,7 @@ import { setRegisterOauth } from "../../../../redux/login/oauthReg";
 import { setLogin } from "../../../../redux/login/user";
 import { useRouter } from "next/router";
 import { accountHook } from "../../../../hooks/server/account/account";
+import { jwtTokenDecode } from "../../../../hooks/jwtToken";
 declare global {
   interface Window {
     google: any;
@@ -28,9 +29,9 @@ function GoogleOauth(){
     googleScript.onload = () =>{
       window.google.accounts.id.initialize({
         client_id: '625687004788-5pv5rsjeqkel0arqfclrmco227f4ven1.apps.googleusercontent.com',
-        callback: handleGoogleCallBack,
+        callback:handleGoogleCallBack,
         ux_mode: 'popup',
-        login_uri: process.env.NEXT_PUBLIC_LOGIN_URL,
+        redirect_uri: `${process.env.NEXT_PUBLIC_URL}/account/login/oauth/google`,
       });
 
     window.google.accounts.id.renderButton(
@@ -52,26 +53,30 @@ function GoogleOauth(){
   },[])
 
   async function handleGoogleCallBack(response:GoogleResponse) {
-    const base64Payload = response.credential.split('.')[1];
-    const payload = Buffer.from(base64Payload, 'base64'); 
-    const jwt_decoded = JSON.parse(payload.toString())
-    await accountHook.login({email:jwt_decoded.email,oauthType:'google',oauthToken:jwt_decoded.sub})
-    .then((_res:any)=>{
-      dispatch(setLogin({
-        id:_res.data.Id,
-        oauth:'google',
-        email:_res.data.Email,
-        nickName:_res.data.Name,
-      }));
-      router.push('/')
-    })
-    .catch((_error)=>{
-      dispatch(setRegisterOauth({email:jwt_decoded.email,oauthType:'google',oauthToken:jwt_decoded.sub}))
-      router.push('/register')
-    })
+    console.log(response)
+    const payload = jwtTokenDecode(response.credential)
+
+    console.log(payload)
+    // const base64Payload = response.credential.split('.')[1];
+    // const payload = Buffer.from(base64Payload, 'base64'); 
+    // const jwt_decoded = JSON.parse(payload.toString())
+    // await accountHook.login({email:jwt_decoded.email,type:'google'})
+    // .then((_res:any)=>{
+    //   dispatch(setLogin({
+    //     id:_res.data.Id,
+    //     oauth:'google',
+    //     email:_res.data.Email,
+    //     nickName:_res.data.Name,
+    //   }));
+    //   router.push('/')
+    // })
+    // .catch((_error)=>{
+    //   dispatch(setRegisterOauth({email:jwt_decoded.email,oauthType:'google',oauthToken:jwt_decoded.sub}))
+    //   router.push('/register')
+    // })
   }
 
-return <div>잠시만 기다려주세요. 구글 로그인 중 입니다.</div> ;
+return <div id="google_id_login" /> ;
 }
 
 export default GoogleOauth;

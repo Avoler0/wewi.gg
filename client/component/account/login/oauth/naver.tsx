@@ -17,17 +17,8 @@ function NaverOauth(){
   const router = useRouter();
   const dispatch = useDispatch();
 
-  function initNaverOauth(){
-    const naver_id_login = new window.naver_id_login('NR61LLLoBLU2vcfbHvDY','http://localhost:3000/login')
-    const state = naver_id_login.getUniqState();
-    naver_id_login.setButton('green',0,40)
-    naver_id_login.setDomain('http://localhost:3000')
-    naver_id_login.setState(state);
-    naver_id_login?.init_naver_id_login();
-  }
-
   async function handleNaverCallBack(){
-    const naver_login = new window.naver_id_login('NR61LLLoBLU2vcfbHvDY','http://localhost:3000/account/login/oauth/naver')
+    const naver_login = new window.naver_id_login(process.env.NEXT_PUBLIC_NAVER_CLIENT_ID,`${process.env.NEXT_PUBLIC_URL}/account/login/oauth/naver`)
     
     await accountHook.naverOauthApi(naver_login.oauthParams.access_token)
     .then(async (_res:any)=>{

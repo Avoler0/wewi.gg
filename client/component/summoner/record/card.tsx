@@ -39,31 +39,30 @@ export default function RecordCard({detail}:any) {
     spell2:'',
   });
 
+  async function fetchImages(){
+    const ItemArr = ["item0","item1","item2","item6","item3","item4","item5"];
+    const itemPromise = Promise.all(ItemArr.map((item:string)=> riotImageHook.item(participant[item])))
+
+    await Promise.all([
+      riotImageHook.championByName(participant?.championName),
+      riotImageHook.spell(participant.summoner1Id),
+      riotImageHook.spell(participant.summoner2Id),
+      riotImageHook.rune(participant.perks?.styles[0].style),
+      riotImageHook.rune(participant.perks?.styles[1].style),
+      itemPromise
+    ]).then(([champion,spell1,spell2,rune1,rune2,item]:any)=>{
+      setIcons({champion,spell1,spell2,rune1,rune2})
+      setItemIcons(item)
+      setIsLoading(false);
+    })
+  }
   useEffect(()=>{
     if(detail){
-      const ItemArr = ["item0","item1","item2","item6","item3","item4","item5"];
-      
-      (async ()=>{
-        await Promise.all([
-          riotImageHook.championByName(participant?.championName),
-          riotImageHook.spell(participant.summoner1Id),
-          riotImageHook.spell(participant.summoner2Id),
-          riotImageHook.rune(participant.perks?.styles[0].style),
-          riotImageHook.rune(participant.perks?.styles[1].style),
-          
-        ]).then(([champion,spell1,spell2,rune1,rune2]:any)=>{
-          setIcons({champion,spell1,spell2,rune1,rune2})
-          setIsLoading(false);
-        })
+      const timer = setTimeout(()=>{
+        fetchImages()
+      },300)
 
-        await Promise.all(
-          ItemArr.map((item:string)=>{
-            return riotImageHook.item(participant[item])
-          })
-        ).then((item:any) => {
-          setItemIcons(item)
-        })
-      })()
+      return () => clearTimeout(timer)
     }
       
   },[])
@@ -84,7 +83,7 @@ export default function RecordCard({detail}:any) {
     return Item
   }
   if(isLoading){
-    return <div>불러오는 중</div>
+    return <Default> </Default>
   }
   return (
     <WarpLi doResult={win} doAgain={gameDuration < 500}>
@@ -136,6 +135,11 @@ export default function RecordCard({detail}:any) {
     </WarpLi>
   );
 }
+
+const Default = styled.div`
+  width: 100%;
+  height: 20px;
+`;
 
 const WarpLi = styled.li<{doResult:boolean,doAgain:boolean}>`
   border: 1px solid ${props => props.doAgain ? 'rgba(34,34,58,0.6)' : props.doResult ? 'rgba(62, 31, 177, 1)' : 'rgba(177,31,62,1)'};

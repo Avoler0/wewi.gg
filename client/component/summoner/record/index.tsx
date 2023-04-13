@@ -49,6 +49,7 @@ function Record({info,searchString}:props) {
     </ChampView>
     <GameView >
       {details && details?.map((detail:any)=> <RecordCard key={detail.info.gameId} detail={detail}  />)}
+      {/* <RecordCard key={details[0].info.gameId} detail={details[0]}  /> */}
       <More onClick={()=>{
         fetchMatch(start+5);
         setStart(+5)

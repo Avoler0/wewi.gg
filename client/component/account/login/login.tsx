@@ -8,6 +8,7 @@ import { setLogin } from "../../../redux/login/user";
 import { useSelector } from "react-redux";
 import jwt from 'jsonwebtoken'
 import { accountHook } from "../../../hooks/server/account/account";
+import GoogleOauth from "./oauth/google";
 export default function Login() {
   const router = useRouter();
   const dispatch = useDispatch()
@@ -43,52 +44,46 @@ export default function Login() {
   }
 
   function initNaverOauth(){
-    const naver_id_login = new window.naver_id_login('NR61LLLoBLU2vcfbHvDY','http://localhost:3000/account/login/oauth/naver')
+    const naver_id_login = new window.naver_id_login(process.env.NEXT_PUBLIC_NAVER_CLIENT_ID,`${process.env.NEXT_PUBLIC_URL}/account/login/oauth/naver`)
     const state = naver_id_login.getUniqState();
     naver_id_login.setButton('green',0,40)
-    naver_id_login.setDomain('http://localhost:3000')
+    naver_id_login.setDomain(process.env.NEXT_PUBLIC_URL)
     naver_id_login.setState(state);
     naver_id_login?.init_naver_id_login();
   }
 
-  function initGoogleOauth(){
-    const googleScript = document.createElement('script');
-    googleScript.src = 'https://accounts.google.com/gsi/client';
-    document.head.appendChild(googleScript);
+//   function initGoogleOauth(){
+//     const googleScript = document.createElement('script');
+//     googleScript.src = 'https://accounts.google.com/gsi/client';
+//     document.head.appendChild(googleScript);
     
-    googleScript.onload = () =>{
-      window.google.accounts.id.initialize({
-        client_id: '625687004788-5pv5rsjeqkel0arqfclrmco227f4ven1.apps.googleusercontent.com',
-        ux_mode: 'popup',
-        login_uri: process.env.NEXT_PUBLIC_LOGIN_URL,
-      });
+//     googleScript.onload = () =>{
+//       window.google.accounts.id.initialize({
+//         client_id: '625687004788-5pv5rsjeqkel0arqfclrmco227f4ven1.apps.googleusercontent.com',
+//         ux_mode: 'popup',
+//         redirect_uri: `${process.env.NEXT_PUBLIC_URL}/account/login/oauth/google`,
+//       });
 
-    window.google.accounts.id.renderButton(
-      document.getElementById("google_id_login"),
-      { 
-        'type':'icon',
-        'theme':'outline',
-        'shape':'square',
-        'size': "x-large", 
-        'width': '300', 
-        'height': '100',
-        'longtitle': true,
-        'login_uri' : 'redirect'
-      }
-    );
+//     window.google.accounts.id.renderButton(
+//       document.getElementById("google_id_login"),
+//       { 
+//         'type':'icon',
+//         'theme':'outline',
+//         'shape':'square',
+//         'size': "x-large", 
+//         'width': '300', 
+//         'height': '100',
+//         'longtitle': true,
+//         'login_uri' : 'redirect'
+//       }
+//     );
     
-    window.google.accounts.id.prompt();
-  }
-}
+//     window.google.accounts.id.prompt();
+//   }
+// }
+
   useEffect(()=>{
     initNaverOauth();
-    initGoogleOauth();
-    // const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NTIsImVtYWlsIjoiYXZvbGVyMDFAbmF2ZXIuY29tIiwibmFtZSI6Iu2FjOyKpO2KuCDrhKTsnbTrsoQiLCJjcmVhdGVBdCI6IjIwMjMtMDEtMzBUMDc6MDc6MjcuMDAwWiIsInVwZGF0ZUF0IjoiMjAyMy0wMS0zMFQwNzowNzoyNy4wMDBaIiwidHlwZSI6Im5hdmVyIiwiaWF0IjoxNjgxMjg3MjMxLCJleHAiOjE2ODEyOTA4MzEsImlzcyI6Indld2lnZyIsInN1YiI6Indld2lnZyBqd3RUb2tlbiJ9.J5hm9OF1E9z87B0AatIifLkwSPedFpFXe3Z_TDm1tVk'
-    // const secret:any = 'c1a6488d6984dc1e7fbd881cda8c84e537abb731da6c16ce1309a2f048ba7effa847087fa7c91cb8faffab660843d522ca5679cad4f3b711107c8fda76eacdf4'
-    // // const secret:any = '1234'
-    // const ve = jwt.verify(token,secret)
-
-    // console.log('검증',ve)
   },[])
   return (
     <Wrap id="wrap">
@@ -117,7 +112,7 @@ export default function Login() {
           <LoginBtnInner>
             <OauthBtn>
               <div  id='naver_id_login'/>
-              <div id="google_id_login" />
+              <GoogleOauth />
             </OauthBtn>
             <LoginButton className="login-btn">로그인</LoginButton>
           </LoginBtnInner>
