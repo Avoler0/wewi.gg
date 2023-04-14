@@ -6,6 +6,7 @@ import storage from 'reduxjs-toolkit-persist/lib/storage'
 import { persistStore, persistReducer } from 'reduxjs-toolkit-persist'
 import oauthReg from './login/oauthReg';
 import lolVersion from './riot/version'
+import token from './login/token';
 export type SearchReduxType = {
   search: any;
   type:string | null,
@@ -14,11 +15,12 @@ export type SearchReduxType = {
 const persistConfig = {
   key:'root',
   storage,
-  whitelist:['user']
+  whitelist:['token']
 }
 const rootResucers = combineReducers({
   duoFilter:duoFilter,
   duoError:duoError,
+  token:token,
   user:user,
   oauthReg:oauthReg,
   lolVersion:lolVersion,

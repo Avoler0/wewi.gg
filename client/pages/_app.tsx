@@ -10,13 +10,13 @@ import { useRouter } from 'next/router';
 import styled, { ThemeProvider } from 'styled-components';
 import theme from '../const/theme'
 import { useEffect } from 'react';
-import axios from 'axios';
-import { vistantPost } from '../hooks/server/visitant';
 import Head from 'next/head';
+import { useSelector } from 'react-redux';
 const queryClient = new QueryClient();
 
 function MyApp({ Component, pageProps }: AppProps) {
   const router = useRouter();
+  
   const isHeader = pathValid(router.pathname);
   function pathValid(path:string){
     switch(path){
@@ -30,12 +30,7 @@ function MyApp({ Component, pageProps }: AppProps) {
         return true
     }
   }
-  useEffect( () => {
-    axios.get('https://geolocation-db.com/json/')
-    .then((res) => {
-      vistantPost(res.data.IPv4)
-    })
-  },[])
+
   return (
     <>
       <QueryClientProvider client={queryClient}>

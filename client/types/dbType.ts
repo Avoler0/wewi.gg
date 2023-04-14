@@ -10,3 +10,16 @@ export type PostType = {
   View:number,
   Thumnail:string
 }
+
+export type LoginToken = {
+  id:number,
+  email:string,
+  name:string,
+  createAt:string,
+  updateAt:string,
+  type:string,
+  iat:number,
+  exp:number,
+  iss:string,
+  sub:string
+}

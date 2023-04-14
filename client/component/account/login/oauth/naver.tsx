@@ -7,6 +7,7 @@ import styled from "styled-components";
 import jwt from 'jsonwebtoken'
 import { jwtTokenDecode } from "../../../../hooks/jwtToken";
 import { setLogin } from "../../../../redux/login/user";
+import { setToken } from "../../../../redux/login/token";
 declare global {
   interface Window {
     naver_id_login: any;
@@ -26,11 +27,8 @@ function NaverOauth(){
       .then((_res:any)=>{
         const token = _res.data.token;
         const payload = jwtTokenDecode(token);
-        dispatch(setLogin({
-          id:payload.id,
-          type:payload.type,
-          email:payload.email,
-          nickName:payload.name,
+        dispatch(setToken({
+          token:token
         }));
 
         window.location.href = '/'

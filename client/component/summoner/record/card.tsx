@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React from "react";
 import { useEffect, useState } from "react";
 import styled from "styled-components";
@@ -5,27 +6,19 @@ import Image from "next/image";
 import { queueUtils } from "../../../const/utils";
 import { timeHook } from "../../../hooks/timeHook";
 import { riotImageHook } from "../../../hooks/server/riot/image";
-import { useRouter } from "next/router";
+import { GameDetail } from "../../../types/riotType";
 
 type props = {
-  match:string
+  detail:Detail
+}
+interface Detail extends GameDetail{
+  myIndex:number,
+  myTeamId:number
 }
 
-type Detail = {
-  gameCreation:number,
-  gameDuration:number,
-  gameStartTimestamp:number,
-  gameEndTimestamp:number,
-  participants:any,
-  teamKill:number,
-  queueId:number,
-  gameLengthTime:number
-  win:boolean
-}
-export default function RecordCard({detail}:any) {
-  
+export default function RecordCard({detail}:props) {
   const {info,myIndex,myTeamId,metadata} = detail;
-  const { gameCreation,gameDuration,gameStartTimestamp,gameEndTimestamp,teams,participants,queueId,gameLengthTime,  } = info;
+  const { gameCreation,gameDuration,gameStartTimestamp,gameEndTimestamp,teams,participants,queueId } = info;
   const participant = participants[myIndex];
   const teamKills = teams[myTeamId].objectives.champion.kills
   const {kills,deaths,assists,totalMinionsKilled,neutralMinionsKilled,visionScore,win} = participant
@@ -64,8 +57,7 @@ export default function RecordCard({detail}:any) {
 
       return () => clearTimeout(timer)
     }
-      
-  },[])
+  },[detail])
   
   function ItemRender(){
     const Item = itemIcons.map((item:any,index:number)=>{
@@ -83,7 +75,7 @@ export default function RecordCard({detail}:any) {
     return Item
   }
   if(isLoading){
-    return <Default> </Default>
+    return <Default />
   }
   return (
     <WarpLi doResult={win} doAgain={gameDuration < 500}>
@@ -92,7 +84,6 @@ export default function RecordCard({detail}:any) {
           <b>{queueUtils.type[queueId]}</b>
           <div>{timeHook.otherDay(gameEndTimestamp)}</div>
           <b className="result">{ gameDuration < 500 ? '다시 하기' : win ? '승리' : '패배' }</b>
-          <div>{gameLengthTime}</div>
           <div>{timeHook.elapsedTime(gameDuration)}</div>
         </InfoWrap>
         <ChampWrap>

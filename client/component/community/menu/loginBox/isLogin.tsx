@@ -8,7 +8,7 @@ type props ={
 }
 
 export default function CommunityIsLogin({user}:props){ // 로그인 일 시 왼쪽 메뉴 헤더부분에 띄워주는 컴포넌트
-  const {email,id,nickName,oauth,state} = user;
+  const {email,id,nickName,state} = user;
   const router = useRouter()
   return(
       <LoginButton>

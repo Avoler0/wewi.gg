@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @next/next/no-img-element */
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -6,10 +7,16 @@ import { useSelector } from "react-redux";
 import styled from "styled-components"
 import UserMenu from "../menu";
 import SearchToolBar from "../search/searchToolBar";
+import { useDispatch } from "react-redux";
+import { jwtTokenDecode } from "../../../hooks/jwtToken";
+import { setLogin } from "../../../redux/login/user";
+import { removeToken } from "../../../redux/login/token";
 
 
 export default function Header2(){
   const router = useRouter();
+  const token = useSelector((state:any)=> state.token)
+  const dispatch = useDispatch();
   const [hoverHeader, setHoverHeader] = useState(false);
   const [toolBar,setToolBar] = useState(false);
   const [showMenu,setShowMenu] = useState(false);
@@ -37,11 +44,30 @@ export default function Header2(){
     }
   }
   useEffect(()=>{
+    const payload = jwtTokenDecode(token.token);
+
+    console.log(payload)
+    if(payload){
+      dispatch(setLogin({
+        id:payload.id,
+        type:payload.type,
+        email:payload.email,
+        nickName:payload.name,
+      }));
+    }else{
+      dispatch(removeToken())
+    }
+    
     window.addEventListener('scroll',scrollHandler);
     return(()=>{
       window.addEventListener('scroll',scrollHandler);
     })
-  })
+
+    
+  },[])
+  
+
+
   return (
     <>
       <HeaderWrap >
