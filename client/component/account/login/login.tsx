@@ -4,12 +4,9 @@ import { useDispatch } from "react-redux";
 import React, { useEffect } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { setLogin } from "../../../redux/login/user";
 import { useSelector } from "react-redux";
-import jwt from 'jsonwebtoken'
 import { accountHook } from "../../../hooks/server/account/account";
 import GoogleOauth from "./oauth/google";
-import { jwtTokenDecode } from "../../../hooks/jwtToken";
 import { setToken } from "../../../redux/login/token";
 export default function Login() {
   const router = useRouter();
