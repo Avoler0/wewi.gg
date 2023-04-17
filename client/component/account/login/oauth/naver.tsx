@@ -26,7 +26,6 @@ function NaverOauth(){
       await accountHook.oauthLogin({email:_res.data.response.email,type:'naver'})
       .then((_res:any)=>{
         const token = _res.data.token;
-        const payload = jwtTokenDecode(token);
         dispatch(setToken({
           token:token
         }));

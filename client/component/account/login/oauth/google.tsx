@@ -5,6 +5,7 @@ import { setLogin } from "../../../../redux/login/user";
 import { useRouter } from "next/router";
 import { accountHook } from "../../../../hooks/server/account/account";
 import { jwtTokenDecode } from "../../../../hooks/jwtToken";
+import { setToken } from "../../../../redux/login/token";
 declare global {
   interface Window {
     google: any;
@@ -53,27 +54,17 @@ function GoogleOauth(){
   },[])
 
   async function handleGoogleCallBack(response:GoogleResponse) {
-    console.log(response)
-    const payload = jwtTokenDecode(response.credential)
 
-    console.log(payload)
-    // const base64Payload = response.credential.split('.')[1];
-    // const payload = Buffer.from(base64Payload, 'base64'); 
-    // const jwt_decoded = JSON.parse(payload.toString())
-    // await accountHook.login({email:jwt_decoded.email,type:'google'})
-    // .then((_res:any)=>{
-    //   dispatch(setLogin({
-    //     id:_res.data.Id,
-    //     oauth:'google',
-    //     email:_res.data.Email,
-    //     nickName:_res.data.Name,
-    //   }));
-    //   router.push('/')
-    // })
-    // .catch((_error)=>{
-    //   dispatch(setRegisterOauth({email:jwt_decoded.email,oauthType:'google',oauthToken:jwt_decoded.sub}))
-    //   router.push('/register')
-    // })
+    const payload = jwtTokenDecode(response.credential)
+    await accountHook.oauthLogin({email:payload!.email,type:'google'})
+    .then((_res:any)=>{
+      const token = _res.data.token;
+      dispatch(setToken({
+        token:token
+      }));
+
+      window.location.href = '/'
+    })
   }
 
 return <div id="google_id_login" /> ;

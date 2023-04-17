@@ -9,6 +9,8 @@ import { useSelector } from "react-redux";
 import jwt from 'jsonwebtoken'
 import { accountHook } from "../../../hooks/server/account/account";
 import GoogleOauth from "./oauth/google";
+import { jwtTokenDecode } from "../../../hooks/jwtToken";
+import { setToken } from "../../../redux/login/token";
 export default function Login() {
   const router = useRouter();
   const dispatch = useDispatch()
@@ -26,16 +28,14 @@ export default function Login() {
     
     await accountHook.login(query)
     .then((_res:any)=>{
-      console.log(_res)
-      dispatch(setLogin({
-        id:_res.data.Id,
-        oauth:_res.data.OauthType,
-        email:_res.data.Email,
-        nickName:_res.data.Name,
+      const token = _res.data.token;
+      dispatch(setToken({
+        token:token
       }));
+
+      window.location.href = '/'
     })
     .catch((_err)=>{
-      console.log(_err)
       const error = _err.response;
       if(error.status === 404 || error.status === 400){
         alert('잘못된 아이디 또는 비밀번호입니다.')
