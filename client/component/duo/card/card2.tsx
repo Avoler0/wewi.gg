@@ -62,7 +62,7 @@ export default function DuoCard2({duoRes,filter}:Props){
       setCreateAtState(timeHook.otherDay(new Date(CreateAt).getTime()))
     },60000)
   },[])
-  console.log(leagueParse?.tier, tier)
+
   function cardFilter(){ // 리덕스로 지정된 필터를 값으로 DB에서 받아온 카드 RES에 맞는지 필터링 하여 자체적으로 소거
     let isMode = false ,isLine = false, isTier = false;
     

@@ -49,36 +49,6 @@ export default function Login() {
     naver_id_login?.init_naver_id_login();
   }
 
-//   function initGoogleOauth(){
-//     const googleScript = document.createElement('script');
-//     googleScript.src = 'https://accounts.google.com/gsi/client';
-//     document.head.appendChild(googleScript);
-    
-//     googleScript.onload = () =>{
-//       window.google.accounts.id.initialize({
-//         client_id: '625687004788-5pv5rsjeqkel0arqfclrmco227f4ven1.apps.googleusercontent.com',
-//         ux_mode: 'popup',
-//         redirect_uri: `${process.env.NEXT_PUBLIC_URL}/account/login/oauth/google`,
-//       });
-
-//     window.google.accounts.id.renderButton(
-//       document.getElementById("google_id_login"),
-//       { 
-//         'type':'icon',
-//         'theme':'outline',
-//         'shape':'square',
-//         'size': "x-large", 
-//         'width': '300', 
-//         'height': '100',
-//         'longtitle': true,
-//         'login_uri' : 'redirect'
-//       }
-//     );
-    
-//     window.google.accounts.id.prompt();
-//   }
-// }
-
   useEffect(()=>{
     initNaverOauth();
   },[])

@@ -34,7 +34,6 @@ export const matesHook = { // 듀오 구인 페이지 Server 통신 Hook
     })
   },
   delete:async function(id:number){ // 듀오 구인 게시글 삭제
-    console.log("델리트")
     return await new Promise(async (resolve,reject) => {
       await dbInstance({
         method:'delete',

@@ -12,9 +12,6 @@ export const validHook = {
     
   },
   password:function(password:string){
-    if(password === 'oauth-login'){
-      return true
-    }
     const regexp = {
       string: password.match(/[a-zA-z]/g),
       number: password.match(/[0-9]/g),

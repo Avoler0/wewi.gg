@@ -35,6 +35,7 @@ function NaverOauth(){
       .catch((_err:any)=> {
         if(_err.response.data.conflict === '없는 아이디'){
           dispatch(setRegisterOauth({email:_res.data.response.email,type:'naver'}))
+          alert('가입되지 않은 회원입니다. 가입 절차 페이지로 이동됩니다.')
           router.push('/account/register')
         }else if(_err.response.data.conflict === 'WEWI.GG ID'){
           alert('이미 가입된 아이디입니다.')

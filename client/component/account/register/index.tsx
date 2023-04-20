@@ -9,12 +9,12 @@ import { validHook } from "../../../hooks/validationHook";
 function Register() {
   const dispatch = useDispatch();
   const user = useSelector((state:any)=> state.user)
-  const oauthState = useSelector((state:any)=> state.oauthReg)
+  const oauthReg = useSelector((state:any)=> state.oauthReg)
   const router = useRouter();
   const [emailError,setEmailError] = useState<string>('');
   const [passwordError,setPasswordError] = useState<string>('');
   const [nickError,setNickError] = useState<string>('');
-  console.log('회원가입 유저 데이터',user)
+  console.log('회원가입 유저 데이터',oauthReg)
   if(user.state) router.push('/')
 
   function resetState(){
@@ -44,10 +44,11 @@ function Register() {
   function postRegister(query:any){ // 회원가입 값을 서버에 보내는 함수
     accountHook.register(query)
       .then((_res:any)=>{
-        alert('회원가입 완료!')
+        alert('회원가입이 완료 되었습니다!')
         router.push('/login')
       })
       .catch((_error)=>{
+        console.log(_error)
         setEmailError('이미 등록된 이메일입니다.');
       })
   }
@@ -60,8 +61,7 @@ function Register() {
       email:event.target['email'].value,
       password:event.target['password'] ? event.target['password'].value : null,
       nickName:event.target['nickName'].value,
-      oauthType:oauthState.oauthType ? oauthState.oauthType : null,
-      oauthToken:oauthState.oauthToken ? oauthState.oauthToken : null
+      type:oauthReg.type ? oauthReg.type: 'wewigg',
     };
     const emailValid = validHook.email(query.email) // 이메일 검사 Hook 사용
     const passwordValid = validHook.password(event.target['password'] ? query.password : 'oauth-login') // 비밀번호 검사 Hook 사용
@@ -83,14 +83,14 @@ function Register() {
           <h1>wewi.gg</h1>
         </Title>
         <SignTitle>기본 정보 입력</SignTitle>
-        <SignExp>회원가입을 위해서 이메일 인증이 진행되며, 인증이 완료되기 전까지 회원가입이 완료가 되지 않습니다.</SignExp>
+        <SignExp>회원가입을 환영합니다.</SignExp>
         <Form onSubmit={postValidation}>
           <InputDiv>
             <Label htmlFor="regiId">이메일 주소</Label>
             <ErrorMessage>{emailError}</ErrorMessage>
-            <Input type="text" name="email" value={oauthState.email ? oauthState.email : null}/>
+            <Input type="text" name="email" value={oauthReg.email ? oauthReg.email : null}/>
           </InputDiv>
-          {oauthState.email ? null : 
+          {oauthReg.email ? null : 
           <InputDiv>
             <Label>비밀번호</Label>
             <ErrorMessage>{passwordError}</ErrorMessage>
