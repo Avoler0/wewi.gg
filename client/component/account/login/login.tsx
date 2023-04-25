@@ -85,7 +85,7 @@ export default function Login() {
           </LoginBtnInner>
           <Register>
             <span>아이디가 없다면 ?</span>
-            <Link href="/register">회원가입</Link>
+            <Link href="/account/register">회원가입</Link>
           </Register>
         </Form>
       </Container>
